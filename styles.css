@@ -1,3 +1,68 @@
+/* ====== Maltese First Capital Brand ====== */
+:root{
+  --navy: #002a45;     /* headings, header background */
+  --gold: #b4975a;     /* accents & CTAs */
+  --ink:  #111418;     /* body text */
+  --bg:   #f7f7f7;     /* page background */
+  --card: #ffffff;     /* panels/cards */
+  --muted:#69707a;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font: 16px/1.5 'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+}
+
+/* Header + Footer */
+.site-header{
+  background:var(--navy);
+  color:#fff;
+  padding:14px 18px;
+  display:flex;align-items:center;gap:12px;
+  justify-content:center;
+}
+.site-header img{height:44px; display:block}
+.site-footer{
+  margin:40px auto 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* Container / card */
+.container{
+  max-width:920px;margin:28px auto;padding:24px;
+  background:var(--card);border-radius:12px;
+  box-shadow:0 10px 24px rgba(0,0,0,.05);
+}
+
+/* Buttons & inputs */
+button{
+  background:var(--gold);border:0;color:#fff;
+  padding:10px 16px;border-radius:8px;cursor:pointer;
+  font-weight:600;
+}
+button:hover{filter:brightness(.95)}
+button:disabled{opacity:.65;cursor:not-allowed}
+
+input,select,textarea{
+  width:100%;padding:10px 12px;margin:8px 0 14px;
+  border:1px solid #d7dbe0;border-radius:8px;background:#fff;
+}
+label{color:var(--muted);font-size:13px}
+
+/* Links used as menu buttons */
+.menu a{
+  display:inline-block;margin:10px 12px 0 0;
+  text-decoration:none;color:var(--navy);font-weight:600;
+}
+
+/* Headings */
+h1{color:var(--navy);margin:0 0 16px}
+h2{color:var(--navy);margin:16px 0 10px}
 body { font-family: Arial, sans-serif; background: #f5f5f5; color: #222; }
 .container { max-width: 600px; margin: 40px auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
 h1 { color: #003366; margin-bottom: 0.3em; }
