@@ -1,0 +1,10 @@
+body { font-family: Arial, sans-serif; background: #f5f5f5; color: #222; }
+.container { max-width: 600px; margin: 40px auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
+h1 { color: #003366; margin-bottom: 0.3em; }
+.menu a { display: inline-block; margin: 10px; padding: 10px 18px; background: #003366; color: white; border-radius: 6px; text-decoration: none; }
+.menu a:hover { background: #0055a5; }
+input, select, button { margin: 5px; padding: 8px; border: 1px solid #ccc; border-radius: 6px; width: 80%; }
+button { background: #003366; color: white; cursor: pointer; }
+button:hover { background: #0055a5; }
+pre { text-align: left; background: #f0f0f0; padding: 10px; border-radius: 6px; overflow-x: auto; }
+footer { margin-top: 20px; font-size: 0.85em; color: #777; }

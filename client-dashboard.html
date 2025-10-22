@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Client Dashboard</h1>
+    <div id="login">
+      <input id="email" placeholder="Email">
+      <input id="password" type="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+    <div id="main" style="display:none">
+      <h2>Accounts</h2>
+      <pre id="accounts"></pre>
+      <h2>Recent Transactions</h2>
+      <pre id="txs"></pre>
+    </div>
+  </div>
+  <script>
+    const API = localStorage.getItem('BACKEND_URL') || 'http://localhost:3000';
+    async function login(){
+      const email=document.getElementById('email').value;
+      const password=document.getElementById('password').value;
+      const r=await fetch(`${API}/api/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+      const d=await r.json(); if(!d.token) return alert('Login failed');
+      localStorage.setItem('token',d.token);
+      load();
+    }
+    async function load(){
+      const r=await fetch(`${API}/api/me`,{headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}});
+      const d=await r.json();
+      document.getElementById('login').style.display='none';
+      document.getElementById('main').style.display='block';
+      document.getElementById('accounts').textContent=JSON.stringify(d.user.accounts,null,2);
+      document.getElementById('txs').textContent=JSON.stringify(d.transactions,null,2);
+    }
+  </script>
+</body>
+</html>
