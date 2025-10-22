@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Account</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Open an Account</h1>
+
+    <div id="step1">
+      <input id="fullName" placeholder="Full name">
+      <input id="email" placeholder="Email">
+      <input id="password" type="password" placeholder="Password">
+      <input id="phone" placeholder="Phone (optional)">
+      <input id="address" placeholder="Address (optional)">
+      <input id="govId" placeholder="ID number (optional)">
+      <button id="registerBtn">Continue (Send OTP)</button>
+      <p id="regMsg" class="small"></p>
+    </div>
+
+    <div id="step2" style="display:none">
+      <p>We’ve sent a 6-digit OTP to your email.</p>
+      <input id="otp" placeholder="Enter OTP">
+      <button id="verifyBtn">Verify & Create Account</button>
+      <p id="otpMsg" class="small"></p>
+    </div>
+
+    <div id="done" style="display:none">
+      <h2>Account created</h2>
+      <p id="doneText"></p>
+      <a class="menu" href="client-dashboard.html">Go to Client Login</a>
+    </div>
+  </div>
+
+  <script>
+    const API = localStorage.getItem('BACKEND_URL') || '';
+    let regId = '';
+
+    async function register() {
+      const payload = {
+        fullName: document.getElementById('fullName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value,
+        phone: document.getElementById('phone').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        govId: document.getElementById('govId').value.trim()
+      };
+      const r = await fetch(`${API}/api/auth/register`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      const d = await r.json();
+      if (!r.ok) { document.getElementById('regMsg').textContent = d?.message || 'Registration failed'; return; }
+      regId = d.regId;
+      document.getElementById('step1').style.display='none';
+      document.getElementById('step2').style.display='block';
+    }
+
+    async function verify() {
+      const otp = document.getElementById('otp').value.trim();
+      const r = await fetch(`${API}/api/auth/verify-otp`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ regId, otp })
+      });
+      const d = await r.json();
+      if (!r.ok || !d.ok) { document.getElementById('otpMsg').textContent = d?.message || 'Invalid/expired OTP'; return; }
+      document.getElementById('step2').style.display='none';
+      document.getElementById('done').style.display='block';
+      document.getElementById('doneText').textContent = `Your User ID: ${d.userId}. Two accounts (USD/EUR) with 8-digit account numbers were created.`;
+    }
+
+    document.getElementById('registerBtn').addEventListener('click', register);
+    document.getElementById('verifyBtn').addEventListener('click', verify);
+  </script>
+</body>
+</html>
