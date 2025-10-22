@@ -1,0 +1,11 @@
+services:
+  - type: static_site
+    name: maltese-first-capital-frontend
+    env: static
+    plan: free
+    region: frankfurt
+    buildCommand: echo "Building static site..."
+    staticPublishPath: .
+    envVars:
+      - key: BACKEND_URL
+        value: https://maltese-first-capital-backend.onrender.com
