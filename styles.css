@@ -10,11 +10,7 @@
   --ring:rgba(7,43,68,.2);
 }
 
-/* --- Logo sizing guardrails --- */
-img { max-width: 100%; height: auto; }              /* safe default */
-.brand img { height: 42px !important; width: auto !important; }
-.hero > img { height: 76px !important; width: auto !important; display:block; margin:6px auto 6px; }
-
+/* --- Global reset & typography --- */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
@@ -26,7 +22,12 @@ body{
     var(--bg);
 }
 
-/* Header / Nav */
+/* --- Logo sizing guardrails (prevents full-bleed images) --- */
+img{max-width:100%; height:auto;}
+.brand img{height:42px !important; width:auto !important; display:block;}
+.hero-logo{height:76px !important; width:auto !important; display:block; margin:6px auto 10px;}
+
+/* --- Header / Nav --- */
 .site-header{
   position:sticky; top:0; z-index:10;
   background:var(--navy);
@@ -40,17 +41,15 @@ body{
 .brand{
   display:flex; align-items:center; gap:14px; color:#fff; text-decoration:none;
 }
-.brand img{ height:42px; width:auto; display:block; }
 .brand .wordmark{ font-weight:700; letter-spacing:.3px; }
-
-/* Primary action buttons */
-.nav-actions a, .nav-actions button{
+.nav-actions a{
   color:#fff; text-decoration:none; font-weight:600;
   padding:10px 14px; border-radius:8px; border:1px solid rgba(255,255,255,.18);
+  margin-left:8px;
 }
 .nav-actions a:hover{ background:rgba(255,255,255,.08) }
 
-/* Container / cards */
+/* --- Layout / Cards --- */
 .container{ max-width:1100px; margin:34px auto; padding:0 20px; }
 .card{
   background:var(--card); border-radius:16px;
@@ -58,13 +57,14 @@ body{
   border:1px solid #eef2f7;
 }
 
-/* Hero */
+/* --- Hero --- */
 .hero{ padding:40px 42px; text-align:center; }
 .hero h1{
   font-size:44px; line-height:1.12; margin:6px 0 10px; color:var(--navy);
 }
 .hero p{ color:var(--muted); margin:0 0 22px; font-size:18px; }
-.cta-row{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+/* --- Buttons --- */
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
   padding:12px 18px; border-radius:10px; font-weight:700; text-decoration:none;
@@ -72,21 +72,23 @@ body{
 }
 .btn-primary{ background:var(--navy); color:#fff; }
 .btn-primary:hover{ background:var(--navy-2); }
-.btn-ghost{ background:#fff; color:var(--navy); border-color:#e5e9f0; }
+.btn-ghost{ background:#fff; color:var(--navy); border-color:#e5e9f0; border:1px solid #e5e9f0; }
 .btn-ghost:hover{ border-color:#cfd7e3; }
 
-/* Feature grid */
-.features{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:22px; padding:20px; }
+.cta-row{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+/* --- Feature grid --- */
+.features{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:22px; }
 .feature{
   padding:18px; border-radius:14px; border:1px solid #e8eef7; background:#fff;
 }
 .feature h3{ margin:0 0 6px; color:var(--navy); font-size:18px; }
 .feature p{ margin:0; color:var(--muted); }
 
-/* Footer */
+/* --- Footer --- */
 .site-footer{ text-align:center; color:var(--muted); font-size:13px; margin:36px 0 24px; }
 
-/* Forms (global) */
+/* --- Forms (global, so other pages look good too) --- */
 label{ display:block; font-size:13px; color:var(--muted); margin-top:8px; }
 input,select,textarea{
   width:100%; padding:11px 12px; margin-top:6px;
@@ -99,7 +101,7 @@ input:focus,select:focus,textarea:focus{
 button{ cursor:pointer }
 button:disabled{ opacity:.65; cursor:not-allowed }
 
-/* Responsive */
+/* --- Responsive --- */
 @media (max-width:900px){
   .hero h1{ font-size:34px }
   .features{ grid-template-columns:1fr; }
