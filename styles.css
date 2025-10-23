@@ -1,16 +1,16 @@
 /* ========= Maltese First Capital — Pro Theme ========= */
 :root{
-  --navy:#072b44;         /* brand navy */
-  --navy-2:#0b3857;       /* hover navy */
-  --gold:#b88a2e;         /* brand gold */
-  --ink:#0e1116;          /* body text */
-  --muted:#6b7280;        /* secondary text */
-  --bg:#f5f7fb;           /* soft background */
-  --card:#ffffff;         /* surfaces */
+  --navy:#072b44;
+  --navy-2:#0b3857;
+  --gold:#b88a2e;
+  --ink:#0e1116;
+  --muted:#6b7280;
+  --bg:#f5f7fb;
+  --card:#ffffff;
   --ring:rgba(7,43,68,.2);
 }
 
-/* --- Global reset & typography --- */
+/* Global */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
@@ -21,13 +21,10 @@ body{
     radial-gradient(1200px 600px at 110% -30%, #e5ecf6 0%, transparent 60%),
     var(--bg);
 }
+img{max-width:100%;height:auto}
+a{color:var(--navy)}
 
-/* --- Logo sizing guardrails (prevents full-bleed images) --- */
-img{max-width:100%; height:auto;}
-.brand img{height:42px !important; width:auto !important; display:block;}
-.hero-logo{height:76px !important; width:auto !important; display:block; margin:6px auto 10px;}
-
-/* --- Header / Nav --- */
+/* Header/Nav */
 .site-header{
   position:sticky; top:0; z-index:10;
   background:var(--navy);
@@ -38,10 +35,9 @@ img{max-width:100%; height:auto;}
   display:flex; align-items:center; justify-content:space-between;
   padding:0 20px;
 }
-.brand{
-  display:flex; align-items:center; gap:14px; color:#fff; text-decoration:none;
-}
-.brand .wordmark{ font-weight:700; letter-spacing:.3px; }
+.brand{display:flex; align-items:center; gap:14px; color:#fff; text-decoration:none;}
+.brand img{height:42px; width:auto; display:block}
+.brand .wordmark{ font-weight:700; letter-spacing:.3px; color:#fff; }
 .nav-actions a{
   color:#fff; text-decoration:none; font-weight:600;
   padding:10px 14px; border-radius:8px; border:1px solid rgba(255,255,255,.18);
@@ -49,7 +45,7 @@ img{max-width:100%; height:auto;}
 }
 .nav-actions a:hover{ background:rgba(255,255,255,.08) }
 
-/* --- Layout / Cards --- */
+/* Layout */
 .container{ max-width:1100px; margin:34px auto; padding:0 20px; }
 .card{
   background:var(--card); border-radius:16px;
@@ -57,52 +53,61 @@ img{max-width:100%; height:auto;}
   border:1px solid #eef2f7;
 }
 
-/* --- Hero --- */
-.hero{ padding:40px 42px; text-align:center; }
-.hero h1{
-  font-size:44px; line-height:1.12; margin:6px 0 10px; color:var(--navy);
+/* Hero */
+.hero{
+  padding:40px 42px; text-align:center;
+  background: url('assets/hero-bg.jpg') center/cover no-repeat, linear-gradient(#0b3857,#0b3857);
+  color:#fff;
 }
-.hero p{ color:var(--muted); margin:0 0 22px; font-size:18px; }
+.hero h1{ font-size:44px; line-height:1.12; margin:10px 0 10px; }
+.hero p{ color:#e6edf6; margin:0 0 22px; font-size:18px; }
+.hero .hero-logo{ height:76px; width:auto; display:block; margin:0 auto 10px; }
 
-/* --- Buttons --- */
+.cta-row{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
   padding:12px 18px; border-radius:10px; font-weight:700; text-decoration:none;
   border:1px solid transparent; box-shadow:0 1px 0 rgba(0,0,0,.04);
 }
-.btn-primary{ background:var(--navy); color:#fff; }
-.btn-primary:hover{ background:var(--navy-2); }
-.btn-ghost{ background:#fff; color:var(--navy); border-color:#e5e9f0; border:1px solid #e5e9f0; }
-.btn-ghost:hover{ border-color:#cfd7e3; }
+.btn-primary{ background:#fff; color:var(--navy); }
+.btn-primary:hover{ filter:brightness(.95); }
+.btn-ghost{ background:transparent; color:#fff; border:1px solid rgba(255,255,255,.6); }
+.btn-ghost:hover{ background:rgba(255,255,255,.1) }
 
-.cta-row{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
-
-/* --- Feature grid --- */
+/* Features */
 .features{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:22px; }
-.feature{
-  padding:18px; border-radius:14px; border:1px solid #e8eef7; background:#fff;
-}
+.feature{ background:#fff; color:var(--ink); padding:18px; border-radius:14px; border:1px solid #e8eef7; }
 .feature h3{ margin:0 0 6px; color:var(--navy); font-size:18px; }
 .feature p{ margin:0; color:var(--muted); }
 
-/* --- Footer --- */
-.site-footer{ text-align:center; color:var(--muted); font-size:13px; margin:36px 0 24px; }
+/* Sections & cards */
+.section{ padding:26px; }
+.section h2{ color:var(--navy); margin:0 0 12px; }
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.tile{ padding:18px; border:1px solid #e8eef7; border-radius:14px; background:#fff; }
 
-/* --- Forms (global, so other pages look good too) --- */
+/* Forms */
 label{ display:block; font-size:13px; color:var(--muted); margin-top:8px; }
 input,select,textarea{
   width:100%; padding:11px 12px; margin-top:6px;
   border:1px solid #d8e0eb; border-radius:10px; background:#fff;
   outline:none; transition: box-shadow .15s, border-color .15s;
 }
-input:focus,select:focus,textarea:focus{
-  border-color:var(--navy); box-shadow:0 0 0 4px var(--ring);
-}
+input:focus,select:focus,textarea:focus{ border-color:var(--navy); box-shadow:0 0 0 4px var(--ring); }
 button{ cursor:pointer }
 button:disabled{ opacity:.65; cursor:not-allowed }
 
-/* --- Responsive --- */
+/* Tables */
+.table{ width:100%; border-collapse:separate; border-spacing:0; }
+.table th, .table td{ padding:10px 12px; border-bottom:1px solid #eef2f7; text-align:left; }
+.table th{ color:var(--navy); font-weight:700; background:#f6f9fc; }
+
+/* Footer */
+.site-footer{ text-align:center; color:var(--muted); font-size:13px; margin:36px 0 24px; }
+
+/* Responsive */
 @media (max-width:900px){
   .hero h1{ font-size:34px }
   .features{ grid-template-columns:1fr; }
+  .grid-2{ grid-template-columns:1fr; }
 }
