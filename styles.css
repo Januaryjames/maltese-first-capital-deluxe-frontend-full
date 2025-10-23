@@ -10,6 +10,11 @@
   --ring:rgba(7,43,68,.2);
 }
 
+/* --- Logo sizing guardrails --- */
+img { max-width: 100%; height: auto; }              /* safe default */
+.brand img { height: 42px !important; width: auto !important; }
+.hero > img { height: 76px !important; width: auto !important; display:block; margin:6px auto 6px; }
+
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
