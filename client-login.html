@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Client Login — Maltese First Capital</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>const API = (window.BACKEND_URL || localStorage.getItem('BACKEND_URL') || '');</script>
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
+    <div class="nav-actions"><a href="client-register.html">Open an Account</a></div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="card section">
+    <h2>Secure Client Login</h2>
+    <div id="step1">
+      <label>Email</label><input id="email" placeholder="you@example.com">
+      <label>Password</label><input id="password" type="password" placeholder="••••••••">
+      <button id="loginBtn">Send OTP</button>
+      <p id="m1" class="muted"></p>
+    </div>
+    <div id="step2" style="display:none">
+      <label>OTP</label><input id="otp" placeholder="6-digit code">
+      <button id="verifyBtn">Verify & Continue</button>
+      <p id="m2" class="muted"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">© 2025 Maltese First Capital · Valletta, Malta</footer>
+
+<script>
+let loginId='';
+document.getElementById('loginBtn').onclick = async ()=>{
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const r = await fetch(`${API}/api/auth/login`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email, password })
+  });
+  const d = await r.json().catch(()=>({}));
+  if(!r.ok){ document.getElementById('m1').textContent = d.message || 'Login failed'; return; }
+  loginId = d.loginId;
+  document.getElementById('step1').style.display='none';
+  document.getElementById('step2').style.display='block';
+};
+
+document.getElementById('verifyBtn').onclick = async ()=>{
+  const otp = document.getElementById('otp').value.trim();
+  const r = await fetch(`${API}/api/auth/verify-2fa`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ loginId, otp })
+  });
+  const d = await r.json().catch(()=>({}));
+  if(!r.ok){ document.getElementById('m2').textContent = d.message || 'Invalid or expired code'; return; }
+  localStorage.setItem('CLIENT_TOKEN', d.token);
+  location.href='client-dashboard.html';
+};
+</script>
+</body>
+</html>
