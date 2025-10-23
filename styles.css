@@ -135,3 +135,18 @@ button:disabled{ opacity:.65; cursor:not-allowed }
   .features{ grid-template-columns:1fr; }
   .grid-2{ grid-template-columns:1fr; }
 }
+
+/* Phone typography and spacing */
+@media (max-width: 600px){
+  .hero { padding: 28px 18px; }
+  .hero .hero-logo { height: 58px; margin-bottom: 6px; }
+  .hero h1 { font-size: 28px; line-height: 1.2; margin: 6px 0 8px; }
+  .hero p { font-size: 15px; margin-bottom: 16px; }
+  .btn { padding: 11px 14px; border-radius: 8px; }
+  .container { margin: 18px auto; padding: 0 14px; }
+  .card { border-radius: 14px; }
+  .section { padding: 18px; }
+  .features { grid-template-columns: 1fr; gap: 12px; }
+  .grid-2 { grid-template-columns: 1fr; gap: 12px; }
+  input, select, textarea { font-size: 16px; } /* iOS zoom fix */
+}
