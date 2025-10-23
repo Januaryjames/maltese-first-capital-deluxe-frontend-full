@@ -1,70 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
-  <!-- Favicon / App icons -->
-<link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="apple-touch-icon" href="assets/favicon.png">
-<meta name="theme-color" content="#002a45">
-<!-- Social / sharing (nice previews) -->
-<meta property="og:title" content="Maltese First Capital — Private & Wealth Banking">
-<meta property="og:description" content="Private Banking · Wealth Management · Valletta, Malta">
-<meta property="og:image" content="assets/logo.png">
-<meta name="twitter:card" content="summary_large_image">
-
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Portal — Maltese First Capital</title>
   <link rel="stylesheet" href="styles.css">
+  <script>const API=(window.BACKEND_URL || localStorage.getItem('BACKEND_URL') || '');</script>
 </head>
 <body>
-  <!-- Header -->
 <header class="site-header">
-  <img src="assets/logo.png" alt="Maltese First Capital">
+  <nav class="nav">
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
+    <div class="nav-actions"><a href="admin-kyc.html">KYC Review</a></div>
+  </nav>
 </header>
-  <div class="container">
-    <h1>Admin Panel</h1>
-    <div id="login">
-      <input id="username" placeholder="Username">
-      <input id="password" type="password" placeholder="Password">
-      <button onclick="adminLogin()">Login</button>
+
+<main class="container">
+  <section class="card section" id="loginCard">
+    <h2>Admin Login</h2>
+    <label>Username</label><input id="au"><label>Password</label><input id="ap" type="password">
+    <button id="alogin">Login</button><p id="amsg"></p>
+  </section>
+
+  <section class="card section" id="adminTools" style="display:none">
+    <h2>Client Management</h2>
+    <div class="grid-2">
+      <div class="tile">
+        <h3>Create Client</h3>
+        <label>Full name</label><input id="newName">
+        <label>Email</label><input id="newEmail">
+        <label>Temp password</label><input id="newPass" type="password">
+        <button id="createBtn">Create (OTP emailed)</button>
+        <p id="cmsg"></p>
+      </div>
+      <div class="tile">
+        <h3>Find Client</h3>
+        <label>Email</label><input id="searchEmail" placeholder="client@example.com">
+        <button id="searchBtn">Search</button>
+        <div id="searchResult" style="margin-top:10px"></div>
+      </div>
     </div>
-    <div id="panel" style="display:none">
-      <h2>Add Transaction</h2>
-      <input id="uid" placeholder="User ID">
-      <select id="currency"><option>USD</option><option>EUR</option></select>
-      <input id="amount" placeholder="Amount">
-      <select id="type"><option>credit</option><option>debit</option></select>
-      <input id="desc" placeholder="Description">
-      <button onclick="addTx()">Add Transaction</button>
+
+    <h2 style="margin-top:16px">Account Statement Note</h2>
+    <div class="tile">
+      <label>Account ID</label><input id="acctId" placeholder="Paste account _id">
+      <label>Note (appears on statement)</label><input id="noteText" placeholder="e.g., Monthly statement – Private Banking">
+      <button id="noteBtn">Save Note</button><p id="noteMsg"></p>
     </div>
-  </div>
-  <script>
-    const API = localStorage.getItem('BACKEND_URL') || 'http://localhost:3000';
-    let token='';
-    async function adminLogin(){
-      const username=document.getElementById('username').value;
-      const password=document.getElementById('password').value;
-      const r=await fetch(`${API}/api/admin/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
-      const d=await r.json(); if(!d.token) return alert('Bad creds');
-      token=d.token;
-      document.getElementById('login').style.display='none';
-      document.getElementById('panel').style.display='block';
-    }
-    async function addTx(){
-      const payload={
-        userId:document.getElementById('uid').value,
-        currency:document.getElementById('currency').value,
-        amount:document.getElementById('amount').value,
-        type:document.getElementById('type').value,
-        desc:document.getElementById('desc').value
-      };
-      const r=await fetch(`${API}/api/admin/tx`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify(payload)});
-      alert(r.ok?'Transaction added':'Failed');
-    }
-  </script>
-  <!-- Footer -->
-<footer class="site-footer">
-  © 2025 Maltese First Capital · Valletta, Malta
-</footer>
+
+    <h2 style="margin-top:16px">Add Transaction</h2>
+    <div class="grid-2">
+      <div class="tile">
+        <label>User ID</label><input id="uid">
+        <label>Currency</label><select id="currency"><option>USD</option><option>EUR</option></select>
+        <label>Type</label><select id="ttype"><option>credit</option><option>debit</option></select>
+        <label>Amount</label><input id="amt" placeholder="e.g., 2500">
+        <label>Description</label><input id="tdesc" placeholder="e.g., Deposit">
+        <button id="txBtn">Add</button><p id="tmsg"></p>
+      </div>
+      <div class="tile">
+        <h3>Edit Transaction (inline)</h3>
+        <label>Tx ID</label><input id="etxId" placeholder="transaction _id">
+        <label>New Type</label><select id="enType"><option>credit</option><option>debit</option></select>
+        <label>New Amount</label><input id="enAmt" placeholder="e.g., 2000">
+        <label>New Description</label><input id="enDesc" placeholder="optional">
+        <button id="editBtn">Save Changes</button><p id="emsg"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">© 2025 Maltese First Capital · Valletta, Malta</footer>
+
+<script>
+let adminToken='';
+
+document.getElementById('alogin').onclick = async ()=>{
+  const username = document.getElementById('au').value.trim();
+  const password = document.getElementById('ap').value;
+  const r = await fetch(`${API}/api/admin/login`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ username, password })
+  });
+  const d = await r.json().catch(()=>({}));
+  if(!r.ok){ document.getElementById('amsg').textContent='Invalid admin credentials'; return; }
+  adminToken = d.token;
+  document.getElementById('loginCard').style.display='none';
+  document.getElementById('adminTools').style.display='block';
+};
+
+document.getElementById('createBtn').onclick = async ()=>{
+  const fullName = document.getElementById('newName').value.trim();
+  const email = document.getElementById('newEmail').value.trim();
+  const password = document.getElementById('newPass').value;
+  const r = await fetch(`${API}/api/auth/register`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ fullName, email, password })
+  });
+  const d = await r.json().catch(()=>({}));
+  document.getElementById('cmsg').textContent = r.ok ? `regId: ${d.regId} (OTP emailed)` : (d.message || 'Failed');
+};
+
+document.getElementById('searchBtn').onclick = async ()=>{
+  const email = document.getElementById('searchEmail').value.trim();
+  const r = await fetch(`${API}/api/client/search?email=${encodeURIComponent(email)}`,{
+    headers:{Authorization:`Bearer ${adminToken}`}
+  });
+  const d = await r.json().catch(()=>({}));
+  const el = document.getElementById('searchResult');
+  if(!r.ok){ el.textContent='Not found'; return; }
+  el.innerHTML = `
+    <div class="tile">
+      <b>${d.user.fullName}</b><br>Email: ${d.user.email}<br>User ID: ${d.user._id}
+      <div style="margin-top:8px"><b>Accounts</b><br>${
+        d.accounts.map(a=>`${a.currency}: ${a._id} · ${a.accountNumber} · Bal ${a.balance}`).join('<br>')
+      }</div>
+    </div>`;
+};
+
+document.getElementById('noteBtn').onclick = async ()=>{
+  const id = document.getElementById('acctId').value.trim();
+  const note = document.getElementById('noteText').value.trim();
+  const r = await fetch(`${API}/api/admin/account/${id}/note`,{
+    method:'PUT', headers:{'Content-Type':'application/json', Authorization:`Bearer ${adminToken}`},
+    body: JSON.stringify({ note })
+  });
+  const d = await r.json().catch(()=>({}));
+  document.getElementById('noteMsg').textContent = r.ok ? 'Saved' : (d.message || 'Failed');
+};
+
+document.getElementById('txBtn').onclick = async ()=>{
+  const payload = {
+    userId: document.getElementById('uid').value.trim(),
+    currency: document.getElementById('currency').value,
+    type: document.getElementById('ttype').value,
+    amount: document.getElementById('amt').value,
+    desc: document.getElementById('tdesc').value.trim()
+  };
+  const r = await fetch(`${API}/api/admin/tx`,{
+    method:'POST', headers:{'Content-Type':'application/json', Authorization:`Bearer ${adminToken}`},
+    body: JSON.stringify(payload)
+  });
+  const d = await r.json().catch(()=>({}));
+  document.getElementById('tmsg').textContent = r.ok ? 'Added' : (d.message || 'Failed');
+};
+
+document.getElementById('editBtn').onclick = async ()=>{
+  const id = document.getElementById('etxId').value.trim();
+  const type = document.getElementById('enType').value;
+  const amount = document.getElementById('enAmt').value;
+  const desc = document.getElementById('enDesc').value.trim();
+  const r = await fetch(`${API}/api/admin/tx/${id}`,{
+    method:'PUT', headers:{'Content-Type':'application/json', Authorization:`Bearer ${adminToken}`},
+    body: JSON.stringify({ amount, type, desc })
+  });
+  const d = await r.json().catch(()=>({}));
+  document.getElementById('emsg').textContent = r.ok ? 'Saved' : (d.message || 'Failed');
+};
+</script>
 </body>
 </html>
