@@ -55,6 +55,18 @@ a{color:var(--navy)}
 
 /* Hero */
 .hero{
+  position: relative;
+  isolation: isolate;
+}
+.hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background: radial-gradient(120% 120% at 50% 20%, rgba(7,43,68,.35) 0%, rgba(7,43,68,.70) 80%);
+  z-index:0;
+}
+.hero > *{ position: relative; z-index:1; }
+
+.hero{
   padding:40px 42px; text-align:center;
   background: url('assets/hero-bg.jpg') center/cover no-repeat, linear-gradient(#0b3857,#0b3857);
   color:#fff;
