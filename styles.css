@@ -10,6 +10,18 @@
   --ring:rgba(7,43,68,.2);
 }
 
+/* Mobile nav toggle */
+.nav-toggle{ display:none; background:transparent; border:0; color:#fff; font-size:26px; }
+@media (max-width: 860px){
+  .nav { height:auto; padding:10px 16px; }
+  .nav-actions { display:none; flex-direction:column; gap:8px; padding:10px 0 16px; }
+  .nav-actions.show { display:flex; }
+  .nav .brand img { height:36px; }
+  .nav .brand .wordmark { font-size:15px; }
+  .nav-top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .nav-toggle { display:block; }
+}
+
 /* Global */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
