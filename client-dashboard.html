@@ -1,63 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Header -->
-<header class="site-header">
-  <img src="assets/logo.png" alt="Maltese First Capital">
-</header>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Client Dashboard</title>
-  <!-- Favicon / App icons -->
-<link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="apple-touch-icon" href="assets/favicon.png">
-<meta name="theme-color" content="#002a45">
-
-<!-- Social / sharing (nice previews) -->
-<meta property="og:title" content="Maltese First Capital — Private & Wealth Banking">
-<meta property="og:description" content="Private Banking · Wealth Management · Valletta, Malta">
-<meta property="og:image" content="assets/logo.png">
-<meta name="twitter:card" content="summary_large_image">
-
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Client Dashboard — Maltese First Capital</title>
   <link rel="stylesheet" href="styles.css">
+  <script>const API=(window.BACKEND_URL || localStorage.getItem('BACKEND_URL') || '');</script>
 </head>
 <body>
-  <div class="container">
-    <h1>Client Dashboard</h1>
-    <div id="login">
-      <input id="email" placeholder="Email">
-      <input id="password" type="password" placeholder="Password">
-      <button onclick="login()">Login</button>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
+    <div class="nav-actions">
+      <a href="#" id="logout">Logout</a>
     </div>
-    <div id="main" style="display:none">
-      <h2>Accounts</h2>
-      <pre id="accounts"></pre>
-      <h2>Recent Transactions</h2>
-      <pre id="txs"></pre>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="card section">
+    <h2>Accounts</h2>
+    <div id="accounts" class="grid-2"></div>
+  </section>
+
+  <section class="card section">
+    <h2>Recent Transactions</h2>
+    <table class="table" id="txTable">
+      <thead><tr><th>Date</th><th>Currency</th><th>Type</th><th>Amount</th><th>Description</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+</main>
+
+<footer class="site-footer">© 2025 Maltese First Capital · Valletta, Malta</footer>
+
+<script>
+const token = localStorage.getItem('CLIENT_TOKEN');
+if(!token){ location.href='client-login.html'; }
+
+document.getElementById('logout').onclick = ()=>{ localStorage.removeItem('CLIENT_TOKEN'); location.href='index.html'; };
+
+(async ()=>{
+  const r = await fetch(`${API}/api/client/overview`,{ headers:{Authorization:`Bearer ${token}`} });
+  if(!r.ok){ localStorage.removeItem('CLIENT_TOKEN'); location.href='client-login.html'; return; }
+  const d = await r.json();
+
+  // accounts
+  const a = document.getElementById('accounts');
+  a.innerHTML = d.accounts.map(ac => `
+    <div class="tile">
+      <h3>${ac.currency} Account</h3>
+      <p><b>Account No.:</b> ${ac.accountNumber}</p>
+      <p><b>Balance:</b> ${ac.balance.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2})}</p>
+      ${ac.statementNote ? `<p><em>${ac.statementNote}</em></p>` : ''}
     </div>
-  </div>
-  <script>
-    const API = localStorage.getItem('BACKEND_URL') || 'http://localhost:3000';
-    async function login(){
-      const email=document.getElementById('email').value;
-      const password=document.getElementById('password').value;
-      const r=await fetch(`${API}/api/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
-      const d=await r.json(); if(!d.token) return alert('Login failed');
-      localStorage.setItem('token',d.token);
-      load();
-    }
-    async function load(){
-      const r=await fetch(`${API}/api/me`,{headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}});
-      const d=await r.json();
-      document.getElementById('login').style.display='none';
-      document.getElementById('main').style.display='block';
-      document.getElementById('accounts').textContent=JSON.stringify(d.user.accounts,null,2);
-      document.getElementById('txs').textContent=JSON.stringify(d.transactions,null,2);
-    }
-  </script>
-  <!-- Footer -->
-<footer class="site-footer">
-  © 2025 Maltese First Capital · Valletta, Malta
-</footer>
+  `).join('');
+
+  // transactions
+  const tb = document.querySelector('#txTable tbody');
+  tb.innerHTML = d.transactions.map(t => `
+    <tr>
+      <td>${new Date(t.createdAt).toLocaleDateString()}</td>
+      <td>${t.currency}</td>
+      <td>${t.type}</td>
+      <td>${(t.type==='debit'?'-':'')}${Number(t.amount).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+      <td>${t.desc || ''}</td>
+    </tr>
+  `).join('');
+})();
+</script>
 </body>
 </html>
