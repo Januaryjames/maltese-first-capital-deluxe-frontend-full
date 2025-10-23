@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KYC Review — Maltese First Capital</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>const API=(window.BACKEND_URL || localStorage.getItem('BACKEND_URL') || '');</script>
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
+    <div class="nav-actions"><a href="admin-dashboard.html">Admin Portal</a></div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="card section" id="loginCard">
+    <h2>Admin Login</h2>
+    <label>Username</label><input id="u">
+    <label>Password</label><input id="p" type="password">
+    <button id="loginBtn">Login</button><p id="lmsg"></p>
+  </section>
+
+  <section class="card section" id="listCard" style="display:none">
+    <h2>Pending KYC</h2>
+    <div id="list"></div>
+  </section>
+</main>
+
+<footer class="site-footer">© 2025 Maltese First Capital · Valletta, Malta</footer>
+
+<script>
+let token='';
+document.getElementById('loginBtn').onclick = async ()=>{
+  const r = await fetch(`${API}/api/admin/login`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ username: u.value.trim(), password: p.value })
+  });
+  const d = await r.json().catch(()=>({}));
+  if(!r.ok){ lmsg.textContent='Invalid admin credentials'; return; }
+  token = d.token;
+  loginCard.style.display='none'; listCard.style.display='block';
+  load();
+};
+async function load(){
+  const r = await fetch(`${API}/api/admin/kyc/pending`,{ headers:{Authorization:`Bearer ${token}`} });
+  const arr = await r.json().catch(()=>[]);
+  list.innerHTML = arr.map(k=>`
+    <div class="tile" style="margin-bottom:10px">
+      <h3>${k.fullName || ''} — ${k.docType || ''}</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        ${k.docFrontUrl?`<a target="_blank" href="${k.docFrontUrl}">Document (front)</a>`:''}
+        ${k.docBackUrl ?`<a target="_blank" href="${k.docBackUrl}">Document (back)</a>`:''}
+        ${k.selfieUrl  ?`<a target="_blank" href="${k.selfieUrl}">Selfie</a>`:''}
+      </div>
+      <div style="margin-top:8px">
+        <input id="notes_${k._id}" placeholder="Notes (optional)">
+        <button onclick="decide('${k._id}',true)">Approve</button>
+        <button onclick="decide('${k._id}',false)">Reject</button>
+      </div>
+    </div>
+  `).join('') || '<p>No pending items.</p>';
+}
+async function decide(id, approve){
+  const notes = (document.getElementById(`notes_${id}`)||{}).value || '';
+  const r = await fetch(`${API}/api/admin/kyc/${id}/decision`,{
+    method:'POST', headers:{'Content-Type':'application/json', Authorization:`Bearer ${token}`},
+    body: JSON.stringify({ approve, notes })
+  });
+  if(r.ok){ alert('Saved'); load(); } else { alert('Failed'); }
+}
+</script>
+</body>
+</html>
 
