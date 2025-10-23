@@ -1,98 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Header -->
-<header class="site-header">
-  <img src="assets/logo.png" alt="Maltese First Capital">
-</header>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Open Account</title>
-  <!-- Favicon / App icons -->
-<link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="apple-touch-icon" href="assets/favicon.png">
-<meta name="theme-color" content="#002a45">
-
-<!-- Social / sharing (nice previews) -->
-<meta property="og:title" content="Maltese First Capital — Private & Wealth Banking">
-<meta property="og:description" content="Private Banking · Wealth Management · Valletta, Malta">
-<meta property="og:image" content="assets/logo.png">
-<meta name="twitter:card" content="summary_large_image">
-
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open an Account (KYC) — Maltese First Capital</title>
   <link rel="stylesheet" href="styles.css">
+  <script>const API=(window.BACKEND_URL || localStorage.getItem('BACKEND_URL') || '');</script>
 </head>
 <body>
-  <div class="container">
-    <h1>Open an Account</h1>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
+    <div class="nav-actions"><a href="client-login.html">Client Login</a></div>
+  </nav>
+</header>
 
-    <div id="step1">
-      <input id="fullName" placeholder="Full name">
-      <input id="email" placeholder="Email">
-      <input id="password" type="password" placeholder="Password">
-      <input id="phone" placeholder="Phone (optional)">
-      <input id="address" placeholder="Address (optional)">
-      <input id="govId" placeholder="ID number (optional)">
-      <button id="registerBtn">Continue (Send OTP)</button>
-      <p id="regMsg" class="small"></p>
+<main class="container">
+  <section class="card section">
+    <h2>Open an Account</h2>
+
+    <div id="s1">
+      <label>Full name</label><input id="fullName" placeholder="Full name">
+      <label>Email</label><input id="email" placeholder="you@example.com">
+      <label>Password</label><input id="password" type="password" placeholder="Create a password">
+      <label>Document Type</label>
+      <select id="docType">
+        <option value="passport">Passport</option>
+        <option value="drivers_license">Driver’s License</option>
+        <option value="id_card">ID Card</option>
+      </select>
+      <button id="startBtn">Continue</button>
+      <p id="m1"></p>
     </div>
 
-    <div id="step2" style="display:none">
-      <p>We’ve sent a 6-digit OTP to your email.</p>
-      <input id="otp" placeholder="Enter OTP">
+    <div id="s2" style="display:none">
+      <h3>Upload Documents</h3>
+      <label>Document (front or single scan)</label><input type="file" id="docFront" accept="image/*,application/pdf">
+      <label>Document (back) — optional</label><input type="file" id="docBack" accept="image/*,application/pdf">
+      <label>Selfie</label><input type="file" id="selfie" accept="image/*">
+      <button id="uploadBtn">Upload Files</button>
+      <p id="m2"></p>
+    </div>
+
+    <div id="s3" style="display:none">
+      <h3>Email OTP</h3>
+      <label>Enter OTP</label><input id="otp" placeholder="6 digits">
       <button id="verifyBtn">Verify & Create Account</button>
-      <p id="otpMsg" class="small"></p>
+      <p id="m3"></p>
     </div>
 
     <div id="done" style="display:none">
-      <h2>Account created</h2>
+      <h3>Submitted</h3>
       <p id="doneText"></p>
-      <a class="menu" href="client-dashboard.html">Go to Client Login</a>
+      <a class="btn btn-ghost" href="client-login.html">Go to Client Login</a>
     </div>
-  </div>
+  </section>
+</main>
 
-  <script>
-    const API = localStorage.getItem('BACKEND_URL') || '';
-    let regId = '';
+<footer class="site-footer">© 2025 Maltese First Capital · Valletta, Malta</footer>
 
-    async function register() {
-      const payload = {
-        fullName: document.getElementById('fullName').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        password: document.getElementById('password').value,
-        phone: document.getElementById('phone').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        govId: document.getElementById('govId').value.trim()
-      };
-      const r = await fetch(`${API}/api/auth/register`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(payload)
-      });
-      const d = await r.json();
-      if (!r.ok) { document.getElementById('regMsg').textContent = d?.message || 'Registration failed'; return; }
-      regId = d.regId;
-      document.getElementById('step1').style.display='none';
-      document.getElementById('step2').style.display='block';
-    }
+<script>
+let regId='';
 
-    async function verify() {
-      const otp = document.getElementById('otp').value.trim();
-      const r = await fetch(`${API}/api/auth/verify-otp`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ regId, otp })
-      });
-      const d = await r.json();
-      if (!r.ok || !d.ok) { document.getElementById('otpMsg').textContent = d?.message || 'Invalid/expired OTP'; return; }
-      document.getElementById('step2').style.display='none';
-      document.getElementById('done').style.display='block';
-      document.getElementById('doneText').textContent = `Your User ID: ${d.userId}. Two accounts (USD/EUR) with 8-digit account numbers were created.`;
-    }
+async function uploadOne(file){
+  if(!file) return null;
+  const fd = new FormData(); fd.append('file', file);
+  const res = await fetch('https://uploadthing.com/api/upload', { method:'POST', body: fd });
+  const out = await res.json().catch(()=>({}));
+  return out?.fileUrl || null;
+}
 
-    document.getElementById('registerBtn').addEventListener('click', register);
-    document.getElementById('verifyBtn').addEventListener('click', verify);
-  </script>
-  <!-- Footer -->
-<footer class="site-footer">
-  © 2025 Maltese First Capital · Valletta, Malta
-</footer>
+document.getElementById('startBtn').onclick = async ()=>{
+  const fullName = fullNameEl.value = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const r = await fetch(`${API}/api/auth/register`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ fullName, email, password })
+  });
+  const d = await r.json().catch(()=>({}));
+  if(!r.ok){ m1.textContent = d.message || 'Registration failed'; return; }
+  regId = d.regId; document.getElementById('s1').style.display='none'; document.getElementById('s2').style.display='block';
+};
+
+document.getElementById('uploadBtn').onclick = async ()=>{
+  m2.textContent='Uploading...';
+  const u1 = await uploadOne(document.getElementById('docFront').files[0]);
+  const u2 = await uploadOne(document.getElementById('docBack').files[0]);
+  const u3 = await uploadOne(document.getElementById('selfie').files[0]);
+  await fetch(`${API}/api/kyc/attach`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      regId,
+      fullName: document.getElementById('fullName').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      docType: document.getElementById('docType').value,
+      docFrontUrl:u1, docBackUrl:u2, selfieUrl:u3
+    })
+  });
+  m2.textContent='✅ Uploaded'; document.getElementById('s2').style.display='none'; document.getElementById('s3').style.display='block';
+};
+
+document.getElementById('verifyBtn').onclick = async ()=>{
+  const otp = document.getElementById('otp').value.trim();
+  const r = await fetch(`${API}/api/auth/verify-otp`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ regId, otp })
+  });
+  const d = await r.json().catch(()=>({}));
+  if(!r.ok || !d.ok){ m3.textContent=d.message || 'Invalid/expired OTP'; return; }
+  document.getElementById('s3').style.display='none';
+  document.getElementById('done').style.display='block';
+  document.getElementById('doneText').textContent = `Your User ID: ${d.userId}. Accounts created (USD/EUR).`;
+};
+</script>
 </body>
 </html>
