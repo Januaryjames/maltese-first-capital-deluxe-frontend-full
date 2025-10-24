@@ -1,312 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KYC Review – Maltese First Capital</title>
-  <link rel="stylesheet" href="style.css" />
-  <meta name="description" content="Admin KYC review for Maltese First Capital. Approve, reject, or request more documents from applicants.">
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KYC Reviews | Maltese First Capital</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <header class="site-header">
-  <nav class="nav">
-    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""> <span class="wordmark">Maltese First Capital</span></a>
-    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
-    <div class="nav-actions">
-      <a href="admin-dashboard.html">Admin Panel</a>
-      <a href="#" id="logout">Log out</a>
-    </div>
-  </nav>
+  <div class="container nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
+    <nav class="nav-actions"><a href="admin-dashboard.html">Admin</a></nav>
+  </div>
 </header>
 
-<main class="page">
-  <h1>KYC Review</h1>
-  <p>Review new account applications. Approve to activate, reject with a note, or request more documents from the applicant.</p>
+<section class="page-hero"><div class="container"><h1>KYC Reviews</h1><p>Review ID and address documents.</p></div></section>
 
-  <!-- Controls -->
-  <div class="section" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-    <div>
-      <button class="btn-outline" data-status="pending">Pending</button>
-      <button class="btn-outline" data-status="more_docs">More Docs</button>
-      <button class="btn-outline" data-status="approved">Approved</button>
-      <button class="btn-outline" data-status="rejected">Rejected</button>
-    </div>
-    <div style="margin-left:auto; min-width:220px; flex:1;">
-      <input id="searchBox" type="search" placeholder="Search name / email / id…" style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d7e1ea;">
-    </div>
-    <button id="refreshBtn" class="btn-secondary">Refresh</button>
-  </div>
-
-  <!-- List -->
-  <div class="section">
-    <h2 style="margin-bottom:10px;">Applications</h2>
-
-    <div id="listSkeleton">
-      <div class="skeleton skeleton-row"></div>
-      <div class="skeleton skeleton-row"></div>
-      <div class="skeleton skeleton-row"></div>
-    </div>
-
-    <div class="table-wrap" id="listWrap" style="display:none;">
-      <table class="table" id="kycTable">
-        <thead>
-          <tr>
-            <th>Submitted</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Document</th>
-            <th>Status</th>
-            <th style="width:110px;">Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <div class="empty" id="listEmpty" style="display:none;">
-      <h3>No records</h3>
-      <p>There are no applications for this filter.</p>
-    </div>
-  </div>
-
-  <!-- Detail -->
-  <div class="section" id="detail" style="display:none;">
-    <h2>Application Details</h2>
-    <div class="card" id="statusBanner" style="padding:12px; margin-bottom:12px; display:none;"></div>
-
-    <div style="display:grid; grid-template-columns: 1fr; gap:10px;">
-      <div class="card" style="padding:16px;">
-        <p><strong>Submitted:</strong> <span id="dSubmitted">—</span></p>
-        <p><strong>Status:</strong> <span id="dStatus">—</span></p>
-      </div>
-
-      <div class="card" style="padding:16px;">
-        <h3>Applicant</h3>
-        <p><strong>Full Name:</strong> <span id="dName">—</span></p>
-        <p><strong>Email:</strong> <span id="dEmail">—</span></p>
-        <p><strong>Phone:</strong> <span id="dPhone">—</span></p>
-        <p><strong>Address:</strong> <span id="dAddress">—</span></p>
-      </div>
-
-      <div class="card" style="padding:16px;">
-        <h3>Identification</h3>
-        <p><strong>Type:</strong> <span id="dIdType">—</span></p>
-        <p><strong>Number:</strong> <span id="dIdNum">—</span></p>
-        <p><strong>File:</strong> <a id="dIdLink" href="#" target="_blank" rel="noopener">Open</a></p>
-      </div>
-
-      <div class="card" style="padding:16px;">
-        <h3>Decision</h3>
-        <form id="decisionForm" class="contact-form">
-          <input type="hidden" id="dIdHidden" />
-          <label for="dNote">Reviewer Note (sent to client if “More Docs”)</label>
-          <textarea id="dNote" rows="4" placeholder="Example: Please provide a higher resolution passport scan and a recent utility bill."></textarea>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button type="button" id="approveBtn" class="btn-primary">Approve</button>
-            <button type="button" id="requestBtn" class="btn-secondary">Request More Documents</button>
-            <button type="button" id="receivedBtn" class="btn-outline">Mark Docs Received</button>
-            <button type="button" id="rejectBtn" class="btn-outline">Reject</button>
-          </div>
-        </form>
-      </div>
-    </div>
+<main class="container section">
+  <div class="content">
+    <table class="table">
+      <thead><tr><th>Client</th><th>Email</th><th>ID</th><th>Address</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Jane Borg</td><td>jane@example.com</td>
+          <td><a href="#" target="_blank">View</a></td><td><a href="#" target="_blank">View</a></td>
+          <td>Pending</td>
+          <td>
+            <button class="btn btn-primary" onclick="alert('Approved');">Approve</button>
+            <button class="btn btn-outline" onclick="alert('Rejected');">Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </main>
 
-<footer><p>© 2025 Maltese First Capital · Valletta, Malta</p></footer>
-
-<script>
-  // --- Config / Auth ---
-  const API  = localStorage.getItem('BACKEND_URL') || 'https://maltese-first-capital-deluxe-backend.onrender.com';
-  const TOKEN = localStorage.getItem('MFC_TOKEN');
-  const ROLE  = localStorage.getItem('MFC_ROLE');
-  if(!TOKEN || ROLE !== 'admin'){ location.href = 'admin-login.html'; }
-
-  // --- Elements ---
-  const listWrap = document.getElementById('listWrap');
-  const listEmpty = document.getElementById('listEmpty');
-  const listSkeleton = document.getElementById('listSkeleton');
-  const tbody = document.querySelector('#kycTable tbody');
-  const statusButtons = [...document.querySelectorAll('[data-status]')];
-  const searchBox = document.getElementById('searchBox');
-  const refreshBtn = document.getElementById('refreshBtn');
-
-  const detailBox = document.getElementById('detail');
-  const banner = document.getElementById('statusBanner');
-  const dIdHidden = document.getElementById('dIdHidden');
-
-  const setBanner = (status, note) => {
-    banner.style.display = 'block';
-    let text = '';
-    let bg = '#f4f6f8', col = '#0f1b2a', border = '#e9eef3';
-    if(status === 'pending'){ text = 'Pending review.'; }
-    if(status === 'more_docs'){ text = 'Awaiting additional documents from the applicant.'; bg='#fff7e6'; col='#5a4600'; border='#ffe7b3'; }
-    if(status === 'approved'){ text = 'Application approved.'; bg='#e9f8ee'; col='#0d4b2a'; border='#c6efd4'; }
-    if(status === 'rejected'){ text = 'Application rejected.'; bg='#fde9eb'; col='#731324'; border='#f7c6ce'; }
-    banner.style.background = bg;
-    banner.style.color = col;
-    banner.style.border = `1px solid ${border}`;
-    banner.textContent = note ? `${text} Note: ${note}` : text;
-  };
-
-  const setDetail = (app) => {
-    document.getElementById('dSubmitted').textContent = app.createdAt ? new Date(app.createdAt).toLocaleString() : '—';
-    document.getElementById('dStatus').textContent = app.status || 'pending';
-    document.getElementById('dName').textContent = app.fullName || '—';
-    document.getElementById('dEmail').textContent = app.email || '—';
-    document.getElementById('dPhone').textContent = app.phone || '—';
-    document.getElementById('dAddress').textContent = app.address || '—';
-    document.getElementById('dIdType').textContent = app.idType || '—';
-    document.getElementById('dIdNum').textContent = app.idNumber || '—';
-    const fileUrl = app.idFileUrl || app.idFile || (app.id && `${API}/api/admin/kyc/${encodeURIComponent(app.id)}/id`);
-    const link = document.getElementById('dIdLink');
-    link.href = fileUrl || '#';
-    link.textContent = fileUrl ? 'Open' : 'N/A';
-    dIdHidden.value = app.id || app._id || '';
-
-    setBanner(app.status || 'pending', app.reviewerNote || app.note);
-    detailBox.style.display = 'block';
-  };
-
-  let currentStatus = 'pending';
-  let currentQuery = '';
-
-  async function loadList(){
-    listSkeleton.style.display = 'block';
-    listWrap.style.display = 'none';
-    listEmpty.style.display = 'none';
-    tbody.innerHTML = '';
-
-    try{
-      const r = await fetch(`${API}/api/admin/kyc?status=${encodeURIComponent(currentStatus)}&q=${encodeURIComponent(currentQuery)}`, {
-        headers: { 'Authorization': `Bearer ${TOKEN}` }
-      });
-      const data = await r.json().catch(()=> []);
-      if(!r.ok) throw new Error(data.message || 'Failed to load applications');
-
-      listSkeleton.style.display = 'none';
-      if(!data || data.length === 0){
-        listEmpty.style.display = 'block';
-        return;
-      }
-      listWrap.style.display = 'block';
-
-      data.forEach(app=>{
-        const tr = document.createElement('tr');
-        const submitted = app.createdAt ? new Date(app.createdAt).toLocaleDateString() : '—';
-        const docLabel = (app.idType || 'ID') + (app.idNumber ? ` (${app.idNumber})` : '');
-        const status = (app.status || 'pending');
-        tr.innerHTML = `
-          <td>${submitted}</td>
-          <td>${app.fullName || '—'}</td>
-          <td>${app.email || '—'}</td>
-          <td>${docLabel}</td>
-          <td>${status}</td>
-          <td><button class="btn-outline btn-view" data-id="${app.id || app._id}">View</button></td>`;
-        tbody.appendChild(tr);
-      });
-    }catch(err){
-      listSkeleton.style.display = 'none';
-      listEmpty.style.display = 'block';
-      toast(err.message || 'Load error','error');
-    }
-  }
-
-  async function loadOne(id){
-    try{
-      const r = await fetch(`${API}/api/admin/kyc/${encodeURIComponent(id)}`, {
-        headers: { 'Authorization': `Bearer ${TOKEN}` }
-      });
-      const app = await r.json().catch(()=> ({}));
-      if(!r.ok) throw new Error(app.message || 'Failed to load application');
-      setDetail(app);
-      toast('Loaded application','success');
-    }catch(err){
-      toast(err.message,'error');
-    }
-  }
-
-  async function updateStatus(status){
-    const id = dIdHidden.value;
-    if(!id){ return toast('No application selected','error'); }
-    const note = document.getElementById('dNote').value.trim();
-    if(status === 'more_docs' && !note){
-      return toast('Please add a note describing which documents are required.','error');
-    }
-    try{
-      const r = await fetch(`${API}/api/admin/kyc/${encodeURIComponent(id)}/status`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type':'application/json',
-          'Authorization': `Bearer ${TOKEN}`
-        },
-        body: JSON.stringify({ status, note })
-      });
-      const data = await r.json().catch(()=> ({}));
-      if(!r.ok) throw new Error(data.message || 'Failed to update status');
-      toast(
-        status === 'more_docs' ? 'Requested more documents'
-        : status === 'pending' ? 'Marked documents received'
-        : `Marked ${status}`
-      ,'success');
-      await loadList();
-      await loadOne(id);
-    }catch(err){
-      toast(err.message,'error');
-    }
-  }
-
-  // Event wiring
-  statusButtons.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      currentStatus = btn.getAttribute('data-status');
-      statusButtons.forEach(b=>b.classList.remove('btn-secondary'));
-      btn.classList.add('btn-secondary');
-      loadList();
-    });
-  });
-
-  searchBox.addEventListener('input', ()=>{
-    currentQuery = searchBox.value;
-    clearTimeout(window.__kycDeb);
-    window.__kycDeb = setTimeout(loadList, 250);
-  });
-
-  refreshBtn.addEventListener('click', loadList);
-
-  tbody.addEventListener('click', (e)=>{
-    const btn = e.target.closest('.btn-view');
-    if(!btn) return;
-    const id = btn.getAttribute('data-id');
-    loadOne(id);
-  });
-
-  document.getElementById('approveBtn').addEventListener('click', ()=> updateStatus('approved'));
-  document.getElementById('requestBtn').addEventListener('click', ()=> updateStatus('more_docs'));
-  document.getElementById('receivedBtn').addEventListener('click', ()=> updateStatus('pending')); // <- Mark Docs Received
-  document.getElementById('rejectBtn').addEventListener('click', ()=> updateStatus('rejected'));
-
-  document.getElementById('logout').addEventListener('click', (e)=>{
-    e.preventDefault();
-    localStorage.removeItem('MFC_TOKEN'); localStorage.removeItem('MFC_ROLE');
-    toast('Signed out');
-    setTimeout(()=>location.href='index.html', 600);
-  });
-
-  // initial load
-  loadList();
-</script>
-
-<!-- Toast helper -->
-<script>
-  (function(){
-    const t = document.createElement('div');
-    t.className = 'toast'; document.body.appendChild(t);
-    window.toast = (msg, type='')=>{
-      t.className = `toast ${type} show`; t.textContent = msg;
-      clearTimeout(window.__tt); window.__tt = setTimeout(()=>{ t.classList.remove('show'); }, 2800);
-    };
-  })();
-</script>
+<footer><p>© 2025 Maltese First Capital</p></footer>
 </body>
 </html>
