@@ -1,29 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Login | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-<header class="site-header">
-  <div class="container nav">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
-  </div>
-</header>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><title>Admin Login — Maltese First Capital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="styles.css">
+</head><body>
 
-<section class="page-hero"><div class="container"><h1>Admin Login</h1></div></section>
+<header class="site-header"><div class="container nav">
+  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
+  <div class="nav-actions" id="navActions"><a class="btn" href="index.html">Back to site</a></div>
+  <button class="mobile-toggle" onclick="document.getElementById('navActions').classList.toggle('show')">☰</button>
+</div></header>
 
-<main class="container section">
+<section class="section"><div class="container">
+  <h2>Admin Login</h2>
   <div class="content">
-    <form class="form" onsubmit="event.preventDefault(); location.href='admin-dashboard.html';">
-      <label>Username<input required></label>
-      <label>Password<input type="password" required></label>
-      <div class="form-actions"><button class="btn btn-secondary" type="submit">Login</button></div>
+    <form class="form" onsubmit="adminLogin(event)">
+      <input class="input" id="au" placeholder="Username" required>
+      <input class="input" id="ap" type="password" placeholder="Password" required>
+      <button class="btn btn-gold" type="submit">Sign In</button>
     </form>
   </div>
-</main>
+</div></section>
 
-<footer><p>© 2025 Maltese First Capital</p></footer>
-</body>
-</html>
+<footer class="site-footer"><div class="container inner"><div>© 2025 Maltese First Capital · Valletta, Malta</div><div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div></div></footer>
+
+<script>
+  window.API_BASE = localStorage.getItem('BACKEND_URL') || '';
+  async function adminLogin(e){
+    e.preventDefault();
+    try{
+      const r = await fetch(`${API_BASE}/api/admin/login`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({username:au.value, password:ap.value})
+      });
+      if(!r.ok) throw new Error('Login failed');
+      const data = await r.json();
+      localStorage.setItem('ADMIN_TOKEN', data.token || '');
+      location.href='admin-dashboard.html';
+    }catch(err){ alert(err.message); }
+  }
+</script>
+</body></html>
