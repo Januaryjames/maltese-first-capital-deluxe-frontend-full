@@ -6,8 +6,24 @@
 </head><body>
 <header class="site-header">
   <nav class="nav">
-    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
-    <div class="nav-actions"><a href="client-dashboard.html">Client Login</a></div>
+    <div class="nav-top">
+      <a href="index.html" class="brand">
+        <img src="assets/logo.png" alt="Maltese First Capital">
+        <span class="wordmark">Maltese First Capital</span>
+      </a>
+      <button class="nav-toggle" aria-label="Menu"
+        onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
+    </div>
+
+    <div class="nav-actions">
+      <a href="private-banking.html">Private Banking</a>
+      <a href="wealth-management.html">Wealth Management</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="client-dashboard.html">Client Login</a>
+      <a href="client-register.html">Open an Account</a>
+      <a href="admin-dashboard.html">Admin Portal</a>
+    </div>
   </nav>
 </header>
 
