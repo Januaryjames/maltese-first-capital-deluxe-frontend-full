@@ -206,3 +206,21 @@ h1{font-size:46px; line-height:1.12; margin:8px 0 12px; font-weight:900; letter-
 /* -------------------- Links inside content -------------------- */
 .content a{color:#fff; text-decoration:underline; text-underline-offset:3px}
 .content a:hover{opacity:.9}
+/* ------- Luxe Micro-Animations ------- */
+.btn:hover {
+  box-shadow:0 0 12px rgba(201,165,91,.6), 0 10px 22px rgba(201,165,91,.35);
+}
+.card:hover {
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 20px 50px rgba(0,0,0,.45);
+}
+.hero h1 {
+  background: linear-gradient(90deg, #ddc07c, #b8944b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldFade 8s ease-in-out infinite alternate;
+}
+@keyframes goldFade {
+  from { background-position: 0%; }
+  to { background-position: 100%; }
+}
