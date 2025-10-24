@@ -1,167 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin Panel – Maltese First Capital</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Maltese First Capital</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <header class="site-header">
-  <nav class="nav">
-    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""> <span class="wordmark">Maltese First Capital</span></a>
-    <div class="nav-actions">
-      <a href="#" id="logout">Log out</a>
-    </div>
-  </nav>
+  <div class="container nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
+    <nav class="nav-actions"><a href="admin-kyc.html">KYC Reviews</a><a href="index.html">Site</a></nav>
+  </div>
 </header>
 
-<main class="page">
-  <h1>Admin Panel</h1>
+<section class="page-hero"><div class="container"><h1>Admin Dashboard</h1><p>Manage clients, balances, transactions, and KYC.</p></div></section>
 
-  <div class="section">
-    <h2>Add Transaction</h2>
-    <form id="txForm" class="contact-form">
-      <label>User ID</label>
-      <input id="userId" required />
-      <label>Currency</label>
-      <select id="currency"><option>USD</option><option>EUR</option><option>GBP</option></select>
-      <label>Amount</label>
-      <input id="amount" type="number" step="0.01" required />
-      <label>Type</label>
-      <select id="type"><option value="credit">credit</option><option value="debit">debit</option></select>
-      <label>Description</label>
-      <input id="description" />
-      <button class="btn-primary" type="submit">Add Transaction</button>
+<main class="container section">
+  <div class="content">
+    <h3>Add Transaction</h3>
+    <form class="form" onsubmit="event.preventDefault(); alert('Transaction recorded.');">
+      <label>User ID<input required placeholder="Client ID"></label>
+      <label>Currency<select><option>USD</option><option>EUR</option><option>GBP</option></select></label>
+      <label>Amount<input type="number" required step="0.01" placeholder="0.00"></label>
+      <label>Type<select><option>credit</option><option>debit</option></select></label>
+      <label>Description<input placeholder="Description"></label>
+      <div class="form-actions"><button class="btn btn-secondary" type="submit">Add Transaction</button></div>
     </form>
-  </div>
 
-  <div class="section">
-    <h2>Edit Statement (Balance)</h2>
-    <form id="balForm" class="contact-form">
-      <label>User ID</label>
-      <input id="balUserId" required />
-      <label>Balance</label>
-      <input id="newBalance" type="number" step="0.01" required />
-      <label>Currency</label>
-      <select id="balCurrency"><option>USD</option><option>EUR</option><option>GBP</option></select>
-      <button class="btn-secondary" type="submit">Update Balance</button>
-    </form>
-  </div>
-
-  <div class="section">
-    <h2>Replace Transaction History</h2>
-    <p>Paste JSON array of transactions for a specific user.</p>
-    <form id="histForm" class="contact-form">
-      <label>User ID</label>
-      <input id="histUserId" required />
-      <label>Transactions JSON</label>
-      <textarea id="histJson" rows="6" placeholder='[{"date":"2025-01-01","description":"Init","type":"credit","amount":1000,"currency":"USD"}]' required></textarea>
-      <button class="btn-outline" type="submit">Replace History</button>
-    </form>
-  </div>
-
-  <div class="empty" id="adminHint" style="display:none">
-    <h3>Tip</h3>
-    <p>You can paste a full array to overwrite a user’s transaction history in one step.</p>
+    <h3 style="margin:22px 0 10px;">Recent Activity</h3>
+    <table class="table">
+      <thead><tr><th>User</th><th>Type</th><th>Currency</th><th>Amount</th><th>Note</th></tr></thead>
+      <tbody><tr><td>#10244</td><td>credit</td><td>USD</td><td>2500.00</td><td>Deposit</td></tr></tbody>
+    </table>
   </div>
 </main>
 
-<footer><p>© 2025 Maltese First Capital · Valletta, Malta</p></footer>
-
-<script>
-  const API = localStorage.getItem('BACKEND_URL') || 'https://maltese-first-capital-deluxe-backend.onrender.com';
-  const TOKEN = localStorage.getItem('MFC_TOKEN');
-  const ROLE  = localStorage.getItem('MFC_ROLE');
-
-  if(!TOKEN || ROLE!=='admin'){ location.href='admin-login.html'; }
-
-  document.getElementById('logout').addEventListener('click', (e)=>{
-    e.preventDefault();
-    localStorage.removeItem('MFC_TOKEN'); localStorage.removeItem('MFC_ROLE');
-    toast('Signed out');
-    setTimeout(()=>location.href='index.html', 600);
-  });
-
-  // Add transaction
-  document.getElementById('txForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    try{
-      const payload = {
-        userId: document.getElementById('userId').value.trim(),
-        currency: document.getElementById('currency').value,
-        amount: parseFloat(document.getElementById('amount').value),
-        type: document.getElementById('type').value,
-        description: document.getElementById('description').value.trim()
-      };
-      if(!payload.userId) throw new Error('User ID required');
-      const r = await fetch(`${API}/api/admin/tx`, {
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':`Bearer ${TOKEN}`},
-        body: JSON.stringify(payload)
-      });
-      const data = await r.json().catch(()=> ({}));
-      if(!r.ok) throw new Error(data.message || 'Failed to add transaction');
-      e.target.reset();
-      toast('Transaction added','success');
-      document.getElementById('adminHint').style.display = 'block';
-    }catch(err){ toast(err.message,'error'); }
-  });
-
-  // Update balance/statement
-  document.getElementById('balForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    try{
-      const userId = document.getElementById('balUserId').value.trim();
-      const payload = {
-        balance: parseFloat(document.getElementById('newBalance').value),
-        currency: document.getElementById('balCurrency').value
-      };
-      if(!userId) throw new Error('User ID required');
-      const r = await fetch(`${API}/api/admin/statement/${encodeURIComponent(userId)}`, {
-        method:'PUT',
-        headers:{'Content-Type':'application/json','Authorization':`Bearer ${TOKEN}`},
-        body: JSON.stringify(payload)
-      });
-      const data = await r.json().catch(()=> ({}));
-      if(!r.ok) throw new Error(data.message || 'Failed to update statement');
-      e.target.reset();
-      toast('Statement updated','success');
-    }catch(err){ toast(err.message,'error'); }
-  });
-
-  // Replace transaction history
-  document.getElementById('histForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    try{
-      const userId = document.getElementById('histUserId').value.trim();
-      if(!userId) throw new Error('User ID required');
-      let txs;
-      try{ txs = JSON.parse(document.getElementById('histJson').value); }
-      catch{ throw new Error('Invalid JSON'); }
-      const r = await fetch(`${API}/api/admin/transactions/${encodeURIComponent(userId)}`, {
-        method:'PUT',
-        headers:{'Content-Type':'application/json','Authorization':`Bearer ${TOKEN}`},
-        body: JSON.stringify({ transactions: txs })
-      });
-      const data = await r.json().catch(()=> ({}));
-      if(!r.ok) throw new Error(data.message || 'Failed to replace history');
-      e.target.reset();
-      toast('History replaced','success');
-    }catch(err){ toast(err.message,'error'); }
-  });
-</script>
-
-<!-- Toast helper -->
-<script>
-  (function(){
-    const t = document.createElement('div');
-    t.className = 'toast'; document.body.appendChild(t);
-    window.toast = (msg, type='')=>{
-      t.className = `toast ${type} show`; t.textContent = msg;
-      clearTimeout(window.__tt); window.__tt = setTimeout(()=>{ t.classList.remove('show'); }, 2800);
-    };
-  })();
-</script>
+<footer><p>© 2025 Maltese First Capital</p></footer>
 </body>
 </html>
