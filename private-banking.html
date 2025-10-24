@@ -1,50 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Private Banking | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <header class="site-header">
-    <div class="container nav">
-      <a href="index.html" class="brand"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
-      <button class="nav-toggle" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
-      <nav class="nav-actions">
-        <a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a>
-        <a href="about.html">About</a><a href="contact.html">Contact</a><a href="client-login.html">Client Login</a>
-        <a href="client-register.html">Open an Account</a>
-      </nav>
-    </div>
-  </header>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><title>Private Banking — Maltese First Capital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="styles.css">
+</head><body>
 
-  <section class="page-hero">
-    <div class="container">
-      <h1>Private Banking</h1>
-      <p>Confidential accounts, multi-currency balances, and clear, auditable statements.</p>
-    </div>
-  </section>
+<header class="site-header"><div class="container nav">
+  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
+  <nav class="nav-links"><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+  <div class="nav-actions" id="navActions"><a class="btn btn-secondary" href="client-login.html">Client Login</a><a class="btn btn-gold" href="client-register.html">Open an Account</a></div>
+  <button class="mobile-toggle" onclick="document.getElementById('navActions').classList.toggle('show')">☰</button>
+</div></header>
 
-  <main class="container section">
-    <div class="content">
-      <h2 class="text-center" style="margin-bottom:18px;">What you get</h2>
-      <div class="grid grid-3">
-        <div class="card"><h3>Multi-Currency</h3><p>Hold and transact in major currencies with fair FX.</p></div>
-        <div class="card"><h3>2-Step Security</h3><p>Login security via OTP and device trust.</p></div>
-        <div class="card"><h3>Statements</h3><p>Download monthly statements and export CSV.</p></div>
-        <div class="card"><h3>Transfers</h3><p>Internal and external transfers with approvals.</p></div>
-        <div class="card"><h3>Support</h3><p>Dedicated banker for onboarding and service.</p></div>
-        <div class="card"><h3>Compliance</h3><p>EU KYC/AML aligned processes and reviews.</p></div>
-      </div>
-      <div class="text-center" style="margin-top:26px;">
-        <a class="btn btn-secondary" href="client-register.html">Open an Account</a>
-      </div>
-    </div>
-  </main>
+<section class="section"><div class="container">
+  <h2>Private Banking</h2>
+  <p class="lead">Multi-currency accounts, statements you can actually read, and two-step authentication by default.</p>
+  <div class="content">
+    <h3>What you get</h3>
+    <ul>
+      <li>Personal and corporate accounts in major currencies</li>
+      <li>Editable account statements (admin) and downloadable PDFs (clients)</li>
+      <li>Two-factor sign-in and OTP for sensitive actions</li>
+      <li>Relationship team based in Valletta</li>
+    </ul>
+    <p class="mt-24"><a class="btn btn-gold" href="client-register.html">Open an Account</a></p>
+  </div>
+</div></section>
 
-  <footer>
-    <p>© 2025 Maltese First Capital • <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-  </footer>
-</body>
-</html>
+<footer class="site-footer"><div class="container inner"><div>© 2025 Maltese First Capital · Valletta, Malta</div><div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div></div></footer>
+<script>window.API_BASE = localStorage.getItem('BACKEND_URL') || '';</script>
+</body></html>
