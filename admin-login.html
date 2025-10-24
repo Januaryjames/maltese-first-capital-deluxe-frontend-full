@@ -1,7 +1,9 @@
 <!doctype html><html lang="en"><head>
-<meta charset="utf-8"><title>Admin Login — Maltese First Capital</title>
+<meta charset="utf-8">
+<title>Admin Login — Maltese First Capital</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="styles.css">
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="styles.css">
 </head><body>
 
 <header class="site-header"><div class="container nav">
@@ -21,10 +23,13 @@
   </div>
 </div></section>
 
-<footer class="site-footer"><div class="container inner"><div>© 2025 Maltese First Capital · Valletta, Malta</div><div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div></div></footer>
+<footer class="site-footer"><div class="container inner">
+  <div>© 2025 Maltese First Capital · Valletta, Malta</div>
+  <div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div>
+</div></footer>
 
 <script>
-  window.API_BASE = localStorage.getItem('BACKEND_URL') || '';
+  const API_BASE = localStorage.getItem('BACKEND_URL') || '';
   async function adminLogin(e){
     e.preventDefault();
     try{
