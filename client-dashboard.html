@@ -1,95 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Client Dashboard – Maltese First Capital</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Dashboard | Maltese First Capital</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <header class="site-header">
-  <nav class="nav">
-    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""> <span class="wordmark">Maltese First Capital</span></a>
-    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
-    <div class="nav-actions">
-      <a href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="#" id="logoutBtn">Log out</a>
-    </div>
-  </nav>
+  <div class="container nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
+    <nav class="nav-actions"><a href="index.html">Home</a></nav>
+  </div>
 </header>
 
-<main class="page">
-  <h1>Your Accounts</h1>
+<section class="page-hero"><div class="container"><h1>Welcome</h1><p>Account overview and recent activity.</p></div></section>
 
-  <div id="overview" class="section">
-    <p><strong>Name:</strong> <span id="clientName">—</span></p>
-    <p><strong>Account Number:</strong> <span id="accountNo">—</span></p>
-    <p><strong>Balance:</strong> <span id="balance">—</span></p>
+<main class="container section">
+  <div class="content">
+    <h3 style="margin-bottom:10px;">Balances</h3>
+    <table class="table">
+      <thead><tr><th>Currency</th><th>Balance</th></tr></thead>
+      <tbody><tr><td>USD</td><td>$125,000.00</td></tr><tr><td>EUR</td><td>€80,500.00</td></tr></tbody>
+    </table>
+
+    <h3 style="margin:20px 0 10px;">Recent Transactions</h3>
+    <table class="table">
+      <thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Amount</th></tr></thead>
+      <tbody>
+        <tr><td>2025-10-20</td><td>Internal Transfer</td><td>credit</td><td>$25,000.00</td></tr>
+        <tr><td>2025-10-14</td><td>Card Funding</td><td>credit</td><td>€7,500.00</td></tr>
+      </tbody>
+    </table>
   </div>
-
-  <div class="section">
-    <h2>Recent Transactions</h2>
-    <div class="table-wrap">
-      <table class="table" id="txTable">
-        <thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Amount</th><th>Currency</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </div>
-
-  <div id="msg" style="margin-top:8px;color:#104a72;"></div>
 </main>
 
-<footer><p>© 2025 Maltese First Capital · Valletta, Malta</p></footer>
-
-<script>
-  const API = localStorage.getItem('BACKEND_URL') || 'https://maltese-first-capital-deluxe-backend.onrender.com';
-  const TOKEN = localStorage.getItem('MFC_TOKEN');
-
-  if(!TOKEN){ location.href='client-login.html'; }
-
-  document.getElementById('logoutBtn').addEventListener('click', (e)=>{
-    e.preventDefault();
-    localStorage.removeItem('MFC_TOKEN');
-    localStorage.removeItem('MFC_ROLE');
-    location.href='index.html';
-  });
-
-  (async function load(){
-    const msg = document.getElementById('msg');
-    try{
-      // Profile
-      const meR = await fetch(`${API}/api/client/me`, { headers:{'Authorization':`Bearer ${TOKEN}`}});
-      const me = await meR.json().catch(()=> ({}));
-      if(!meR.ok) throw new Error(me.message || 'Failed to load profile');
-      document.getElementById('clientName').textContent = me.fullName || me.name || 'Client';
-      document.getElementById('accountNo').textContent = me.accountNumber || '—';
-      document.getElementById('balance').textContent = (me.balance!=null ? me.balance : '—') + (me.currency? ' ' + me.currency : '');
-
-      // Transactions
-      const txR = await fetch(`${API}/api/client/transactions`, { headers:{'Authorization':`Bearer ${TOKEN}`}});
-      const tx = await txR.json().catch(()=> ([]));
-      if(!txR.ok) throw new Error(tx.message || 'Failed to load transactions');
-
-      const tbody = document.querySelector('#txTable tbody');
-      tbody.innerHTML = '';
-      (tx || []).forEach(t=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${new Date(t.date || t.createdAt || Date.now()).toLocaleDateString()}</td>
-                        <td>${t.description || ''}</td>
-                        <td>${t.type || ''}</td>
-                        <td>${t.amount!=null? t.amount : ''}</td>
-                        <td>${t.currency || ''}</td>`;
-        tbody.appendChild(tr);
-      });
-    }catch(err){
-      msg.style.color='#b00020';
-      msg.textContent = err.message;
-    }
-  })();
-</script>
+<footer><p>© 2025 Maltese First Capital</p></footer>
 </body>
 </html>
