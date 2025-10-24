@@ -104,6 +104,7 @@
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button type="button" id="approveBtn" class="btn-primary">Approve</button>
             <button type="button" id="requestBtn" class="btn-secondary">Request More Documents</button>
+            <button type="button" id="receivedBtn" class="btn-outline">Mark Docs Received</button>
             <button type="button" id="rejectBtn" class="btn-outline">Reject</button>
           </div>
         </form>
@@ -243,7 +244,11 @@
       });
       const data = await r.json().catch(()=> ({}));
       if(!r.ok) throw new Error(data.message || 'Failed to update status');
-      toast(status === 'more_docs' ? 'Requested more documents' : `Marked ${status}`,'success');
+      toast(
+        status === 'more_docs' ? 'Requested more documents'
+        : status === 'pending' ? 'Marked documents received'
+        : `Marked ${status}`
+      ,'success');
       await loadList();
       await loadOne(id);
     }catch(err){
@@ -278,6 +283,7 @@
 
   document.getElementById('approveBtn').addEventListener('click', ()=> updateStatus('approved'));
   document.getElementById('requestBtn').addEventListener('click', ()=> updateStatus('more_docs'));
+  document.getElementById('receivedBtn').addEventListener('click', ()=> updateStatus('pending')); // <- Mark Docs Received
   document.getElementById('rejectBtn').addEventListener('click', ()=> updateStatus('rejected'));
 
   document.getElementById('logout').addEventListener('click', (e)=>{
