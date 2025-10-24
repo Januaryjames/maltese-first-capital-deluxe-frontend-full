@@ -1,35 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Open an Account | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-<header class="site-header">
-  <div class="container nav">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
-    <button class="nav-toggle" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
-    <nav class="nav-actions"><a href="client-login.html">Client Login</a></nav>
-  </div>
-</header>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><title>Open an Account — Maltese First Capital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="styles.css">
+</head><body>
 
-<section class="page-hero"><div class="container"><h1>Open an Account</h1><p>Complete KYC to activate your account.</p></div></section>
+<header class="site-header"><div class="container nav">
+  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
+  <nav class="nav-links"><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+  <div class="nav-actions" id="navActions"><a class="btn btn-secondary" href="client-login.html">Client Login</a></div>
+  <button class="mobile-toggle" onclick="document.getElementById('navActions').classList.toggle('show')">☰</button>
+</div></header>
 
-<main class="container section">
+<section class="section"><div class="container">
+  <h2>Open an Account</h2>
   <div class="content">
-    <form class="form" onsubmit="event.preventDefault(); alert('Submitted for review. You can log in once approved.'); location.href='client-login.html';">
-      <label>Full Name<input required></label>
-      <label>Email<input type="email" required></label>
-      <label>Phone<input required></label>
-      <label>Country<select required><option>Malta</option><option>Italy</option><option>UK</option><option>Germany</option><option>Other</option></select></label>
-      <label>Proof of Identity (ID/Passport URL)<input type="url" placeholder="https://..." required></label>
-      <label>Proof of Address (PDF/Image URL)<input type="url" placeholder="https://..." required></label>
-      <div class="form-actions"><button class="btn btn-secondary" type="submit">Submit Application</button></div>
+    <form class="form" onsubmit="register(event)">
+      <input class="input" id="name" placeholder="Full name" required>
+      <input class="input" id="email" type="email" placeholder="Email" required>
+      <input class="input" id="phone" placeholder="Phone" required>
+      <select class="select" id="currency"><option>USD</option><option>EUR</option><option>GBP</option></select>
+      <button class="btn btn-gold" type="submit">Continue</button>
+      <div class="help">You’ll receive an OTP to verify your email.</div>
     </form>
   </div>
-</main>
+</div></section>
 
-<footer><p>© 2025 Maltese First Capital</p></footer>
-</body>
-</html>
+<footer class="site-footer"><div class="container inner"><div>© 2025 Maltese First Capital · Valletta, Malta</div><div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div></div></footer>
+
+<script>
+  window.API_BASE = localStorage.getItem('BACKEND_URL') || '';
+  async function register(e){
+    e.preventDefault();
+    try{
+      const payload = {name:name.value, email:email.value, phone:phone.value, baseCurrency:currency.value};
+      const r = await fetch(`${API_BASE}/api/client/register`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
+      });
+      if(!r.ok) throw new Error('Could not start KYC');
+      alert('Check your inbox for the OTP to continue onboarding.');
+      location.href='client-login.html';
+    }catch(err){ alert(err.message); }
+  }
+</script>
+</body></html>
