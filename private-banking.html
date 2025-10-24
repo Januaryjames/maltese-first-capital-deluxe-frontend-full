@@ -1,31 +1,60 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><title>Private Banking — Maltese First Capital</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="styles.css">
-</head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c9a55b">
+  <meta name="description" content="Private Banking at Maltese First Capital—multi-currency accounts, clear statements, and secure onboarding.">
+  <title>Private Banking — Maltese First Capital</title>
+  <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="container nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
+    <div class="nav-links">
+      <a href="about.html">About</a>
+      <a href="private-banking.html">Private Banking</a>
+      <a href="wealth-management.html">Wealth</a>
+      <a href="contact.html">Contact</a>
+      <a href="client-login.html" class="btn btn-secondary">Login</a>
+    </div>
+  </nav>
+</header>
 
-<header class="site-header"><div class="container nav">
-  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
-  <nav class="nav-links"><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
-  <div class="nav-actions" id="navActions"><a class="btn btn-secondary" href="client-login.html">Client Login</a><a class="btn btn-gold" href="client-register.html">Open an Account</a></div>
-  <button class="mobile-toggle" onclick="document.getElementById('navActions').classList.toggle('show')">☰</button>
-</div></header>
-
-<section class="section"><div class="container">
-  <h2>Private Banking</h2>
-  <p class="lead">Multi-currency accounts, statements you can actually read, and two-step authentication by default.</p>
-  <div class="content">
-    <h3>What you get</h3>
-    <ul>
-      <li>Personal and corporate accounts in major currencies</li>
-      <li>Editable account statements (admin) and downloadable PDFs (clients)</li>
-      <li>Two-factor sign-in and OTP for sensitive actions</li>
-      <li>Relationship team based in Valletta</li>
-    </ul>
-    <p class="mt-24"><a class="btn btn-gold" href="client-register.html">Open an Account</a></p>
+<section class="section">
+  <div class="container">
+    <h2>Private Banking</h2>
+    <div class="content">
+      <p class="lead">Multi-currency accounts, two-step security, and statements you can actually read.</p>
+      <ul>
+        <li>Accounts in USD / EUR / GBP</li>
+        <li>Admin-editable statements with client PDF export</li>
+        <li>Two-factor sign-in and OTP for sensitive actions</li>
+        <li>Relationship team based in Valletta</li>
+      </ul>
+      <a href="client-register.html" class="btn btn-gold mt-24">Open an Account</a>
+    </div>
   </div>
-</div></section>
+</section>
 
-<footer class="site-footer"><div class="container inner"><div>© 2025 Maltese First Capital · Valletta, Malta</div><div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div></div></footer>
-<script>window.API_BASE = localStorage.getItem('BACKEND_URL') || '';</script>
-</body></html>
+<section class="section-alt">
+  <div class="container">
+    <h3>What to Expect</h3>
+    <div class="grid-3 mt-16">
+      <div class="card"><h3>Onboarding</h3><p>Simple KYC and guided setup.</p></div>
+      <div class="card"><h3>Everyday Banking</h3><p>Clear balances and instant transaction history.</p></div>
+      <div class="card"><h3>Statements</h3><p>Clean monthly statements available for download.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container inner">
+    <p class="legal">© 2025 Maltese First Capital · Valletta, Malta</p>
+    <div><a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div>
+  </div>
+</footer>
+</body>
+</html>
