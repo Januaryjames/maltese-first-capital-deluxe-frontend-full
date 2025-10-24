@@ -1,162 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Open an Account (KYC) — Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css">
-  <script>const API=(window.BACKEND_URL || localStorage.getItem('BACKEND_URL') || '');</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open an Account – Maltese First Capital</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <header class="site-header">
   <nav class="nav">
-    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
-    <div class="nav-actions"><a href="client-login.html">Client Login</a></div>
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""> <span class="wordmark">Maltese First Capital</span></a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
+    <div class="nav-actions">
+      <a href="private-banking.html">Private Banking</a>
+      <a href="wealth-management.html">Wealth Management</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
   </nav>
 </header>
 
-<main class="container">
-  <section class="card section">
-    <h2>Open an Account</h2>
+<main class="page">
+  <h1>Open an Account</h1>
+  <p>Please complete the KYC information below. You’ll receive your account number upon approval.</p>
 
-    <div id="s1">
-      <label>Full name</label><input id="fullName" placeholder="Full name">
-      <label>Email</label><input id="email" placeholder="you@example.com">
-      <label>Password</label><input id="password" type="password" placeholder="Create a password">
+  <div class="section">
+    <form id="kycForm" class="contact-form" enctype="multipart/form-data">
+      <h3>Personal Details</h3>
+      <label>Full Name</label>
+      <input id="fullName" required>
+      <label>Email</label>
+      <input id="email" type="email" required>
+      <label>Phone</label>
+      <input id="phone" required>
+      <label>Address</label>
+      <input id="address" required>
+
+      <h3 style="margin-top:8px;">Identification</h3>
       <label>Document Type</label>
-      <select id="docType">
-        <option value="passport">Passport</option>
-        <option value="drivers_license">Driver’s License</option>
-        <option value="id_card">ID Card</option>
+      <select id="idType">
+        <option>Passport</option><option>National ID</option><option>Driver’s License</option>
       </select>
-      <button id="startBtn">Continue</button>
-      <p id="m1"></p>
-    </div>
+      <label>Document Number</label>
+      <input id="idNumber" required>
 
-    <div id="s2" style="display:none">
-      <h3>Upload Documents</h3>
-      <label>Document (front or single scan)</label><input type="file" id="docFront" accept="image/*,application/pdf">
-      <label>Document (back) — optional</label><input type="file" id="docBack" accept="image/*,application/pdf">
-      <label>Selfie</label><input type="file" id="selfie" accept="image/*">
-      <button id="uploadBtn">Upload Files</button>
-      <p id="m2"></p>
-    </div>
+      <label>Upload ID (image/PDF)</label>
+      <input id="idFile" type="file" accept=".png,.jpg,.jpeg,.pdf" required>
 
-    <div id="s3" style="display:none">
-      <h3>Email OTP</h3>
-      <label>Enter OTP</label><input id="otp" placeholder="6 digits">
-      <button id="verifyBtn">Verify & Create Account</button>
-      <p id="m3"></p>
-    </div>
+      <h3 style="margin-top:8px;">Security</h3>
+      <label>Password</label>
+      <input id="password" type="password" required>
 
-    <div id="done" style="display:none">
-      <h3>Submitted</h3>
-      <p id="doneText"></p>
-      <a class="btn btn-ghost" href="client-login.html">Go to Client Login</a>
-    </div>
-  </section>
+      <button class="btn-primary" type="submit">Submit Application</button>
+      <div id="msg" style="margin-top:10px;color:#104a72;"></div>
+    </form>
+  </div>
 </main>
 
-<footer class="site-footer">© 2025 Maltese First Capital · Valletta, Malta</footer>
+<footer><p>© 2025 Maltese First Capital · Valletta, Malta</p></footer>
 
 <script>
-  // Use the backend URL from Render env var or localStorage fallback
-  const API = (window.BACKEND_URL || localStorage.getItem('BACKEND_URL') || '');
+  const API = localStorage.getItem('BACKEND_URL') || 'https://maltese-first-capital-deluxe-backend.onrender.com';
+  document.getElementById('kycForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const msg = document.getElementById('msg');
+    msg.textContent = 'Submitting…';
 
-  // cache elements safely (no relying on global IDs)
-  const el = id => document.getElementById(id);
-  let regId = '';
-
-  async function uploadOne(file){
-    if(!file) return null;
-    const fd = new FormData(); fd.append('file', file);
-    const res = await fetch('https://uploadthing.com/api/upload', { method:'POST', body: fd });
-    const out = await res.json().catch(()=>({}));
-    return out?.fileUrl || null;
-  }
-
-  // STEP 1: register (send OTP)
-  el('startBtn').onclick = async () => {
-    const fullName = el('fullName').value.trim();
-    const email    = el('email').value.trim();
-    const password = el('password').value;
-
-    if(!fullName || !email || !password){
-      el('m1').textContent = 'Please fill all fields.'; return;
-    }
-    if(!API){
-      el('m1').textContent = 'BACKEND_URL not set.'; return;
+    // Build multipart/form-data for file upload + fields
+    const fd = new FormData();
+    fd.append('fullName', document.getElementById('fullName').value.trim());
+    fd.append('email', document.getElementById('email').value.trim());
+    fd.append('phone', document.getElementById('phone').value.trim());
+    fd.append('address', document.getElementById('address').value.trim());
+    fd.append('idType', document.getElementById('idType').value);
+    fd.append('idNumber', document.getElementById('idNumber').value.trim());
+    fd.append('password', document.getElementById('password').value);
+    if(document.getElementById('idFile').files[0]){
+      fd.append('idFile', document.getElementById('idFile').files[0]);
     }
 
     try{
-      el('m1').textContent = 'Submitting...';
-      const r = await fetch(`${API}/api/auth/register`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ fullName, email, password })
-      });
-      const d = await r.json().catch(()=>({}));
-      if(!r.ok){ el('m1').textContent = d?.message || 'Registration failed'; return; }
-
-      regId = d.regId;
-      el('s1').style.display='none';
-      el('s2').style.display='block';
-    }catch(e){
-      el('m1').textContent = 'Network error.';
-      console.error(e);
+      const r = await fetch(`${API}/api/client/register`, { method:'POST', body: fd });
+      const data = await r.json().catch(()=> ({}));
+      if(!r.ok) throw new Error(data.message || 'Registration failed');
+      msg.textContent = 'Application received. You may now sign in.';
+      setTimeout(()=> location.href='client-login.html', 1000);
+    }catch(err){
+      msg.style.color='#b00020';
+      msg.textContent = err.message;
     }
-  };
-
-  // STEP 2: upload KYC files
-  el('uploadBtn').onclick = async () => {
-    el('m2').textContent = 'Uploading...';
-
-    try{
-      const [u1,u2,u3] = await Promise.all([
-        uploadOne(el('docFront').files[0]),
-        uploadOne(el('docBack').files[0]),
-        uploadOne(el('selfie').files[0])
-      ]);
-
-      await fetch(`${API}/api/kyc/attach`,{
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          regId,
-          fullName: el('fullName').value.trim(),
-          email: el('email').value.trim(),
-          docType: el('docType').value,
-          docFrontUrl: u1, docBackUrl: u2, selfieUrl: u3
-        })
-      });
-
-      el('m2').textContent = '✅ Uploaded';
-      el('s2').style.display='none';
-      el('s3').style.display='block';
-    }catch(e){
-      el('m2').textContent = '❌ Upload failed';
-      console.error(e);
-    }
-  };
-
-  // STEP 3: verify OTP and create account
-  el('verifyBtn').onclick = async () => {
-    const otp = el('otp').value.trim();
-    if(!otp){ el('m3').textContent = 'Enter the 6-digit code.'; return; }
-
-    try{
-      const r = await fetch(`${API}/api/auth/verify-otp`,{
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ regId, otp })
-      });
-      const d = await r.json().catch(()=>({}));
-      if(!r.ok || !d.ok){ el('m3').textContent = d?.message || 'Invalid/expired OTP'; return; }
-
-      el('s3').style.display='none';
-      el('done').style.display='block';
-      el('doneText').textContent = `Your User ID: ${d.userId}. Accounts created (USD & EUR).`;
-    }catch(e){
-      el('m3').textContent = 'Network error.';
-      console.error(e);
-    }
-  };
+  });
 </script>
 </body>
 </html>
