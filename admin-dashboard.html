@@ -1,108 +1,93 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8">
-<title>Admin Dashboard — Maltese First Capital</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/logo.png">
-<link rel="stylesheet" href="styles.css">
-</head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Maltese First Capital</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/logo.png">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="assets/logo.png" alt="Maltese First Capital">
+        <span>Admin Dashboard</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="admin-kyc.html">KYC Review</a></li>
+        <li><a href="#">Transactions</a></li>
+        <li><a href="#">Accounts</a></li>
+        <li><a href="#" class="logout-btn">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<header class="site-header"><div class="container nav">
-  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
-  <div class="nav-actions" id="navActions"><a class="btn btn-secondary" href="admin-login.html" onclick="localStorage.removeItem('ADMIN_TOKEN')">Sign out</a></div>
-  <button class="mobile-toggle" onclick="document.getElementById('navActions').classList.toggle('show')">☰</button>
-</div></header>
+  <main class="dashboard">
+    <h1>Welcome, Administrator</h1>
+    <p class="subtext">Here’s an overview of your current banking operations.</p>
 
-<section class="section"><div class="container">
-  <h2>Admin Panel</h2>
+    <div class="dashboard-cards">
+      <div class="dash-card">
+        <h3>Pending KYC</h3>
+        <p class="count">12</p>
+        <p>Applications awaiting review</p>
+      </div>
+      <div class="dash-card">
+        <h3>Active Accounts</h3>
+        <p class="count">548</p>
+        <p>Verified client accounts</p>
+      </div>
+      <div class="dash-card">
+        <h3>Transactions (24h)</h3>
+        <p class="count">1,372</p>
+        <p>Processed across multi-currency networks</p>
+      </div>
+      <div class="dash-card">
+        <h3>Compliance Alerts</h3>
+        <p class="count red">2</p>
+        <p>Flagged for immediate attention</p>
+      </div>
+    </div>
 
-  <div class="content">
-    <h3>Create / Edit Statement (per user)</h3>
-    <form class="form" onsubmit="saveStatement(event)">
-      <input class="input" id="userId" placeholder="User ID" required>
-      <textarea class="textarea" id="statementNotes" placeholder="Statement text (appears in client dashboard)"></textarea>
-      <button class="btn btn-gold">Save Statement</button>
-    </form>
-  </div>
+    <section class="admin-table">
+      <h2>Recent Activity</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Activity</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>24 Oct 2025</td>
+            <td>Ahmed Al-Khalifa</td>
+            <td>KYC Verification</td>
+            <td><span class="status pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td>24 Oct 2025</td>
+            <td>Maria Rossi</td>
+            <td>Wire Transfer</td>
+            <td><span class="status complete">Complete</span></td>
+          </tr>
+          <tr>
+            <td>23 Oct 2025</td>
+            <td>James Walker</td>
+            <td>Document Upload</td>
+            <td><span class="status review">In Review</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
 
-  <div class="content mt-32">
-    <h3>Add Transaction</h3>
-    <form class="form" onsubmit="addTx(event)">
-      <input class="input" id="txUser" placeholder="User ID" required>
-      <select class="select" id="txCurrency"><option>USD</option><option>EUR</option><option>GBP</option></select>
-      <input class="input" id="txAmount" type="number" step="0.01" placeholder="Amount" required>
-      <select class="select" id="txType"><option>credit</option><option>debit</option></select>
-      <input class="input" id="txDesc" placeholder="Description">
-      <button class="btn btn-gold">Add Transaction</button>
-    </form>
-  </div>
-
-  <div class="content mt-32">
-    <h3>Pending KYC</h3>
-    <div id="kycList">Loading…</div>
-  </div>
-</div></section>
-
-<footer class="site-footer"><div class="container inner">
-  <div>© 2025 Maltese First Capital · Valletta, Malta</div>
-  <div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div>
-</div></footer>
-
-<script>
-  const API_BASE = localStorage.getItem('BACKEND_URL') || '';
-  const ADMIN_TOKEN = localStorage.getItem('ADMIN_TOKEN') || '';
-  const H = { headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${ADMIN_TOKEN}` } };
-
-  async function saveStatement(e){
-    e.preventDefault();
-    try{
-      const userId = document.getElementById('userId').value;
-      const statementNotes = document.getElementById('statementNotes').value;
-      const r = await fetch(`${API_BASE}/api/admin/statement/${userId}`, {
-        method:'PUT', ...H, body: JSON.stringify({ statementNotes })
-      });
-      alert(r.ok ? 'Saved' : 'Failed to save');
-    }catch{ alert('Failed'); }
-  }
-
-  async function addTx(e){
-    e.preventDefault();
-    const payload = {
-      userId: document.getElementById('txUser').value,
-      currency: document.getElementById('txCurrency').value,
-      amount: +document.getElementById('txAmount').value,
-      type: document.getElementById('txType').value,
-      description: document.getElementById('txDesc').value
-    };
-    const r = await fetch(`${API_BASE}/api/admin/tx`, { method:'POST', ...H, body: JSON.stringify(payload) });
-    alert(r.ok ? 'Transaction added' : 'Failed to add transaction');
-  }
-
-  (async function loadKYC(){
-    try{
-      const r = await fetch(`${API_BASE}/api/admin/kyc`, { headers:{ Authorization:`Bearer ${ADMIN_TOKEN}` }});
-      const list = r.ok ? await r.json() : [];
-      document.getElementById('kycList').innerHTML =
-        (list||[]).map(k=>`<div class="card" style="margin-bottom:10px">
-           <div><b>User:</b> ${k.userId}</div>
-           <div><b>Status:</b> ${k.status}</div>
-           <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
-             <button class="btn btn-secondary" onclick="requestMore('${k._id}')">Request more</button>
-             <button class="btn btn-gold" onclick="approveKyc('${k._id}')">Approve</button>
-           </div>
-        </div>`).join('') || 'None';
-    }catch{ document.getElementById('kycList').textContent='None'; }
-  })();
-
-  async function requestMore(id){
-    const notes = prompt('Notes to client (optional):','Please provide additional documentation.');
-    const r = await fetch(`${API_BASE}/api/admin/kyc/${id}/request-more`, { method:'POST', ...H, body: JSON.stringify({ notes }) });
-    alert(r.ok ? 'Requested' : 'Failed');
-    location.reload();
-  }
-  async function approveKyc(id){
-    const r = await fetch(`${API_BASE}/api/admin/kyc/${id}/approve`, { method:'POST', ...H });
-    alert(r.ok ? 'Approved' : 'Failed');
-    location.reload();
-  }
-</script>
-</body></html>
+  <footer>
+    <p>© 2025 Maltese First Capital — Secure Admin Interface</p>
+  </footer>
+</body>
+</html>
