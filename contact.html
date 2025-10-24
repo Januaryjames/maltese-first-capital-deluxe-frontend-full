@@ -1,42 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-<header class="site-header">
-  <div class="container nav">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
-    <button class="nav-toggle" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
-    <nav class="nav-actions">
-      <a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a>
-      <a href="about.html">About</a><a href="contact.html">Contact</a><a href="client-login.html">Client Login</a>
-      <a href="client-register.html">Open an Account</a>
-    </nav>
-  </div>
-</header>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><title>Contact — Maltese First Capital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="styles.css">
+</head><body>
 
-<section class="page-hero">
-  <div class="container">
-    <h1>Contact</h1><p>We’ll respond within one business day.</p>
-  </div>
-</section>
+<header class="site-header"><div class="container nav">
+  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
+  <nav class="nav-links"><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+  <div class="nav-actions" id="navActions"><a class="btn btn-secondary" href="client-login.html">Client Login</a><a class="btn btn-gold" href="client-register.html">Open an Account</a></div>
+  <button class="mobile-toggle" onclick="document.getElementById('navActions').classList.toggle('show')">☰</button>
+</div></header>
 
-<main class="container section">
+<section class="section"><div class="container">
+  <h2>Contact</h2>
+  <p class="lead">For onboarding or general enquiries, email <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>.</p>
   <div class="content">
-    <form class="form" onsubmit="event.preventDefault(); alert('Message submitted.');">
-      <label>Full Name<input required></label>
-      <label>Email<input type="email" required></label>
-      <label>Subject<input required></label>
-      <label>Message<textarea rows="6" required></textarea></label>
-      <div class="form-actions"><button class="btn btn-secondary" type="submit">Send Message</button></div>
-      <p class="text-center" style="margin-top:8px;">Or email us: <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+    <form class="form" onsubmit="event.preventDefault();alert('Thanks—we will be in touch.');">
+      <input class="input" type="text" placeholder="Full name" required>
+      <input class="input" type="email" placeholder="Email address" required>
+      <textarea class="textarea" placeholder="Message" required></textarea>
+      <button class="btn btn-gold" type="submit">Send</button>
+      <div class="help">We reply within one business day.</div>
     </form>
   </div>
-</main>
+</div></section>
 
-<footer><p>© 2025 Maltese First Capital • <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p></footer>
-</body>
-</html>
+<footer class="site-footer"><div class="container inner"><div>© 2025 Maltese First Capital · Valletta, Malta</div><div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div></div></footer>
+<script>window.API_BASE = localStorage.getItem('BACKEND_URL') || '';</script>
+</body></html>
