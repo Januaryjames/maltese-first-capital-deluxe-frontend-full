@@ -1,93 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin Dashboard • Maltese First Capital</title>
   <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="styles.css?v=21">
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <img src="assets/logo.png" alt="Maltese First Capital">
-        <span>Admin Dashboard</span>
-      </div>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="admin-kyc.html">KYC Review</a></li>
-        <li><a href="#">Transactions</a></li>
-        <li><a href="#">Accounts</a></li>
-        <li><a href="#" class="logout-btn">Logout</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="navbar-wrap">
+    <div class="container navbar">
+      <a class="brand navbar-brand" href="index.html">
+        <img src="assets/logo.png" alt="Maltese First Capital"><span>Maltese First Capital</span>
+      </a>
+      <nav class="links">
+        <a href="admin-docs.html">Documents</a>
+        <a class="highlight" href="#" id="logout">Log Out</a>
+      </nav>
+    </div>
+  </div>
 
-  <main class="dashboard">
-    <h1>Welcome, Administrator</h1>
-    <p class="subtext">Here’s an overview of your current banking operations.</p>
-
-    <div class="dashboard-cards">
-      <div class="dash-card">
-        <h3>Pending KYC</h3>
-        <p class="count">12</p>
-        <p>Applications awaiting review</p>
-      </div>
-      <div class="dash-card">
-        <h3>Active Accounts</h3>
-        <p class="count">548</p>
-        <p>Verified client accounts</p>
-      </div>
-      <div class="dash-card">
-        <h3>Transactions (24h)</h3>
-        <p class="count">1,372</p>
-        <p>Processed across multi-currency networks</p>
-      </div>
-      <div class="dash-card">
-        <h3>Compliance Alerts</h3>
-        <p class="count red">2</p>
-        <p>Flagged for immediate attention</p>
+  <section class="hero">
+    <div class="container">
+      <img class="hero-logo" src="assets/logo.png" alt="MFC">
+      <h1>Admin Dashboard</h1>
+      <p class="lead">Review client documents and manage onboarding.</p>
+      <div class="cta-row">
+        <a class="btn gold" href="admin-docs.html">Review Documents</a>
       </div>
     </div>
+  </section>
 
-    <section class="admin-table">
-      <h2>Recent Activity</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Client</th>
-            <th>Activity</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>24 Oct 2025</td>
-            <td>Ahmed Al-Khalifa</td>
-            <td>KYC Verification</td>
-            <td><span class="status pending">Pending</span></td>
-          </tr>
-          <tr>
-            <td>24 Oct 2025</td>
-            <td>Maria Rossi</td>
-            <td>Wire Transfer</td>
-            <td><span class="status complete">Complete</span></td>
-          </tr>
-          <tr>
-            <td>23 Oct 2025</td>
-            <td>James Walker</td>
-            <td>Document Upload</td>
-            <td><span class="status review">In Review</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
+  <section class="section">
+    <div class="container">
+      <h2>At a Glance</h2>
+      <div class="cards">
+        <div class="card"><h3>Pending Docs</h3><p id="pending">—</p></div>
+        <div class="card"><h3>Approved Today</h3><p id="approved">—</p></div>
+        <div class="card"><h3>Rejected Today</h3><p id="rejected">—</p></div>
+      </div>
+    </div>
+  </section>
 
-  <footer>
-    <p>© 2025 Maltese First Capital — Secure Admin Interface</p>
-  </footer>
+  <footer><div class="container">© 2025 Maltese First Capital — Valletta, Malta</div></footer>
+
+<script>
+const API = localStorage.getItem('BACKEND_URL') || '';
+const tok = localStorage.getItem('ADMIN_TOKEN') || '';
+document.getElementById('logout').addEventListener('click',(e)=>{
+  e.preventDefault(); localStorage.removeItem('ADMIN_TOKEN'); location.href='admin-login.html';
+});
+(async ()=>{
+  try{
+    const r = await fetch(`${API}/api/admin/docs`, { headers:{'Authorization':`Bearer ${tok}`} });
+    const data = await r.json();
+    if(!r.ok) throw 0;
+    const docs = data.docs || [];
+    document.getElementById('pending').textContent  = docs.filter(d=>d.status==='pending').length;
+    document.getElementById('approved').textContent = docs.filter(d=>d.status==='approved').length;
+    document.getElementById('rejected').textContent = docs.filter(d=>d.status==='rejected').length;
+  }catch{ document.getElementById('pending').textContent='—'; }
+})();
+</script>
 </body>
 </html>
