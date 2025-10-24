@@ -1,148 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>MFC • Open an Account</title>
-  <link rel="icon" href="assets/logo.png"/>
-  <link rel="stylesheet" href="styles.css?v=11"/>
-  <style>
-    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-    .grid .span2{grid-column:span 2}
-    .muted{color:#9fb1c7}
-    .err{color:#ff9b9b;font-weight:700}
-    .card{background:#0f1a27;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px}
-  </style>
+  <title>Open an Account • Maltese First Capital</title>
+  <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="styles.css?v=21">
 </head>
 <body>
-<header>
-  <nav class="navbar">
-    <div class="logo"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="client-login.html">Client Login</a></li>
-      <li><a class="active highlight" href="client-register.html">Open an Account</a></li>
-    </ul>
-  </nav>
-</header>
+  <div class="navbar-wrap">
+    <div class="container navbar">
+      <a class="brand navbar-brand" href="index.html">
+        <img src="assets/logo.png" alt="Maltese First Capital"><span>Maltese First Capital</span>
+      </a>
+      <nav class="links">
+        <a href="private-banking.html">Private Banking</a>
+        <a href="wealth-management.html">Wealth Management</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a class="highlight" href="client-login.html">Client Login</a>
+      </nav>
+    </div>
+  </div>
 
-<main class="dashboard">
-  <h1>Open an Account</h1>
-  <p class="subtext">Complete the form below. A relationship manager will follow up once KYC is reviewed.</p>
+  <section class="hero">
+    <div class="container">
+      <img class="hero-logo" src="assets/logo.png" alt="MFC">
+      <h1>Open an Account</h1>
+      <p class="lead">Begin KYC to establish your Maltese First Capital relationship.</p>
 
-  <form id="kycForm" class="card">
-    <div class="grid">
-      <div>
-        <label for="firstName">First name</label>
-        <input id="firstName" required/>
-      </div>
-      <div>
-        <label for="lastName">Last name</label>
-        <input id="lastName" required/>
-      </div>
-
-      <div>
-        <label for="email">Email</label>
-        <input id="email" type="email" required/>
-      </div>
-      <div>
-        <label for="phone">Phone</label>
-        <input id="phone" type="tel" />
-      </div>
-
-      <div>
-        <label for="address1">Address line 1</label>
-        <input id="address1" required/>
-      </div>
-      <div>
-        <label for="address2">Address line 2</label>
-        <input id="address2"/>
-      </div>
-
-      <div>
-        <label for="city">City</label>
-        <input id="city" required/>
-      </div>
-      <div>
-        <label for="zip">ZIP/Postal</label>
-        <input id="zip" required/>
-      </div>
-
-      <div>
-        <label for="country">Country</label>
-        <input id="country" required/>
-      </div>
-      <div>
-        <label for="currency">Primary currency</label>
-        <select id="currency"><option>EUR</option><option>USD</option><option>GBP</option></select>
-      </div>
-
-      <div class="span2">
-        <label for="purpose">Source of funds / Account purpose</label>
-        <textarea id="purpose" rows="3" placeholder="Brief description…"></textarea>
-      </div>
-
-      <div>
-        <label for="idDoc">Government ID (PDF/JPG/PNG)</label>
-        <input id="idDoc" type="file" accept=".pdf,.jpg,.jpeg,.png" required/>
-      </div>
-      <div>
-        <label for="proofAddress">Proof of address (PDF/JPG/PNG)</label>
-        <input id="proofAddress" type="file" accept=".pdf,.jpg,.jpeg,.png" required/>
-      </div>
-
-      <div class="span2" style="display:flex;gap:10px;align-items:center">
-        <input id="agree" type="checkbox" required/>
-        <label for="agree">I confirm the information is accurate and I agree to the Terms.</label>
-      </div>
-
-      <div class="span2" style="display:flex;gap:10px;align-items:center;justify-content:space-between">
-        <button class="btn gold" type="submit">Submit Application</button>
-        <span id="status" class="muted"></span>
+      <div class="card" style="max-width:840px;margin:0 auto">
+        <form id="kycForm">
+          <div class="section" style="padding:0;border:none">
+            <h2>Personal Details</h2>
+            <label>Full name</label><input id="fullName" required>
+            <label>Email</label><input id="email" type="email" required>
+            <label>Phone</label><input id="phone" required>
+            <label>Residential Address</label><textarea id="addr" rows="3" required></textarea>
+            <label>Country</label><input id="country" required>
+          </div>
+          <div class="section" style="padding:0;border:none">
+            <h2>Profile</h2>
+            <label>Primary Currency</label>
+            <select id="currency"><option>EUR</option><option>USD</option><option>GBP</option></select>
+            <label>Source of Funds</label>
+            <select id="sof"><option>Professional Income</option><option>Business Proceeds</option><option>Investment Income</option><option>Other</option></select>
+          </div>
+          <div class="cta-row" style="justify-content:flex-end">
+            <button class="btn gold" type="submit">Continue</button>
+          </div>
+          <div id="status" class="muted" style="margin-top:8px"></div>
+        </form>
       </div>
     </div>
-  </form>
-</main>
+  </section>
 
-<footer><p>© 2025 Maltese First Capital — Valletta, Malta</p></footer>
+  <footer><div class="container">© 2025 Maltese First Capital — Valletta, Malta • <a href="mailto:hello@maltesefirst.com" style="color:inherit">hello@maltesefirst.com</a></div></footer>
 
 <script>
-  const API = localStorage.getItem('BACKEND_URL') || '';
-  const statusEl = document.getElementById('status');
-
-  document.getElementById('kycForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    statusEl.textContent = 'Submitting…';
-
-    try{
-      const fd = new FormData();
-      fd.append('firstName',  document.getElementById('firstName').value.trim());
-      fd.append('lastName',   document.getElementById('lastName').value.trim());
-      fd.append('email',      document.getElementById('email').value.trim());
-      fd.append('phone',      document.getElementById('phone').value.trim());
-      fd.append('address1',   document.getElementById('address1').value.trim());
-      fd.append('address2',   document.getElementById('address2').value.trim());
-      fd.append('city',       document.getElementById('city').value.trim());
-      fd.append('zip',        document.getElementById('zip').value.trim());
-      fd.append('country',    document.getElementById('country').value.trim());
-      fd.append('currency',   document.getElementById('currency').value);
-      fd.append('purpose',    document.getElementById('purpose').value.trim());
-      if(document.getElementById('idDoc').files[0])        fd.append('idDoc',        document.getElementById('idDoc').files[0]);
-      if(document.getElementById('proofAddress').files[0]) fd.append('proofAddress', document.getElementById('proofAddress').files[0]);
-
-      const res = await fetch(`${API}/api/client/register`, { method:'POST', body: fd });
-      if(!res.ok) throw new Error(await res.text());
-      const out = await res.json().catch(()=>({ ok:true }));
-
-      statusEl.textContent = 'Submitted. We’ll be in touch shortly.';
-      // Optional direct login if backend returns token & client
-      if(out.token){ localStorage.setItem('CLIENT_TOKEN', out.token); }
-      if(out.client && out.client.name){ localStorage.setItem('CLIENT_NAME', out.client.name); }
-      setTimeout(()=>location.href='client-dashboard.html', 900);
-    }catch(err){
-      statusEl.innerHTML = `<span class="err">Error:</span> ${err.message||'Submission failed'}`;
-    }
-  });
+document.getElementById('kycForm').addEventListener('submit',(e)=>{
+  e.preventDefault();
+  // store minimally for prefill later
+  localStorage.setItem('CLIENT_PREFILL', JSON.stringify({
+    name: document.getElementById('fullName').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    addr: document.getElementById('addr').value.trim(),
+    currency: document.getElementById('currency').value
+  }));
+  document.getElementById('status').textContent = 'Submitted. Please proceed to Login to verify your email.';
+  setTimeout(()=>location.href='client-login.html', 1200);
+});
 </script>
 </body>
 </html>
