@@ -157,5 +157,5 @@ tbody tr:nth-child(even){background:#0b1520}
   .navbar .brand img{ height:56px; }
   .cards{ grid-template-columns:1fr; }
   .hero{ padding:64px 0 50px; }
-  .hero .hero-logo{ height:100px; }
+  .navbar .brand img{ height:64px; }
 }
