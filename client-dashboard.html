@@ -1,162 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>MFC • Client Dashboard</title>
-  <link rel="icon" href="assets/logo.png"/>
-  <link rel="stylesheet" href="styles.css?v=11"/>
-  <style>
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px}
-    .badge{padding:5px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.08);color:#cfd8e3;font-size:12px}
-    .balances{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .balance-card{background:#0f1a27;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px}
-    .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-    .table-wrap{overflow:auto}
-    @media (max-width:900px){ .balances{grid-template-columns:1fr} }
-  </style>
+  <title>Client Dashboard • Maltese First Capital</title>
+  <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="styles.css?v=21">
 </head>
 <body>
-<header>
-  <nav class="navbar">
-    <div class="logo"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></div>
-    <ul class="nav-links">
-      <li><a class="active highlight" href="client-dashboard.html">Dashboard</a></li>
-      <li><a href="#" id="logoutLink">Log Out</a></li>
-    </ul>
-  </nav>
-</header>
-
-<main class="dashboard">
-  <div class="topbar">
-    <h1>Welcome back, <span id="who">Client</span></h1>
-    <span class="badge">API: <span class="mono" id="apiHost">unset</span></span>
+  <div class="navbar-wrap">
+    <div class="container navbar">
+      <a class="brand navbar-brand" href="index.html">
+        <img src="assets/logo.png" alt="Maltese First Capital"><span>Maltese First Capital</span>
+      </a>
+      <nav class="links">
+        <a href="client-profile.html">Profile & Documents</a>
+        <a class="highlight" href="#" id="logout">Log Out</a>
+      </nav>
+    </div>
   </div>
 
-  <section class="balances" id="balances">
-    <div class="balance-card"><h3>EUR</h3><div class="count" id="balEUR">—</div></div>
-    <div class="balance-card"><h3>USD</h3><div class="count" id="balUSD">—</div></div>
-    <div class="balance-card"><h3>GBP</h3><div class="count" id="balGBP">—</div></div>
-  </section>
-
-  <section class="admin-table" style="margin-top:18px">
-    <div style="display:flex;align-items:center;justify-content:space-between">
-      <h2>Recent Transactions</h2>
-      <div style="display:flex;gap:8px;align-items:center">
-        <label for="stmtMonth" class="mono" style="font-size:13px">Statement month</label>
-        <input id="stmtMonth" type="month"/>
-        <button class="btn" id="btnStatement">Download PDF</button>
+  <section class="hero">
+    <div class="container">
+      <img class="hero-logo" src="assets/logo.png" alt="MFC">
+      <h1 id="welcome">Welcome</h1>
+      <p class="lead">Access your profile, upload required documents, and manage your relationship.</p>
+      <div class="cta-row">
+        <a class="btn gold" href="client-profile.html">Upload Documents</a>
+        <a class="btn" href="contact.html">Contact Support</a>
       </div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Date</th><th>Currency</th><th>Type</th><th>Amount</th><th>Description</th></tr></thead>
-        <tbody id="txBody"><tr><td class="empty" colspan="5">Loading…</td></tr></tbody>
-      </table>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Overview</h2>
+      <p class="sub">A concise view of your relationship.</p>
+      <div class="cards">
+        <div class="card"><h3>Profile</h3><p>Keep your details current.</p></div>
+        <div class="card"><h3>Documents</h3><p>Upload ID, proof of address, and more.</p></div>
+        <div class="card"><h3>Support</h3><p>We’re available via secure message and email.</p></div>
+      </div>
     </div>
   </section>
-</main>
 
-<footer><p>© 2025 Maltese First Capital — Valletta, Malta</p></footer>
+  <footer><div class="container">© 2025 Maltese First Capital — Valletta, Malta • <a href="mailto:hello@maltesefirst.com" style="color:inherit">hello@maltesefirst.com</a></div></footer>
 
 <script>
-  const API = localStorage.getItem('BACKEND_URL') || '';
-  const token = localStorage.getItem('CLIENT_TOKEN') || '';
-  document.getElementById('apiHost').textContent = API || 'not set';
-  document.getElementById('who').textContent = localStorage.getItem('CLIENT_NAME') || 'Client';
-
-  // Optional guard:
-  // if(!token){ location.href='client-login.html'; }
-
-  function hMoney(v,c){ return typeof v==='number' ? Intl.NumberFormat(undefined,{style:'currency',currency:c}).format(v) : '—'; }
-
-  async function get(path){
-    const res = await fetch(`${API}${path}`,{
-      headers: { 'Accept':'application/json', ...(token?{'Authorization':`Bearer ${token}`}:{}) }
-    });
-    if(!res.ok) throw new Error(await res.text());
-    try{ return await res.json(); }catch{ return {}; }
-  }
-
-  async function loadBalances(){
-    try{
-      const data = await get('/api/client/overview');
-      document.getElementById('balEUR').textContent = hMoney(data.balances?.EUR ?? 0,'EUR');
-      document.getElementById('balUSD').textContent = hMoney(data.balances?.USD ?? 0,'USD');
-      document.getElementById('balGBP').textContent = hMoney(data.balances?.GBP ?? 0,'GBP');
-      if(data.client?.name) localStorage.setItem('CLIENT_NAME', data.client.name);
-      document.getElementById('who').textContent = localStorage.getItem('CLIENT_NAME') || 'Client';
-    }catch{
-      // demo fallback
-      document.getElementById('balEUR').textContent = hMoney(58234.44,'EUR');
-      document.getElementById('balUSD').textContent = hMoney(14320.00,'USD');
-      document.getElementById('balGBP').textContent = hMoney(9211.88,'GBP');
-    }
-  }
-
-  async function loadTx(){
-    const body = document.getElementById('txBody');
-    try{
-      const items = await get('/api/client/transactions?limit=25');
-      if(!Array.isArray(items) || items.length===0){ body.innerHTML=`<tr><td class="empty" colspan="5">No transactions.</td></tr>`; return;}
-      body.innerHTML = items.map(t=>`
-        <tr>
-          <td>${new Date(t.createdAt||Date.now()).toLocaleString()}</td>
-          <td>${t.currency||'EUR'}</td>
-          <td>${t.type||'—'}</td>
-          <td>${hMoney(Number(t.amount)||0, t.currency||'EUR')}</td>
-          <td>${escape((t.note||''))}</td>
-        </tr>
-      `).join('');
-    }catch{
-      // demo fallback
-      const demo = [
-        {createdAt:Date.now()-3600e3, currency:'EUR', type:'credit', amount:12000, note:'Deposit'},
-        {createdAt:Date.now()-7200e3, currency:'EUR', type:'debit', amount: -350, note:'Card purchase'},
-        {createdAt:Date.now()-17200e3, currency:'USD', type:'credit', amount: 5000, note:'Incoming wire'}
-      ];
-      body.innerHTML = demo.map(t=>`
-        <tr>
-          <td>${new Date(t.createdAt).toLocaleString()}</td>
-          <td>${t.currency}</td>
-          <td>${t.type}</td>
-          <td>${hMoney(t.amount, t.currency)}</td>
-          <td>${t.note}</td>
-        </tr>
-      `).join('');
-    }
-  }
-
-  document.getElementById('btnStatement').addEventListener('click', async ()=>{
-    const m = document.getElementById('stmtMonth').value; // yyyy-mm
-    const qs = m ? `?month=${encodeURIComponent(m)}` : '';
-    try{
-      const res = await fetch(`${API}/api/client/statement${qs}`,{
-        headers: token? {'Authorization':`Bearer ${token}`} : {}
-      });
-      if(!res.ok) throw new Error(await res.text());
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = `statement${m?'-'+m:''}.pdf`;
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
-    }catch(err){
-      alert('Statement download unavailable yet.');
-    }
-  });
-
-  document.getElementById('logoutLink').addEventListener('click', (e)=>{
-    e.preventDefault();
-    localStorage.removeItem('CLIENT_TOKEN');
-    localStorage.removeItem('CLIENT_NAME');
-    location.href='client-login.html';
-  });
-
-  function escape(s){return (s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
-
-  loadBalances();
-  loadTx();
+const name = (JSON.parse(localStorage.getItem('CLIENT_PREFILL')||'{}').name) || 'Client';
+document.getElementById('welcome').textContent = `Welcome, ${name}`;
+document.getElementById('logout').addEventListener('click',(e)=>{
+  e.preventDefault();
+  localStorage.removeItem('CLIENT_TOKEN');
+  location.href='client-login.html';
+});
 </script>
 </body>
 </html>
