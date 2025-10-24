@@ -1,18 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maltese First Capital | Private & Wealth Banking</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="assets/logo.png">
-  <link rel="manifest" href="site.webmanifest">
+
+  <!-- hard cache-bust -->
+  <link rel="stylesheet" href="styles.css?v=9" />
+  <link rel="icon" href="assets/logo.png" />
+  <link rel="manifest" href="site.webmanifest" />
+
+  <!-- safety pins that override any rogue styles/caching -->
+  <style>
+    /* never let the logo become a background */
+    body, .hero { background-image: none !important; }
+
+    /* force the intended hero gradient only */
+    .hero {
+      background:
+        radial-gradient(900px 500px at 80% -20%, rgba(201,165,91,.12), transparent 60%),
+        radial-gradient(700px 380px at 0% 0%, rgba(45,93,134,.18), transparent 60%),
+        linear-gradient(180deg, rgba(10,14,20,.7), rgba(10,14,20,.2)) !important;
+    }
+
+    /* clamp every possible logo */
+    .logo img { width:28px !important; height:28px !important; object-fit:contain !important; }
+    .hero-logo { width:64px !important; height:64px !important; object-fit:contain !important; display:block !important; margin:0 auto 18px !important; }
+    img[src*="assets/logo"] { max-width:64px !important; height:auto !important; }
+
+    /* nuke any inline background someone might have pasted by mistake */
+    [style*="assets/logo"], [style*="logo.png"] { background-image:none !important; }
+  </style>
 </head>
+
 <body>
+  <!-- NAV -->
   <header>
     <nav class="navbar">
       <div class="logo">
-        <img src="assets/logo.png" alt="Maltese First Capital Logo">
+        <img src="assets/logo.png" alt="Maltese First Capital" />
         <span>Maltese First Capital</span>
       </div>
       <ul class="nav-links">
@@ -27,19 +53,21 @@
     </nav>
   </header>
 
+  <!-- HERO (no background image, just the gradient) -->
   <section class="hero">
     <div class="hero-overlay">
-      <img src="assets/logo.png" alt="Maltese First Capital" class="hero-logo">
+      <img class="hero-logo" src="assets/logo.png" alt="Maltese First Capital" />
       <h1>Unlocking Financial Potential</h1>
       <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
       <div class="hero-buttons">
-        <a href="client-register.html" class="btn gold">Open an Account</a>
+        <a class="btn gold" href="client-register.html">Open an Account</a>
       </div>
     </div>
   </section>
 
+  <!-- SERVICES -->
   <section class="services">
-    <h2>Our Core Services</h2>
+    <h2 style="text-align:center">Our Core Services</h2>
     <div class="service-grid">
       <div class="card">
         <h3>Private Banking</h3>
@@ -56,6 +84,7 @@
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
     <p>© 2025 Maltese First Capital — Valletta, Malta</p>
   </footer>
