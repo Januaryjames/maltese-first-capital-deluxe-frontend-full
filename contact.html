@@ -1,51 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Contact – Maltese First Capital</title>
-  <meta name="description" content="Contact Maltese First Capital. We look forward to assisting you.">
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Maltese First Capital</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <header class="site-header">
-  <nav class="nav">
-    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""> <span class="wordmark">Maltese First Capital</span></a>
-    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
-    <div class="nav-actions">
-      <a href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </nav>
+  <div class="container nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
+    <nav class="nav-actions">
+      <a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a>
+      <a href="about.html">About</a><a href="contact.html">Contact</a><a href="client-login.html">Client Login</a>
+      <a href="client-register.html">Open an Account</a>
+    </nav>
+  </div>
 </header>
 
-<main class="page">
-  <h1>Contact Us</h1>
-  <p>We look forward to assisting you. Reach us through the form below or via our registered office.</p>
+<section class="page-hero">
+  <div class="container">
+    <h1>Contact</h1><p>We’ll respond within one business day.</p>
+  </div>
+</section>
 
-  <form class="contact-form" onsubmit="event.preventDefault(); window.location.href='mailto:hello@maltesefirst.com';">
-    <label for="name">Name</label>
-    <input id="name" type="text" required />
-
-    <label for="email">Email</label>
-    <input id="email" type="email" required />
-
-    <label for="msg">Message</label>
-    <textarea id="msg" rows="5" required></textarea>
-
-    <button type="submit" class="btn-primary">Send Message</button>
-  </form>
-
-  <div class="address">
-    <p><strong>Head Office</strong><br>
-    Maltese First Capital<br>
-    Republic Street, Valletta, Malta<br>
-    Email: <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+<main class="container section">
+  <div class="content">
+    <form class="form" onsubmit="event.preventDefault(); alert('Message submitted.');">
+      <label>Full Name<input required></label>
+      <label>Email<input type="email" required></label>
+      <label>Subject<input required></label>
+      <label>Message<textarea rows="6" required></textarea></label>
+      <div class="form-actions"><button class="btn btn-secondary" type="submit">Send Message</button></div>
+      <p class="text-center" style="margin-top:8px;">Or email us: <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+    </form>
   </div>
 </main>
 
-<footer><p>© 2025 Maltese First Capital · Valletta, Malta</p></footer>
+<footer><p>© 2025 Maltese First Capital • <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p></footer>
 </body>
 </html>
