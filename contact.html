@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact – Maltese First Capital</title>
+  <meta name="description" content="Contact Maltese First Capital. We look forward to assisting you.">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <header class="site-header">
   <nav class="nav">
-    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""> Maltese First Capital</a>
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""> <span class="wordmark">Maltese First Capital</span></a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
     <div class="nav-actions">
       <a href="private-banking.html">Private Banking</a>
       <a href="wealth-management.html">Wealth Management</a>
       <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
     </div>
   </nav>
 </header>
@@ -23,12 +26,15 @@
   <p>We look forward to assisting you. Reach us through the form below or via our registered office.</p>
 
   <form class="contact-form" onsubmit="event.preventDefault(); window.location.href='mailto:hello@maltesefirst.com';">
-    <label>Name</label>
-    <input type="text" required />
-    <label>Email</label>
-    <input type="email" required />
-    <label>Message</label>
-    <textarea rows="5" required></textarea>
+    <label for="name">Name</label>
+    <input id="name" type="text" required />
+
+    <label for="email">Email</label>
+    <input id="email" type="email" required />
+
+    <label for="msg">Message</label>
+    <textarea id="msg" rows="5" required></textarea>
+
     <button type="submit" class="btn-primary">Send Message</button>
   </form>
 
