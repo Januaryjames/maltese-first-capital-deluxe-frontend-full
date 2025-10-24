@@ -1,24 +1,45 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Contact — Maltese First Capital</title>
-<link rel="stylesheet" href="styles.css">
-</head><body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact – Maltese First Capital</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 <header class="site-header">
   <nav class="nav">
-    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
-    <div class="nav-actions"><a href="client-dashboard.html">Client Login</a></div>
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""> Maltese First Capital</a>
+    <div class="nav-actions">
+      <a href="private-banking.html">Private Banking</a>
+      <a href="wealth-management.html">Wealth Management</a>
+      <a href="about.html">About</a>
+    </div>
   </nav>
 </header>
 
-<main class="container">
-  <section class="card section">
-    <h2>Contact</h2>
-    <p>Email: hello@maltesefirst.com</p>
-    <p>Valletta, Malta</p>
-  </section>
+<main class="page">
+  <h1>Contact Us</h1>
+  <p>We look forward to assisting you. Reach us through the form below or via our registered office.</p>
+
+  <form class="contact-form" onsubmit="event.preventDefault(); window.location.href='mailto:hello@maltesefirst.com';">
+    <label>Name</label>
+    <input type="text" required />
+    <label>Email</label>
+    <input type="email" required />
+    <label>Message</label>
+    <textarea rows="5" required></textarea>
+    <button type="submit" class="btn-primary">Send Message</button>
+  </form>
+
+  <div class="address">
+    <p><strong>Head Office</strong><br>
+    Maltese First Capital<br>
+    Republic Street, Valletta, Malta<br>
+    Email: <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+  </div>
 </main>
 
-<footer class="site-footer">© 2025 Maltese First Capital · Valletta, Malta</footer>
-</body></html>
-
+<footer><p>© 2025 Maltese First Capital · Valletta, Malta</p></footer>
+</body>
+</html>
