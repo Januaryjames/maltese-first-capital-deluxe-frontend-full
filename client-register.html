@@ -1,15 +1,19 @@
 <!doctype html><html lang="en"><head>
-<meta charset="utf-8"><title>Open an Account — Maltese First Capital</title>
+<meta charset="utf-8">
+<title>Open an Account — Maltese First Capital</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="styles.css">
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="styles.css">
 </head><body>
 
-<header class="site-header"><div class="container nav">
-  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
-  <nav class="nav-links"><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
-  <div class="nav-actions" id="navActions"><a class="btn btn-secondary" href="client-login.html">Client Login</a></div>
-  <button class="mobile-toggle" onclick="document.getElementById('navActions').classList.toggle('show')">☰</button>
-</div></header>
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
+    <nav class="nav-links"><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+    <div class="nav-actions" id="navActions"><a class="btn btn-secondary" href="client-login.html">Client Login</a></div>
+    <button class="mobile-toggle" onclick="document.getElementById('navActions').classList.toggle('show')">☰</button>
+  </div>
+</header>
 
 <section class="section"><div class="container">
   <h2>Open an Account</h2>
@@ -20,25 +24,32 @@
       <input class="input" id="phone" placeholder="Phone" required>
       <select class="select" id="currency"><option>USD</option><option>EUR</option><option>GBP</option></select>
       <button class="btn btn-gold" type="submit">Continue</button>
-      <div class="help">You’ll receive an OTP to verify your email.</div>
+      <div class="help">We’ll email you a one-time code to verify and set a password.</div>
     </form>
   </div>
 </div></section>
 
-<footer class="site-footer"><div class="container inner"><div>© 2025 Maltese First Capital · Valletta, Malta</div><div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div></div></footer>
+<footer class="site-footer"><div class="container inner">
+  <div>© 2025 Maltese First Capital · Valletta, Malta</div>
+  <div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div>
+</div></footer>
 
 <script>
-  window.API_BASE = localStorage.getItem('BACKEND_URL') || '';
+  const API_BASE = localStorage.getItem('BACKEND_URL') || '';
   async function register(e){
     e.preventDefault();
     try{
-      const payload = {name:name.value, email:email.value, phone:phone.value, baseCurrency:currency.value};
-      const r = await fetch(`${API_BASE}/api/client/register`, {
+      const payload = {
+        fullName: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        baseCurrency: document.getElementById('currency').value
+      };
+      const r = await fetch(`${API_BASE}/api/auth/register`, {
         method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
       });
       if(!r.ok) throw new Error('Could not start KYC');
-      alert('Check your inbox for the OTP to continue onboarding.');
-      location.href='client-login.html';
+      alert('OTP sent to your email. Use it to verify and set a password on the next screen.');
+      location.href='verify-otp.html';
     }catch(err){ alert(err.message); }
   }
 </script>
