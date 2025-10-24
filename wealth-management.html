@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wealth Management – Maltese First Capital</title>
-  <meta name="description" content="Advisory, reporting, and fiduciary services to grow, preserve, and transfer wealth across jurisdictions.">
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wealth Management | Maltese First Capital</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <header class="site-header">
-  <nav class="nav">
-    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""> <span class="wordmark">Maltese First Capital</span></a>
-    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
-    <div class="nav-actions">
-      <a href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </nav>
+  <div class="container nav">
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
+    <nav class="nav-actions">
+      <a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a>
+      <a href="about.html">About</a><a href="contact.html">Contact</a><a href="client-login.html">Client Login</a>
+      <a href="client-register.html">Open an Account</a>
+    </nav>
+  </div>
 </header>
 
-<main class="page">
-  <h1>Wealth Management</h1>
-  <p>We provide consolidated performance reporting, investment advisory, and trust services designed to help clients grow, preserve, and transfer wealth efficiently across jurisdictions.</p>
+<section class="page-hero">
+  <div class="container">
+    <h1>Wealth Management</h1>
+    <p>Consolidated reporting, performance analytics, and a secure document vault.</p>
+  </div>
+</section>
 
-  <section>
-    <h2>Key Services</h2>
-    <ul>
-      <li>Strategic portfolio advisory and asset allocation</li>
-      <li>Investment performance monitoring and risk analysis</li>
-      <li>Custody, escrow, and fiduciary services</li>
-      <li>Succession and family-office planning</li>
-    </ul>
-  </section>
-
-  <a href="contact.html" class="btn-primary">Speak to an Advisor</a>
+<main class="container section">
+  <div class="content">
+    <div class="grid grid-3">
+      <div class="card"><h3>Holdings</h3><p>All assets, one view—cash, fixed income, equities, funds.</p></div>
+      <div class="card"><h3>Reporting</h3><p>Time-weighted returns and downloadable PDFs.</p></div>
+      <div class="card"><h3>Vault</h3><p>Statements, agreements, and KYC documents stored securely.</p></div>
+    </div>
+    <div class="text-center" style="margin-top:26px;">
+      <a class="btn btn-secondary" href="client-register.html">Open an Account</a>
+    </div>
+  </div>
 </main>
 
-<footer><p>© 2025 Maltese First Capital · Valletta, Malta</p></footer>
+<footer><p>© 2025 Maltese First Capital • <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p></footer>
 </body>
 </html>
