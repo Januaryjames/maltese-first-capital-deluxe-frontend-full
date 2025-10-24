@@ -34,7 +34,6 @@
       <input id="description" />
       <button class="btn-primary" type="submit">Add Transaction</button>
     </form>
-    <div id="txMsg" style="margin-top:8px;"></div>
   </div>
 
   <div class="section">
@@ -48,7 +47,6 @@
       <select id="balCurrency"><option>USD</option><option>EUR</option><option>GBP</option></select>
       <button class="btn-secondary" type="submit">Update Balance</button>
     </form>
-    <div id="balMsg" style="margin-top:8px;"></div>
   </div>
 
   <div class="section">
@@ -61,7 +59,11 @@
       <textarea id="histJson" rows="6" placeholder='[{"date":"2025-01-01","description":"Init","type":"credit","amount":1000,"currency":"USD"}]' required></textarea>
       <button class="btn-outline" type="submit">Replace History</button>
     </form>
-    <div id="histMsg" style="margin-top:8px;"></div>
+  </div>
+
+  <div class="empty" id="adminHint" style="display:none">
+    <h3>Tip</h3>
+    <p>You can paste a full array to overwrite a user’s transaction history in one step.</p>
   </div>
 </main>
 
@@ -77,14 +79,13 @@
   document.getElementById('logout').addEventListener('click', (e)=>{
     e.preventDefault();
     localStorage.removeItem('MFC_TOKEN'); localStorage.removeItem('MFC_ROLE');
-    location.href='index.html';
+    toast('Signed out');
+    setTimeout(()=>location.href='index.html', 600);
   });
 
   // Add transaction
   document.getElementById('txForm').addEventListener('submit', async (e)=>{
     e.preventDefault();
-    const txMsg = document.getElementById('txMsg');
-    txMsg.textContent = 'Submitting…';
     try{
       const payload = {
         userId: document.getElementById('userId').value.trim(),
@@ -93,6 +94,7 @@
         type: document.getElementById('type').value,
         description: document.getElementById('description').value.trim()
       };
+      if(!payload.userId) throw new Error('User ID required');
       const r = await fetch(`${API}/api/admin/tx`, {
         method:'POST',
         headers:{'Content-Type':'application/json','Authorization':`Bearer ${TOKEN}`},
@@ -100,24 +102,22 @@
       });
       const data = await r.json().catch(()=> ({}));
       if(!r.ok) throw new Error(data.message || 'Failed to add transaction');
-      txMsg.style.color='#104a72'; txMsg.textContent='Transaction added.';
       e.target.reset();
-    }catch(err){
-      txMsg.style.color='#b00020'; txMsg.textContent = err.message;
-    }
+      toast('Transaction added','success');
+      document.getElementById('adminHint').style.display = 'block';
+    }catch(err){ toast(err.message,'error'); }
   });
 
   // Update balance/statement
   document.getElementById('balForm').addEventListener('submit', async (e)=>{
     e.preventDefault();
-    const balMsg = document.getElementById('balMsg');
-    balMsg.textContent = 'Updating…';
     try{
       const userId = document.getElementById('balUserId').value.trim();
       const payload = {
         balance: parseFloat(document.getElementById('newBalance').value),
         currency: document.getElementById('balCurrency').value
       };
+      if(!userId) throw new Error('User ID required');
       const r = await fetch(`${API}/api/admin/statement/${encodeURIComponent(userId)}`, {
         method:'PUT',
         headers:{'Content-Type':'application/json','Authorization':`Bearer ${TOKEN}`},
@@ -125,20 +125,17 @@
       });
       const data = await r.json().catch(()=> ({}));
       if(!r.ok) throw new Error(data.message || 'Failed to update statement');
-      balMsg.style.color='#104a72'; balMsg.textContent='Statement updated.';
       e.target.reset();
-    }catch(err){
-      balMsg.style.color='#b00020'; balMsg.textContent = err.message;
-    }
+      toast('Statement updated','success');
+    }catch(err){ toast(err.message,'error'); }
   });
 
   // Replace transaction history
   document.getElementById('histForm').addEventListener('submit', async (e)=>{
     e.preventDefault();
-    const histMsg = document.getElementById('histMsg');
-    histMsg.textContent = 'Replacing…';
     try{
       const userId = document.getElementById('histUserId').value.trim();
+      if(!userId) throw new Error('User ID required');
       let txs;
       try{ txs = JSON.parse(document.getElementById('histJson').value); }
       catch{ throw new Error('Invalid JSON'); }
@@ -149,12 +146,22 @@
       });
       const data = await r.json().catch(()=> ({}));
       if(!r.ok) throw new Error(data.message || 'Failed to replace history');
-      histMsg.style.color='#104a72'; histMsg.textContent='History replaced.';
       e.target.reset();
-    }catch(err){
-      histMsg.style.color='#b00020'; histMsg.textContent = err.message;
-    }
+      toast('History replaced','success');
+    }catch(err){ toast(err.message,'error'); }
   });
+</script>
+
+<!-- Toast helper -->
+<script>
+  (function(){
+    const t = document.createElement('div');
+    t.className = 'toast'; document.body.appendChild(t);
+    window.toast = (msg, type='')=>{
+      t.className = `toast ${type} show`; t.textContent = msg;
+      clearTimeout(window.__tt); window.__tt = setTimeout(()=>{ t.classList.remove('show'); }, 2800);
+    };
+  })();
 </script>
 </body>
 </html>
