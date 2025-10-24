@@ -85,8 +85,14 @@ a{color:var(--navy)}
 }
 .hero h1{ font-size:44px; line-height:1.12; margin:10px 0 10px; }
 .hero p{ color:#e6edf6; margin:0 0 22px; font-size:18px; }
-.hero .hero-logo{ height:76px; width:auto; display:block; margin:0 auto 10px; }
-
+..hero-logo {
+  height: 80px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+@media (max-width:600px){
+  .hero-logo { height: 60px; margin-bottom: 12px; }
+}
 .cta-row{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
