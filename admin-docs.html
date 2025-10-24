@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MFC • Admin Documents</title>
+  <link rel="icon" href="assets/logo.png"/>
+  <link rel="stylesheet" href="styles.css?v=13"/>
+  <style>
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0}
+    .filters{display:flex;gap:10px;align-items:center}
+    .muted{color:#9fb1c7}
+    .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+    dialog{border:none;border-radius:16px;background:#0f1a27;padding:18px;color:#e6edf5;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+    dialog::backdrop{background:rgba(0,0,0,.35)}
+    .row-actions{display:flex;gap:8px}
+    .badge{padding:5px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.08);color:#cfd8e3;font-size:12px}
+  </style>
+</head>
+<body>
+<header>
+  <nav class="navbar">
+    <div class="logo"><img src="assets/logo.png" alt="MFC"/><span>Maltese First Capital</span></div>
+    <ul class="nav-links">
+      <li><a href="admin-dashboard.html">Dashboard</a></li>
+      <li><a href="admin-kyc.html">KYC Review</a></li>
+      <li><a class="active highlight" href="admin-docs.html">Documents</a></li>
+      <li><a href="#" id="logoutLink">Log Out</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="dashboard">
+  <div class="toolbar">
+    <h1>Client Documents</h1>
+    <div class="filters">
+      <select id="fltStatus">
+        <option value="">All</option>
+        <option value="pending" selected>Pending</option>
+        <option value="review">In Review</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+      </select>
+      <select id="fltCat">
+        <option value="">Any category</option>
+        <option value="ID">Government ID</option>
+        <option value="POA">Proof of Address</option>
+        <option value="SOURCE">Source of Funds</option>
+        <option value="OTHER">Other</option>
+      </select>
+      <input id="fltQuery" placeholder="Search name / email / userId / filename" />
+      <button class="btn" id="btnFilter">Filter</button>
+    </div>
+  </div>
+
+  <section class="admin-table">
+    <h2>Uploads</h2>
+    <div style="padding:0 16px 8px">
+      <span class="badge">API: <span class="mono" id="apiHost">unset</span></span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Uploaded</th>
+          <th>Client</th>
+          <th>Category</th>
+          <th>File</th>
+          <th>Status</th>
+          <th style="width:260px">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="docsBody"><tr><td class="empty" colspan="6">Loading…</td></tr></tbody>
+    </table>
+  </section>
+</main>
+
+<footer><p>© 2025 Maltese First Capital — Valletta, Malta</p></footer>
+
+<dialog id="askMore">
+  <form id="askForm" method="dialog">
+    <h3>Request More Documents</h3>
+    <p class="muted">We’ll email the client with your note and a secure upload link.</p>
+    <input type="hidden" id="askUserId"/>
+    <label for="askNote">Message to client</label>
+    <textarea id="askNote" rows="4" placeholder="Please upload a bank statement (last 3 months)…"></textarea>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+      <button class="btn" value="cancel">Cancel</button>
+      <button class="btn gold" id="askSend" value="ok">Send Request</button>
+    </div>
+    <div class="muted" id="askStatus" style="margin-top:6px"></div>
+  </form>
+</dialog>
+
+<script>
+  const API   = localStorage.getItem('BACKEND_URL') || '';
+  const token = localStorage.getItem('ADMIN_TOKEN') || '';
+  document.getElementById('apiHost').textContent = API || 'not set';
+
+  document.getElementById('logoutLink').addEventListener('click', (e)=>{
+    e.preventDefault();
+    localStorage.removeItem('ADMIN_TOKEN');
+    localStorage.removeItem('ADMIN_USER');
+    location.href='admin-login.html';
+  });
+
+  function hdr(extra={}){ return { 'Accept':'application/json', ...(token?{'Authorization':`Bearer ${token}`}:{}) , ...extra}; }
+
+  async function fetchJSON(path, opts={}) {
+    const res = await fetch(`${API}${path}`, { ...opts, headers: hdr(opts.headers||{}) });
+    if(!res.ok) throw new Error(await res.text());
+    try { return await res.json(); } catch { return {}; }
+  }
+
+  async function loadDocs(){
+    const q   = document.getElementById('fltQuery').value.trim();
+    const st  = document.getElementById('fltStatus').value;
+    const cat = document.getElementById('fltCat').value;
+    const tbody = document.getElementById('docsBody');
+    tbody.innerHTML = `<tr><td class="empty" colspan="6">Loading…</td></tr>`;
+    try{
+      const url = new URL(`${API}/api/admin/documents`, location.origin);
+      if(q)   url.searchParams.set('q', q);
+      if(st)  url.searchParams.set('status', st);
+      if(cat) url.searchParams.set('category', cat);
+      let items = await fetchJSON(url.pathname + url.search);
+      if(!Array.isArray(items)) items = [];
+      if(!items.length){ tbody.innerHTML = `<tr><td class="empty" colspan="6">No matches.</td></tr>`; return; }
+
+      tbody.innerHTML = items.map(d=>`
+        <tr>
+          <td>${new Date(d.createdAt||Date.now()).toLocaleString()}</td>
+          <td>
+            <div><strong>${escape(d.clientName||'Client')}</strong></div>
+            <div class="muted mono">${escape(d.clientEmail||'')}</div>
+            <div class="muted mono">${escape(String(d.userId||''))}</div>
+          </td>
+          <td>${escape(d.category||'OTHER')}</td>
+          <td>${d.url? `<a class="btn" href="${d.url}" target="_blank" rel="noopener">View</a>` : (escape(d.filename||'file'))}</td>
+          <td><span class="status ${statusClass(d.status)}">${escape(d.status||'pending')}</span></td>
+          <td class="row-actions">
+            <button class="btn" data-act="approve" data-id="${d.id}">Approve</button>
+            <button class="btn" data-act="reject"  data-id="${d.id}">Reject</button>
+            <button class="btn gold" data-act="ask" data-uid="${d.userId}">Request Docs</button>
+          </td>
+        </tr>
+      `).join('');
+    }catch(err){
+      tbody.innerHTML = `<tr><td class="empty" colspan="6">Unable to load documents.</td></tr>`;
+    }
+  }
+
+  function escape(s){return (s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+  function statusClass(s){ if(s==='approved') return 'complete'; if(s==='rejected') return 'red'; if(s==='review') return 'review'; return 'pending'; }
+
+  document.getElementById('btnFilter').addEventListener('click', loadDocs);
+
+  document.getElementById('docsBody').addEventListener('click', async (e)=>{
+    const btn = e.target.closest('button[data-act]');
+    if(!btn) return;
+    const act = btn.dataset.act;
+    try{
+      if(act==='approve'){
+        await fetchJSON(`/api/admin/document/${encodeURIComponent(btn.dataset.id)}/approve`, { method:'POST' });
+      }else if(act==='reject'){
+        await fetchJSON(`/api/admin/document/${encodeURIComponent(btn.dataset.id)}/reject`, { method:'POST' });
+      }else if(act==='ask'){
+        openAsk(btn.dataset.uid);
+        return;
+      }
+      await loadDocs();
+    }catch(err){
+      alert('Action failed.');
+    }
+  });
+
+  const dlg = document.getElementById('askMore');
+  function openAsk(userId){
+    document.getElementById('askUserId').value = userId || '';
+    document.getElementById('askNote').value = '';
+    document.getElementById('askStatus').textContent='';
+    dlg.showModal();
+  }
+  document.getElementById('askSend').addEventListener('click', async (e)=>{
+    e.preventDefault();
+    const userId = document.getElementById('askUserId').value;
+    const note   = document.getElementById('askNote').value.trim();
+    const status = document.getElementById('askStatus');
+    status.textContent = 'Sending…';
+    try{
+      await fetchJSON(`/api/admin/document/request-docs`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ userId, note })
+      });
+      status.textContent = 'Request sent.';
+      setTimeout(()=>dlg.close(), 700);
+    }catch{
+      status.textContent = 'Failed to send.';
+    }
+  });
+
+  loadDocs();
+</script>
+</body>
+</html>
