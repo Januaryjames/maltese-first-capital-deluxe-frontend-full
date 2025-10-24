@@ -3,29 +3,25 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>MFC • Admin Dashboard</title>
+  <title>MFC • Client Dashboard</title>
   <link rel="icon" href="assets/logo.png"/>
-  <link rel="stylesheet" href="styles.css?v=10"/>
+  <link rel="stylesheet" href="styles.css?v=11"/>
   <style>
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px}
-    .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-    .form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .form-grid .wide{grid-column: span 2}
-    .muted{color:#9fb1c7}
-    .actions{display:flex;gap:8px}
     .badge{padding:5px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.08);color:#cfd8e3;font-size:12px}
-    .kicker{display:flex;gap:8px;align-items:center}
-    .empty{padding:16px;color:#9fb1c7}
+    .balances{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .balance-card{background:#0f1a27;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px}
+    .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+    .table-wrap{overflow:auto}
+    @media (max-width:900px){ .balances{grid-template-columns:1fr} }
   </style>
 </head>
 <body>
 <header>
   <nav class="navbar">
-    <div class="logo"><img src="assets/logo.png" alt="MFC"/><span>Maltese First Capital</span></div>
+    <div class="logo"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></div>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="admin-kyc.html">KYC Review</a></li>
-      <li><a class="active highlight" href="admin-dashboard.html">Dashboard</a></li>
+      <li><a class="active highlight" href="client-dashboard.html">Dashboard</a></li>
       <li><a href="#" id="logoutLink">Log Out</a></li>
     </ul>
   </nav>
@@ -33,70 +29,29 @@
 
 <main class="dashboard">
   <div class="topbar">
-    <h1>Admin Dashboard</h1>
-    <div class="kicker">
-      <span class="badge">User: <span id="who" class="mono">—</span></span>
-      <span class="badge">API: <span class="mono" id="apiHost">unset</span></span>
-    </div>
+    <h1>Welcome back, <span id="who">Client</span></h1>
+    <span class="badge">API: <span class="mono" id="apiHost">unset</span></span>
   </div>
 
-  <!-- Overview cards -->
-  <section class="dashboard-cards" id="overview">
-    <div class="dash-card"><h3>Total Clients</h3><div class="count" id="ovClients">—</div></div>
-    <div class="dash-card"><h3>Active Accounts</h3><div class="count" id="ovAccounts">—</div></div>
-    <div class="dash-card"><h3>KYC Pending</h3><div class="count" id="ovKyc">—</div></div>
-    <div class="dash-card"><h3>Today’s Volume</h3><div class="count" id="ovVolume">—</div></div>
+  <section class="balances" id="balances">
+    <div class="balance-card"><h3>EUR</h3><div class="count" id="balEUR">—</div></div>
+    <div class="balance-card"><h3>USD</h3><div class="count" id="balUSD">—</div></div>
+    <div class="balance-card"><h3>GBP</h3><div class="count" id="balGBP">—</div></div>
   </section>
 
-  <!-- Add Transaction -->
-  <section class="admin-table">
-    <h2>Add Transaction</h2>
-    <div class="container" style="padding:14px 16px 20px">
-      <form id="txForm" class="form-grid">
-        <div>
-          <label for="txUserId">User ID</label>
-          <input id="txUserId" placeholder="e.g. 10024567" required />
-        </div>
-        <div>
-          <label for="txCurrency">Currency</label>
-          <select id="txCurrency">
-            <option>EUR</option><option>USD</option><option>GBP</option>
-          </select>
-        </div>
-        <div>
-          <label for="txType">Type</label>
-          <select id="txType"><option value="credit">credit</option><option value="debit">debit</option></select>
-        </div>
-        <div>
-          <label for="txAmount">Amount</label>
-          <input id="txAmount" type="number" step="0.01" placeholder="0.00" required />
-        </div>
-        <div class="wide">
-          <label for="txNote">Description</label>
-          <input id="txNote" placeholder="Optional memo…" />
-        </div>
-        <div>
-          <label>&nbsp;</label>
-          <button class="btn gold" type="submit">Add Transaction</button>
-        </div>
-        <div class="wide">
-          <span id="txStatus" class="muted"></span>
-        </div>
-      </form>
+  <section class="admin-table" style="margin-top:18px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <h2>Recent Transactions</h2>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label for="stmtMonth" class="mono" style="font-size:13px">Statement month</label>
+        <input id="stmtMonth" type="month"/>
+        <button class="btn" id="btnStatement">Download PDF</button>
+      </div>
     </div>
-  </section>
-
-  <!-- Recent Transactions -->
-  <section class="admin-table">
-    <h2>Recent Transactions</h2>
     <div class="table-wrap">
-      <table id="txTable">
-        <thead>
-          <tr>
-            <th>Date</th><th>User</th><th>Currency</th><th>Type</th><th>Amount</th><th>Description</th>
-          </tr>
-        </thead>
-        <tbody id="txBody"><tr><td class="empty" colspan="6">Loading…</td></tr></tbody>
+      <table>
+        <thead><tr><th>Date</th><th>Currency</th><th>Type</th><th>Amount</th><th>Description</th></tr></thead>
+        <tbody id="txBody"><tr><td class="empty" colspan="5">Loading…</td></tr></tbody>
       </table>
     </div>
   </section>
@@ -106,102 +61,101 @@
 
 <script>
   const API = localStorage.getItem('BACKEND_URL') || '';
-  const token = localStorage.getItem('ADMIN_TOKEN') || '';
+  const token = localStorage.getItem('CLIENT_TOKEN') || '';
   document.getElementById('apiHost').textContent = API || 'not set';
-  document.getElementById('who').textContent = localStorage.getItem('ADMIN_USER') || '—';
+  document.getElementById('who').textContent = localStorage.getItem('CLIENT_NAME') || 'Client';
 
-  // simple auth guard (optional)
-  // if(!token){ location.href='admin-login.html'; }
+  // Optional guard:
+  // if(!token){ location.href='client-login.html'; }
 
-  document.getElementById('logoutLink').addEventListener('click', (e)=>{
-    e.preventDefault();
-    localStorage.removeItem('ADMIN_TOKEN');
-    localStorage.removeItem('ADMIN_USER');
-    location.href='admin-login.html';
-  });
+  function hMoney(v,c){ return typeof v==='number' ? Intl.NumberFormat(undefined,{style:'currency',currency:c}).format(v) : '—'; }
 
-  async function getJSON(url, opts={}){
-    const headers = Object.assign({'Accept':'application/json'}, opts.headers||{});
-    if(token) headers['Authorization'] = `Bearer ${token}`;
-    const res = await fetch(url, Object.assign({}, opts, {headers}));
+  async function get(path){
+    const res = await fetch(`${API}${path}`,{
+      headers: { 'Accept':'application/json', ...(token?{'Authorization':`Bearer ${token}`}:{}) }
+    });
     if(!res.ok) throw new Error(await res.text());
-    try { return await res.json(); } catch { return {}; }
+    try{ return await res.json(); }catch{ return {}; }
   }
 
-  // Load Overview (tries canonical, falls back to demo)
-  async function loadOverview(){
+  async function loadBalances(){
     try{
-      const data = await getJSON(`${API}/api/admin/overview`);
-      document.getElementById('ovClients').textContent  = data.totalClients ?? '—';
-      document.getElementById('ovAccounts').textContent = data.activeAccounts ?? '—';
-      document.getElementById('ovKyc').textContent      = data.kycPending ?? '—';
-      document.getElementById('ovVolume').textContent   = data.todaysVolume ?? '—';
+      const data = await get('/api/client/overview');
+      document.getElementById('balEUR').textContent = hMoney(data.balances?.EUR ?? 0,'EUR');
+      document.getElementById('balUSD').textContent = hMoney(data.balances?.USD ?? 0,'USD');
+      document.getElementById('balGBP').textContent = hMoney(data.balances?.GBP ?? 0,'GBP');
+      if(data.client?.name) localStorage.setItem('CLIENT_NAME', data.client.name);
+      document.getElementById('who').textContent = localStorage.getItem('CLIENT_NAME') || 'Client';
     }catch{
-      // graceful demo fallback
-      document.getElementById('ovClients').textContent  = '124';
-      document.getElementById('ovAccounts').textContent = '198';
-      document.getElementById('ovKyc').textContent      = '7';
-      document.getElementById('ovVolume').textContent   = '€2.3m';
+      // demo fallback
+      document.getElementById('balEUR').textContent = hMoney(58234.44,'EUR');
+      document.getElementById('balUSD').textContent = hMoney(14320.00,'USD');
+      document.getElementById('balGBP').textContent = hMoney(9211.88,'GBP');
     }
   }
 
-  // Load recent transactions
   async function loadTx(){
     const body = document.getElementById('txBody');
     try{
-      const items = await getJSON(`${API}/api/admin/transactions?limit=25`);
-      if(!Array.isArray(items) || items.length===0){
-        body.innerHTML = `<tr><td class="empty" colspan="6">No transactions.</td></tr>`;
-        return;
-      }
+      const items = await get('/api/client/transactions?limit=25');
+      if(!Array.isArray(items) || items.length===0){ body.innerHTML=`<tr><td class="empty" colspan="5">No transactions.</td></tr>`; return;}
       body.innerHTML = items.map(t=>`
         <tr>
           <td>${new Date(t.createdAt||Date.now()).toLocaleString()}</td>
-          <td class="mono">${t.userId ?? '—'}</td>
-          <td>${t.currency ?? '—'}</td>
-          <td>${t.type ?? '—'}</td>
-          <td>${formatAmt(t.amount, t.currency)}</td>
-          <td>${escapeHTML(t.note||'')}</td>
+          <td>${t.currency||'EUR'}</td>
+          <td>${t.type||'—'}</td>
+          <td>${hMoney(Number(t.amount)||0, t.currency||'EUR')}</td>
+          <td>${escape((t.note||''))}</td>
         </tr>
       `).join('');
-    }catch(err){
-      body.innerHTML = `<tr><td class="empty" colspan="6">Unable to load transactions.</td></tr>`;
+    }catch{
+      // demo fallback
+      const demo = [
+        {createdAt:Date.now()-3600e3, currency:'EUR', type:'credit', amount:12000, note:'Deposit'},
+        {createdAt:Date.now()-7200e3, currency:'EUR', type:'debit', amount: -350, note:'Card purchase'},
+        {createdAt:Date.now()-17200e3, currency:'USD', type:'credit', amount: 5000, note:'Incoming wire'}
+      ];
+      body.innerHTML = demo.map(t=>`
+        <tr>
+          <td>${new Date(t.createdAt).toLocaleString()}</td>
+          <td>${t.currency}</td>
+          <td>${t.type}</td>
+          <td>${hMoney(t.amount, t.currency)}</td>
+          <td>${t.note}</td>
+        </tr>
+      `).join('');
     }
   }
 
-  // Add transaction
-  document.getElementById('txForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const s = id=>document.getElementById(id).value;
-    const payload = {
-      userId: s('txUserId').trim(),
-      currency: s('txCurrency'),
-      type: s('txType'),
-      amount: parseFloat(s('txAmount')),
-      note: s('txNote').trim()
-    };
-    const status = document.getElementById('txStatus');
-    if(!payload.userId || !isFinite(payload.amount)){ status.textContent='Please enter a valid user and amount.'; return;}
-    status.textContent = 'Submitting…';
+  document.getElementById('btnStatement').addEventListener('click', async ()=>{
+    const m = document.getElementById('stmtMonth').value; // yyyy-mm
+    const qs = m ? `?month=${encodeURIComponent(m)}` : '';
     try{
-      const res = await fetch(`${API}/api/admin/tx`,{
-        method:'POST',
-        headers:{'Content-Type':'application/json', ...(token?{'Authorization':`Bearer ${token}`}:{})},
-        body:JSON.stringify(payload)
+      const res = await fetch(`${API}/api/client/statement${qs}`,{
+        headers: token? {'Authorization':`Bearer ${token}`} : {}
       });
       if(!res.ok) throw new Error(await res.text());
-      status.textContent = 'Saved.';
-      e.target.reset();
-      loadTx();
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `statement${m?'-'+m:''}.pdf`;
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
     }catch(err){
-      status.textContent = `Error: ${err.message || 'failed'}`;
+      alert('Statement download unavailable yet.');
     }
   });
 
-  function formatAmt(a, c){ if(typeof a!=='number') return '—'; return Intl.NumberFormat(undefined,{style:'currency',currency:c||'EUR'}).format(a); }
-  function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+  document.getElementById('logoutLink').addEventListener('click', (e)=>{
+    e.preventDefault();
+    localStorage.removeItem('CLIENT_TOKEN');
+    localStorage.removeItem('CLIENT_NAME');
+    location.href='client-login.html';
+  });
 
-  loadOverview();
+  function escape(s){return (s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+
+  loadBalances();
   loadTx();
 </script>
 </body>
