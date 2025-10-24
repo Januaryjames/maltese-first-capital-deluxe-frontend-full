@@ -1,41 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-<header class="site-header">
-  <div class="container nav">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
-    <button class="nav-toggle" onclick="document.querySelector('.nav-actions').classList.toggle('show')">☰</button>
-    <nav class="nav-actions"><a href="admin-kyc.html">KYC Reviews</a><a href="index.html">Site</a></nav>
-  </div>
-</header>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><title>Admin Dashboard — Maltese First Capital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="styles.css">
+</head><body>
 
-<section class="page-hero"><div class="container"><h1>Admin Dashboard</h1><p>Manage clients, balances, transactions, and KYC.</p></div></section>
+<header class="site-header"><div class="container nav">
+  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
+  <div class="nav-actions" id="navActions"><a class="btn btn-secondary" href="admin-login.html" onclick="localStorage.removeItem('ADMIN_TOKEN')">Sign out</a></div>
+  <button class="mobile-toggle" onclick="document.getElementById('navActions').classList.toggle('show')">☰</button>
+</div></header>
 
-<main class="container section">
+<section class="section"><div class="container">
+  <h2>Admin Panel</h2>
+
   <div class="content">
-    <h3>Add Transaction</h3>
-    <form class="form" onsubmit="event.preventDefault(); alert('Transaction recorded.');">
-      <label>User ID<input required placeholder="Client ID"></label>
-      <label>Currency<select><option>USD</option><option>EUR</option><option>GBP</option></select></label>
-      <label>Amount<input type="number" required step="0.01" placeholder="0.00"></label>
-      <label>Type<select><option>credit</option><option>debit</option></select></label>
-      <label>Description<input placeholder="Description"></label>
-      <div class="form-actions"><button class="btn btn-secondary" type="submit">Add Transaction</button></div>
+    <h3>Create / Edit Statement</h3>
+    <form class="form" onsubmit="saveStatement(event)">
+      <input class="input" id="userId" placeholder="User ID" required>
+      <input class="input" id="period" placeholder="Statement Period (e.g., 2025-10)" required>
+      <textarea class="textarea" id="statementJson" placeholder="Statement JSON..." required></textarea>
+      <button class="btn btn-gold">Save Statement</button>
+      <div class="help">Statements are editable; upload JSON or paste here.</div>
     </form>
-
-    <h3 style="margin:22px 0 10px;">Recent Activity</h3>
-    <table class="table">
-      <thead><tr><th>User</th><th>Type</th><th>Currency</th><th>Amount</th><th>Note</th></tr></thead>
-      <tbody><tr><td>#10244</td><td>credit</td><td>USD</td><td>2500.00</td><td>Deposit</td></tr></tbody>
-    </table>
   </div>
-</main>
 
-<footer><p>© 2025 Maltese First Capital</p></footer>
-</body>
-</html>
+  <div class="content mt-32">
+    <h3>Add Transaction</h3>
+    <form class="form" onsubmit="addTx(event)">
+      <input class="input" id="txUser" placeholder="User ID" required>
+      <select class="select" id="txCurrency"><option>USD</option><option>EUR</option><option>GBP</option></select>
+      <input class="input" id="txAmount" type="number" step="0.01" placeholder="Amount" required>
+      <select class="select" id="txType"><option>credit</option><option>debit</option></select>
+      <input class="input" id="txDesc" placeholder="Description">
+      <button class="btn btn-gold">Add Transaction</button>
+    </form>
+  </div>
+
+  <div class="content mt-32">
+    <h3>Pending KYC</h3>
+    <div id="kycList">Loading…</div>
+  </div>
+</div></section>
+
+<footer class="site-footer"><div class="container inner"><div>© 2025 Maltese First Capital · Valletta, Malta</div><div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div></div></footer>
+
+<script>
+  window.API_BASE = localStorage.getItem('BACKEND_URL') || '';
+  const ADMIN_TOKEN = localStorage.getItem('ADMIN_TOKEN') || '';
+  const H = { headers: { 'Content-Type':'application/json', Authorization:`Bearer ${ADMIN_TOKEN}` } };
+
+  async function saveStatement(e){
+    e.preventDefault();
+    try{
+      const payload = { userId: userId.value, period: period.value, data: JSON.parse(statementJson.value||'{}') };
+      const r = await fetch(`${API_BASE}/api/admin/statement`, { method:'POST', ...H, body: JSON.stringify(payload) });
+      alert(r.ok ? 'Saved' : 'Failed to save');
+    }catch(err){ alert('Invalid JSON or request failed'); }
+  }
+  async function addTx(e){
+    e.preventDefault();
+    const payload = { userId: txUser.value, amount:+txAmount.value, currency: txCurrency.value, type: txType.value, description: txDesc.value };
+    const r = await fetch(`${API_BASE}/api/admin/tx`, { method:'POST', ...H, body:JSON.stringify(payload) });
+    alert(r.ok ? 'Transaction added' : 'Failed to add transaction');
+  }
+
+  (async function loadKYC(){
+    try{
+      const r = await fetch(`${API_BASE}/api/admin/kyc/pending`, { headers:{Authorization:`Bearer ${ADMIN_TOKEN}`}});
+      const list = r.ok ? await r.json() : [];
+      document.getElementById('kycList').innerHTML =
+        (list||[]).map(k=>`<div class="card" style="margin-bottom:10px"><b>${k.name||'Applicant'}</b><br>${k.email||''} · ${k.status||'pending'}</div>`).join('') || 'None';
+    }catch{ document.getElementById('kycList').textContent='None'; }
+  })();
+</script>
+</body></html>
