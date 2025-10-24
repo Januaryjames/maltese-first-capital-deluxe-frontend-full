@@ -1,39 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KYC Reviews | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MFC • KYC Review</title>
+  <link rel="icon" href="assets/logo.png"/>
+  <link rel="stylesheet" href="styles.css?v=10"/>
+  <style>
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0}
+    .filters{display:flex;gap:10px;align-items:center}
+    .muted{color:#9fb1c7}
+    dialog{border:none;border-radius:16px;background:#0f1a27;padding:18px 18px 14px;color:#e6edf5;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+    dialog::backdrop{background:rgba(0,0,0,.35)}
+    .row-actions{display:flex;gap:8px}
+  </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="container nav">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span class="wordmark">Maltese First Capital</span></a>
-    <nav class="nav-actions"><a href="admin-dashboard.html">Admin</a></nav>
-  </div>
+<header>
+  <nav class="navbar">
+    <div class="logo"><img src="assets/logo.png" alt="MFC"/><span>Maltese First Capital</span></div>
+    <ul class="nav-links">
+      <li><a href="admin-dashboard.html">Dashboard</a></li>
+      <li><a class="active highlight" href="admin-kyc.html">KYC Review</a></li>
+      <li><a href="#" id="logoutLink">Log Out</a></li>
+    </ul>
+  </nav>
 </header>
 
-<section class="page-hero"><div class="container"><h1>KYC Reviews</h1><p>Review ID and address documents.</p></div></section>
-
-<main class="container section">
-  <div class="content">
-    <table class="table">
-      <thead><tr><th>Client</th><th>Email</th><th>ID</th><th>Address</th><th>Status</th><th>Action</th></tr></thead>
-      <tbody>
-        <tr>
-          <td>Jane Borg</td><td>jane@example.com</td>
-          <td><a href="#" target="_blank">View</a></td><td><a href="#" target="_blank">View</a></td>
-          <td>Pending</td>
-          <td>
-            <button class="btn btn-primary" onclick="alert('Approved');">Approve</button>
-            <button class="btn btn-outline" onclick="alert('Rejected');">Reject</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<main class="dashboard">
+  <div class="toolbar">
+    <h1>KYC Review</h1>
+    <div class="filters">
+      <select id="fltStatus">
+        <option value="">All</option>
+        <option value="pending" selected>Pending</option>
+        <option value="review">In Review</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+      </select>
+      <input id="fltQuery" placeholder="Search name / email / ID" />
+      <button class="btn" id="btnFilter">Filter</button>
+    </div>
   </div>
+
+  <section class="admin-table">
+    <h2>Submissions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Submitted</th><th>Client</th><th>Email</th><th>Doc Type</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="kycBody"><tr><td class="empty" colspan="6">Loading…</td></tr></tbody>
+    </table>
+  </section>
 </main>
 
-<footer><p>© 2025 Maltese First Capital</p></footer>
+<footer><p>© 2025 Maltese First Capital — Valletta, Malta</p></footer>
+
+<!-- Request More Docs Modal -->
+<dialog id="askMore">
+  <form id="askForm" method="dialog">
+    <h3>Request More Documents</h3>
+    <p class="muted">We’ll email the client with your note and a secure upload link.</p>
+    <input type="hidden" id="askId"/>
+    <label for="askNote">Message to client</label>
+    <textarea id="askNote" rows="4" placeholder="Please upload a proof of address issued within last 3 months…"></textarea>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+      <button class="btn" value="cancel">Cancel</button>
+      <button class="btn gold" id="askSend" value="ok">Send Request</button>
+    </div>
+    <div class="muted" id="askStatus" style="margin-top:6px"></div>
+  </form>
+</dialog>
+
+<script>
+  const API = localStorage.getItem('BACKEND_URL') || '';
+  const token = localStorage.getItem('ADMIN_TOKEN') || '';
+
+  document.getElementById('logoutLink').addEventListener('click', (e)=>{
+    e.preventDefault();
+    localStorage.removeItem('ADMIN_TOKEN');
+    localStorage.removeItem('ADMIN_USER');
+    location.href='admin-login.html';
+  });
+
+  async function api(path, opts={}){
+    const headers = Object.assign({'Accept':'application/json'}, opts.headers||{});
+    if(!(opts.body instanceof FormData) && !headers['Content-Type']) headers['Content-Type']='application/json';
+    if(token) headers['Authorization'] = `Bearer ${token}`;
+    const res = await fetch(`${API}${path}`, Object.assign({}, opts, {headers}));
+    if(!res.ok) throw new Error(await res.text());
+    try { return await res.json(); } catch { return {}; }
+  }
+
+  // load KYC list with optional filters
+  async function loadKyc(){
+    const q   = document.getElementById('fltQuery').value.trim();
+    const st  = document.getElementById('fltStatus').value;
+    const tbody = document.getElementById('kycBody');
+    tbody.innerHTML = `<tr><td class="empty" colspan="6">Loading…</td></tr>`;
+    try{
+      const url = new URL(`${API}/api/admin/kyc`, location.origin);
+      if(q)  url.searchParams.set('q', q);
+      if(st) url.searchParams.set('status', st);
+      let items = await api(url.pathname + url.search, { method:'GET' });
+      if(!Array.isArray(items)) items = [];
+
+      if(items.length===0){
+        tbody.innerHTML = `<tr><td class="empty" colspan="6">No results.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = items.map(x=>`
+        <tr>
+          <td>${new Date(x.createdAt||Date.now()).toLocaleString()}</td>
+          <td>${escapeHTML(x.name||'')}</td>
+          <td>${escapeHTML(x.email||'')}</td>
+          <td>${escapeHTML(x.docType||'—')}</td>
+          <td><span class="status ${statusClass(x.status)}">${(x.status||'pending')}</span></td>
+          <td class="row-actions">
+            <button class="btn" data-act="approve" data-id="${x.id}">Approve</button>
+            <button class="btn" data-act="reject" data-id="${x.id}">Reject</button>
+            <button class="btn gold" data-act="ask" data-id="${x.id}">Request Docs</button>
+          </td>
+        </tr>
+      `).join('');
+    }catch{
+      // demo fallback
+      const demo = [
+        {id:'KYC1021', name:'Luca Attard', email:'l.attard@example.com', docType:'Passport', status:'pending', createdAt:Date.now()-3600e3},
+        {id:'KYC1022', name:'Elena Borg',  email:'e.borg@example.com',   docType:'ID Card', status:'review',  createdAt:Date.now()-7200e3}
+      ];
+      document.getElementById('kycBody').innerHTML = demo.map(x=>`
+        <tr>
+          <td>${new Date(x.createdAt).toLocaleString()}</td>
+          <td>${x.name}</td>
+          <td>${x.email}</td>
+          <td>${x.docType}</td>
+          <td><span class="status ${statusClass(x.status)}">${x.status}</span></td>
+          <td class="row-actions">
+            <button class="btn" data-act="approve" data-id="${x.id}">Approve</button>
+            <button class="btn" data-act="reject" data-id="${x.id}">Reject</button>
+            <button class="btn gold" data-act="ask" data-id="${x.id}">Request Docs</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+  }
+
+  function statusClass(s){
+    if(s==='approved') return 'complete';
+    if(s==='rejected') return 'red';
+    if(s==='review')   return 'review';
+    return 'pending';
+  }
+  function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+  document.getElementById('btnFilter').addEventListener('click', loadKyc);
+
+  // row actions: approve / reject / ask
+  document.getElementById('kycBody').addEventListener('click', async (e)=>{
+    const btn = e.target.closest('button[data-act]');
+    if(!btn) return;
+    const id  = btn.dataset.id;
+    const act = btn.dataset.act;
+
+    try{
+      if(act==='approve'){
+        await api(`/api/admin/kyc/${id}/approve`, {method:'POST'});
+      }else if(act==='reject'){
+        await api(`/api/admin/kyc/${id}/reject`, {method:'POST'});
+      }else if(act==='ask'){
+        openAsk(id);
+        return;
+      }
+      await loadKyc();
+    }catch(err){
+      alert(`Action failed: ${err.message||'error'}`);
+    }
+  });
+
+  // request more docs modal
+  const dlg = document.getElementById('askMore');
+  function openAsk(id){
+    document.getElementById('askId').value = id;
+    document.getElementById('askNote').value = '';
+    document.getElementById('askStatus').textContent = '';
+    dlg.showModal();
+  }
+  document.getElementById('askSend').addEventListener('click', async (e)=>{
+    e.preventDefault();
+    const id   = document.getElementById('askId').value;
+    const note = document.getElementById('askNote').value.trim();
+    const status = document.getElementById('askStatus');
+    status.textContent = 'Sending…';
+
+    try{
+      await api(`/api/admin/kyc/${id}/request-docs`, {
+        method:'POST',
+        body: JSON.stringify({ note })
+      });
+      status.textContent = 'Request sent.';
+      setTimeout(()=>dlg.close(), 700);
+      setTimeout(loadKyc, 900);
+    }catch(err){
+      status.textContent = `Error: ${err.message||'failed'}`;
+    }
+  });
+
+  loadKyc();
+</script>
 </body>
 </html>
