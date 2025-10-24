@@ -1,185 +1,208 @@
 /* =========================================================
-   Maltese First Capital — Global Styles
-   Palette: Navy (#0b2a3d), Gold (#c9a55b), Slate (#7f8da0), Off-white (#f7f9fc)
-   Typography: System UI stack for speed + crisp rendering
+   Maltese First Capital — Luxe UI Pack (Gold / Onyx)
+   v2 - polished visuals, refined spacing, better mobile, a11y
+   Palette: Onyx #0b0f14, Deep Navy #0e1b26, Gold #c9a55b, Mist #e8eef4
    ========================================================= */
 
 :root{
-  --navy: #0b2a3d;
-  --navy-900:#0a2535;
-  --navy-800:#11374e;
-  --gold: #c9a55b;
-  --gold-700:#b6904a;
-  --slate:#7f8da0;
-  --ink:#0f1720;
+  --onyx:#0b0f14;
+  --navy:#0e1b26;
+  --navy-2:#123042;
+  --surface:#122434;
+  --surface-2:#0e1e2b;
   --paper:#f7f9fc;
+  --mist:#e8eef4;
+  --slate:#9fb0bf;
+  --gold:#c9a55b;
+  --gold-2:#b8944b;
   --ring: rgba(201,165,91,.45);
-  --radius: 14px;
-  --shadow: 0 10px 30px rgba(11,42,61,.18);
-  --container: 1100px;
+  --radius:14px;
+  --shadow: 0 12px 40px rgba(0,0,0,.35);
+  --shadow-soft: 0 10px 30px rgba(2,14,24,.25);
+  --container: 1160px;
 
-  /* hero background image (optional). place file at assets/hero-bg.jpg */
-  --hero-image: url('assets/hero-bg.jpg');
+  /* optional hero image (put file at assets/hero-luxe.jpg) */
+  --hero-image: url('assets/hero-luxe.jpg');
 }
 
 *{box-sizing:border-box}
 html,body{height:100%}
+html{scroll-behavior:smooth}
 body{
   margin:0;
-  color:#eaf2f7;
-  background: var(--navy-900);
-  font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  background: radial-gradient(1200px 800px at 50% -10%, rgba(201,165,91,.06), transparent 55%), var(--onyx);
+  color:var(--mist);
+  font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", sans-serif;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
-
+::selection{background:rgba(201,165,91,.28)}
 img{max-width:100%; height:auto; display:block}
-a{color:#dbe9ff; text-decoration:none}
+a{color:#e6f0ff; text-decoration:none; transition:color .2s ease, opacity .2s ease}
 a:hover{opacity:.9}
 
-/* -------------------- Layout -------------------- */
-.container{width:100%; max-width:var(--container); margin:0 auto; padding:0 20px}
+.container{width:100%; max-width:var(--container); margin:0 auto; padding:0 22px}
+.mt-16{margin-top:16px} .mt-24{margin-top:24px} .mt-32{margin-top:32px}
 .center{text-align:center}
-.mt-24{margin-top:24px}
-.mt-32{margin-top:32px}
 
 /* -------------------- Header / Nav -------------------- */
 .site-header{
-  position:sticky; top:0; z-index:50;
-  background: rgba(11,42,61,.96); backdrop-filter:saturate(120%) blur(6px);
+  position:sticky; top:0; z-index:80;
+  background: rgba(14,27,38,.92); backdrop-filter:saturate(130%) blur(6px);
   border-bottom:1px solid rgba(255,255,255,.06);
 }
-.nav{
-  display:flex; align-items:center; gap:18px; min-height:64px;
-}
+.nav{display:flex; align-items:center; gap:18px; min-height:68px}
 .brand{display:flex; align-items:center; gap:12px; white-space:nowrap}
-.brand img{width:28px; height:28px; object-fit:contain; border-radius:6px; box-shadow:0 0 0 1px rgba(255,255,255,.08)}
-.brand span{font-weight:700; letter-spacing:.2px}
+.brand img{
+  width:30px; height:30px; object-fit:contain; border-radius:8px;
+  background:#fff; padding:4px; box-shadow:0 0 0 1px rgba(255,255,255,.08), var(--shadow-soft);
+}
+.brand span{font-weight:800; letter-spacing:.25px}
 
-.nav-links{display:flex; gap:20px; flex:1; justify-content:center}
-.nav-links a{color:#e8eef4; opacity:.92}
+.nav-links{display:flex; gap:22px; flex:1; justify-content:center}
+.nav-links a{
+  position:relative; color:#dfe8f3; opacity:.92; font-weight:600;
+}
+.nav-links a::after{
+  content:""; position:absolute; left:0; right:0; bottom:-8px; height:2px;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform:scaleX(0); transform-origin:center; transition:transform .2s ease;
+}
+.nav-links a:hover::after{transform:scaleX(1)}
+
 .nav-actions{display:flex; gap:10px}
-.mobile-toggle{display:none; background:transparent; border:0; font-size:22px; color:#fff; cursor:pointer}
+.mobile-toggle{display:none; background:transparent; border:0; font-size:24px; color:#fff; cursor:pointer}
 
 /* -------------------- Hero -------------------- */
 .hero{
-  position:relative; isolation:isolate;
-  color:#fff;
+  position:relative; isolation:isolate; color:#fff;
   background:
-    radial-gradient(1200px 600px at 50% -10%, rgba(201,165,91,.25), transparent 55%),
-    linear-gradient(180deg, rgba(11,42,61,.85), rgba(11,42,61,.85)),
+    radial-gradient(1000px 500px at 50% -10%, rgba(201,165,91,.18), transparent 60%),
+    linear-gradient(180deg, rgba(14,27,38,.88), rgba(14,27,38,.92)),
     var(--hero-image);
-  background-size: cover;
-  background-position: center;
+  background-size:cover; background-position:center;
   border-bottom:1px solid rgba(255,255,255,.07);
 }
 .hero::before{
-  /* subtle vignette */
   content:""; position:absolute; inset:0;
-  background: radial-gradient(1000px 280px at 50% 0%, rgba(255,255,255,.08), transparent 60%);
+  background: radial-gradient(900px 280px at 50% 0%, rgba(255,255,255,.08), transparent 60%);
   pointer-events:none;
 }
-.hero-inner{padding:80px 0 56px; text-align:center}
+.hero-inner{padding:88px 0 60px; text-align:center}
 .logo-badge{
-  width:70px; height:70px; margin:0 auto 18px;
-  object-fit:contain; background:#fff; border-radius:12px; padding:6px;
-  box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,.08);
+  width:84px; height:84px; margin:0 auto 18px; object-fit:contain;
+  background:#ffffff; border-radius:14px; padding:8px;
+  box-shadow: var(--shadow-soft), 0 0 0 1px rgba(255,255,255,.08);
 }
-h1{font-size:44px; line-height:1.15; margin:8px 0 10px; font-weight:800; letter-spacing:.2px}
-.lead, .hero p{color:#d9e5ef; max-width:760px; margin:10px auto}
+h1{font-size:46px; line-height:1.12; margin:8px 0 12px; font-weight:900; letter-spacing:.2px}
+.hero p, .lead{color:#d2deea; max-width:780px; margin:10px auto}
 
 /* -------------------- Buttons -------------------- */
 .btn{
-  --bg:#ffffff; --fg:var(--navy-900); --bd:rgba(255,255,255,.12);
-  display:inline-block; padding:12px 18px; border-radius:12px; font-weight:700;
+  --bg:#ffffff; --fg:#0d1822; --bd:rgba(255,255,255,.12);
+  display:inline-block; padding:12px 18px; border-radius:14px; font-weight:800;
   border:1px solid var(--bd); background:var(--bg); color:var(--fg);
-  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 6px 16px rgba(0,0,0,.08);
-  transition:.2s ease;
+  box-shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 8px 20px rgba(0,0,0,.18);
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
 }
 .btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
 .btn-secondary{
-  --bg:transparent; --fg:#eaf2f7; --bd:rgba(255,255,255,.22);
+  --bg:linear-gradient(180deg, #12283a, #0f2231); --fg:#eaf2f7; --bd:rgba(255,255,255,.18);
   backdrop-filter:saturate(140%) blur(2px);
 }
 .btn-gold{
-  --bg: linear-gradient(180deg, #d8b671, var(--gold));
+  --bg: linear-gradient(180deg, #ddc07c, var(--gold));
   --fg:#1b1f24; --bd:rgba(201,165,91,.35);
   color:#1b1f24 !important;
-  box-shadow:0 6px 18px rgba(201,165,91,.28), 0 1px 0 rgba(255,255,255,.06) inset;
+  box-shadow:0 10px 28px rgba(201,165,91,.28), 0 1px 0 rgba(255,255,255,.06) inset;
 }
 
 /* -------------------- Cards / Grid -------------------- */
-.grid-3{
-  display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:28px;
-}
+.grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:30px}
 .card{
-  display:block; background:#0f3249; color:#e9f1f6;
-  border-radius: var(--radius);
-  padding:22px; text-align:left; box-shadow: var(--shadow);
-  border:1px solid rgba(255,255,255,.06);
-  transition: transform .2s ease, box-shadow .2s ease;
+  display:block; background:linear-gradient(180deg, #10293a, #0b1d2a);
+  color:#e9f1f6; border-radius: var(--radius); padding:24px; text-align:left;
+  border:1px solid rgba(255,255,255,.07); box-shadow: var(--shadow-soft);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
-.card:hover{transform:translateY(-4px); box-shadow:0 14px 36px rgba(11,42,61,.28)}
-.card h3{margin:0 0 8px; color:#fff}
+.card:hover{transform:translateY(-4px); box-shadow:0 18px 46px rgba(0,0,0,.35); border-color:rgba(201,165,91,.35)}
+.card h3{margin:0 0 10px; color:#fff; letter-spacing:.2px}
 .card p{margin:0; color:#cfe0ec}
 
 /* -------------------- Sections -------------------- */
-.section{padding:56px 0; background:linear-gradient(180deg, #0b2a3d, #0b2a3d)}
+.section{padding:60px 0; background:linear-gradient(180deg, var(--navy), var(--navy))}
 .section-alt{
   background:
-    radial-gradient(800px 400px at 50% -10%, rgba(201,165,91,.12), transparent 70%),
-    linear-gradient(180deg, #0b2a3d, #0b2a3d);
+    radial-gradient(700px 360px at 50% -10%, rgba(201,165,91,.12), transparent 70%),
+    linear-gradient(180deg, var(--navy), var(--navy));
 }
-.section .content{background:#0f3249; border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow)}
+.section .content{
+  background:linear-gradient(180deg, var(--surface), var(--surface-2));
+  border:1px solid rgba(255,255,255,.06); border-radius:var(--radius);
+  padding:24px; box-shadow:var(--shadow-soft)
+}
 .section .content p{color:#d4e2ee}
 
 /* -------------------- Forms -------------------- */
-.form{max-width:640px}
+.form{max-width:680px}
 .input,.select,.textarea{
-  width:100%; background:#0c2e44; color:#eaf2f7;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:12px; padding:12px 14px; margin:8px 0;
+  width:100%; background:#0c2231; color:#eaf2f7;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:14px; padding:12px 14px; margin:10px 0;
   outline:0; transition:.15s ease;
 }
 .input:focus,.select:focus,.textarea:focus{border-color:var(--ring); box-shadow:0 0 0 3px var(--ring)}
-.textarea{min-height:150px; resize:vertical}
-.help{color:#b9c6d3; font-size:.925rem}
+.textarea{min-height:160px; resize:vertical}
+.help{color:#b9c6d3; font-size:.94rem}
 
 /* -------------------- Tables -------------------- */
-.table{width:100%; border-collapse:collapse; background:#0f3249; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.06)}
-.table th,.table td{padding:12px 14px; text-align:left}
-.table thead{background:rgba(255,255,255,.04)}
+.table{
+  width:100%; border-collapse:separate; border-spacing:0; overflow:hidden;
+  background:linear-gradient(180deg, #10293a, #0c2231);
+  border:1px solid rgba(255,255,255,.08); border-radius:14px; box-shadow:var(--shadow-soft)
+}
+.table th,.table td{padding:14px 16px; text-align:left}
+.table thead{background:rgba(255,255,255,.05)}
 .table tbody tr{border-top:1px solid rgba(255,255,255,.06)}
 .table tbody tr:hover{background:rgba(255,255,255,.03)}
 
 /* -------------------- Footer -------------------- */
 .site-footer{
-  background:#091e2c; border-top:1px solid rgba(255,255,255,.06); color:#cbd7e3;
+  background:linear-gradient(180deg, #0a141c, #080f15);
+  border-top:1px solid rgba(255,255,255,.06); color:#cbd7e3;
 }
 .site-footer .inner{
   display:flex; justify-content:space-between; align-items:center; gap:12px;
-  padding:22px 0;
+  padding:24px 0;
 }
 .site-footer a{color:#cbd7e3}
 .legal{opacity:.9}
 
+/* -------------------- Utilities -------------------- */
+.badge{
+  display:inline-block; padding:6px 10px; border-radius:999px;
+  background:rgba(201,165,91,.16); color:#f4e3bd; border:1px solid rgba(201,165,91,.35);
+  font-weight:700; letter-spacing:.2px
+}
+
 /* -------------------- Responsive -------------------- */
-@media (max-width: 980px){
+@media (max-width: 1020px){
   .nav-links{display:none}
   .mobile-toggle{display:inline-block}
   .nav-actions{display:none}
   .nav-actions.show{display:flex}
-  .grid-3{grid-template-columns:1fr; gap:14px}
-  h1{font-size:34px}
-  .hero-inner{padding:64px 0 40px}
+  .grid-3{grid-template-columns:1fr; gap:16px}
+  h1{font-size:36px}
+  .hero-inner{padding:72px 0 44px}
 }
 @media (prefers-reduced-motion: reduce){
-  *{transition:none !important}
+  *{transition:none !important; animation:none !important}
 }
 
-/* -------------------- Logo sanity -------------------- */
-.brand img{max-height:28px}
-.logo-badge{max-width:80px; max-height:80px}
+/* -------------------- Logo sanity & hygiene -------------------- */
+.brand img{max-height:30px}
+.logo-badge{max-width:88px; max-height:88px}
 
-/* -------------------- Links in body copy -------------------- */
+/* -------------------- Links inside content -------------------- */
 .content a{color:#fff; text-decoration:underline; text-underline-offset:3px}
 .content a:hover{opacity:.9}
