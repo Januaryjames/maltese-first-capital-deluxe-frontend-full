@@ -3,231 +3,205 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>MFC • Profile & Documents</title>
+  <title>MFC • Admin Documents</title>
   <link rel="icon" href="assets/logo.png"/>
-  <link rel="stylesheet" href="styles.css?v=12"/>
+  <link rel="stylesheet" href="styles.css?v=13"/>
   <style>
-    .two{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
-    .card{background:#0f1a27;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0}
+    .filters{display:flex;gap:10px;align-items:center}
     .muted{color:#9fb1c7}
-    .err{color:#ff9b9b;font-weight:700}
-    .kv{display:grid;grid-template-columns:140px 1fr;gap:8px;row-gap:10px}
-    .docs{display:grid;gap:10px;margin-top:8px}
-    .docrow{display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px;background:#0b1520}
     .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-    @media (max-width:980px){ .two{grid-template-columns:1fr} .kv{grid-template-columns:1fr} }
+    dialog{border:none;border-radius:16px;background:#0f1a27;padding:18px;color:#e6edf5;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+    dialog::backdrop{background:rgba(0,0,0,.35)}
+    .row-actions{display:flex;gap:8px}
+    .badge{padding:5px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.08);color:#cfd8e3;font-size:12px}
   </style>
 </head>
 <body>
 <header>
   <nav class="navbar">
-    <div class="logo"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></div>
+    <div class="logo"><img src="assets/logo.png" alt="MFC"/><span>Maltese First Capital</span></div>
     <ul class="nav-links">
-      <li><a href="client-dashboard.html">Dashboard</a></li>
-      <li><a class="active highlight" href="client-profile.html">Profile & Documents</a></li>
+      <li><a href="admin-dashboard.html">Dashboard</a></li>
+      <li><a href="admin-kyc.html">KYC Review</a></li>
+      <li><a class="active highlight" href="admin-docs.html">Documents</a></li>
       <li><a href="#" id="logoutLink">Log Out</a></li>
     </ul>
   </nav>
 </header>
 
 <main class="dashboard">
-  <h1>Your Profile</h1>
-  <p class="subtext">Manage your information, upload additional documents, and change your password.</p>
-
-  <div class="two">
-    <!-- Left: Profile & Documents -->
-    <section class="card">
-      <h2>Profile</h2>
-      <div class="kv" id="profileKV">
-        <div class="muted">Name</div><div id="kvName">—</div>
-        <div class="muted">Email</div><div id="kvEmail">—</div>
-        <div class="muted">Phone</div><div id="kvPhone">—</div>
-        <div class="muted">Address</div><div id="kvAddr">—</div>
-        <div class="muted">Primary Currency</div><div id="kvCur">—</div>
-      </div>
-
-      <hr style="border-color:rgba(255,255,255,.06);margin:16px 0"/>
-
-      <h2>Documents</h2>
-      <form id="docForm" class="card" style="padding:12px;margin-top:8px">
-        <label for="cat">Category</label>
-        <select id="cat">
-          <option value="ID">Government ID</option>
-          <option value="POA">Proof of Address</option>
-          <option value="SOURCE">Source of Funds</option>
-          <option value="OTHER">Other</option>
-        </select>
-        <label for="doc">File (PDF/JPG/PNG)</label>
-        <input id="doc" type="file" accept=".pdf,.jpg,.jpeg,.png" required/>
-        <div style="display:flex;gap:10px;align-items:center;justify-content:flex-end">
-          <button class="btn" type="button" id="docClear">Clear</button>
-          <button class="btn gold" type="submit">Upload</button>
-        </div>
-        <div id="docStatus" class="muted" style="margin-top:6px"></div>
-      </form>
-
-      <div class="docs" id="docList">
-        <div class="muted">No documents uploaded.</div>
-      </div>
-    </section>
-
-    <!-- Right: Password -->
-    <section class="card">
-      <h2>Change Password</h2>
-      <form id="pwdForm">
-        <label for="curPwd">Current password</label>
-        <input id="curPwd" type="password" required autocomplete="current-password"/>
-        <label for="newPwd">New password</label>
-        <input id="newPwd" type="password" required autocomplete="new-password" minlength="8"/>
-        <label for="newPwd2">Confirm new password</label>
-        <input id="newPwd2" type="password" required autocomplete="new-password" minlength="8"/>
-        <div style="display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:10px">
-          <button class="btn gold" type="submit">Update Password</button>
-        </div>
-        <div id="pwdStatus" class="muted" style="margin-top:6px"></div>
-      </form>
-
-      <hr style="border-color:rgba(255,255,255,.06);margin:16px 0"/>
-
-      <h3>Security</h3>
-      <p class="muted">If you suspect unauthorised access, change your password and contact <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>.</p>
-    </section>
+  <div class="toolbar">
+    <h1>Client Documents</h1>
+    <div class="filters">
+      <select id="fltStatus">
+        <option value="">All</option>
+        <option value="pending" selected>Pending</option>
+        <option value="review">In Review</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+      </select>
+      <select id="fltCat">
+        <option value="">Any category</option>
+        <option value="ID">Government ID</option>
+        <option value="POA">Proof of Address</option>
+        <option value="SOURCE">Source of Funds</option>
+        <option value="OTHER">Other</option>
+      </select>
+      <input id="fltQuery" placeholder="Search name / email / userId / filename" />
+      <button class="btn" id="btnFilter">Filter</button>
+    </div>
   </div>
+
+  <section class="admin-table">
+    <h2>Uploads</h2>
+    <div style="padding:0 16px 8px">
+      <span class="badge">API: <span class="mono" id="apiHost">unset</span></span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Uploaded</th>
+          <th>Client</th>
+          <th>Category</th>
+          <th>File</th>
+          <th>Status</th>
+          <th style="width:260px">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="docsBody"><tr><td class="empty" colspan="6">Loading…</td></tr></tbody>
+    </table>
+  </section>
 </main>
 
 <footer><p>© 2025 Maltese First Capital — Valletta, Malta</p></footer>
 
+<!-- Request More Docs Modal -->
+<dialog id="askMore">
+  <form id="askForm" method="dialog">
+    <h3>Request More Documents</h3>
+    <p class="muted">We’ll email the client with your note and a secure upload link.</p>
+    <input type="hidden" id="askUserId"/>
+    <label for="askNote">Message to client</label>
+    <textarea id="askNote" rows="4" placeholder="Please upload a bank statement (last 3 months)…"></textarea>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+      <button class="btn" value="cancel">Cancel</button>
+      <button class="btn gold" id="askSend" value="ok">Send Request</button>
+    </div>
+    <div class="muted" id="askStatus" style="margin-top:6px"></div>
+  </form>
+</dialog>
+
 <script>
-  const API = localStorage.getItem('BACKEND_URL') || '';
-  const token = localStorage.getItem('CLIENT_TOKEN') || '';
+  const API   = localStorage.getItem('BACKEND_URL') || '';
+  const token = localStorage.getItem('ADMIN_TOKEN') || '';
+  document.getElementById('apiHost').textContent = API || 'not set';
 
-  function authHeaders(extra={}){ return { ...extra, ...(token ? {'Authorization':`Bearer ${token}`} : {}) }; }
-
-  // Logout
   document.getElementById('logoutLink').addEventListener('click', (e)=>{
     e.preventDefault();
-    localStorage.removeItem('CLIENT_TOKEN');
-    localStorage.removeItem('CLIENT_NAME');
-    location.href='client-login.html';
+    localStorage.removeItem('ADMIN_TOKEN');
+    localStorage.removeItem('ADMIN_USER');
+    location.href='admin-login.html';
   });
 
-  // Load profile
-  async function loadProfile(){
-    try{
-      const r = await fetch(`${API}/api/client/me`,{ headers: authHeaders({'Accept':'application/json'}) });
-      if(!r.ok) throw new Error(await r.text());
-      const me = await r.json();
-      document.getElementById('kvName').textContent  = me.name  || '—';
-      document.getElementById('kvEmail').textContent = me.email || '—';
-      document.getElementById('kvPhone').textContent = me.phone || '—';
-      document.getElementById('kvAddr').textContent  = [me.address1, me.address2, me.city, me.zip, me.country].filter(Boolean).join(', ') || '—';
-      document.getElementById('kvCur').textContent   = me.currency || '—';
-      if(me.name) localStorage.setItem('CLIENT_NAME', me.name);
-    }catch{
-      // fallback demo
-      document.getElementById('kvName').textContent  = localStorage.getItem('CLIENT_NAME') || 'Client';
-      document.getElementById('kvEmail').textContent = 'client@example.com';
-      document.getElementById('kvPhone').textContent = '+356 9999 0000';
-      document.getElementById('kvAddr').textContent  = 'St. Anne Street, Floriana, FRN 9010, Malta';
-      document.getElementById('kvCur').textContent   = 'EUR';
-    }
+  function hdr(extra={}){ return { 'Accept':'application/json', ...(token?{'Authorization':`Bearer ${token}`}:{}) , ...extra}; }
+
+  async function fetchJSON(path, opts={}) {
+    const res = await fetch(`${API}${path}`, { ...opts, headers: hdr(opts.headers||{}) });
+    if(!res.ok) throw new Error(await res.text());
+    try { return await res.json(); } catch { return {}; }
   }
 
-  // Documents list
   async function loadDocs(){
-    const list = document.getElementById('docList');
+    const q   = document.getElementById('fltQuery').value.trim();
+    const st  = document.getElementById('fltStatus').value;
+    const cat = document.getElementById('fltCat').value;
+    const tbody = document.getElementById('docsBody');
+    tbody.innerHTML = `<tr><td class="empty" colspan="6">Loading…</td></tr>`;
     try{
-      const r = await fetch(`${API}/api/client/documents`,{ headers: authHeaders({'Accept':'application/json'}) });
-      if(!r.ok) throw new Error(await r.text());
-      const docs = await r.json();
-      if(!Array.isArray(docs) || !docs.length){ list.innerHTML = '<div class="muted">No documents uploaded.</div>'; return; }
-      list.innerHTML = docs.map(d=>`
-        <div class="docrow">
-          <div>
-            <div><strong>${d.category||'OTHER'}</strong></div>
-            <div class="muted mono" style="font-size:12px">${(d.filename||'file')}&nbsp;•&nbsp;${new Date(d.createdAt||Date.now()).toLocaleString()}</div>
-          </div>
-          <div style="display:flex;gap:8px">
-            ${d.url?`<a class="btn" href="${d.url}" target="_blank" rel="noopener">View</a>`:''}
-            <button class="btn" data-del="${d.id||''}">Delete</button>
-          </div>
-        </div>
+      const url = new URL(`${API}/api/admin/documents`, location.origin);
+      if(q)   url.searchParams.set('q', q);
+      if(st)  url.searchParams.set('status', st);
+      if(cat) url.searchParams.set('category', cat);
+      let items = await fetchJSON(url.pathname + url.search);
+      if(!Array.isArray(items)) items = [];
+      if(!items.length){ tbody.innerHTML = `<tr><td class="empty" colspan="6">No matches.</td></tr>`; return; }
+
+      tbody.innerHTML = items.map(d=>`
+        <tr>
+          <td>${new Date(d.createdAt||Date.now()).toLocaleString()}</td>
+          <td>
+            <div><strong>${escape(d.clientName||'Client')}</strong></div>
+            <div class="muted mono">${escape(d.clientEmail||'')}</div>
+            <div class="muted mono">${escape(String(d.userId||''))}</div>
+          </td>
+          <td>${escape(d.category||'OTHER')}</td>
+          <td>${d.url? `<a class="btn" href="${d.url}" target="_blank" rel="noopener">View</a>` : (escape(d.filename||'file'))}</td>
+          <td><span class="status ${statusClass(d.status)}">${escape(d.status||'pending')}</span></td>
+          <td class="row-actions">
+            <button class="btn" data-act="approve" data-id="${d.id}">Approve</button>
+            <button class="btn" data-act="reject"  data-id="${d.id}">Reject</button>
+            <button class="btn gold" data-act="ask" data-uid="${d.userId}">Request Docs</button>
+          </td>
+        </tr>
       `).join('');
-      // hook deletes
-      list.querySelectorAll('button[data-del]').forEach(b=>{
-        b.addEventListener('click', async ()=>{
-          const id = b.getAttribute('data-del');
-          if(!id) return;
-          b.disabled = true;
-          try{
-            const r = await fetch(`${API}/api/client/document/${encodeURIComponent(id)}`,{ method:'DELETE', headers: authHeaders() });
-            if(!r.ok) throw new Error(await r.text());
-          }catch{}
-          await loadDocs();
-        });
-      });
-    }catch{
-      list.innerHTML = `<div class="muted">Document service unavailable. You can still upload new files below.</div>`;
+    }catch(err){
+      tbody.innerHTML = `<tr><td class="empty" colspan="6">Unable to load documents.</td></tr>`;
     }
   }
 
-  // Upload document
-  const docStatus = document.getElementById('docStatus');
-  document.getElementById('docClear').addEventListener('click', ()=>{
-    document.getElementById('doc').value = '';
-    docStatus.textContent = '';
-  });
-  document.getElementById('docForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const file = document.getElementById('doc').files[0];
-    const category = document.getElementById('cat').value;
-    if(!file){ docStatus.textContent='Select a file.'; return; }
-    if(file.size > 15*1024*1024){ docStatus.textContent='File too large (max 15MB).'; return; }
+  function escape(s){return (s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+  function statusClass(s){ if(s==='approved') return 'complete'; if(s==='rejected') return 'red'; if(s==='review') return 'review'; return 'pending'; }
 
-    docStatus.textContent = 'Uploading…';
+  document.getElementById('btnFilter').addEventListener('click', loadDocs);
+
+  // Approve / Reject / Ask
+  document.getElementById('docsBody').addEventListener('click', async (e)=>{
+    const btn = e.target.closest('button[data-act]');
+    if(!btn) return;
+    const act = btn.dataset.act;
     try{
-      const fd = new FormData();
-      fd.append('category', category);
-      fd.append('file', file);
-
-      const r = await fetch(`${API}/api/client/document`,{
-        method:'POST', headers: authHeaders(), body: fd
-      });
-      if(!r.ok) throw new Error(await r.text());
-      docStatus.textContent = 'Uploaded.';
-      document.getElementById('doc').value='';
+      if(act==='approve'){
+        await fetchJSON(`/api/admin/document/${encodeURIComponent(btn.dataset.id)}/approve`, { method:'POST' });
+      }else if(act==='reject'){
+        await fetchJSON(`/api/admin/document/${encodeURIComponent(btn.dataset.id)}/reject`, { method:'POST' });
+      }else if(act==='ask'){
+        openAsk(btn.dataset.uid);
+        return;
+      }
       await loadDocs();
     }catch(err){
-      docStatus.textContent = 'Upload failed.';
+      alert('Action failed.');
     }
   });
 
-  // Change password
-  const pwdStatus = document.getElementById('pwdStatus');
-  document.getElementById('pwdForm').addEventListener('submit', async (e)=>{
+  // Request more docs
+  const dlg = document.getElementById('askMore');
+  function openAsk(userId){
+    document.getElementById('askUserId').value = userId || '';
+    document.getElementById('askNote').value = '';
+    document.getElementById('askStatus').textContent='';
+    dlg.showModal();
+  }
+  document.getElementById('askSend').addEventListener('click', async (e)=>{
     e.preventDefault();
-    const cur = document.getElementById('curPwd').value;
-    const n1  = document.getElementById('newPwd').value;
-    const n2  = document.getElementById('newPwd2').value;
-    if(n1!==n2){ pwdStatus.innerHTML='<span class="err">Passwords do not match.</span>'; return; }
-    if(n1.length<8){ pwdStatus.innerHTML='<span class="err">Use at least 8 characters.</span>'; return; }
-
-    pwdStatus.textContent = 'Updating…';
+    const userId = document.getElementById('askUserId').value;
+    const note   = document.getElementById('askNote').value.trim();
+    const status = document.getElementById('askStatus');
+    status.textContent = 'Sending…';
     try{
-      const r = await fetch(`${API}/api/client/password`,{
+      await fetchJSON(`/api/admin/document/request-docs`, {
         method:'POST',
-        headers: authHeaders({'Content-Type':'application/json'}),
-        body: JSON.stringify({ currentPassword: cur, newPassword: n1 })
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ userId, note })
       });
-      if(!r.ok) throw new Error(await r.text());
-      pwdStatus.textContent = 'Password updated.';
-      e.target.reset();
-    }catch(err){
-      pwdStatus.innerHTML = '<span class="err">Update failed.</span>';
+      status.textContent = 'Request sent.';
+      setTimeout(()=>dlg.close(), 700);
+    }catch{
+      status.textContent = 'Failed to send.';
     }
   });
 
-  loadProfile();
   loadDocs();
 </script>
 </body>
