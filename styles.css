@@ -1,205 +1,161 @@
 /* ================================
-   Maltese First Capital — Luxe UI
+   Maltese First Capital – Luxury UI
    ================================ */
 
-/* ---------- CSS Variables ---------- */
 :root{
-  --onyx:#0b0f14;            /* deep navy/onyx */
-  --onyx-2:#101621;
-  --ink:#0f172a;
-  --card:#0f1a27cc;          /* glassy card */
-  --line:#1f2a3a;
-  --text:#e6edf5;
-  --muted:#cfd8e3;
-  --muter:#9fb1c7;
-  --gold:#c9a55b;
-  --gold-2:#b8944b;
-  --gold-3:#ddc07c;
-  --danger:#ff6b6b;
-  --success:#32d296;
-  --pending:#ffcc66;
-  --radius:16px;
-  --shadow:0 8px 30px rgba(0,0,0,.35);
-  --shadow-soft:0 4px 16px rgba(0,0,0,.25);
+  --bg-deep:#0a121b;
+  --bg-elev:#0f1a27;
+  --ink:#e8eef7;
+  --muted:#9fb1c7;
+  --line:rgba(255,255,255,.08);
+  --gold:#c6a15b;          /* Maltese gold accent */
+  --gold-2:#d7b876;        /* lighter hover tone   */
+  --navy:#132033;
+  --shadow:0 20px 60px rgba(0,0,0,.35);
 }
 
-/* ---------- Resets ---------- */
 *{box-sizing:border-box}
 html,body{height:100%}
-html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 body{
-  margin:0;
-  background: radial-gradient(1200px 600px at 70% -10%, #1b2534 0%, var(--onyx) 60%) fixed,
-             radial-gradient(900px 450px at -10% 20%, #1a2231 0%, transparent 60%) fixed,
-             var(--onyx);
-  color:var(--text);
-  font:16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-}
-
-/* ---------- Utilities ---------- */
-.container{max-width:1180px;margin:0 auto;padding:0 20px}
-.subtext{color:var(--muter)}
-a{color:inherit;text-decoration:none}
-img{max-width:100%;height:auto;display:block}
-h1,h2,h3{margin:0 0 .6rem}
-h1{font-size:clamp(32px,4vw,48px);letter-spacing:.5px}
-h2{font-size:clamp(22px,2.3vw,28px)}
-h3{font-size:20px}
-
-/* ---------- Navbar ---------- */
-header{position:sticky;top:0;z-index:1000;background:rgba(11,15,20,.8);backdrop-filter:saturate(130%) blur(10px);border-bottom:1px solid #0f1c29}
-.navbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 20px;max-width:1180px;margin:0 auto}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700}
-.logo img{width:28px;height:28px;border-radius:8px;box-shadow:0 0 0 2px rgba(201,165,91,.15)}
-.nav-links{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.nav-links a{padding:8px 10px;border-radius:10px;color:var(--muted);transition:all .2s ease}
-.nav-links a:hover{color:var(--text);background:#0f1c29}
-.nav-links .active{color:var(--text)}
-.nav-links .highlight{background:linear-gradient(90deg,var(--gold-3),var(--gold-2));color:#111;padding:8px 14px;border-radius:12px;box-shadow:0 6px 16px rgba(201,165,91,.25)}
-.nav-links .highlight:hover{transform:translateY(-1px)}
-
-/* ---------- Hero ---------- */
-.hero{
-  position:relative;
-  isolation:isolate;
+  margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial;
+  color:var(--ink);
   background:
-    radial-gradient(900px 500px at 80% -20%, rgba(201,165,91,.12), transparent 60%),
-    radial-gradient(700px 380px at 0% 0%, rgba(45,93,134,.18), transparent 60%),
-    linear-gradient(180deg, rgba(10,14,20,.7), rgba(10,14,20,.2));
+    radial-gradient(1200px 600px at 10% -10%, rgba(198,161,91,.08), transparent 60%),
+    radial-gradient(900px 500px at 90% -20%, rgba(198,161,91,.06), transparent 60%),
+    linear-gradient(180deg,#0a111a 0%, #0b1520 55%, #0a121b 100%);
 }
-.hero-overlay{max-width:980px;margin:0 auto;padding:68px 20px 56px;text-align:center}
-.hero-logo{width:64px;height:64px;margin:0 auto 18px;border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.35)}
-.hero p{max-width:760px;margin:10px auto 24px;color:var(--muted)}
-.hero-buttons{display:flex;gap:12px;justify-content:center}
 
-/* ---------- Buttons ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:12px;border:1px solid #1e2a3b;background:#101827;color:var(--text);box-shadow:var(--shadow-soft);transition:all .2s ease}
-.btn:hover{transform:translateY(-1px);border-color:#2a3950}
-.btn.gold{border:none;background:linear-gradient(90deg,var(--gold-3),var(--gold));color:#111;font-weight:700;box-shadow:0 10px 22px rgba(201,165,91,.25)}
-.btn.gold:hover{filter:saturate(106%) brightness(1.02)}
+/* Containers */
+.container{width:min(1200px,92vw); margin:0 auto;}
 
-/* ---------- Services Section ---------- */
-.services{padding:44px 20px 60px}
-.services h2{text-align:center;margin-bottom:22px}
-.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1180px;margin:0 auto}
+/* ================= NAVBAR ================= */
+.navbar-wrap{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter:saturate(140%) blur(10px);
+  background:rgba(15,26,39,.55);
+  border-bottom:1px solid var(--line);
+}
+.navbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 0;
+}
+.navbar .brand{
+  display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--ink);
+}
+
+/* Logo sizing – NAVBAR */
+.navbar .brand img{
+  height:64px;         /* adjust 56–72px as desired */
+  width:auto; display:block;
+  transition:transform .25s ease, filter .25s ease;
+  filter: drop-shadow(0 0 12px rgba(198,161,91,.25));
+}
+.navbar .brand img:hover{ transform:scale(1.04); }
+
+.navbar .brand span{
+  font-weight:700; letter-spacing:.2px; font-size:18px;
+}
+
+.navbar .links{display:flex; align-items:center; gap:18px;}
+.navbar .links a{
+  color:var(--muted); text-decoration:none; padding:8px 10px; border-radius:10px;
+  transition:color .2s ease, background .2s ease, border-color .2s ease;
+  border:1px solid transparent;
+}
+.navbar .links a:hover{ color:var(--ink); border-color:var(--line); background:rgba(255,255,255,.02); }
+.navbar .links a.highlight{
+  color:#0d1520; background:linear-gradient(180deg,var(--gold),var(--gold-2));
+  border-color:rgba(255,255,255,.15);
+}
+
+/* ================ HERO ==================== */
+.hero{
+  position:relative; overflow:hidden;
+  padding:80px 0 60px;
+  background:
+    radial-gradient(1000px 500px at 70% -20%, rgba(198,161,91,.09), transparent 60%),
+    radial-gradient(800px 500px at -10% 10%, rgba(198,161,91,.07), transparent 60%);
+  border-bottom:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+
+/* Center logo in hero */
+.hero .hero-logo{
+  display:block; margin:0 auto 18px; height:120px; width:auto;
+  filter: drop-shadow(0 0 28px rgba(198,161,91,.45));   /* golden glow */
+  border-radius:12px;
+}
+
+/* Title & copy */
+.hero h1{
+  margin:0 auto 10px; text-align:center; font-weight:800;
+  font-size: clamp(30px, 4.6vw, 48px);
+  letter-spacing:.3px;
+}
+.hero p.lead{
+  margin:0 auto 26px; text-align:center; color:var(--muted);
+  font-size: clamp(15px, 2vw, 18px); max-width:900px;
+}
+
+/* Call-to-actions */
+.cta-row{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:12px 18px; border-radius:12px; border:1px solid var(--line);
+  color:var(--ink); background:rgba(255,255,255,.02); text-decoration:none;
+  transition:transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.btn:hover{ transform:translateY(-1px); border-color:rgba(255,255,255,.15); }
+.btn.gold{
+  color:#0d1520;
+  background:linear-gradient(180deg,var(--gold),var(--gold-2));
+  border-color:rgba(255,255,255,.25);
+}
+.btn.gold:hover{ filter:saturate(110%); }
+
+/* ============== SECTIONS ============== */
+.section{padding:56px 0; border-bottom:1px solid var(--line);}
+.section h2{margin:0 0 12px; font-size:28px}
+.section p.sub{color:var(--muted); margin:0 0 22px}
+
+/* Cards */
+.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
 .card{
-  background:linear-gradient(180deg, rgba(19,26,37,.85), rgba(16,22,33,.85));
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:var(--radius);
-  padding:20px 20px 18px;
-  box-shadow:var(--shadow-soft);
-  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:16px;
+  padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.2);
 }
-.card:hover{transform:translateY(-3px);border-color:rgba(201,165,91,.35);box-shadow:0 14px 28px rgba(0,0,0,.38)}
-.card p{color:var(--muter);margin:.4rem 0 0}
+.card h3{margin:0 0 6px}
+.card p{margin:0; color:var(--muted)}
 
-/* ---------- Footer ---------- */
+/* ============== FOOTER ============== */
 footer{
-  margin-top:40px;padding:24px 20px;border-top:1px solid #0f1c29;
-  background:linear-gradient(180deg,rgba(11,15,20,.8),rgba(11,15,20,.95));
-  color:var(--muted);text-align:center
+  border-top:1px solid var(--line); background:rgba(10,18,27,.65);
+  padding:28px 0; text-align:center; color:var(--muted);
 }
 
-/* ---------- Forms / Inputs ---------- */
-label{display:block;margin:10px 0 6px;color:var(--muted)}
+/* ============== FORMS (shared) ============== */
+label{display:block;margin:.6rem 0 .3rem}
 input,select,textarea{
-  width:100%;padding:12px 14px;border-radius:12px;border:1px solid #1f2a3a;background:#0e1520;color:var(--text);
-  transition:border-color .2s ease, box-shadow .2s ease
+  width:100%; padding:12px 12px; border-radius:12px;
+  background:#0b1520; color:var(--ink);
+  border:1px solid var(--line); outline:none;
 }
-input:focus,select:focus,textarea:focus{outline:none;border-color:#2c3e58;box-shadow:0 0 0 3px rgba(201,165,91,.15)}
+input:focus,select:focus,textarea:focus{ border-color:rgba(255,255,255,.18); box-shadow:0 0 0 4px rgba(198,161,91,.12); }
 
-/* ---------- Login Page ---------- */
-.login-page{display:grid;place-items:center;min-height:70vh;padding:32px 16px}
-.login-box{
-  width:min(520px,94vw);
-  background:linear-gradient(180deg, rgba(19,26,37,.9), rgba(16,22,33,.9));
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:20px;padding:28px 24px;box-shadow:var(--shadow)
-}
-.login-box h1{margin-bottom:10px}
-.login-box button{margin-top:8px}
+/* Tables (admin etc.) */
+table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:16px; border:1px solid var(--line)}
+th,td{padding:12px 14px; text-align:left; border-bottom:1px solid var(--line)}
+thead th{background:#0d1724; color:#cfd8e3}
+tbody tr:nth-child(even){background:#0b1520}
+.status{padding:6px 10px; border-radius:999px; border:1px solid var(--line); font-size:12px}
+.status.complete{background:rgba(84,214,115,.15); border-color:rgba(84,214,115,.35)}
+.status.red{background:rgba(255,100,100,.12); border-color:rgba(255,100,100,.35)}
+.status.pending{background:rgba(255,255,255,.06)}
 
-/* ---------- Admin Dashboard ---------- */
-.dashboard{max-width:1180px;margin:20px auto;padding:0 20px}
-.dashboard h1{margin-top:10px}
-.dashboard-cards{
-  margin:18px 0 10px;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:16px
-}
-.dash-card{
-  padding:18px 16px;border-radius:16px;
-  background:linear-gradient(180deg, rgba(19,26,37,.88), rgba(16,22,33,.88));
-  border:1px solid rgba(255,255,255,.06);box-shadow:var(--shadow-soft)
-}
-.dash-card h3{font-size:15px;color:var(--muted);letter-spacing:.3px}
-.dash-card .count{font-size:32px;font-weight:800;margin:4px 0 4px;background:linear-gradient(90deg,var(--gold-3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.dash-card .count.red{-webkit-text-fill-color:initial;color:#ff9b9b}
-
-/* Table */
-.admin-table{margin-top:24px;background:rgba(16,22,33,.6);border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-soft)}
-.admin-table h2{padding:16px 18px;border-bottom:1px solid #182233}
-table{width:100%;border-collapse:collapse}
-th,td{padding:14px 16px;text-align:left}
-thead th{background:#0f1c29;color:var(--muted);font-weight:600}
-tbody tr{border-top:1px solid #122033}
-tbody tr:hover{background:#0e1623}
-.status{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.3px}
-.status.complete{background:rgba(50,210,150,.12);color:var(--success);border:1px solid rgba(50,210,150,.35)}
-.status.pending{background:rgba(255,204,102,.12);color:var(--pending);border:1px solid rgba(255,204,102,.35)}
-.status.review{background:rgba(86,156,255,.12);color:#64a8ff;border:1px solid rgba(86,156,255,.35)}
-
-/* ---------- 404 Page ---------- */
-.error-wrap .btn{margin-top:8px}
-.error-wrap .btn.btn-gold{background:linear-gradient(90deg,var(--gold-3),var(--gold));color:#111}
-
-/* ---------- Small Helpers ---------- */
-.tag{display:inline-flex;gap:6px;align-items:center;border:1px solid rgba(255,255,255,.08);padding:6px 10px;border-radius:999px;color:var(--muter)}
-.mono{font-family:ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
-
-/* ---------- Responsive ---------- */
-@media (max-width:1024px){
-  .service-grid{grid-template-columns:repeat(2,1fr)}
-  .dashboard-cards{grid-template-columns:repeat(2,1fr)}
-}
-@media (max-width:740px){
-  .nav-links{gap:10px}
-  .logo span{display:none}
-  .service-grid{grid-template-columns:1fr}
-  .dashboard-cards{grid-template-columns:1fr}
-  .hero-logo{width:56px;height:56px}
-}
-/* ===== HOTFIX: kill giant logo + lock sizes ===== */
-
-/* 1) Never use the logo as a page background */
-body, .hero {
-  background-image: none !important;
-}
-
-/* Rebuild the hero background (gradient only) */
-.hero{
-  background:
-    radial-gradient(900px 500px at 80% -20%, rgba(201,165,91,.12), transparent 60%),
-    radial-gradient(700px 380px at 0% 0%, rgba(45,93,134,.18), transparent 60%),
-    linear-gradient(180deg, rgba(10,14,20,.7), rgba(10,14,20,.2)) !important;
-}
-
-/* 2) Hard cap logo sizes everywhere */
-.logo img{
-  width:28px !important;
-  height:28px !important;
-  object-fit:contain !important;
-}
-
-.hero-logo{
-  width:64px !important;
-  height:64px !important;
-  object-fit:contain !important;
-  margin:0 auto 18px !important;
-  display:block !important;
-}
-
-/* 3) Just in case any logo image slips through without the right class */
-img[src*="assets/logo"]{
-  max-width:64px !important;
-  height:auto !important;
+/* ============== RESPONSIVE ============== */
+@media (max-width: 980px){
+  .navbar .brand img{ height:56px; }
+  .cards{ grid-template-columns:1fr; }
+  .hero{ padding:64px 0 50px; }
+  .hero .hero-logo{ height:100px; }
 }
