@@ -1,7 +1,0 @@
-services:
-  - type: static_site
-    name: maltese-first-capital-deluxe-frontend-full
-    env: static
-    buildCommand: ""
-    publishPath: .
-    pullRequestPreviewsEnabled: false
