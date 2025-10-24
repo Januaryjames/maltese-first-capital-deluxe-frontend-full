@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KYC Review – Maltese First Capital</title>
   <link rel="stylesheet" href="style.css" />
-  <meta name="description" content="Admin KYC review for Maltese First Capital. Approve or reject client account applications.">
+  <meta name="description" content="Admin KYC review for Maltese First Capital. Approve, reject, or request more documents from applicants.">
 </head>
 <body>
 <header class="site-header">
@@ -21,12 +21,13 @@
 
 <main class="page">
   <h1>KYC Review</h1>
-  <p>Review new account applications. Approve to activate the client account, or reject with a note.</p>
+  <p>Review new account applications. Approve to activate, reject with a note, or request more documents from the applicant.</p>
 
   <!-- Controls -->
   <div class="section" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
     <div>
       <button class="btn-outline" data-status="pending">Pending</button>
+      <button class="btn-outline" data-status="more_docs">More Docs</button>
       <button class="btn-outline" data-status="approved">Approved</button>
       <button class="btn-outline" data-status="rejected">Rejected</button>
     </div>
@@ -71,6 +72,8 @@
   <!-- Detail -->
   <div class="section" id="detail" style="display:none;">
     <h2>Application Details</h2>
+    <div class="card" id="statusBanner" style="padding:12px; margin-bottom:12px; display:none;"></div>
+
     <div style="display:grid; grid-template-columns: 1fr; gap:10px;">
       <div class="card" style="padding:16px;">
         <p><strong>Submitted:</strong> <span id="dSubmitted">—</span></p>
@@ -96,10 +99,11 @@
         <h3>Decision</h3>
         <form id="decisionForm" class="contact-form">
           <input type="hidden" id="dIdHidden" />
-          <label for="dNote">Reviewer Note (optional)</label>
-          <textarea id="dNote" rows="4" placeholder="Add an internal note…"></textarea>
+          <label for="dNote">Reviewer Note (sent to client if “More Docs”)</label>
+          <textarea id="dNote" rows="4" placeholder="Example: Please provide a higher resolution passport scan and a recent utility bill."></textarea>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button type="button" id="approveBtn" class="btn-primary">Approve</button>
+            <button type="button" id="requestBtn" class="btn-secondary">Request More Documents</button>
             <button type="button" id="rejectBtn" class="btn-outline">Reject</button>
           </div>
         </form>
@@ -127,7 +131,22 @@
   const refreshBtn = document.getElementById('refreshBtn');
 
   const detailBox = document.getElementById('detail');
+  const banner = document.getElementById('statusBanner');
   const dIdHidden = document.getElementById('dIdHidden');
+
+  const setBanner = (status, note) => {
+    banner.style.display = 'block';
+    let text = '';
+    let bg = '#f4f6f8', col = '#0f1b2a', border = '#e9eef3';
+    if(status === 'pending'){ text = 'Pending review.'; }
+    if(status === 'more_docs'){ text = 'Awaiting additional documents from the applicant.'; bg='#fff7e6'; col='#5a4600'; border='#ffe7b3'; }
+    if(status === 'approved'){ text = 'Application approved.'; bg='#e9f8ee'; col='#0d4b2a'; border='#c6efd4'; }
+    if(status === 'rejected'){ text = 'Application rejected.'; bg='#fde9eb'; col='#731324'; border='#f7c6ce'; }
+    banner.style.background = bg;
+    banner.style.color = col;
+    banner.style.border = `1px solid ${border}`;
+    banner.textContent = note ? `${text} Note: ${note}` : text;
+  };
 
   const setDetail = (app) => {
     document.getElementById('dSubmitted').textContent = app.createdAt ? new Date(app.createdAt).toLocaleString() : '—';
@@ -143,6 +162,8 @@
     link.href = fileUrl || '#';
     link.textContent = fileUrl ? 'Open' : 'N/A';
     dIdHidden.value = app.id || app._id || '';
+
+    setBanner(app.status || 'pending', app.reviewerNote || app.note);
     detailBox.style.display = 'block';
   };
 
@@ -208,6 +229,9 @@
     const id = dIdHidden.value;
     if(!id){ return toast('No application selected','error'); }
     const note = document.getElementById('dNote').value.trim();
+    if(status === 'more_docs' && !note){
+      return toast('Please add a note describing which documents are required.','error');
+    }
     try{
       const r = await fetch(`${API}/api/admin/kyc/${encodeURIComponent(id)}/status`, {
         method: 'PUT',
@@ -219,9 +243,8 @@
       });
       const data = await r.json().catch(()=> ({}));
       if(!r.ok) throw new Error(data.message || 'Failed to update status');
-      toast(`Marked ${status}`,'success');
+      toast(status === 'more_docs' ? 'Requested more documents' : `Marked ${status}`,'success');
       await loadList();
-      // reload current detail
       await loadOne(id);
     }catch(err){
       toast(err.message,'error');
@@ -240,7 +263,6 @@
 
   searchBox.addEventListener('input', ()=>{
     currentQuery = searchBox.value;
-    // small debounce
     clearTimeout(window.__kycDeb);
     window.__kycDeb = setTimeout(loadList, 250);
   });
@@ -255,6 +277,7 @@
   });
 
   document.getElementById('approveBtn').addEventListener('click', ()=> updateStatus('approved'));
+  document.getElementById('requestBtn').addEventListener('click', ()=> updateStatus('more_docs'));
   document.getElementById('rejectBtn').addEventListener('click', ()=> updateStatus('rejected'));
 
   document.getElementById('logout').addEventListener('click', (e)=>{
