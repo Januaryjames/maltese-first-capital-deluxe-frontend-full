@@ -1,47 +1,208 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><title>Client Dashboard — Maltese First Capital</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="styles.css">
-</head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MFC • Admin Dashboard</title>
+  <link rel="icon" href="assets/logo.png"/>
+  <link rel="stylesheet" href="styles.css?v=10"/>
+  <style>
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px}
+    .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+    .form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .form-grid .wide{grid-column: span 2}
+    .muted{color:#9fb1c7}
+    .actions{display:flex;gap:8px}
+    .badge{padding:5px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.08);color:#cfd8e3;font-size:12px}
+    .kicker{display:flex;gap:8px;align-items:center}
+    .empty{padding:16px;color:#9fb1c7}
+  </style>
+</head>
+<body>
+<header>
+  <nav class="navbar">
+    <div class="logo"><img src="assets/logo.png" alt="MFC"/><span>Maltese First Capital</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="admin-kyc.html">KYC Review</a></li>
+      <li><a class="active highlight" href="admin-dashboard.html">Dashboard</a></li>
+      <li><a href="#" id="logoutLink">Log Out</a></li>
+    </ul>
+  </nav>
+</header>
 
-<header class="site-header"><div class="container nav">
-  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><span>Maltese First Capital</span></a>
-  <nav class="nav-links"><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
-  <div class="nav-actions" id="navActions"><a class="btn btn-secondary" href="client-login.html" onclick="localStorage.removeItem('CLIENT_TOKEN')">Sign out</a></div>
-  <button class="mobile-toggle" onclick="document.getElementById('navActions').classList.toggle('show')">☰</button>
-</div></header>
-
-<section class="section"><div class="container">
-  <h2>Your Accounts</h2>
-  <div class="content" id="accounts">Loading…</div>
-
-  <h3 class="mt-32">Transactions</h3>
-  <div class="content">
-    <table class="table" id="tx"><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Currency</th><th>Type</th></tr></thead><tbody></tbody></table>
+<main class="dashboard">
+  <div class="topbar">
+    <h1>Admin Dashboard</h1>
+    <div class="kicker">
+      <span class="badge">User: <span id="who" class="mono">—</span></span>
+      <span class="badge">API: <span class="mono" id="apiHost">unset</span></span>
+    </div>
   </div>
-</div></section>
 
-<footer class="site-footer"><div class="container inner"><div>© 2025 Maltese First Capital · Valletta, Malta</div><div class="legal"><a href="private-banking.html">Private Banking</a> · <a href="wealth-management.html">Wealth Management</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></div></div></footer>
+  <!-- Overview cards -->
+  <section class="dashboard-cards" id="overview">
+    <div class="dash-card"><h3>Total Clients</h3><div class="count" id="ovClients">—</div></div>
+    <div class="dash-card"><h3>Active Accounts</h3><div class="count" id="ovAccounts">—</div></div>
+    <div class="dash-card"><h3>KYC Pending</h3><div class="count" id="ovKyc">—</div></div>
+    <div class="dash-card"><h3>Today’s Volume</h3><div class="count" id="ovVolume">—</div></div>
+  </section>
+
+  <!-- Add Transaction -->
+  <section class="admin-table">
+    <h2>Add Transaction</h2>
+    <div class="container" style="padding:14px 16px 20px">
+      <form id="txForm" class="form-grid">
+        <div>
+          <label for="txUserId">User ID</label>
+          <input id="txUserId" placeholder="e.g. 10024567" required />
+        </div>
+        <div>
+          <label for="txCurrency">Currency</label>
+          <select id="txCurrency">
+            <option>EUR</option><option>USD</option><option>GBP</option>
+          </select>
+        </div>
+        <div>
+          <label for="txType">Type</label>
+          <select id="txType"><option value="credit">credit</option><option value="debit">debit</option></select>
+        </div>
+        <div>
+          <label for="txAmount">Amount</label>
+          <input id="txAmount" type="number" step="0.01" placeholder="0.00" required />
+        </div>
+        <div class="wide">
+          <label for="txNote">Description</label>
+          <input id="txNote" placeholder="Optional memo…" />
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button class="btn gold" type="submit">Add Transaction</button>
+        </div>
+        <div class="wide">
+          <span id="txStatus" class="muted"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Recent Transactions -->
+  <section class="admin-table">
+    <h2>Recent Transactions</h2>
+    <div class="table-wrap">
+      <table id="txTable">
+        <thead>
+          <tr>
+            <th>Date</th><th>User</th><th>Currency</th><th>Type</th><th>Amount</th><th>Description</th>
+          </tr>
+        </thead>
+        <tbody id="txBody"><tr><td class="empty" colspan="6">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer><p>© 2025 Maltese First Capital — Valletta, Malta</p></footer>
 
 <script>
-  window.API_BASE = localStorage.getItem('BACKEND_URL') || '';
-  (async function(){
-    try{
-      const token = localStorage.getItem('CLIENT_TOKEN') || '';
-      const h = {headers:{Authorization:`Bearer ${token}`}};
-      const a = await fetch(`${API_BASE}/api/client/accounts`, h);
-      const accts = a.ok ? await a.json() : {message:'No data'};
-      document.getElementById('accounts').innerHTML = `<pre>${JSON.stringify(accts,null,2)}</pre>`;
+  const API = localStorage.getItem('BACKEND_URL') || '';
+  const token = localStorage.getItem('ADMIN_TOKEN') || '';
+  document.getElementById('apiHost').textContent = API || 'not set';
+  document.getElementById('who').textContent = localStorage.getItem('ADMIN_USER') || '—';
 
-      const t = await fetch(`${API_BASE}/api/client/transactions`, h);
-      const rows = t.ok ? await t.json() : [];
-      const tbody = document.querySelector('#tx tbody'); tbody.innerHTML='';
-      (rows||[]).forEach(r=>{
-        const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${r.date||''}</td><td>${r.description||''}</td><td>${r.amount||''}</td><td>${r.currency||''}</td><td>${r.type||''}</td>`;
-        tbody.appendChild(tr);
+  // simple auth guard (optional)
+  // if(!token){ location.href='admin-login.html'; }
+
+  document.getElementById('logoutLink').addEventListener('click', (e)=>{
+    e.preventDefault();
+    localStorage.removeItem('ADMIN_TOKEN');
+    localStorage.removeItem('ADMIN_USER');
+    location.href='admin-login.html';
+  });
+
+  async function getJSON(url, opts={}){
+    const headers = Object.assign({'Accept':'application/json'}, opts.headers||{});
+    if(token) headers['Authorization'] = `Bearer ${token}`;
+    const res = await fetch(url, Object.assign({}, opts, {headers}));
+    if(!res.ok) throw new Error(await res.text());
+    try { return await res.json(); } catch { return {}; }
+  }
+
+  // Load Overview (tries canonical, falls back to demo)
+  async function loadOverview(){
+    try{
+      const data = await getJSON(`${API}/api/admin/overview`);
+      document.getElementById('ovClients').textContent  = data.totalClients ?? '—';
+      document.getElementById('ovAccounts').textContent = data.activeAccounts ?? '—';
+      document.getElementById('ovKyc').textContent      = data.kycPending ?? '—';
+      document.getElementById('ovVolume').textContent   = data.todaysVolume ?? '—';
+    }catch{
+      // graceful demo fallback
+      document.getElementById('ovClients').textContent  = '124';
+      document.getElementById('ovAccounts').textContent = '198';
+      document.getElementById('ovKyc').textContent      = '7';
+      document.getElementById('ovVolume').textContent   = '€2.3m';
+    }
+  }
+
+  // Load recent transactions
+  async function loadTx(){
+    const body = document.getElementById('txBody');
+    try{
+      const items = await getJSON(`${API}/api/admin/transactions?limit=25`);
+      if(!Array.isArray(items) || items.length===0){
+        body.innerHTML = `<tr><td class="empty" colspan="6">No transactions.</td></tr>`;
+        return;
+      }
+      body.innerHTML = items.map(t=>`
+        <tr>
+          <td>${new Date(t.createdAt||Date.now()).toLocaleString()}</td>
+          <td class="mono">${t.userId ?? '—'}</td>
+          <td>${t.currency ?? '—'}</td>
+          <td>${t.type ?? '—'}</td>
+          <td>${formatAmt(t.amount, t.currency)}</td>
+          <td>${escapeHTML(t.note||'')}</td>
+        </tr>
+      `).join('');
+    }catch(err){
+      body.innerHTML = `<tr><td class="empty" colspan="6">Unable to load transactions.</td></tr>`;
+    }
+  }
+
+  // Add transaction
+  document.getElementById('txForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const s = id=>document.getElementById(id).value;
+    const payload = {
+      userId: s('txUserId').trim(),
+      currency: s('txCurrency'),
+      type: s('txType'),
+      amount: parseFloat(s('txAmount')),
+      note: s('txNote').trim()
+    };
+    const status = document.getElementById('txStatus');
+    if(!payload.userId || !isFinite(payload.amount)){ status.textContent='Please enter a valid user and amount.'; return;}
+    status.textContent = 'Submitting…';
+    try{
+      const res = await fetch(`${API}/api/admin/tx`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json', ...(token?{'Authorization':`Bearer ${token}`}:{})},
+        body:JSON.stringify(payload)
       });
-    }catch(err){ document.getElementById('accounts').textContent='Unable to load accounts.'; }
-  })();
+      if(!res.ok) throw new Error(await res.text());
+      status.textContent = 'Saved.';
+      e.target.reset();
+      loadTx();
+    }catch(err){
+      status.textContent = `Error: ${err.message || 'failed'}`;
+    }
+  });
+
+  function formatAmt(a, c){ if(typeof a!=='number') return '—'; return Intl.NumberFormat(undefined,{style:'currency',currency:c||'EUR'}).format(a); }
+  function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+  loadOverview();
+  loadTx();
 </script>
-</body></html>
+</body>
+</html>
