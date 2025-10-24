@@ -2,66 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Login | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MFC • Admin Login</title>
   <link rel="icon" href="assets/logo.png" />
+  <link rel="stylesheet" href="styles.css?v=10" />
+  <style>
+    .login-actions{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:6px}
+    .hint{color:#9fb1c7;font-size:13px}
+    .err{color:#ff9b9b;font-weight:700}
+  </style>
 </head>
-
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <img src="assets/logo.png" alt="Maltese First Capital" />
-        <span>Maltese First Capital</span>
+<header>
+  <nav class="navbar">
+    <div class="logo"><img src="assets/logo.png" alt="MFC"/><span>Maltese First Capital</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="private-banking.html">Private Banking</a></li>
+      <li><a href="wealth-management.html">Wealth</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="client-login.html">Client Login</a></li>
+      <li><a class="active highlight" href="admin-login.html">Admin Portal</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="login-page">
+  <div class="login-box">
+    <h1>Admin Login</h1>
+    <p class="subtext">Sign in to manage clients, KYC reviews, and statements.</p>
+
+    <form id="loginForm">
+      <label for="username">Username</label>
+      <input id="username" name="username" autocomplete="username" required />
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required />
+
+      <div class="login-actions">
+        <button class="btn gold" type="submit">Sign In</button>
+        <span id="status" class="hint">Tip: use your admin credentials.</span>
       </div>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="private-banking.html">Private Banking</a></li>
-        <li><a href="wealth-management.html">Wealth</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+    </form>
+  </div>
+</main>
 
-  <section class="login-page">
-    <div class="login-box">
-      <h1>Admin Login</h1>
-      <form id="adminLoginForm" onsubmit="return false;">
-        <label for="email">Username</label>
-        <input type="text" id="email" name="email" placeholder="Enter username" required />
+<footer><p>© 2025 Maltese First Capital — Valletta, Malta</p></footer>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Enter password" required />
+<script>
+  const API = localStorage.getItem('BACKEND_URL') || '';
+  const statusEl = document.getElementById('status');
 
-        <button type="submit" onclick="handleAdminLogin()">Login</button>
-      </form>
-    </div>
-  </section>
+  document.getElementById('loginForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const username = e.target.username.value.trim();
+    const password = e.target.password.value;
 
-  <footer>
-    <p>© 2025 Maltese First Capital | Valletta, Malta</p>
-  </footer>
-
-  <script>
-    async function handleAdminLogin() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      const response = await fetch('https://maltese-first-capital-deluxe-backend.onrender.com/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+    statusEl.textContent = 'Signing in…';
+    try{
+      const res = await fetch(`${API}/api/admin/login`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ username, password })
       });
 
-      const data = await response.json();
-      if (data.ok) {
-        alert('Welcome, Admin');
-        window.location.href = 'admin-dashboard.html';
-      } else {
-        alert('Invalid credentials.');
+      if(!res.ok){
+        const t = await res.text();
+        throw new Error(t || 'Login failed');
       }
+
+      const data = await res.json().catch(()=>({}));
+      // store token if present
+      if(data && data.token) localStorage.setItem('ADMIN_TOKEN', data.token);
+      localStorage.setItem('ADMIN_USER', username);
+      statusEl.textContent = 'Success. Redirecting…';
+      location.href = 'admin-dashboard.html';
+    }catch(err){
+      statusEl.innerHTML = `<span class="err">Error:</span> ${err.message || 'Unable to login'}`;
     }
-  </script>
+  });
+</script>
 </body>
 </html>
