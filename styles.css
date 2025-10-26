@@ -1,198 +1,208 @@
-/* ===========================
-   Maltese First Capital – Styles by january james
-   =========================== */
-
-/* ------ Brand Tokens ------ */
-:root{
-  --brand-navy:#0e1a26;           /* deep section background */
-  --brand-navy-900:#0b1520;
-  --brand-ink:#152536;            /* headings/body */
-  --brand-ink-soft:#314255;
-  --sand-50:#f7f3ed;              /* page bg above the fold */
-  --sand-100:#efe9df;
-  --gold:#caa35a;
-  --gold-600:#b78f46;
-  --gold-700:#9f7a37;
-  --card:#0f1c28;
-  --card-2:#0c1722;
-  --ring:#243244;
-  --white:#fff;
-  --muted:#93a4b5;
-  --shadow: 0 8px 30px rgba(8,15,25,.22);
-  --radius-lg:18px;
-  --radius-md:14px;
-  --radius-sm:10px;
+:root {
+  --gold: #bfa15a;
+  --navy: #0e1624;
+  --offwhite: #f9f9f9;
+  --font-main: "Inter", system-ui, -apple-system, sans-serif;
 }
 
-/* ------ Base ------ */
-*{box-sizing:border-box}
-html,body{height:100%}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  color:var(--brand-ink);
-  background:var(--sand-50);
-  font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
-  text-rendering:optimizeLegibility;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-img{max-width:100%;height:auto;display:block}
-
-.container{
-  width:min(1200px, 92%);
-  margin-inline:auto;
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background: var(--offwhite);
+  color: #152536;
 }
 
-/* ------ Header / Nav ------ */
-.site-header{
-  position:sticky; top:0; z-index:1000;
-  background:rgba(255,255,255,.92);
-  backdrop-filter:saturate(140%) blur(8px);
-  border-bottom:1px solid rgba(20,30,40,.08);
-}
-.navbar{display:flex;align-items:center;gap:24px;padding:14px 0}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--brand-ink)}
-.brand-logo{
-  width:44px;height:44px;border-radius:12px;
-  background:#fff; box-shadow:0 6px 20px rgba(0,0,0,.12);
-  padding:6px; display:grid; place-items:center;
-}
-.brand-logo img{width:100%;height:100%;object-fit:contain}
-.brand-name{font-weight:700;letter-spacing:.2px}
-
-.nav{margin-left:auto;display:flex;gap:20px;align-items:center}
-.nav a{
-  color:var(--brand-ink);text-decoration:none;font-weight:600;
-  padding:8px 10px;border-radius:10px
-}
-.nav a:hover{background:rgba(18,28,38,.06)}
-
-.btn{
-  appearance:none;border:0;cursor:pointer;
-  padding:10px 16px;border-radius:12px;font-weight:700;
-  transition:transform .08s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
-}
-.btn-gold{
-  color:#1a242f;background:linear-gradient(180deg, var(--gold) 0%, var(--gold-600) 100%);
-  box-shadow:0 6px 16px rgba(202,163,90,.35), inset 0 1px 0 rgba(255,255,255,.4);
-}
-.btn-gold:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(202,163,90,.45), inset 0 1px 0 rgba(255,255,255,.55)}
-.btn-outline{
-  background:#fff;border:1px solid rgba(20,30,40,.12)
-}
-.btn-outline:hover{background:rgba(20,30,40,.04)}
-
-/* Mobile hamburger */
-.nav-toggle{display:none;margin-left:8px}
-.nav-toggle button{
-  all:unset;cursor:pointer;display:grid;place-items:center;
-  width:40px;height:40px;border-radius:10px;border:1px solid rgba(20,30,40,.12);
-}
-.nav-toggle svg{width:20px;height:20px}
-
-/* ------ Hero ------ */
-.hero{
-  position:relative; isolation:isolate;
-  background:var(--sand-50);
-  overflow:hidden;
-}
-.hero::before{
-  /* hero background image */
-  content:"";
-  position:absolute; inset:0; z-index:-2;
-  background:url('/assets/hero-bg.jpg') center/cover no-repeat;
-  transform:translateZ(0);
-}
-.hero::after{
-  /* readability overlay (mobile a bit darker) */
-  content:"";
-  position:absolute; inset:0; z-index:-1;
-  background:linear-gradient(
-    to bottom,
-    rgba(12,17,24,.42) 0%,
-    rgba(12,17,24,.38) 32%,
-    rgba(14,20,28,.25) 62%,
-    rgba(14,20,28,.18) 100%
-  );
-}
-.hero-inner{padding: clamp(64px, 8vw, 110px) 0 56px}
-.hero-crest{
-  width:clamp(72px, 10vw, 120px); height:clamp(72px, 10vw, 120px);
-  margin-inline:auto; border-radius:18px; background:#ffffffd8;
-  box-shadow:0 14px 38px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.8);
-  padding:10px; display:grid; place-items:center;
-}
-.hero-crest img{width:100%;height:100%;object-fit:contain}
-
-.hero h1{
-  margin:22px 0 8px; text-align:center; color:#fff;
-  font-weight:800; letter-spacing:.2px;
-  font-size: clamp(28px, 4.2vw, 56px);
-  text-shadow:0 2px 10px rgba(0,0,0,.35);
-}
-.hero p{
-  margin:0 auto 22px; text-align:center; color:#f2f6fb;
-  max-width:900px; font-size: clamp(15px, 2.1vw, 18px);
-  text-shadow:0 1px 6px rgba(0,0,0,.35);
-}
-.hero .cta{display:flex;justify-content:center;gap:14px}
-
-/* ------ Navy Feature Section ------ */
-.navy{
-  background:
-    radial-gradient(1200px 500px at 50% -100px, rgba(202,163,90,.16), transparent 55%),
-    radial-gradient(800px 360px at 80% -120px, rgba(202,163,90,.10), transparent 60%),
-    linear-gradient(180deg, var(--brand-navy) 0%, var(--brand-navy-900) 100%);
-  color:#e9f0f7; padding:64px 0 90px; border-top-left-radius:26px; border-top-right-radius:26px;
-  box-shadow: var(--shadow);
-}
-.navy h2{
-  text-align:center; margin:0 0 28px; font-weight:800; letter-spacing:.4px;
-}
-.tagline{
-  color:#b3c3d6; text-align:center; margin:-10px 0 34px; font-weight:600;
+/* HEADER */
+.site-header {
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid #e6e6e6;
 }
 
-/* Cards */
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.card{
-  background:linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
-  border-radius:20px; padding:22px; border:1px solid rgba(255,255,255,.06);
-  position:relative; overflow:hidden;
-  box-shadow:0 12px 28px rgba(4,10,18,.25);
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
 }
-.card:before{
-  content:""; position:absolute; inset:-1px; border-radius:22px;
-  background:
-    linear-gradient(180deg, rgba(202,163,90,.32), rgba(202,163,90,0));
-  opacity:.65; -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
-  -webkit-mask-composite:xor; mask-composite:exclude;
-  padding:1px; pointer-events:none;
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: #152536;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
-.card:hover{transform:translateY(-2px); transition:transform .18s ease}
-.card h3{margin:0 0 8px;color:#fff}
-.card p{margin:0;color:#c2d1e2}
 
-/* ------ Footer ------ */
-.site-footer{background:#0c1420;color:#9db0c4;padding:24px 0;border-top:1px solid rgba(255,255,255,.06)}
-.site-footer .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.site-footer a{color:#cbd8e6;text-decoration:none}
-.site-footer a:hover{color:#fff;text-decoration:underline}
+.brand-logo {
+  border-radius: 8px;
+  background: #fff;
+}
 
-/* ------ Responsive ------ */
-@media (max-width: 960px){
-  .nav{display:none}
-  .nav.open{
-    display:flex;flex-direction:column;gap:6px;
-    position:absolute; inset:auto 0 0 0; background:#fffffff6; padding:14px 16px;
-    border-top:1px solid rgba(20,30,40,.08)
+.nav {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #152536;
+  font-weight: 500;
+}
+
+.nav a:hover {
+  color: var(--gold);
+}
+
+.btn {
+  padding: 0.55rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-outline {
+  border: 1.5px solid #152536;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(191,161,90,0.4);
+}
+
+.btn-gold:hover {
+  background: #c7ac62;
+}
+
+/* HERO SECTION */
+.hero {
+  position: relative;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+  padding: 6rem 2rem 7rem;
+  isolation: isolate;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('./assets/hero-bg.jpg') center/cover no-repeat;
+  z-index: -2;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.6));
+  z-index: -1;
+}
+
+.hero-crest img {
+  width: 90px;
+  margin-bottom: 1rem;
+  border-radius: 16px;
+  background: #fff;
+  padding: 0.5rem;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin: 0.5rem 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.hero p {
+  max-width: 640px;
+  margin: 0 auto 2rem;
+  font-weight: 400;
+  color: #f0f0f0;
+}
+
+/* NAVY SECTION */
+.navy {
+  background: radial-gradient(circle at top center, #152536, #0b0f18 80%);
+  color: #fff;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.navy .tagline {
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  margin-bottom: 0.6rem;
+}
+
+.navy h2 {
+  font-size: 1.8rem;
+  margin-bottom: 3rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.6rem;
+}
+
+.card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(191,161,90,0.3);
+  border-radius: 14px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 14px rgba(0,0,0,0.25);
+}
+
+/* FOOTER */
+.site-footer {
+  background: #0b0f18;
+  color: #aaa;
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+}
+
+.site-footer a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+/* MOBILE NAV */
+.nav-toggle {
+  display: none;
+}
+
+@media (max-width: 850px) {
+  .nav {
+    display: none;
+    flex-direction: column;
+    background: #fff;
+    position: absolute;
+    right: 1rem;
+    top: 80px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    padding: 1rem 2rem;
   }
-  .nav-toggle{display:block;margin-left:auto}
-  .cards{grid-template-columns:1fr}
-  .brand-logo{width:40px;height:40px}
+  .nav.open { display: flex; }
+  .nav-toggle { display: block; }
 }
-
-/* utilities */
-.mt-6{margin-top:6px}.mt-12{margin-top:12px}.mt-20{margin-top:20px}
-.center{text-align:center}
