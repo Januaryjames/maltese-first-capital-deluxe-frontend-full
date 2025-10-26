@@ -1,105 +1,92 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Maltese First Capital — Private & Wealth Banking</title>
-    <meta name="description" content="Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.">
-    <link rel="icon" href="/assets/logo.png">
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <!-- Header -->
-    <header class="site-header">
-      <div class="container navbar">
-        <a class="brand" href="index.html">
-          <span class="brand-logo"><img src="/assets/logo.png" alt="Maltese First Capital"></span>
-          <span class="brand-name">Maltese First Capital</span>
-        </a>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maltese First Capital — Private & Wealth Banking</title>
+  <link rel="icon" href="/assets/logo.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="Maltese First Capital"></span>
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
 
-        <nav class="nav-links">
-          <a href="private-banking.html">Private Banking</a>
-          <a href="wealth-management.html">Wealth Management</a>
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
-        </nav>
+      <nav class="nav-links" id="navLinks">
+        <a href="private-banking.html">Private Banking</a>
+        <a href="wealth-management.html">Wealth Management</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
 
-        <div class="nav-cta">
-          <a class="btn btn-outline" href="client-login.html">Client Login</a>
-          <a class="btn btn-gold" href="admin-login.html">Admin Portal</a>
-          <button class="menu-toggle" onclick="document.getElementById('m-menu').classList.toggle('open')">Menu</button>
-        </div>
+      <div class="nav-cta">
+        <a class="btn btn-gold" href="client-login.html">Client Login</a>
+        <a class="btn btn-gold" href="admin-login.html">Admin Portal</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="menu">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></svg>
+        </button>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <!-- Mobile menu (simple) -->
-    <div id="m-menu" class="container" style="display:none"></div>
-    <script>
-      // Simple mobile menu injection (no framework)
-      (function(){
-        const menu = document.getElementById('m-menu');
-        menu.innerHTML = `
-          <div style="display:flex; flex-direction:column; gap:14px; padding:12px 0;">
-            <a href="private-banking.html">Private Banking</a>
-            <a href="wealth-management.html">Wealth Management</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-            <a class="btn btn-outline" href="client-login.html">Client Login</a>
-            <a class="btn btn-gold" href="admin-login.html">Admin Portal</a>
-          </div>`;
-        menu.classList.toggle = function(c){
-          if(this.classList.contains(c)){ this.style.display='none'; this.classList.remove(c);}
-          else { this.style.display='block'; this.classList.add(c); }
-        };
-      })();
-    </script>
-
-    <!-- HERO -->
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-badge">
-          <img src="/assets/logo.png" alt="Maltese First Capital">
-        </div>
-        <h1>Unlocking Financial Potential</h1>
-        <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
-        <div class="cta">
-          <a class="btn btn-gold" href="client-register.html">Open an Account</a>
-        </div>
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-badge">
+        <img src="/assets/logo.png" alt="Maltese First Capital">
       </div>
-    </section>
-
-    <!-- NAVY SERVICES -->
-    <section class="section-navy">
-      <div class="container">
-        <h2>Our Core Services</h2>
-        <div class="cards">
-          <article class="card">
-            <h3>Private Banking</h3>
-            <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
-          </article>
-          <article class="card">
-            <h3>Wealth Management</h3>
-            <p>Consolidated holdings and transparent performance reporting, managed with disciplined strategy.</p>
-          </article>
-          <article class="card">
-            <h3>Corporate Advisory</h3>
-            <p>Strategic guidance and capital structuring for enterprises across local and international markets.</p>
-          </article>
-        </div>
+      <h1>Unlocking Financial Potential</h1>
+      <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
+      <div class="cta">
+        <a class="btn btn-gold" href="client-register.html">Open an Account</a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- FOOTER -->
-    <footer class="site-footer">
-      <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
-        <div>© 2025 Maltese First Capital · Valletta, Malta</div>
-        <nav class="footer-links">
-          <a href="private-banking.html">Private</a>
-          <a href="wealth-management.html">Wealth</a>
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
-        </nav>
+  <section class="section-navy">
+    <div class="container">
+      <h2>Our Core Services</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Private Banking</h3>
+          <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
+        </article>
+        <article class="card">
+          <h3>Wealth Management</h3>
+          <p>Consolidated holdings and transparent performance reporting, managed with disciplined strategy.</p>
+        </article>
+        <article class="card">
+          <h3>Corporate Advisory</h3>
+          <p>Strategic guidance and capital structuring for enterprises across local and international markets.</p>
+        </article>
       </div>
-    </footer>
-  </body>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>© 2025 Maltese First Capital · Valletta, Malta</div>
+      <nav class="footer-links">
+        <a href="private-banking.html">Private</a>
+        <a href="wealth-management.html">Wealth</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const nav = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+      nav.classList.toggle('open');
+      toggle.classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
+      if (!nav.contains(e.target) && !toggle.contains(e.target)) nav.classList.remove('open');
+    });
+  </script>
+</body>
 </html>
