@@ -6,10 +6,9 @@
   <title>Contact — Maltese First Capital</title>
   <link rel="icon" href="/assets/favicon.png" />
   <link rel="preload" href="/assets/hero-bg.jpg" as="image" />
-  <link rel="stylesheet" href="/styles.css?v=12" />
+  <link rel="stylesheet" href="/styles.css?v=14" />
 </head>
 <body>
-  <!-- Header -->
   <header class="navbar">
     <div class="container nav-row">
       <a class="brand" href="index.html">
@@ -21,14 +20,13 @@
         <a href="private-banking.html">Private Banking</a>
         <a href="wealth-management.html">Wealth Management</a>
         <a href="about.html">About</a>
-        <a href="contact.html" class="active">Contact</a>
+        <a class="active" href="contact.html">Contact</a>
         <a href="client-login.html" class="btn btn-ghost">Client Login</a>
         <a href="admin-login.html" class="btn btn-gold">Admin Portal</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero -->
   <section class="hero hero--light">
     <div class="hero__bg" style="background-image:url('/assets/hero-bg.jpg')"></div>
     <div class="hero__veil"></div>
@@ -40,50 +38,25 @@
     </div>
   </section>
 
-  <!-- Dark Section -->
   <section class="section-dark">
     <div class="container">
       <h2 class="eyebrow">REACH US</h2>
       <h3 class="section-title">Valletta, Malta · Global Coverage</h3>
-
       <div class="grid grid-3 cards-outline">
-        <article class="card card--outline">
-          <h4>Email</h4>
-          <p><a class="link" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-        </article>
-        <article class="card card--outline">
-          <h4>Client Portal</h4>
-          <p><a class="link" href="client-login.html">Log in</a> to message your banker securely.</p>
-        </article>
-        <article class="card card--outline">
-          <h4>Compliance</h4>
-          <p>For KYC/AML requests, your banker will provide an encrypted upload link.</p>
-        </article>
+        <article class="card card--outline"><h4>Email</h4><p><a class="link" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p></article>
+        <article class="card card--outline"><h4>Client Portal</h4><p><a class="link" href="client-login.html">Log in</a> to message your banker securely.</p></article>
+        <article class="card card--outline"><h4>Compliance</h4><p>Your banker will provide an encrypted upload link for KYC.</p></article>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="site-footer">
     <div class="container footer-row">
-      <div class="footer-brand">
-        <img src="/assets/logo-crest.png" alt="" class="footer-mark" />
-        <span>© 2025 Maltese First Capital · Valletta, Malta</span>
-      </div>
-      <nav class="footer-links">
-        <a href="private-banking.html">Private</a>
-        <a href="wealth-management.html">Wealth</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </nav>
+      <div class="footer-brand"><img src="/assets/logo-crest.png" class="footer-mark" alt="">© 2025 Maltese First Capital · Valletta, Malta</div>
+      <nav class="footer-links"><a href="private-banking.html">Private</a><a href="wealth-management.html">Wealth</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
     </div>
   </footer>
 
-  <!-- Mobile menu -->
-  <script>
-    document.querySelector('.hamburger')?.addEventListener('click', () => {
-      document.querySelector('.nav-links')?.classList.toggle('open');
-    });
-  </script>
+  <script>document.querySelector('.hamburger')?.addEventListener('click',()=>{document.querySelector('.nav-links')?.classList.toggle('open')});</script>
 </body>
 </html>
