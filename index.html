@@ -1,95 +1,125 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Maltese First Capital — Private & Wealth Banking</title>
-  <link rel="stylesheet" href="/styles.css"/>
-  <link rel="icon" href="/assets/logo.png" type="image/png"/>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="brand" href="/">
-      <img src="/assets/logo.png" alt="Maltese First Capital logo"/>
-      <span>Maltese First Capital</span>
-    </a>
 
-    <nav class="nav" id="desktopNav">
-      <a href="/private-banking.html">Private Banking</a>
-      <a href="/wealth-management.html">Wealth Management</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-      <a class="btn btn-outline" href="/client-login.html">Client Login</a>
-      <a class="btn btn-gold" href="/admin-login.html">Admin Portal</a>
-    </nav>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/logo-crest.png" alt="Maltese First Capital" />
+        <span>Maltese First Capital</span>
+      </a>
 
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu"><span></span></button>
-  </div>
+      <nav class="nav" aria-label="Primary">
+        <a href="private-banking.html">Private Banking</a>
+        <a href="wealth-management.html">Wealth Management</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
 
-  <div class="mobile-panel" id="mobilePanel">
-    <div class="mobile-menu container">
-      <a href="/private-banking.html">Private Banking</a>
-      <a href="/wealth-management.html">Wealth Management</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-      <a class="btn btn-outline" href="/client-login.html">Client Login</a>
-      <a class="btn btn-gold" href="/admin-login.html">Admin Portal</a>
+      <div class="actions">
+        <a class="btn btn-outline" href="client-login.html">Client Login</a>
+        <a class="btn btn-gold" href="admin-login.html">Admin Portal</a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span>
+        </button>
+      </div>
     </div>
-  </div>
-</header>
 
-<section class="hero">
-  <div class="container content">
-    <div class="logo-badge">
-      <img src="/assets/logo.png" alt="Maltese First Capital"/>
+    <!-- Mobile panel -->
+    <div id="mobilePanel" class="mobile-panel" aria-hidden="true">
+      <nav class="mobile-menu" aria-label="Mobile">
+        <a href="private-banking.html">Private Banking</a>
+        <a href="wealth-management.html">Wealth Management</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a class="btn btn-outline" href="client-login.html">Client Login</a>
+        <a class="btn btn-gold" href="admin-login.html">Admin Portal</a>
+      </nav>
     </div>
-    <h1>Unlocking Financial Potential</h1>
-    <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
-    <a href="/client-register.html" class="btn btn-gold">Open an Account</a>
-  </div>
-</section>
+  </header>
 
-<section class="section section-navy">
-  <div class="container">
-    <div class="kicker">Our Core Services</div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="content">
+      <div class="logo-badge">
+        <img src="assets/logo-crest.png" alt="Maltese First Capital" />
+      </div>
+      <h1>Unlocking Financial Potential</h1>
+      <p>Maltese First Capital is an investment bank focused on unlocking financial
+         potential and fostering growth for clients through tailored financial solutions.</p>
+      <a class="btn btn-gold hero-cta" href="client-register.html">Open an Account</a>
+    </div>
+  </section>
+
+  <!-- Navy section -->
+  <section class="section-navy">
+    <p class="kicker">Our Core Services</p>
     <h2>Trust, Performance, Discretion</h2>
 
-    <div class="grid mt-24">
+    <div class="grid">
       <article class="card">
         <h3>Private Banking</h3>
         <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
       </article>
       <article class="card">
         <h3>Wealth Management</h3>
-        <p>Consolidated portfolio reporting, performance analytics and disciplined strategy.</p>
+        <p>Consolidated portfolio reporting, performance analytics, and a secure document vault.</p>
       </article>
       <article class="card">
         <h3>Corporate Advisory</h3>
-        <p>Capital structuring, M&amp;A support and strategic guidance for enterprises.</p>
+        <p>Capital structuring, M&amp;A support, and strategic guidance for enterprises across markets.</p>
       </article>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div>© <span id="y"></span> Maltese First Capital · Valletta, Malta</div>
-    <nav class="footer-nav">
-      <a href="/private-banking.html">Private</a>
-      <a href="/wealth-management.html">Wealth</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-    </nav>
-  </div>
-</footer>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <small>© 2025 Maltese First Capital · Valletta, Malta</small>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="private-banking.html">Private</a>
+        <a href="wealth-management.html">Wealth</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
 
-<script>
-document.getElementById('y').textContent = new Date().getFullYear();
-const toggle = document.getElementById('navToggle');
-const panel  = document.getElementById('mobilePanel');
-toggle.addEventListener('click',()=>panel.classList.toggle('show'));
-panel.addEventListener('click',e=>{if(e.target.tagName==='A')panel.classList.remove('show')});
-</script>
+  <script>
+    // Mobile menu logic with desktop reset
+    (function () {
+      const toggle = document.querySelector('.nav-toggle');
+      const panel  = document.getElementById('mobilePanel');
+
+      function closePanel() {
+        panel.classList.remove('show');
+        panel.setAttribute('aria-hidden', 'true');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+      function openPanel() {
+        panel.classList.add('show');
+        panel.setAttribute('aria-hidden', 'false');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+
+      toggle.addEventListener('click', () => {
+        const open = panel.classList.contains('show');
+        open ? closePanel() : openPanel();
+      });
+
+      // Always close on desktop to avoid “stuck” panel
+      const mq = window.matchMedia('(min-width: 961px)');
+      function handleResize(e) { if (e.matches) closePanel(); }
+      mq.addEventListener ? mq.addEventListener('change', handleResize) : mq.addListener(handleResize);
+      handleResize(mq);
+    })();
+  </script>
 </body>
 </html>
