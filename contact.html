@@ -4,31 +4,117 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact — Maltese First Capital</title>
+
   <link rel="icon" href="/assets/favicon.png" />
-  <link rel="preload" href="/assets/hero-bg.jpg" as="image" />
-  <link rel="stylesheet" href="/styles.css?v=14" />
+  <link rel="preload" href="/assets/hero-bg.jpg" as="image">
+  <link id="page-css" rel="stylesheet" href="/styles.css?v=16">
+
+  <!-- Embedded “critical” CSS so this page looks right even if styles.css doesn’t load -->
+  <style>
+    :root{
+      --gold-1:#D5B46F; --gold-2:#B9974A; --ink:#0b1220; --ink-2:#1a2435;
+      --navy-1:#0C1524; --navy-2:#0B1322; --muted:#9fb1c7; --probe:1;
+      --radius:14px; --radius-lg:24px
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans";color:var(--ink);background:#fff}
+    a{color:#1c3358;text-underline-offset:3px}
+    img{max-width:100%;display:block}
+
+    /* NAV */
+    .navbar{position:sticky;top:0;z-index:60;background:#ffffffcc;backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid #e6e8ee}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    .nav-row{display:flex;align-items:center;justify-content:space-between;height:74px;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none}
+    .brand img{width:44px;height:44px;border-radius:12px;box-shadow:0 10px 24px rgba(0,0,0,.12)}
+    .brand span{font-weight:700;letter-spacing:.2px}
+    .nav-links{display:flex;align-items:center;gap:22px}
+    .nav-links a{color:var(--ink);text-decoration:none;font-weight:600;opacity:.9}
+    .nav-links a.active{opacity:1}
+    .btn{display:inline-block;padding:.7rem 1rem;border-radius:12px;font-weight:700;border:1px solid #d7d9de;background:#fff;color:var(--ink)}
+    .btn-gold{background:linear-gradient(180deg,var(--gold-1),var(--gold-2));color:#132433;border-color:rgba(181,151,76,.55);box-shadow:0 12px 28px rgba(181,151,76,.28)}
+    .btn:where(:hover,:focus-visible){transform:translateY(-1px)}
+    .hamburger{display:none;flex-direction:column;gap:5px;background:transparent;border:0}
+    .hamburger span{width:24px;height:2px;background:#222;border-radius:2px}
+    @media (max-width:900px){
+      .hamburger{display:flex}
+      .nav-links{position:absolute;left:0;right:0;top:74px;background:#fff;border-bottom:1px solid #eceff4;display:none;flex-direction:column;padding:12px 20px}
+      .nav-links.open{display:flex}
+    }
+
+    /* HERO */
+    .hero{position:relative;isolation:isolate}
+    .hero__bg{position:absolute;inset:0;background-image:url('/assets/hero-bg.jpg');background-size:cover;background-position:center;filter:brightness(.68) saturate(1.05);z-index:-2}
+    .hero__veil{position:absolute;inset:0;background:
+      radial-gradient(1200px 520px at 50% 8%, rgba(255,255,255,.18) 0%, rgba(17,25,40,.55) 55%, rgba(11,18,32,.75) 100%);
+      z-index:-1}
+    .hero__content{padding:90px 20px 70px;text-align:center;color:#fff}
+    .hero__crest{width:104px;height:104px;border-radius:26px;background:#fff;box-shadow:0 30px 70px rgba(0,0,0,.35);padding:16px;object-fit:contain;margin:0 auto 20px}
+    .hero__title{font-size:clamp(28px,4.5vw,50px);line-height:1.1;margin:0 0 12px;text-shadow:0 2px 16px rgba(0,0,0,.45)}
+    .hero__lead{max-width:900px;margin:0 auto 22px;color:#e9edf6}
+    .hero .btn-gold{padding:.85rem 1.25rem;border-radius:12px}
+
+    /* Navy / cards */
+    .section-dark{background:
+      radial-gradient(900px 400px at 50% 0%, rgba(255,222,156,.07) 0%, transparent 60%),
+      linear-gradient(180deg,var(--navy-1),var(--navy-2));
+      color:#e6ebf3;padding:60px 0 84px;border-radius:28px 28px 0 0}
+    .eyebrow{letter-spacing:.22em;color:var(--gold-1);text-transform:uppercase;font-size:.78rem;margin:0 0 8px;text-align:center}
+    .section-title{font-size:clamp(22px,2.6vw,30px);margin:0 0 28px;text-align:center}
+    .grid{display:grid;gap:18px}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:900px){.grid-3{grid-template-columns:1fr}}
+    .card{padding:22px;border-radius:18px;background:linear-gradient(180deg,rgba(29,37,58,.55),rgba(16,23,39,.45));
+      border:1px solid rgba(210,185,116,.35);box-shadow:inset 0 0 0 1px rgba(210,185,116,.08), 0 12px 40px rgba(0,0,0,.22)}
+    .card h4{margin:0 0 8px;font-size:1.05rem}
+    .card p{margin:0;color:#cdd8ea}
+    .link{color:#fff;border-bottom:1px dashed rgba(213,180,111,.6);text-decoration:none}
+
+    /* Footer */
+    .site-footer{background:var(--navy-2);color:var(--muted);border-top:1px solid rgba(210,185,116,.18);padding:26px 0}
+    .footer-row{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+    .footer-mark{width:28px;height:28px;border-radius:7px;margin-right:10px;vertical-align:middle}
+    .footer-links a{color:#cfd8e6;margin-left:16px;text-decoration:none}
+
+    /* Tiny utilities */
+    .mt-0{margin-top:0}.mb-0{margin-bottom:0}
+  </style>
+
+  <!-- If CSS at /styles.css fails for any reason, retry relative URL as a fallback -->
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const applied = getComputedStyle(document.documentElement).getPropertyValue('--probe').trim();
+        if (!applied) document.getElementById('page-css').href = 'styles.css?v=16';
+      }, 80);
+    });
+  </script>
 </head>
 <body>
+
+  <!-- NAVBAR -->
   <header class="navbar">
     <div class="container nav-row">
-      <a class="brand" href="index.html">
-        <img src="/assets/logo-crest.png" class="brand-mark" alt="">
-        <span class="brand-name">Maltese First Capital</span>
+      <a class="brand" href="/index.html">
+        <img src="/assets/logo-crest.png" alt="">
+        <span>Maltese First Capital</span>
       </a>
       <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
       <nav class="nav-links">
-        <a href="private-banking.html">Private Banking</a>
-        <a href="wealth-management.html">Wealth Management</a>
-        <a href="about.html">About</a>
-        <a class="active" href="contact.html">Contact</a>
-        <a href="client-login.html" class="btn btn-ghost">Client Login</a>
-        <a href="admin-login.html" class="btn btn-gold">Admin Portal</a>
+        <a href="/private-banking.html">Private Banking</a>
+        <a href="/wealth-management.html">Wealth Management</a>
+        <a href="/about.html">About</a>
+        <a class="active" href="/contact.html">Contact</a>
+        <a href="/client-login.html" class="btn">Client Login</a>
+        <a href="/admin-login.html" class="btn btn-gold">Admin Portal</a>
       </nav>
     </div>
   </header>
 
+  <!-- HERO -->
   <section class="hero hero--light">
-    <div class="hero__bg" style="background-image:url('/assets/hero-bg.jpg')"></div>
+    <div class="hero__bg"></div>
     <div class="hero__veil"></div>
     <div class="container hero__content">
       <img src="/assets/logo-crest.png" class="hero__crest" alt="">
@@ -38,25 +124,52 @@
     </div>
   </section>
 
+  <!-- DARK SECTION -->
   <section class="section-dark">
     <div class="container">
       <h2 class="eyebrow">REACH US</h2>
       <h3 class="section-title">Valletta, Malta · Global Coverage</h3>
-      <div class="grid grid-3 cards-outline">
-        <article class="card card--outline"><h4>Email</h4><p><a class="link" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p></article>
-        <article class="card card--outline"><h4>Client Portal</h4><p><a class="link" href="client-login.html">Log in</a> to message your banker securely.</p></article>
-        <article class="card card--outline"><h4>Compliance</h4><p>Your banker will provide an encrypted upload link for KYC.</p></article>
+
+      <div class="grid grid-3">
+        <article class="card">
+          <h4>Email</h4>
+          <p><a class="link" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+        </article>
+
+        <article class="card">
+          <h4>Client Portal</h4>
+          <p><a class="link" href="/client-login.html">Log in</a> to message your banker securely.</p>
+        </article>
+
+        <article class="card">
+          <h4>Compliance</h4>
+          <p>Your banker will provide an encrypted upload link for KYC.</p>
+        </article>
       </div>
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container footer-row">
-      <div class="footer-brand"><img src="/assets/logo-crest.png" class="footer-mark" alt="">© 2025 Maltese First Capital · Valletta, Malta</div>
-      <nav class="footer-links"><a href="private-banking.html">Private</a><a href="wealth-management.html">Wealth</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+      <div>
+        <img src="/assets/logo-crest.png" class="footer-mark" alt="">
+        © 2025 Maltese First Capital · Valletta, Malta
+      </div>
+      <nav class="footer-links">
+        <a href="/private-banking.html">Private</a>
+        <a href="/wealth-management.html">Wealth</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
     </div>
   </footer>
 
-  <script>document.querySelector('.hamburger')?.addEventListener('click',()=>{document.querySelector('.nav-links')?.classList.toggle('open')});</script>
+  <!-- Mobile nav -->
+  <script>
+    document.querySelector('.hamburger')?.addEventListener('click', () => {
+      document.querySelector('.nav-links')?.classList.toggle('open');
+    });
+  </script>
 </body>
 </html>
