@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Maltese First Capital — Private & Wealth Banking</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=7" />
 </head>
 <body>
 
@@ -12,6 +12,8 @@
   <header class="site-header">
     <div class="header-inner">
       <a class="brand" href="index.html">
+        <!-- IMPORTANT: this file must exist -->
+        <!-- Put your transparent logo here: /assets/logo-crest.png -->
         <img src="assets/logo-crest.png" alt="Maltese First Capital" />
         <span>Maltese First Capital</span>
       </a>
@@ -32,7 +34,7 @@
       </div>
     </div>
 
-    <!-- Mobile panel -->
+    <!-- Mobile panel (hidden on desktop by CSS) -->
     <div id="mobilePanel" class="mobile-panel" aria-hidden="true">
       <nav class="mobile-menu" aria-label="Mobile">
         <a href="private-banking.html">Private Banking</a>
@@ -49,6 +51,7 @@
   <section class="hero">
     <div class="content">
       <div class="logo-badge">
+        <!-- Same file as header -->
         <img src="assets/logo-crest.png" alt="Maltese First Capital" />
       </div>
       <h1>Unlocking Financial Potential</h1>
@@ -114,9 +117,9 @@
         open ? closePanel() : openPanel();
       });
 
-      // Always close on desktop to avoid “stuck” panel
+      // Force-closed on desktop to avoid “stuck” panel
       const mq = window.matchMedia('(min-width: 961px)');
-      function handleResize(e) { if (e.matches) closePanel(); }
+      function handleResize(e){ if(e.matches) closePanel(); }
       mq.addEventListener ? mq.addEventListener('change', handleResize) : mq.addListener(handleResize);
       handleResize(mq);
     })();
