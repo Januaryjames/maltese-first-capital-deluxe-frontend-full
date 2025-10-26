@@ -8,8 +8,6 @@
 
 *{box-sizing:border-box}
 body{margin:0;font-family:var(--font);background:var(--offwhite);color:var(--ink);}
-
-/* Layout helpers */
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
 
 /* Header */
@@ -22,7 +20,6 @@ body{margin:0;font-family:var(--font);background:var(--offwhite);color:var(--ink
 .nav{display:flex;gap:22px;align-items:center}
 .nav a{text-decoration:none;color:var(--ink);font-weight:600}
 .nav a:hover{color:var(--gold)}
-
 .btn{padding:.6rem 1.1rem;border-radius:10px;text-decoration:none;font-weight:700;transition:.25s ease}
 .btn-outline{border:1.5px solid var(--ink)}
 .btn-outline:hover{background:var(--ink);color:#fff}
@@ -43,29 +40,30 @@ body{margin:0;font-family:var(--font);background:var(--offwhite);color:var(--ink
   padding:6.5rem 1.5rem 7.5rem;
   overflow:hidden;
 }
+/* Show the photo (cache-busted) */
 .hero::before{
   content:"";
   position:absolute;inset:0;
-  background:url("./assets/hero-bg.jpg") center/cover no-repeat;
+  background:url("./assets/hero-bg.jpg?v=4") center/cover no-repeat;
   z-index:-2;
-  filter:saturate(1.08) contrast(1.06) brightness(.9);
+  filter:saturate(1.06) contrast(1.05) brightness(.92);
 }
+/* Lighter on top so the image reads; stronger lower for contrast */
 .hero::after{
   content:"";
   position:absolute;inset:0;
-  /* slightly lighter on top so image is visible, stronger at bottom for contrast */
-  background:linear-gradient(to bottom, rgba(0,0,0,.28) 0%, rgba(0,0,0,.55) 60%, rgba(0,0,0,.68) 100%);
+  background:linear-gradient(to bottom, rgba(0,0,0,.18) 0%, rgba(0,0,0,.45) 55%, rgba(0,0,0,.62) 100%);
   z-index:-1;
 }
 
 .hero-crest img{
-  width:110px;height:auto;
+  width:118px;height:auto;
   border-radius:16px;background:#fff;padding:.55rem;
   box-shadow:0 8px 28px rgba(0,0,0,.22);
   margin-bottom:12px;
 }
 @media (min-width:1200px){
-  .hero-crest img{width:124px}
+  .hero-crest img{width:132px}
 }
 
 .hero h1{
