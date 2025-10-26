@@ -1,53 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact — Maltese First Capital</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/logo.png" />
 </head>
 <body>
-  <header class="navbar-wrap">
+  <header class="site-header">
     <div class="container navbar">
       <a href="index.html" class="brand">
-        <img src="logo.png" alt="Maltese First Capital">
-        <span>Maltese First Capital</span>
+        <img src="assets/logo.png" class="logo" alt="Maltese First Capital" /> Maltese First Capital
       </a>
-      <nav class="links">
+      <nav class="nav">
         <a href="private-banking.html">Private Banking</a>
         <a href="wealth-management.html">Wealth Management</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
       </nav>
+      <div class="header-cta">
+        <a class="btn btn--ghost" href="client-login.html">Client Login</a>
+        <a class="btn btn--gold" href="client-register.html">Open Account</a>
+      </div>
     </div>
   </header>
 
-  <section class="hero compact">
-    <img src="logo.png" alt="Maltese First Capital" class="hero-logo">
+  <section class="page-hero">
+    <div class="badge"><img src="assets/logo.png" alt="MFC" width="28" height="28" /></div>
     <h1>Contact Us</h1>
-    <p class="lead">Our offices in Valletta welcome select clientele by appointment only. Reach our banking concierge below.</p>
+    <p>Our team will respond within one business day. For clients, please use your secure inbox.</p>
   </section>
 
-  <main class="container section">
-    <h2>Get in Touch</h2>
-    <p class="sub">Email <strong>hello@maltesefirst.com</strong> or use the form below. We will respond within one business day.</p>
+  <div class="split-start"></div>
 
-    <form action="#" method="post">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" required>
+  <section class="section--dark">
+    <div class="container">
+      <form class="form" action="mailto:hello@maltesefirst.com" method="post" enctype="text/plain">
+        <input class="input" type="text" name="name" placeholder="Full name" required />
+        <input class="input" type="email" name="email" placeholder="Email" required />
+        <textarea class="" name="message" placeholder="How can we help?" required></textarea>
+        <button class="btn btn--gold" type="submit">Send Enquiry</button>
+      </form>
+    </div>
+  </section>
 
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="message">Message</label>
-      <textarea id="message" name="message" rows="5" required></textarea>
-
-      <button class="btn" type="submit">Send Message</button>
-    </form>
-  </main>
-
-  <footer>
-    © 2025 Maltese First Capital — Valletta, Malta
+  <footer class="site-footer">
+    <div class="container stack" style="justify-content:space-between;align-items:center">
+      <div>© 2025 Maltese First Capital · Valletta, Malta</div>
+      <div class="links muted">
+        <a href="index.html">Home</a>
+        <a href="private-banking.html">Private</a>
+        <a href="wealth-management.html">Wealth</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
   </footer>
 </body>
 </html>
