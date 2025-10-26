@@ -6,20 +6,13 @@
   <title>Private Banking — Maltese First Capital</title>
   <link rel="icon" href="/assets/favicon.png" />
   <link rel="preload" href="/assets/hero-bg.jpg" as="image" />
-  <link rel="stylesheet" href="/styles.css?v=9" />
+  <link rel="stylesheet" href="/styles.css?v=10" />
 </head>
 <body>
   <header class="navbar">
     <div class="container nav-row">
-      <a class="brand" href="index.html" aria-label="Maltese First Capital">
-        <img src="/assets/logo-crest.png" alt="" class="brand-mark" />
-        <span class="brand-name">Maltese First Capital</span>
-      </a>
-
-      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
+      <a class="brand" href="index.html"><img src="/assets/logo-crest.png" class="brand-mark" alt="" /><span class="brand-name">Maltese First Capital</span></a>
+      <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
       <nav class="nav-links">
         <a href="private-banking.html" class="active">Private Banking</a>
         <a href="wealth-management.html">Wealth Management</a>
@@ -35,12 +28,10 @@
     <div class="hero__bg" style="background-image:url('/assets/hero-bg.jpg')"></div>
     <div class="hero__veil"></div>
     <div class="container hero__content">
-      <img class="hero__crest" src="/assets/logo-crest.png" alt="" />
+      <img src="/assets/logo-crest.png" class="hero__crest" alt="" />
       <h1 class="hero__title">Private Banking</h1>
       <p class="hero__lead">Relationship-driven banking with multi-currency accounts, clear statements, and priority support.</p>
-      <div class="hero__cta">
-        <a class="btn btn-gold" href="client-register.html">Open an Account</a>
-      </div>
+      <a href="client-register.html" class="btn btn-gold">Open an Account</a>
     </div>
   </section>
 
@@ -48,51 +39,23 @@
     <div class="container">
       <h2 class="eyebrow">OUR PRIVATE BANK</h2>
       <h3 class="section-title">Trust, Performance, Discretion</h3>
-
       <div class="grid grid-3 cards-outline">
-        <article class="card card--outline">
-          <h4>Multi-Currency Accounts</h4>
-          <p>Hold EUR, USD, GBP and more with internal FX and transparent rates.</p>
-        </article>
-        <article class="card card--outline">
-          <h4>Two-Step Authentication</h4>
-          <p>Hardened security for online and mobile, including OTP and device binding.</p>
-        </article>
-        <article class="card card--outline">
-          <h4>Priority Concierge</h4>
-          <p>Dedicated relationship team with rapid response SLAs and travel support.</p>
-        </article>
-      </div>
-
-      <div class="cta-row">
-        <a class="btn btn-gold" href="client-login.html">Client Login</a>
-        <a class="btn btn-ghost" href="contact.html">Speak to a Banker</a>
+        <article class="card card--outline"><h4>Multi-Currency Accounts</h4><p>Hold EUR, USD, GBP and more with internal FX and transparent rates.</p></article>
+        <article class="card card--outline"><h4>Two-Step Authentication</h4><p>OTP and device binding secure your access across all platforms.</p></article>
+        <article class="card card--outline"><h4>Priority Concierge</h4><p>Dedicated team with rapid SLAs and personal travel assistance.</p></article>
       </div>
     </div>
   </section>
 
   <footer class="site-footer">
     <div class="container footer-row">
-      <div class="footer-brand">
-        <img src="/assets/logo-crest.png" alt="" />
-        <p>© 2025 Maltese First Capital · Valletta, Malta</p>
-      </div>
-      <nav class="footer-links">
-        <a href="private-banking.html">Private</a>
-        <a href="wealth-management.html">Wealth</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </nav>
+      <div class="footer-brand"><img src="/assets/logo-crest.png" alt="" /><p>© 2025 Maltese First Capital · Valletta Malta</p></div>
+      <nav class="footer-links"><a href="private-banking.html">Private</a><a href="wealth-management.html">Wealth</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
     </div>
   </footer>
-
   <script>
-    const ham = document.querySelector('.hamburger');
-    const nav = document.querySelector('.nav-links');
-    if (ham) ham.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      ham.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
+    const ham=document.querySelector('.hamburger'),nav=document.querySelector('.nav-links');
+    ham&&ham.addEventListener('click',()=>nav.classList.toggle('open'));
   </script>
 </body>
 </html>
