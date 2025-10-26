@@ -80,10 +80,15 @@ body{margin:0;font-family:var(--font);background:var(--offwhite);color:var(--ink
 .cta .btn-gold{padding:.8rem 1.35rem;border-radius:12px}
 
 /* NAVY SECTION */
-.navy{
-  background:radial-gradient(1000px 600px at 50% -10%, #1a2640 0%, #0b1120 70%);
-  color:#fff;text-align:center;padding:60px 0 64px;border-top-left-radius:30px;border-top-right-radius:30px;
-  box-shadow:0 -8px 24px rgba(0,0,0,.18) inset;
+.navy {
+  background: radial-gradient(1000px 600px at 50% -10%, #1a2640 0%, #0b1120 70%);
+  color: #fff;
+  text-align: center;
+  padding: 60px 0 64px;
+  /* Removed corner rounding to align flush with hero */
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: 0 -8px 24px rgba(0,0,0,.18) inset;
 }
 .navy .tagline{color:var(--gold);letter-spacing:1.4px;font-weight:700;margin:0 0 6px}
 .navy h2{margin:0 0 34px;font-size:clamp(1.35rem,2.2vw,1.9rem)}
