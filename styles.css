@@ -1,161 +1,259 @@
-/* ==========================================================================
-   Maltese First Capital — Global Styles (Hero BG tuned)
-   ========================================================================== */
+/* ===================================================================
+   Maltese First Capital — Polished Light + Navy Split Theme
+   -------------------------------------------------------------------
+   - Light, premium hero with photo background and soft dark overlay
+   - Navy lower section with radial glow
+   - Gold CTAs with luxury hover
+   - Consistent nav/header/footer across pages
+   =================================================================== */
 
-/* Brand Tokens */
+/* -------------------- CSS RESET (minimal) ------------------------ */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+img { max-width: 100%; display: block; }
+
+/* -------------------- Design Tokens ------------------------------ */
 :root{
-  --brand-navy-900:#0b1a2b;
-  --brand-navy-800:#0f2236;
-  --brand-ink:#0e1a24;
-  --brand-ink-2:#263647;
-  --brand-muted:#5a6c7e;
+  --navy-900:#0b1620;
+  --navy-800:#101d2b;
+  --navy-700:#142234;
+  --ink-900:#0f2233;         /* primary body text on light */
+  --ink-700:#304555;         /* secondary text on light */
+  --ink-200:#dbe5ee;         /* borders on dark */
+  --bg-cream:#f4efe7;        /* hero base background tone */
+  --bg-page:#ffffff;
 
-  --brand-sand-50:#f6f3ee;   /* page bg */
-  --brand-sand-100:#efe9e0;  /* hero top */
-  --brand-sand-200:#e7decf;  /* hero mid */
+  /* gold */
+  --gold-500:#c8a24f;
+  --gold-600:#b8903e;
+  --gold-700:#a77f2d;
 
-  --gold-500:#c7a44a;
-  --gold-600:#d4b35a;
-  --gold-700:#d8b55a;
-  --gold-800:#b9933a;
+  --radius-xl:18px;
+  --radius-lg:14px;
+  --radius-md:12px;
 
-  --card-bg-dark:rgba(17,24,39,.35);
-  --card-outline:rgba(199,164,74,.8);
-
-  --radius-xl:22px; --radius-lg:16px; --radius-md:12px;
-  --shadow-soft:0 12px 24px rgba(0,0,0,.12);
-  --shadow-card:0 16px 40px rgba(0,0,0,.18);
-  --container:1200px;
+  --shadow-soft:0 8px 28px rgba(16, 29, 43, .10);
+  --shadow-card:0 10px 30px rgba(16, 29, 43, .22);
 }
 
-/* Reset / base */
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-  color:var(--brand-ink); background:var(--brand-sand-50); line-height:1.55;
-  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+/* -------------------- Layout helpers ----------------------------- */
+.container{
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
-img,svg{display:block;max-width:100%;height:auto}
-a{color:inherit;text-decoration:none}
-.container{width:min(var(--container),calc(100% - 48px));margin-inline:auto}
 
-/* Header / nav */
+/* spacers */
+.mt-16{ margin-top:16px; }
+.mt-24{ margin-top:24px; }
+.mt-32{ margin-top:32px; }
+.mt-40{ margin-top:40px; }
+
+/* -------------------- Header / Navbar ---------------------------- */
 .site-header{
-  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
-  backdrop-filter:blur(10px);border-bottom:1px solid rgba(14,26,36,.06);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(15,34,51,.06);
 }
-.navbar{display:flex;align-items:center;gap:28px;padding:14px 0}
-.brand{display:flex;align-items:center;gap:14px;font-weight:800;letter-spacing:.2px;color:var(--brand-ink)}
-/* BIGGER NAV LOGO */
+.navbar{
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand{
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  color: var(--ink-900);
+  text-decoration: none;
+  letter-spacing: .2px;
+}
 .brand .logo{
-  width:58px;height:58px;border-radius:14px;
-  box-shadow:0 10px 22px rgba(0,0,0,.14);
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.15);
 }
-.nav{margin-left:auto;display:flex;gap:22px;align-items:center}
-.nav a{color:var(--brand-ink-2);font-weight:600;opacity:.9}
-.nav a:hover{opacity:1;color:var(--brand-ink)}
 
-/* Buttons (Gold) */
+.nav{
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+.nav a{
+  color: var(--ink-700);
+  text-decoration: none;
+  font-weight: 600;
+}
+.nav a:hover{ color: var(--ink-900); }
+
+.header-cta{ display: flex; gap: 10px; }
+
+/* -------------------- Buttons ----------------------------------- */
 .btn{
-  appearance:none;border:none;cursor:pointer;font-weight:800;border-radius:12px;
-  padding:14px 20px;transition:all .22s ease;display:inline-flex;align-items:center;gap:10px
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 44px; padding: 0 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-weight: 700; letter-spacing: .2px;
+  text-decoration: none; cursor: pointer;
+  transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
 }
-.btn--ghost{color:var(--brand-ink);background:transparent;border:1.5px solid rgba(14,26,36,.16)}
-.btn--ghost:hover{border-color:rgba(14,26,36,.32);background:rgba(14,26,36,.04)}
+.btn:active{ transform: translateY(1px); }
+
+/* Gold primary */
 .btn--gold{
-  color:#17202a;background:
-  radial-gradient(120% 120% at 20% 10%,rgba(255,255,255,.55) 0,rgba(255,255,255,0) 38%),
-  linear-gradient(180deg,var(--gold-600),var(--gold-500) 55%,var(--gold-800));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 8px 20px rgba(199,164,74,.28);
-  border:1px solid rgba(199,164,74,.6);position:relative;overflow:hidden
+  color: #1a1a1a;
+  background: linear-gradient(180deg, var(--gold-500), var(--gold-600));
+  border-color: rgba(167,127,45,.2);
+  box-shadow: 0 6px 18px rgba(200,162,79,.35), inset 0 1px 0 rgba(255,255,255,.35);
 }
-.btn--gold::after{
-  content:"";position:absolute;inset:0;background:radial-gradient(120px 60px at -20% 50%,rgba(255,255,255,.75),transparent 60%);
-  transform:translateX(-120%);transition:transform .6s ease
+.btn--gold:hover{
+  background: linear-gradient(180deg, var(--gold-600), var(--gold-700));
+  box-shadow: 0 10px 26px rgba(200,162,79,.45), inset 0 1px 0 rgba(255,255,255,.45);
 }
-.btn--gold:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 12px 28px rgba(199,164,74,.42),0 0 16px rgba(216,181,90,.35)}
-.btn--gold:hover::after{transform:translateX(200%)}
+.btn--gold:focus{ outline: 2px solid rgba(200,162,79,.45); outline-offset:2px; }
 
-/* HERO — show background clearly, bigger crest */
-.hero,.page-hero{
-  position:relative;color:var(--brand-ink);
+/* Ghost */
+.btn--ghost{
+  color: var(--ink-900);
+  background: #fff;
+  border-color: rgba(15,34,51,.15);
+}
+.btn--ghost:hover{ border-color: rgba(15,34,51,.35); }
+
+/* -------------------- HERO (with overlay for contrast) ----------- */
+.hero{
+  position: relative;
+  isolation: isolate;  /* let overlay sit behind content */
+  background: var(--bg-cream);
+  background-image:
+    radial-gradient(1200px 400px at 50% -60px, rgba(200,162,79,.25), rgba(255,255,255,0) 55%),
+    url("assets/hero-bg.jpg");
+  background-size: cover;
+  background-position: center 20%;
+  color: #fff;               /* force readable text */
+  text-align: center;
+  padding: 110px 0 88px;
+}
+
+/* The darkening overlay that fixes readability */
+.hero::before{
+  content: "";
+  position: absolute; inset: 0;
+  z-index:-1;
   background:
-    url('assets/hero-bg.jpg') center/cover no-repeat,
-    linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.55) 55%,rgba(255,255,255,.35));
+    linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.10) 35%, rgba(0,0,0,.25));
+  /* tweak opacity here if you want lighter/darker text contrast */
 }
-/* soften overlay so the image is visible */
-.hero::after,.page-hero::after{
-  content:"";position:absolute;inset:0;z-index:0;
-  background:radial-gradient(90% 70% at 50% 0, rgba(255,255,255,.25) 0, rgba(255,255,255,0) 60%);
-}
-.hero__inner,.page-hero > *{position:relative;z-index:1}
-.hero{border-bottom:1px solid rgba(14,26,36,.06)}
-.hero__inner{padding:clamp(56px,7vw,110px) 0;text-align:center;max-width:900px;margin-inline:auto}
-/* BIGGER CREST */
+
+/* crest + title + lead */
+.hero__inner{ position: relative; }
 .hero__crest{
-  width:96px;height:96px;margin:0 auto 26px;border-radius:16px;
-  box-shadow:0 16px 36px rgba(0,0,0,.16),0 0 0 6px rgba(255,255,255,.65);
+  width: 84px; height: 84px; margin: 0 auto 18px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  background: #fff; padding: 6px;
 }
-.hero__title{margin:8px 0 12px;font-weight:900;line-height:1.06;font-size:clamp(30px,4.4vw,48px);letter-spacing:.2px}
-.hero__copy{color:var(--brand-muted);font-size:clamp(15px,1.8vw,18px);margin:0 0 26px}
+.hero h1, .page-hero__title{
+  margin: 0 0 12px;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.12;
+  font-weight: 800;
+  color: #fff;         /* inherit readable color */
+  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+.hero p, .page-hero__lead{
+  margin: 0 auto; max-width: 860px;
+  font-size: clamp(15px, 2.4vw, 18px);
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 1px 8px rgba(0,0,0,.25);
+}
 
-/* Remove any visual “bar” between hero and navy band by not using a divider */
-/* (No .split-start element used any more) */
-
-/* Navy band with subtle radial highlight + background image */
-.section--dark,.section--band{
-  position:relative;
+/* -------------------- Navy section with subtle glow -------------- */
+.section--dark{
   background:
-    url('assets/hero-bg.jpg') center/cover no-repeat,
-    radial-gradient(60% 70% at 50% 0, rgba(216,181,90,.09) 0, rgba(216,181,90,0) 60%),
-    linear-gradient(180deg, var(--brand-navy-800), var(--brand-navy-900));
-  background-blend-mode:multiply;
-  color:#e9eef7; padding:clamp(40px,6vw,72px) 0;
-  border-top:1px solid rgba(255,255,255,.06);
+    radial-gradient(900px 240px at 50% 0%, rgba(255,255,255,.06), rgba(16,29,43,0) 60%),
+    radial-gradient(1100px 400px at 50% 50px, rgba(200,162,79,.10), transparent 60%),
+    linear-gradient(to bottom, var(--navy-800), var(--navy-900));
+  color:#e8eef4;
+  padding: 56px 0 72px;
+  border-top: 1px solid rgba(255,255,255,.06);
 }
-.section--dark .section__title{text-align:center;font-size:clamp(20px,2.6vw,26px);font-weight:900;margin:2px 0 28px}
-
-/* Cards (gold outline on navy) */
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,26px)}
-.card{background:#fff;border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-card);border:1px solid rgba(14,26,36,.08)}
-.section--dark .card{
-  background:var(--card-bg-dark);border:1.5px solid var(--card-outline);color:#E9EEF7;
-  box-shadow:0 16px 40px rgba(0,0,0,.35),inset 0 0 8px rgba(199,164,74,.15);transition:all .25s ease-in-out
+.section__title{
+  text-align: center; margin: 0 0 26px;
+  font-size: clamp(22px, 3.8vw, 28px);
+  font-weight: 800; letter-spacing: .2px;
 }
-.section--dark .card:hover{transform:translateY(-4px);border-color:var(--gold-700);box-shadow:0 18px 45px rgba(0,0,0,.45),0 0 18px rgba(216,181,90,.35)}
-.card h3{margin:0 0 10px;font-size:18px;letter-spacing:.2px}
-.section--dark .card h3{color:#fff}
-.card p{margin:0;color:#5B6473}
-.section--dark .card p{color:rgba(233,238,247,.9)}
 
-@media (max-width:1000px){.cards{grid-template-columns:1fr 1fr}}
-@media (max-width:640px){.cards{grid-template-columns:1fr}}
-
-/* Subpage hero */
-.page-hero{padding:clamp(56px,7vw,96px) 0 36px;border-bottom:1px solid rgba(14,26,36,.06);text-align:center}
-.page-hero__title{font-weight:900;font-size:clamp(26px,3.6vw,36px);margin:0 0 8px;color:var(--brand-ink)}
-.page-hero__lead{margin:0;color:var(--brand-muted)}
-
-/* Forms / tables / footer */
-.form{display:grid;gap:16px;max-width:720px;margin:auto}
-.input,select,textarea{
-  width:100%;border-radius:10px;border:1px solid rgba(14,26,36,.12);padding:12px 14px;font-size:15px;background:#fff;color:var(--brand-ink);
-  transition:border-color .2s ease,box-shadow .2s ease
+/* cards */
+.cards{
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, 1fr);
 }
-.input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold-600);box-shadow:0 0 0 3px rgba(216,181,90,.22)}
-.table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:var(--radius-lg);box-shadow:var(--shadow-soft);background:#fff;border:1px solid rgba(14,26,36,.08)}
-.table th,.table td{padding:14px 16px;border-bottom:1px solid rgba(14,26,36,.06);text-align:left;font-size:14px}
-.table th{background:#f7f8fa;font-weight:800;color:var(--brand-ink-2)}
-.site-footer{background:linear-gradient(180deg,var(--brand-navy-800),#060b14);color:#C9D2E6;padding:28px 0;border-top:1px solid rgba(255,255,255,.06)}
-.site-footer .links{display:flex;gap:18px;flex-wrap:wrap}
-.site-footer a{color:#C9D2E6}
-.site-footer a:hover{color:#fff}
+@media (max-width: 980px){ .cards{ grid-template-columns: 1fr; } }
 
-/* Utilities */
-.center{text-align:center}
-.mt-24{margin-top:24px}.mt-32{margin-top:32px}.mt-40{margin-top:40px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media (max-width:640px){.form-row{grid-template-columns:1fr}}
-:focus-visible{outline:3px solid rgba(216,181,90,.55);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: var(--radius-xl);
+  padding: 22px 20px;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(4px);
+  transition: transform .18s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card:hover{
+  transform: translateY(-3px);
+  border-color: rgba(200,162,79,.45); /* subtle gold outline on hover */
+  box-shadow: 0 14px 38px rgba(0,0,0,.35), 0 0 0 1px rgba(200,162,79,.12) inset;
+}
+.card h3{
+  margin: 0 0 8px; color:#fff; font-size: 18px;
+}
+.card p{
+  margin: 0; color: rgba(232,238,244,.92);
+}
+
+/* -------------------- Forms (Contact) ---------------------------- */
+.form{ max-width: 760px; margin: 0 auto; }
+.form-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media (max-width: 760px){ .form-row{ grid-template-columns: 1fr; } }
+.input, .form select, .form textarea{
+  width: 100%;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.18);
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 12px;
+  outline: none;
+}
+.input::placeholder, .form textarea::placeholder{ color: rgba(255,255,255,.65); }
+
+/* -------------------- Footer ------------------------------------ */
+.site-footer{
+  background: #fff;
+  color: var(--ink-700);
+  padding: 22px 0;
+  border-top: 1px solid rgba(15,34,51,.08);
+}
+.site-footer .links a{ color: var(--ink-700); text-decoration: none; margin-left: 16px; }
+.site-footer .links a:hover{ color: var(--ink-900); }
+
+/* -------------------- Utilities to match design ------------------ */
+.page-hero{ /* for subpages using the same hero block */
+  /* .hero styles already apply when both classes are on the section */
+}
+
+.section--light { background: var(--bg-page); color: var(--ink-900); }
+
+.cards .card--alt{ background:#fff; color:var(--ink-900); border-color: rgba(15,34,51,.08); }
+
+/* Ensure all CTA buttons across site are gold for emphasis */
+a.btn, button.btn{ font-weight: 800; }
