@@ -2,127 +2,113 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Maltese First Capital — Private & Wealth Banking</title>
-  <link rel="stylesheet" href="styles.css?v=7" />
+  <meta name="description" content="Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth through tailored financial solutions." />
+  <link rel="icon" href="/assets/favicon.png" type="image/png" />
+  <link rel="preload" as="image" href="/assets/hero-bg.jpg" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- ===========================
+       HEADER
+  ============================ -->
   <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="index.html">
-        <!-- IMPORTANT: this file must exist -->
-        <!-- Put your transparent logo here: /assets/logo-crest.png -->
-        <img src="assets/logo-crest.png" alt="Maltese First Capital" />
-        <span>Maltese First Capital</span>
+    <div class="container navbar">
+      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
+        <span class="brand-logo">
+          <img src="/assets/logo_crest.png" width="48" height="48" alt="Maltese First Capital crest">
+        </span>
+        <span class="brand-name">Maltese First Capital</span>
       </a>
 
-      <nav class="nav" aria-label="Primary">
-        <a href="private-banking.html">Private Banking</a>
-        <a href="wealth-management.html">Wealth Management</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+      <nav id="primaryNav" class="nav" aria-label="Main">
+        <a href="/private-banking.html">Private Banking</a>
+        <a href="/wealth-management.html">Wealth Management</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a class="btn btn-outline" href="/client-login.html">Client Login</a>
+        <a class="btn btn-gold" href="/admin-login.html">Admin Portal</a>
       </nav>
 
-      <div class="actions">
-        <a class="btn btn-outline" href="client-login.html">Client Login</a>
-        <a class="btn btn-gold" href="admin-login.html">Admin Portal</a>
-        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
-          <span></span>
+      <div class="nav-toggle">
+        <button id="hamburger" aria-expanded="false" aria-controls="primaryNav" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="#152536" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
       </div>
     </div>
-
-    <!-- Mobile panel (hidden on desktop by CSS) -->
-    <div id="mobilePanel" class="mobile-panel" aria-hidden="true">
-      <nav class="mobile-menu" aria-label="Mobile">
-        <a href="private-banking.html">Private Banking</a>
-        <a href="wealth-management.html">Wealth Management</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <a class="btn btn-outline" href="client-login.html">Client Login</a>
-        <a class="btn btn-gold" href="admin-login.html">Admin Portal</a>
-      </nav>
-    </div>
   </header>
 
-  <!-- Hero -->
+  <!-- ===========================
+       HERO
+  ============================ -->
   <section class="hero">
-    <div class="content">
-      <div class="logo-badge">
-        <!-- Same file as header -->
-        <img src="assets/logo-crest.png" alt="Maltese First Capital" />
+    <div class="container hero-inner">
+      <div class="hero-crest">
+        <img src="/assets/logo_crest.png" alt="Maltese First Capital logo">
       </div>
       <h1>Unlocking Financial Potential</h1>
-      <p>Maltese First Capital is an investment bank focused on unlocking financial
-         potential and fostering growth for clients through tailored financial solutions.</p>
-      <a class="btn btn-gold hero-cta" href="client-register.html">Open an Account</a>
+      <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
+      <div class="cta">
+        <a class="btn btn-gold" href="/client-register.html">Open an Account</a>
+      </div>
     </div>
   </section>
 
-  <!-- Navy section -->
-  <section class="section-navy">
-    <p class="kicker">Our Core Services</p>
-    <h2>Trust, Performance, Discretion</h2>
+  <!-- ===========================
+       CORE SERVICES
+  ============================ -->
+  <section class="navy">
+    <div class="container">
+      <p class="tagline">OUR CORE SERVICES</p>
+      <h2>Trust, Performance, Discretion</h2>
 
-    <div class="grid">
-      <article class="card">
-        <h3>Private Banking</h3>
-        <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
-      </article>
-      <article class="card">
-        <h3>Wealth Management</h3>
-        <p>Consolidated portfolio reporting, performance analytics, and a secure document vault.</p>
-      </article>
-      <article class="card">
-        <h3>Corporate Advisory</h3>
-        <p>Capital structuring, M&amp;A support, and strategic guidance for enterprises across markets.</p>
-      </article>
+      <div class="cards">
+        <article class="card">
+          <h3>Private Banking</h3>
+          <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
+        </article>
+
+        <article class="card">
+          <h3>Wealth Management</h3>
+          <p>Consolidated portfolio reporting, performance analytics and disciplined strategy.</p>
+        </article>
+
+        <article class="card">
+          <h3>Corporate Advisory</h3>
+          <p>Capital structuring, M&amp;A support and strategic guidance for enterprises.</p>
+        </article>
+      </div>
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ===========================
+       FOOTER
+  ============================ -->
   <footer class="site-footer">
-    <div class="footer-inner">
+    <div class="container row">
       <small>© 2025 Maltese First Capital · Valletta, Malta</small>
-      <nav class="footer-nav" aria-label="Footer">
-        <a href="private-banking.html">Private</a>
-        <a href="wealth-management.html">Wealth</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+      <nav aria-label="Footer">
+        <a href="/private-banking.html">Private</a> ·
+        <a href="/wealth-management.html">Wealth</a> ·
+        <a href="/about.html">About</a> ·
+        <a href="/contact.html">Contact</a>
       </nav>
     </div>
   </footer>
 
+  <!-- ===========================
+       MOBILE MENU JS
+  ============================ -->
   <script>
-    // Mobile menu logic with desktop reset
-    (function () {
-      const toggle = document.querySelector('.nav-toggle');
-      const panel  = document.getElementById('mobilePanel');
-
-      function closePanel() {
-        panel.classList.remove('show');
-        panel.setAttribute('aria-hidden', 'true');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
-      function openPanel() {
-        panel.classList.add('show');
-        panel.setAttribute('aria-hidden', 'false');
-        toggle.setAttribute('aria-expanded', 'true');
-      }
-
-      toggle.addEventListener('click', () => {
-        const open = panel.classList.contains('show');
-        open ? closePanel() : openPanel();
-      });
-
-      // Force-closed on desktop to avoid “stuck” panel
-      const mq = window.matchMedia('(min-width: 961px)');
-      function handleResize(e){ if(e.matches) closePanel(); }
-      mq.addEventListener ? mq.addEventListener('change', handleResize) : mq.addListener(handleResize);
-      handleResize(mq);
-    })();
+    const btn = document.getElementById('hamburger');
+    const nav = document.getElementById('primaryNav');
+    btn?.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
   </script>
+
 </body>
 </html>
