@@ -4,22 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>About — Maltese First Capital</title>
-  <link rel="icon" href="assets/favicon.png" />
-  <link rel="preload" href="assets/hero-bg.jpg" as="image" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="/assets/favicon.png" />
+  <link rel="preload" href="/assets/hero-bg.jpg" as="image" />
+  <link rel="stylesheet" href="/styles.css?v=12" />
 </head>
 <body>
+  <!-- Header -->
   <header class="navbar">
     <div class="container nav-row">
-      <a class="brand" href="index.html" aria-label="Maltese First Capital">
-        <img src="assets/logo-crest.png" alt="" class="brand-mark" />
+      <a class="brand" href="index.html">
+        <img src="/assets/logo-crest.png" class="brand-mark" alt="">
         <span class="brand-name">Maltese First Capital</span>
       </a>
-
-      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
+      <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
       <nav class="nav-links">
         <a href="private-banking.html">Private Banking</a>
         <a href="wealth-management.html">Wealth Management</a>
@@ -31,43 +28,47 @@
     </div>
   </header>
 
+  <!-- Hero -->
   <section class="hero hero--light">
-    <div class="hero__bg" style="background-image:url('assets/hero-bg.jpg')"></div>
+    <div class="hero__bg" style="background-image:url('/assets/hero-bg.jpg')"></div>
     <div class="hero__veil"></div>
     <div class="container hero__content">
-      <img class="hero__crest" src="assets/logo-crest.png" alt="" />
-      <h1 class="hero__title">About Us</h1>
-      <p class="hero__lead">Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth through tailored solutions.</p>
+      <img src="/assets/logo-crest.png" class="hero__crest" alt="">
+      <h1 class="hero__title">Maltese First Capital</h1>
+      <p class="hero__lead">Relationship-first private &amp; wealth banking rooted in Malta, serving globally.</p>
+      <a href="contact.html" class="btn btn-gold">Speak to Us</a>
     </div>
   </section>
 
+  <!-- Dark Section -->
   <section class="section-dark">
     <div class="container">
-      <h2 class="eyebrow">OUR PRINCIPLES</h2>
-      <h3 class="section-title">Relationship-First, Regulation-True</h3>
+      <h2 class="eyebrow">WHO WE ARE</h2>
+      <h3 class="section-title">Focused on Client Outcomes</h3>
 
       <div class="grid grid-3 cards-outline">
         <article class="card card--outline">
-          <h4>Client Alignment</h4>
-          <p>We sit on your side of the table—transparent fees and clear reporting.</p>
-        </article>
-        <article class="card card--outline">
           <h4>EU Compliance</h4>
-          <p>Robust KYC/AML, MiFID-aligned processes, and secure infrastructure.</p>
+          <p>KYC/AML rigor and audited controls consistent with EU requirements.</p>
         </article>
         <article class="card card--outline">
-          <h4>Operational Excellence</h4>
-          <p>Modern stack, redundant systems, and disciplined risk management.</p>
+          <h4>Experienced Team</h4>
+          <p>Bankers, advisors, and operators with decades across global markets.</p>
+        </article>
+        <article class="card card--outline">
+          <h4>Secure by Design</h4>
+          <p>Multi-factor authentication, encrypted document vaults, and secure APIs.</p>
         </article>
       </div>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="container footer-row">
       <div class="footer-brand">
-        <img src="assets/logo-crest.png" alt="" />
-        <p>© 2025 Maltese First Capital · Valletta, Malta</p>
+        <img src="/assets/logo-crest.png" alt="" class="footer-mark" />
+        <span>© 2025 Maltese First Capital · Valletta, Malta</span>
       </div>
       <nav class="footer-links">
         <a href="private-banking.html">Private</a>
@@ -78,12 +79,10 @@
     </div>
   </footer>
 
+  <!-- Mobile menu -->
   <script>
-    const ham = document.querySelector('.hamburger');
-    const nav = document.querySelector('.nav-links');
-    if (ham) ham.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      ham.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.querySelector('.hamburger')?.addEventListener('click', () => {
+      document.querySelector('.nav-links')?.classList.toggle('open');
     });
   </script>
 </body>
