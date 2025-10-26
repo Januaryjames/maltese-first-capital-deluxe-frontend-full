@@ -5,60 +5,56 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Maltese First Capital — Private & Wealth Banking</title>
   <meta name="description" content="Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth through tailored financial solutions." />
-  <link rel="icon" href="/assets/favicon.png" type="image/png" />
-  <link rel="preload" as="image" href="/assets/hero-bg.jpg" />
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="assets/favicon.png" type="image/png" />
+  <link rel="preload" as="image" href="assets/hero-bg.jpg" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
 
-  <!-- ===========================
-       HEADER
-  ============================ -->
+<body>
+  <!-- HEADER -->
   <header class="site-header">
     <div class="container navbar">
-      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
-        <span class="brand-logo">
-          <img src="/assets/logo-crest.png" width="48" height="48" alt="Maltese First Capital crest">
-        </span>
+      <a class="brand" href="index.html" aria-label="Maltese First Capital Home">
+        <img src="assets/logo-crest.png" width="60" height="60" alt="Maltese First Capital crest" class="brand-logo" />
         <span class="brand-name">Maltese First Capital</span>
       </a>
 
       <nav id="primaryNav" class="nav" aria-label="Main">
-        <a href="/private-banking.html">Private Banking</a>
-        <a href="/wealth-management.html">Wealth Management</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-        <a class="btn btn-outline" href="/client-login.html">Client Login</a>
-        <a class="btn btn-gold" href="/admin-login.html">Admin Portal</a>
+        <a href="private-banking.html">Private Banking</a>
+        <a href="wealth-management.html">Wealth Management</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a class="btn btn-outline" href="client-login.html">Client Login</a>
+        <a class="btn btn-gold" href="admin-login.html">Admin Portal</a>
       </nav>
 
       <div class="nav-toggle">
         <button id="hamburger" aria-expanded="false" aria-controls="primaryNav" aria-label="Open menu">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="#152536" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" width="28" height="28">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke="#152536" stroke-width="2" stroke-linecap="round" />
+          </svg>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- ===========================
-       HERO
-  ============================ -->
+  <!-- HERO -->
   <section class="hero">
     <div class="container hero-inner">
       <div class="hero-crest">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital logo">
+        <img src="assets/logo-crest.png" alt="Maltese First Capital logo" />
       </div>
+
       <h1>Unlocking Financial Potential</h1>
       <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
+
       <div class="cta">
-        <a class="btn btn-gold" href="/client-register.html">Open an Account</a>
+        <a class="btn btn-gold" href="client-register.html">Open an Account</a>
       </div>
     </div>
   </section>
 
-  <!-- ===========================
-       CORE SERVICES
-  ============================ -->
+  <!-- CORE SERVICES -->
   <section class="navy">
     <div class="container">
       <p class="tagline">OUR CORE SERVICES</p>
@@ -77,30 +73,26 @@
 
         <article class="card">
           <h3>Corporate Advisory</h3>
-          <p>Capital structuring, M&amp;A support and strategic guidance for enterprises.</p>
+          <p>Capital structuring, M&A support and strategic guidance for enterprises.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ===========================
-       FOOTER
-  ============================ -->
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container row">
       <small>© 2025 Maltese First Capital · Valletta, Malta</small>
       <nav aria-label="Footer">
-        <a href="/private-banking.html">Private</a> ·
-        <a href="/wealth-management.html">Wealth</a> ·
-        <a href="/about.html">About</a> ·
-        <a href="/contact.html">Contact</a>
+        <a href="private-banking.html">Private</a> ·
+        <a href="wealth-management.html">Wealth</a> ·
+        <a href="about.html">About</a> ·
+        <a href="contact.html">Contact</a>
       </nav>
     </div>
   </footer>
 
-  <!-- ===========================
-       MOBILE MENU JS
-  ============================ -->
+  <!-- MOBILE MENU JS -->
   <script>
     const btn = document.getElementById('hamburger');
     const nav = document.getElementById('primaryNav');
@@ -109,6 +101,5 @@
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
   </script>
-
 </body>
 </html>
