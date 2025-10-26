@@ -4,65 +4,95 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Wealth Management — Maltese First Capital</title>
+  <link rel="icon" href="assets/favicon.png" />
+  <link rel="preload" href="assets/hero-bg.jpg" as="image" />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="assets/logo.png" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="container navbar">
-      <a href="index.html" class="brand">
-        <img src="assets/logo.png" class="logo" alt="Maltese First Capital" /> Maltese First Capital
+  <header class="navbar">
+    <div class="container nav-row">
+      <a class="brand" href="index.html" aria-label="Maltese First Capital">
+        <img src="assets/logo-crest.png" alt="" class="brand-mark" />
+        <span class="brand-name">Maltese First Capital</span>
       </a>
-      <nav class="nav">
+
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links">
         <a href="private-banking.html">Private Banking</a>
-        <a href="wealth-management.html">Wealth Management</a>
+        <a href="wealth-management.html" class="active">Wealth Management</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
+        <a href="client-login.html" class="btn btn-ghost">Client Login</a>
+        <a href="admin-login.html" class="btn btn-gold">Admin Portal</a>
       </nav>
-      <div class="header-cta">
-        <a class="btn btn--ghost" href="client-login.html">Client Login</a>
-        <a class="btn btn--gold" href="client-register.html">Open Account</a>
-      </div>
     </div>
   </header>
 
-  <section class="page-hero">
-    <div class="badge"><img src="assets/logo.png" alt="MFC" width="28" height="28" /></div>
-    <h1>Wealth Management</h1>
-    <p>Guiding generations through disciplined strategies and intelligent diversification.</p>
+  <section class="hero hero--light">
+    <div class="hero__bg" style="background-image:url('assets/hero-bg.jpg')"></div>
+    <div class="hero__veil"></div>
+    <div class="container hero__content">
+      <img class="hero__crest" src="assets/logo-crest.png" alt="" />
+      <h1 class="hero__title">Wealth Management</h1>
+      <p class="hero__lead">Disciplined investment strategies, transparent reporting, and a secure document vault.</p>
+      <div class="hero__cta">
+        <a class="btn btn-gold" href="client-login.html">View Portfolio</a>
+      </div>
+    </div>
   </section>
 
-  <div class="split-start"></div>
-
-  <section class="section--dark">
+  <section class="section-dark">
     <div class="container">
-      <div class="cards">
-        <article class="card">
-          <h3>Global Markets Access</h3>
-          <p>Equities, fixed income, funds, and alternatives via vetted managers and trading partners.</p>
+      <h2 class="eyebrow">OUR INVESTMENT PHILOSOPHY</h2>
+      <h3 class="section-title">Balance Risk, Capture Opportunity</h3>
+
+      <div class="grid grid-3 cards-outline">
+        <article class="card card--outline">
+          <h4>Global Markets Access</h4>
+          <p>Equities, bonds, real assets, and alternatives via trusted partners.</p>
         </article>
-        <article class="card">
-          <h3>Risk & Performance</h3>
-          <p>Clear analytics for drawdowns, contribution, and time-weighted returns across holdings.</p>
+        <article class="card card--outline">
+          <h4>Risk &amp; Performance</h4>
+          <p>Institution-grade analytics, drawdown control, and clear reporting.</p>
         </article>
-        <article class="card">
-          <h3>Legacy & Estate</h3>
-          <p>Structuring for succession and philanthropy—preserve what matters most.</p>
+        <article class="card card--outline">
+          <h4>Legacy &amp; Estate</h4>
+          <p>Cross-border structuring with compliant custody and governance.</p>
         </article>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-gold" href="client-register.html">Become a Client</a>
+        <a class="btn btn-ghost" href="contact.html">Request a Call</a>
       </div>
     </div>
   </section>
 
   <footer class="site-footer">
-    <div class="container stack" style="justify-content:space-between;align-items:center">
-      <div>© 2025 Maltese First Capital · Valletta, Malta</div>
-      <div class="links muted">
-        <a href="index.html">Home</a>
+    <div class="container footer-row">
+      <div class="footer-brand">
+        <img src="assets/logo-crest.png" alt="" />
+        <p>© 2025 Maltese First Capital · Valletta, Malta</p>
+      </div>
+      <nav class="footer-links">
         <a href="private-banking.html">Private</a>
+        <a href="wealth-management.html">Wealth</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
-      </div>
+      </nav>
     </div>
   </footer>
+
+  <script>
+    const ham = document.querySelector('.hamburger');
+    const nav = document.querySelector('.nav-links');
+    if (ham) ham.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      ham.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  </script>
 </body>
 </html>
