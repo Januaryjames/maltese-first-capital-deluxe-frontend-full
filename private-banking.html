@@ -1,118 +1,106 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Private Banking — Maltese First Capital</title>
-  <meta name="description" content="Discreet private banking with secure access, clear statements, and relationship-first service." />
   <link rel="icon" href="/assets/favicon.png">
-  <!-- main stylesheet -->
-  <link rel="stylesheet" href="/styles.css">
-  <!-- defensive critical CSS to prevent 'unstyled' flash -->
-  <style>
-    .brand img{max-height:42px;width:auto;display:block}
-    .site-header{background:#fff;border-bottom:1px solid #e9edf3}
-    .nav-links a,.brand span{color:#1b2736}
-    .hero{color:#fff;text-align:center}
-  </style>
+  <link rel="preload" as="image" href="/assets/hero-bg.jpg">
+  <link rel="stylesheet" href="/styles.css?v=pb1">
+  <meta name="description" content="Relationship-led private banking with multi-currency access and secure authentication." />
 </head>
 <body>
-
-<header class="site-header">
-  <div class="container nav">
-    <a class="brand" href="/index.html">
-      <img src="/assets/logo.png" alt="Maltese First Capital">
-      <span>Maltese First Capital</span>
-    </a>
-
-    <nav class="nav-links">
-      <a href="/private-banking.html" aria-current="page">Private Banking</a>
-      <a href="/wealth-management.html">Wealth Management</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-    </nav>
-
-    <div class="nav-cta">
-      <a class="btn" href="/client-login.html">Client Login</a>
-      <a class="btn btn--gold" href="/admin-login.html">Admin Portal</a>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/index.html" aria-label="Maltese First Capital">
+        <img src="/assets/logo-crest.png" alt="Maltese First Capital" class="brand-logo" />
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="navMenu">Menu</button>
+        <ul id="navMenu" class="nav-list">
+          <li><a href="/private-banking.html" aria-current="page">Private Banking</a></li>
+          <li><a href="/wealth-management.html">Wealth Management</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-cta">
+        <a class="btn btn-outline" href="/client-login.html">Client Login</a>
+        <a class="btn btn-gold" href="/admin-login.html">Admin Portal</a>
+      </div>
     </div>
+  </header>
 
-    <button class="hamburger" aria-label="Menu"
-      onclick="document.querySelector('.mobile-panel').style.display = document.querySelector('.mobile-panel').style.display==='block'?'none':'block'">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-
-  <div class="mobile-panel">
-    <a href="/private-banking.html" aria-current="page">Private Banking</a>
-    <a href="/wealth-management.html">Wealth Management</a>
-    <a href="/about.html">About</a>
-    <a href="/contact.html">Contact</a>
-    <div class="m-cta">
-      <a class="btn" href="/client-login.html" style="flex:1;text-align:center">Client Login</a>
-      <a class="btn btn--gold" href="/admin-login.html" style="flex:1;text-align:center">Admin</a>
+  <!-- Hero -->
+  <section class="hero hero--bg">
+    <div class="hero-media" style="--hero-image:url('/assets/hero-bg.jpg')"></div>
+    <div class="hero-scrim"></div>
+    <div class="container hero-inner">
+      <div class="crest-badge">
+        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest">
+      </div>
+      <h1 class="hero-title">Private Banking</h1>
+      <p class="hero-sub">Relationship-led banking with multi-currency access, clear statements, and secure authentication.</p>
+      <a class="btn btn-gold btn-lg" href="/client-register.html">Open an Account</a>
     </div>
-  </div>
-</header>
+    <div class="hero-curve"></div>
+  </section>
 
-<section class="hero">
-  <div class="container">
-    <div class="crest"><img src="/assets/logo-crest.png" alt="Crest"></div>
-    <h1>Private Banking</h1>
-    <p>Relationship-led banking with multi-currency access, clear statements, and secure authentication.</p>
-    <div style="height:18px"></div>
-    <a class="btn-wide" href="/client-register.html">Open an Account</a>
-  </div>
-</section>
+  <!-- Navy section -->
+  <section class="section section--navy">
+    <div class="container">
+      <p class="eyebrow">Our Private Banking</p>
+      <h2 class="section-title">Trust, Performance, Discretion</h2>
 
-<section class="slab">
-  <div class="container">
-    <p class="eyebrow">WHAT YOU GET</p>
-    <h2 class="lead-title">Clarity, access, and tailored execution.</h2>
+      <div class="card-grid">
+        <article class="card card--outline">
+          <h3>Multi-Currency Access</h3>
+          <p>Hold and move funds in major currencies with transparent FX and concierge support.</p>
+        </article>
+        <article class="card card--outline">
+          <h3>Secure Statements</h3>
+          <p>Granular statements, vaulted documents, and exportable reports for your advisers.</p>
+        </article>
+        <article class="card card--outline">
+          <h3>Two-Step Authentication</h3>
+          <p>Bank-grade security with OTP and device binding to protect your relationships.</p>
+        </article>
+      </div>
 
-    <div class="cards">
-      <article class="card">
-        <h3>Multi-Currency</h3>
-        <p>EUR, USD, GBP and more with transparent FX and quick settlement.</p>
-      </article>
-      <article class="card">
-        <h3>Secure Access</h3>
-        <p>Two-step authentication, device checks, and a document vault with granular permissions.</p>
-      </article>
-      <article class="card">
-        <h3>Statements</h3>
-        <p>Concise monthly statements plus CSV/PDF exports for your advisors.</p>
-      </article>
+      <div class="cta-row">
+        <a class="btn btn-gold btn-lg" href="/client-register.html">Become a Client</a>
+        <a class="btn btn-ghost" href="/contact.html">Speak with a banker</a>
+      </div>
     </div>
+  </section>
 
-    <div class="cta-row">
-      <a class="btn-wide" href="/client-login.html">Client Login</a>
-      <a class="pill" href="/contact.html">Speak to a banker</a>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital · Valletta, Malta</p>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/private-banking.html" aria-current="page">Private</a>
+        <a href="/wealth-management.html">Wealth</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
     </div>
-  </div>
-</section>
+  </footer>
 
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div class="foot-left">
-      <img src="/assets/logo.png" alt="Maltese First Capital" width="120" height="30" />
-      <p>
-        <strong>Maltese First Capital</strong><br>
-        The Exchange Building<br>
-        Republic Street<br>
-        Valletta VLT 1117, Malta<br>
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </p>
-      <p>© 2025 Maltese First Capital · All rights reserved.</p>
-    </div>
-    <nav class="foot-nav" aria-label="Footer">
-      <a href="/private-banking.html" class="active">Private</a>
-      <a href="/wealth-management.html">Wealth</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-    </nav>
-  </div>
-</footer>
-
+  <script>
+    // Mobile menu
+    (function () {
+      const btn = document.querySelector('.nav-toggle');
+      const menu = document.getElementById('navMenu');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', () => {
+        const open = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!open));
+        menu.classList.toggle('open', !open);
+      });
+    })();
+  </script>
 </body>
 </html>
