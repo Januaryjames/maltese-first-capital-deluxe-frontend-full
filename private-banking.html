@@ -1,16 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Private Banking — Maltese First Capital</title>
-<meta name="description" content="Bespoke private banking in Malta with secure multi-currency accounts and relationship-first service." />
-<link rel="icon" href="/assets/favicon.png">
-<link rel="stylesheet" href="/styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Private Banking — Maltese First Capital</title>
+  <meta name="description" content="Discreet private banking with secure access, clear statements, and relationship-first service." />
+  <link rel="icon" href="/assets/favicon.png">
+  <!-- main stylesheet -->
+  <link rel="stylesheet" href="/styles.css">
+  <!-- defensive critical CSS to prevent 'unstyled' flash -->
+  <style>
+    .brand img{max-height:42px;width:auto;display:block}
+    .site-header{background:#fff;border-bottom:1px solid #e9edf3}
+    .nav-links a,.brand span{color:#1b2736}
+    .hero{color:#fff;text-align:center}
+  </style>
 </head>
 <body>
 
-<!-- Header -->
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="/index.html">
@@ -48,35 +55,33 @@
   </div>
 </header>
 
-<!-- Hero -->
 <section class="hero">
   <div class="container">
     <div class="crest"><img src="/assets/logo-crest.png" alt="Crest"></div>
     <h1>Private Banking</h1>
-    <p>Discreet banking for individuals and families with clear statements, two-step authentication, and secure access worldwide.</p>
+    <p>Relationship-led banking with multi-currency access, clear statements, and secure authentication.</p>
     <div style="height:18px"></div>
     <a class="btn-wide" href="/client-register.html">Open an Account</a>
   </div>
 </section>
 
-<!-- Navy section -->
 <section class="slab">
   <div class="container">
     <p class="eyebrow">WHAT YOU GET</p>
-    <h2 class="lead-title">Multi-currency accounts, cards, and secure document vault.</h2>
+    <h2 class="lead-title">Clarity, access, and tailored execution.</h2>
 
     <div class="cards">
       <article class="card">
         <h3>Multi-Currency</h3>
-        <p>Hold and move funds across major currencies with competitive FX and transparent fees.</p>
+        <p>EUR, USD, GBP and more with transparent FX and quick settlement.</p>
       </article>
       <article class="card">
-        <h3>Two-Step Authentication</h3>
-        <p>Modern security with OTP and device trust. Banking that travels with you, safely.</p>
+        <h3>Secure Access</h3>
+        <p>Two-step authentication, device checks, and a document vault with granular permissions.</p>
       </article>
       <article class="card">
-        <h3>Statements & Reports</h3>
-        <p>Clear monthly statements plus downloadable CSV/PDF for your accountant.</p>
+        <h3>Statements</h3>
+        <p>Concise monthly statements plus CSV/PDF exports for your advisors.</p>
       </article>
     </div>
 
@@ -87,11 +92,25 @@
   </div>
 </section>
 
-<!-- Footer -->
 <footer class="site-footer">
-  <div class="container inner">
-    <div>© 2025 Maltese First Capital · Valletta, Malta</div>
-    <div><a href="/private-banking.html">Private</a> · <a href="/wealth-management.html">Wealth</a> · <a href="/about.html">About</a> · <a href="/contact.html">Contact</a></div>
+  <div class="container footer-inner">
+    <div class="foot-left">
+      <img src="/assets/logo.png" alt="Maltese First Capital" width="120" height="30" />
+      <p>
+        <strong>Maltese First Capital</strong><br>
+        The Exchange Building<br>
+        Republic Street<br>
+        Valletta VLT 1117, Malta<br>
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
+      <p>© 2025 Maltese First Capital · All rights reserved.</p>
+    </div>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="/private-banking.html" class="active">Private</a>
+      <a href="/wealth-management.html">Wealth</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
   </div>
 </footer>
 
