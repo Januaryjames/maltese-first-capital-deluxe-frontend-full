@@ -1,22 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Private Banking — Maltese First Capital</title>
-  <link rel="icon" href="/assets/favicon.png">
-  <link rel="preload" as="image" href="/assets/hero-bg.jpg">
-  <link rel="stylesheet" href="/styles.css?v=pb1">
-  <meta name="description" content="Relationship-led private banking with multi-currency access and secure authentication." />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Private Banking — Maltese First Capital</title>
+<link rel="icon" href="/assets/favicon.png" />
+<link rel="preload" as="image" href="/assets/hero-bg.jpg" />
+<link rel="stylesheet" href="/styles.css?v=pb-final" />
+
+<!-- CRITICAL INLINE CSS (works even if the external file fails) -->
+<style>
+:root{
+  --navy:#0b1623;--navy-2:#0f2030;--ink:#0e1520;--muted:#94a3b8;--paper:#f6f5f2;
+  --gold:#c9a34f;--gold-2:#b8903f;--ring:rgba(201,163,79,.45)
+}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+  color:#0e1520;background:#fff}
+a{color:#0e1520;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e9edf2}
+.container{width:min(1100px,92%);margin-inline:auto}
+.header-inner{display:flex;align-items:center;gap:18px;padding:14px 0}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;color:#0e1520}
+.brand-logo{width:42px;height:42px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.brand-name{white-space:nowrap}
+.nav-toggle{display:none}
+.nav-list{display:flex;gap:22px;margin:0;padding:0;list-style:none}
+.nav-list a{padding:8px 0;color:#0e1520;opacity:.85}
+.nav-list a[aria-current="page"]{font-weight:700}
+.header-cta{margin-left:auto;display:flex;gap:10px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.6rem 1rem;border-radius:12px;font-weight:700;border:1px solid transparent;cursor:pointer;transition:.2s}
+.btn.btn-outline{background:#fff;border-color:#d6dee8}
+.btn.btn-outline:hover{box-shadow:0 0 0 4px #eef3f8}
+.btn.btn-gold{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#1a1a1a;
+  border-color:rgba(0,0,0,.05);box-shadow:0 10px 24px rgba(201,163,79,.24)}
+.btn.btn-gold:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(201,163,79,.30)}
+.btn.btn-ghost{background:transparent;border-color:#2a3a4a;color:#cbd5e1}
+.btn.btn-lg{padding:.8rem 1.25rem;border-radius:14px}
+
+/* hero */
+.hero{position:relative;isolation:isolate}
+.hero--bg{color:#fff}
+.hero-media{position:absolute;inset:0;background:
+  radial-gradient(1200px 600px at 50% -20%, rgba(255,255,255,.18),transparent 55%),
+  linear-gradient(0deg,rgba(0,0,0,.54),rgba(0,0,0,.54)),
+  var(--hero-image) center/cover no-repeat;z-index:-2}
+.hero-scrim{position:absolute;inset:auto 0 0 0;height:60px;background:linear-gradient(180deg,transparent,rgba(11,22,35,.96));z-index:-1}
+.hero-inner{padding:72px 0 64px;text-align:center}
+.crest-badge{width:78px;height:78px;margin:0 auto 18px;background:#fff;border-radius:20px;
+  box-shadow:0 14px 40px rgba(0,0,0,.18);display:grid;place-items:center}
+.crest-badge img{width:58px;height:auto}
+.hero-title{font-size:clamp(28px,3.8vw,44px);line-height:1.1;margin:0 0 10px;text-shadow:0 6px 24px rgba(0,0,0,.25)}
+.hero-sub{margin:0 auto 18px;max-width:820px;color:#e2e8f0}
+
+/* curve separator */
+.hero-curve{height:28px;background:
+ radial-gradient(140% 120% at 50% -13%, rgba(255,255,255,.85),transparent 58%);}
+
+/* navy section */
+.section--navy{background:
+ radial-gradient(900px 400px at 50% 0,rgba(255,255,255,.05),transparent 60%),
+ linear-gradient(180deg,var(--navy),#0a1a2a);color:#cdd6e2;padding:48px 0 72px}
+.eyebrow{letter-spacing:.2em;text-transform:uppercase;color:#e4c988;margin:0 0 8px;text-align:center}
+.section-title{text-align:center;margin:0 0 28px;color:#fff;font-size:clamp(22px,3vw,30px)}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px}
+.card--outline{outline:1px solid rgba(201,163,79,.26);outline-offset:-1px}
+.card h3{color:#fff;margin:0 0 6px;font-size:18px}
+.cta-row{margin-top:22px;display:flex;gap:12px;justify-content:center}
+
+/* footer */
+.site-footer{background:#fff;border-top:1px solid #e9edf2;color:#334155}
+.footer-inner{padding:18px 0;display:flex;gap:14px;align-items:center;justify-content:space-between}
+.footer-nav a{color:#334155;opacity:.8;margin-left:10px}
+
+/* grid / form helpers (shared) */
+.grid-2{display:grid;grid-template-columns:2fr 1.2fr;gap:22px}
+.form .form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+input,textarea{background:#0f2030;border:1px solid #2a3a4a;color:#e2e8f0;border-radius:12px;padding:12px 12px}
+input:focus,textarea:focus{outline:none;box-shadow:0 0 0 4px var(--ring)}
+
+/* mobile */
+@media (max-width:900px){
+  .nav-toggle{display:inline-flex;padding:.5rem .75rem;border:1px solid #e9edf2;border-radius:10px;background:#fff}
+  .nav-list{position:absolute;inset:64px 0 auto 0;background:#fff;border-bottom:1px solid #e9edf2;flex-direction:column;padding:12px 16px;display:none}
+  .nav-list.open{display:flex}
+  .grid-2{grid-template-columns:1fr}
+  .card-grid{grid-template-columns:1fr}
+  .hero-inner{padding:52px 0}
+}
+</style>
+<!-- END critical CSS -->
 </head>
+
 <body>
   <!-- Header -->
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="/index.html" aria-label="Maltese First Capital">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital" class="brand-logo" />
+      <a class="brand" href="/index.html">
+        <img src="/assets/logo-crest.png" class="brand-logo" alt="Maltese First Capital" />
         <span class="brand-name">Maltese First Capital</span>
       </a>
+
       <nav class="nav" aria-label="Primary">
         <button class="nav-toggle" aria-expanded="false" aria-controls="navMenu">Menu</button>
         <ul id="navMenu" class="nav-list">
@@ -26,6 +117,7 @@
           <li><a href="/contact.html">Contact</a></li>
         </ul>
       </nav>
+
       <div class="header-cta">
         <a class="btn btn-outline" href="/client-login.html">Client Login</a>
         <a class="btn btn-gold" href="/admin-login.html">Admin Portal</a>
@@ -33,18 +125,18 @@
     </div>
   </header>
 
-  <!-- Hero -->
+  <!-- Hero with photo -->
   <section class="hero hero--bg">
     <div class="hero-media" style="--hero-image:url('/assets/hero-bg.jpg')"></div>
     <div class="hero-scrim"></div>
+
     <div class="container hero-inner">
-      <div class="crest-badge">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest">
-      </div>
+      <div class="crest-badge"><img src="/assets/logo-crest.png" alt=""></div>
       <h1 class="hero-title">Private Banking</h1>
       <p class="hero-sub">Relationship-led banking with multi-currency access, clear statements, and secure authentication.</p>
       <a class="btn btn-gold btn-lg" href="/client-register.html">Open an Account</a>
     </div>
+
     <div class="hero-curve"></div>
   </section>
 
@@ -80,7 +172,7 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital · Valletta, Malta</p>
-      <nav class="footer-nav" aria-label="Footer">
+      <nav class="footer-nav">
         <a href="/private-banking.html" aria-current="page">Private</a>
         <a href="/wealth-management.html">Wealth</a>
         <a href="/about.html">About</a>
@@ -90,16 +182,12 @@
   </footer>
 
   <script>
-    // Mobile menu
-    (function () {
-      const btn = document.querySelector('.nav-toggle');
-      const menu = document.getElementById('navMenu');
-      if (!btn || !menu) return;
-      btn.addEventListener('click', () => {
-        const open = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', String(!open));
-        menu.classList.toggle('open', !open);
-      });
+    // Mobile nav
+    (function(){
+      const btn=document.querySelector('.nav-toggle'); const list=document.getElementById('navMenu');
+      if(!btn||!list) return;
+      btn.addEventListener('click',()=>{ const o=btn.getAttribute('aria-expanded')==='true';
+        btn.setAttribute('aria-expanded',String(!o)); list.classList.toggle('open',!o);});
     })();
   </script>
 </body>
