@@ -1,61 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maltese First Capital — Private & Wealth Banking</title>
-  <meta name="description" content="Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions." />
-  <link rel="icon" href="assets/favicon.png" type="image/png" />
-  <link rel="preload" as="image" href="assets/hero-bg.jpg?v=4" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="preload" href="assets/hero-bg.jpg" as="image">
+  <link rel="stylesheet" href="styles.css?v=15">
 </head>
-
-<body>
-  <header class="site-header">
-    <div class="container navbar">
+<body class="site">
+  <!-- Header -->
+  <header class="header">
+    <div class="container nav-row">
       <a class="brand" href="index.html" aria-label="Maltese First Capital Home">
-        <img src="assets/logo-crest.png" width="60" height="60" alt="Maltese First Capital crest" class="brand-logo" />
+        <img class="brand-logo" src="assets/logo-crest.png" alt="Maltese First Capital">
         <span class="brand-name">Maltese First Capital</span>
       </a>
 
-      <nav id="primaryNav" class="nav" aria-label="Main">
-        <a href="private-banking.html">Private Banking</a>
-        <a href="wealth-management.html">Wealth Management</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <a class="btn btn-outline" href="client-login.html">Client Login</a>
-        <a class="btn btn-gold" href="admin-login.html">Admin Portal</a>
-      </nav>
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle menu">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
 
-      <div class="nav-toggle">
-        <button id="hamburger" aria-expanded="false" aria-controls="primaryNav" aria-label="Open menu">
-          <svg viewBox="0 0 24 24" fill="none" width="28" height="28">
-            <path d="M4 6h16M4 12h16M4 18h16" stroke="#152536" stroke-width="2" stroke-linecap="round" />
-          </svg>
-        </button>
-      </div>
+      <nav class="nav" role="navigation">
+        <ul class="nav-list">
+          <li><a href="private-banking.html">Private Banking</a></li>
+          <li><a href="wealth-management.html">Wealth Management</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-cta">
+          <a class="btn btn-outline" href="client-login.html">Client Login</a>
+          <a class="btn btn-gold" href="admin-login.html">Admin Portal</a>
+        </div>
+      </nav>
     </div>
   </header>
 
+  <!-- Hero -->
   <section class="hero">
+    <div class="hero-bg"></div>
     <div class="container hero-inner">
-      <div class="hero-crest">
-        <img src="assets/logo-crest.png" alt="Maltese First Capital logo" />
+      <div class="hero-chip">
+        <img src="assets/logo-crest.png" alt="Maltese First Capital crest">
       </div>
-
-      <h1>Unlocking Financial Potential</h1>
-      <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
-
-      <div class="cta">
-        <a class="btn btn-gold" href="client-register.html">Open an Account</a>
-      </div>
+      <h1 class="hero-title">Unlocking Financial Potential</h1>
+      <p class="hero-sub">
+        Maltese First Capital is an investment bank focused on unlocking financial potential
+        and fostering growth for clients through tailored financial solutions.
+      </p>
+      <a class="btn btn-gold btn-lg" href="client-register.html">Open an Account</a>
     </div>
+    <div class="hero-seam"></div>
   </section>
 
+  <!-- Navy section -->
   <section class="navy">
     <div class="container">
-      <p class="tagline">OUR CORE SERVICES</p>
-      <h2>Trust, Performance, Discretion</h2>
+      <p class="section-kicker">Our Core Services</p>
+      <h2 class="section-title">Trust, Performance, Discretion</h2>
 
       <div class="cards">
         <article class="card">
@@ -65,35 +69,41 @@
 
         <article class="card">
           <h3>Wealth Management</h3>
-          <p>Consolidated portfolio reporting, performance analytics and disciplined strategy.</p>
+          <p>Consolidated portfolio reporting, disciplined strategy, and a secure document vault.</p>
         </article>
 
         <article class="card">
           <h3>Corporate Advisory</h3>
-          <p>Capital structuring, M&A support and strategic guidance for enterprises.</p>
+          <p>Capital structuring, M&amp;A support, and strategic guidance for enterprises.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <footer class="site-footer">
-    <div class="container row">
-      <small>© 2025 Maltese First Capital · Valletta, Malta</small>
-      <nav aria-label="Footer">
-        <a href="private-banking.html">Private</a> ·
-        <a href="wealth-management.html">Wealth</a> ·
-        <a href="about.html">About</a> ·
-        <a href="contact.html">Contact</a>
-      </nav>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img class="brand-logo small" src="assets/logo-crest.png" alt="">
+        <span class="brand-name">Maltese First Capital</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="private-banking.html">Private</a></li>
+        <li><a href="wealth-management.html">Wealth</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <p class="copy">© 2025 Maltese First Capital · Valletta, Malta</p>
     </div>
   </footer>
 
   <script>
-    const btn = document.getElementById('hamburger');
-    const nav = document.getElementById('primaryNav');
-    btn?.addEventListener('click', () => {
+    // Mobile menu toggle
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.nav');
+    toggle.addEventListener('click', () => {
       const open = nav.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
   </script>
 </body>
