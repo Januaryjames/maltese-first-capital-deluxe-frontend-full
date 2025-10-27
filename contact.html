@@ -10,7 +10,7 @@
 </head>
 <body>
 
-  <!-- Header (identical to Home) -->
+  <!-- HEADER -->
   <header class="site-header">
     <div class="container nav">
       <a class="brand" href="/index.html">
@@ -48,7 +48,7 @@
     </div>
   </header>
 
-  <!-- Hero (same chrome + crest) -->
+  <!-- HERO -->
   <section class="hero">
     <div class="container">
       <div class="crest"><img src="/assets/logo-crest.png" alt="Crest"></div>
@@ -59,14 +59,13 @@
     </div>
   </section>
 
-  <!-- Navy slab with form -->
+  <!-- FORM SECTION -->
   <section class="slab">
     <div class="container">
       <p class="eyebrow">REACH US</p>
       <h2 class="lead-title">Valletta, Malta — Global Coverage</h2>
 
       <div class="cards" style="align-items:stretch">
-        <!-- Message form -->
         <article class="card" style="flex:1;min-width:320px">
           <h3>Send us a message</h3>
           <p>We’ll reply within one business day. For account queries, please use the email registered to your profile.</p>
@@ -75,11 +74,11 @@
             <div class="grid-2">
               <label class="field">
                 <span class="label">Full name</span>
-                <input class="input" type="text" name="name" required autocomplete="name" />
+                <input class="input" type="text" name="name" required />
               </label>
               <label class="field">
                 <span class="label">Email</span>
-                <input class="input" type="email" name="email" required autocomplete="email" />
+                <input class="input" type="email" name="email" required />
               </label>
             </div>
 
@@ -100,11 +99,10 @@
             </label>
 
             <button class="btn-wide" type="submit">Send message</button>
-            <p id="formNote" class="muted" style="margin-top:6px">This form opens your email app with a prefilled draft.</p>
+            <p id="formNote" class="muted" style="margin-top:6px">This will open your email app pre-filled to hello@maltesefirst.com.</p>
           </form>
         </article>
 
-        <!-- Office card -->
         <article class="card" style="flex:1;min-width:320px">
           <h3>Valletta office</h3>
           <p>Valletta, Malta · Global coverage via partner network</p>
@@ -122,7 +120,7 @@
             </div>
             <div class="row">
               <span class="key">Security</span>
-              <span class="val">Please don’t include account numbers. Use the Client Portal for sensitive items.</span>
+              <span class="val">Please don’t include account numbers or passwords in your message.</span>
             </div>
           </div>
 
@@ -135,7 +133,7 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container inner">
       <div>© 2025 Maltese First Capital · Valletta, Malta</div>
@@ -143,9 +141,9 @@
     </div>
   </footer>
 
-  <!-- Minimal mailto “submission” (keeps everything static) -->
+  <!-- JS: opens mailto prefilled -->
   <script>
-    document.getElementById('contactForm').addEventListener('submit', function (e) {
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const data = new FormData(this);
       const subject = encodeURIComponent(`[MFC] ${data.get('topic')} — ${data.get('name')}`);
@@ -153,7 +151,7 @@
         `Name: ${data.get('name')}\nEmail: ${data.get('email')}\nTopic: ${data.get('topic')}\n\nMessage:\n${data.get('message')}`
       );
       window.location.href = `mailto:hello@maltesefirst.com?subject=${subject}&body=${body}`;
-      document.getElementById('formNote').textContent = 'Draft opened in your email app. If nothing happens, please email hello@maltesefirst.com.';
+      document.getElementById('formNote').textContent = 'Opening your email app... if nothing happens, please email hello@maltesefirst.com directly.';
     });
   </script>
 </body>
