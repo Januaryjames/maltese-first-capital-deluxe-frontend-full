@@ -4,116 +4,103 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact — Maltese First Capital</title>
-  <link rel="canonical" href="https://maltesefirst.com/contact.html" />
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="icon" href="/assets/favicon.png" />
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="stylesheet" href="/styles.css?v=13" />
+  <script defer src="/scripts/nav.js"></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="/index.html" aria-label="Maltese First Capital">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital" />
-        <span>Maltese First Capital</span>
-      </a>
-      <nav class="main-nav" aria-label="Primary">
-        <a href="/private-banking.html">Private Banking</a>
-        <a href="/wealth-management.html">Wealth Management</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html" class="active">Contact</a>
-      </nav>
-      <div class="header-cta">
-        <a class="btn btn-outline" href="/client-login.html">Client Login</a>
-        <a class="btn btn-gold" href="/admin-login.html">Admin Portal</a>
-      </div>
-      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"></button>
+
+<header class="site-header">
+  <div class="container wrap">
+    <a class="brand" href="/index.html">
+      <img src="/assets/logo.png" alt="Maltese First Capital logo">
+      <span>Maltese First Capital</span>
+    </a>
+    <button class="menu-toggle" data-menu-toggle>Menu</button>
+    <nav class="main-nav">
+      <a href="/private-banking.html">Private Banking</a>
+      <a href="/wealth-management.html">Wealth Management</a>
+      <a href="/about.html">About</a>
+      <a class="active" href="/contact.html">Contact</a>
+    </nav>
+    <div class="header-cta">
+      <a class="btn btn-outline" href="/client-login.html">Client Login</a>
+      <a class="btn btn-gold" href="/admin-login.html">Admin Portal</a>
     </div>
-  </header>
+  </div>
+</header>
 
-  <section class="hero hero--with-bg">
-    <div class="hero__overlay"></div>
-    <div class="hero__content">
-      <div class="crest-badge">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
-      </div>
-      <h1>Contact</h1>
-      <p>Start a confidential conversation with the team.</p>
+<section class="hero hero--with-bg">
+  <div class="hero__overlay"></div>
+  <div class="container hero__content">
+    <div class="crest-badge">
+      <img src="/assets/logo-crest.png" alt="Maltese crest">
     </div>
-  </section>
+    <h1>Contact</h1>
+    <p class="lead">Start a confidential conversation with the team.</p>
+    <a class="btn btn-gold" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+  </div>
+</section>
 
-  <section class="band band--navy">
-    <div class="wrap">
-      <div class="grid-2">
-        <!-- Form -->
-        <div class="card card--glass">
-          <h2>Send us a message</h2>
-          <p>We’ll reply within one business day. For account queries, please use the email registered to your profile.</p>
+<section class="band--navy">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="form-card">
+        <h2 style="margin:0 0 12px">Send us a message</h2>
+        <p style="margin:0 0 18px;opacity:.85">We’ll reply within one business day. For account queries, please use the email registered to your profile.</p>
 
-          <!-- Mailto-based form (no backend required) -->
-          <form class="contact-form" action="mailto:hello@maltesefirst.com" method="POST" enctype="text/plain">
-            <label for="name">Full name</label>
-            <input id="name" name="Full name" type="text" required />
+        <form id="contact-form">
+          <div class="form-field">
+            <label for="cf-name">Full name</label>
+            <input class="input" id="cf-name" name="name" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-email">Email</label>
+            <input class="input" id="cf-email" type="email" name="email" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-phone">Phone (optional)</label>
+            <input class="input" id="cf-phone" name="phone">
+          </div>
+          <div class="form-field">
+            <label for="cf-message">Message</label>
+            <textarea class="textarea" id="cf-message" name="message" required></textarea>
+          </div>
+          <button class="btn btn-gold" type="submit">Send message</button>
+        </form>
+      </div>
 
-            <label for="email">Email</label>
-            <input id="email" name="Email" type="email" required />
-
-            <label for="phone">Phone (optional)</label>
-            <input id="phone" name="Phone" type="tel" inputmode="tel" />
-
-            <label for="msg">Message</label>
-            <textarea id="msg" name="Message" rows="6" required></textarea>
-
-            <button class="btn btn-gold" type="submit">Send message</button>
-          </form>
-
-          <p class="form-note">Prefer email? Write to <a class="mailto-strong" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>.</p>
+      <aside class="info-card">
+        <h2 style="margin:0 0 12px">Valletta office</h2>
+        <p style="margin:0 0 14px;opacity:.85">
+          The Exchange Building<br>
+          Republic Street<br>
+          Valletta VLT 1117<br>
+          Malta
+        </p>
+        <hr style="border:0;border-top:1px solid rgba(255,255,255,.12);margin:14px 0">
+        <div>
+          <div style="opacity:.8;margin-bottom:6px">Reach us</div>
+          <a class="mailto-strong" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
         </div>
-
-        <!-- Office -->
-        <aside class="card card--glass contact-card">
-          <h2>Valletta office</h2>
-          <address class="addr">
-            The Exchange Building<br />
-            Republic Street<br />
-            Valletta VLT 1117<br />
-            Malta
-          </address>
-
-          <h3>Reach us</h3>
-          <p><a class="mailto-strong" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-
-          <p class="muted">Global coverage via partner network.</p>
-        </aside>
-      </div>
+        <hr style="border:0;border-top:1px solid rgba(255,255,255,.12);margin:14px 0">
+        <p style="margin:0;opacity:.85">Global coverage via partner network.</p>
+      </aside>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="cta">
-    <div class="wrap">
-      <h2>Prefer to speak directly?</h2>
-      <p>Send a note and we’ll arrange a call at your convenience.</p>
-      <div class="cta-actions">
-        <a href="mailto:hello@maltesefirst.com" class="btn btn-gold">Email the Team</a>
-        <a href="/about.html" class="btn btn-outline">About Us</a>
-      </div>
-    </div>
-  </section>
+<footer class="site-footer">
+  <div class="container foot">
+    <div>© 2025 Maltese First Capital · Valletta, Malta</div>
+    <nav class="links">
+      <a href="/private-banking.html">Private</a>
+      <a href="/wealth-management.html">Wealth</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </div>
+</footer>
 
-  <footer class="site-footer">
-    <div class="wrap">
-      <div class="footer-brand">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital" />
-        <span>Maltese First Capital</span>
-      </div>
-      <nav class="footer-nav" aria-label="Footer">
-        <a href="/private-banking.html">Private</a>
-        <a href="/wealth-management.html">Wealth</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
-      <p class="fineprint">© 2025 Maltese First Capital · Valletta, Malta</p>
-    </div>
-  </footer>
-
-  <script src="/scripts/nav.js" defer></script>
 </body>
 </html>
