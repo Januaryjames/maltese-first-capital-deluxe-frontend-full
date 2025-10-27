@@ -4,62 +4,22 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Private Banking — Maltese First Capital</title>
-<meta name="description" content="Bespoke private banking with multi-currency accounts, secure access, and relationship-led service." />
+<meta name="description" content="Bespoke private banking in Malta with secure multi-currency accounts and relationship-first service." />
 <link rel="icon" href="/assets/favicon.png">
-<style>
-  :root{--bg:#0c1420;--bg-2:#0f1a28;--text:#e9eef5;--muted:#b8c2cf;--ink:#0b1522;--gold:#c9a86a;--gold-2:#b89453;--gold-3:#d8bf86}
-  *,*:before,*:after{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0; font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif; color:var(--text); background:#10161f}
-  a{color:inherit; text-decoration:none}
-  .container{max-width:1200px; margin:0 auto; padding:0 20px}
-  .site-header{position:sticky; top:0; z-index:50; background:#fff; color:#1b2736; border-bottom:1px solid #e9edf3}
-  .nav{display:flex; align-items:center; justify-content:space-between; gap:16px; height:72px}
-  .brand{display:flex; align-items:center; gap:12px}
-  .brand img{width:42px; height:42px; border-radius:10px; box-shadow:0 8px 20px rgba(0,0,0,.12)}
-  .brand span{font-weight:700}
-  .nav-links{display:flex; align-items:center; gap:26px}
-  .nav-links a{color:#1b2736; opacity:.85}
-  .nav-cta{display:flex; gap:12px}
-  .btn{appearance:none; border:1px solid #d6dee8; background:#fff; color:#0f1726; padding:10px 16px; border-radius:12px; font-weight:600}
-  .btn--gold{border:1px solid #b98f44; background:linear-gradient(180deg, var(--gold-3), var(--gold)); color:#1d1a13; box-shadow:0 6px 16px rgba(201,168,106,.35)}
-  .btn--gold:hover{filter:brightness(1.03)}
-  .hamburger{display:none; background:transparent; border:0; padding:8px; margin:-8px}
-  .hamburger span{display:block; width:24px; height:2px; background:#1b2736; margin:5px 0; border-radius:2px}
-  @media (max-width:980px){.nav-links,.nav-cta{display:none}.hamburger{display:block}.mobile-panel{display:none;background:#fff;border-top:1px solid #e9edf3}.mobile-panel a{display:block;padding:14px 20px;border-bottom:1px solid #eef3f8;color:#1b2736}.mobile-panel .m-cta{display:flex;gap:12px;padding:14px 20px}}
-  .hero{position:relative;color:#fff;text-align:center;padding:88px 0 72px;background-image:
-        radial-gradient(1200px 380px at 50% 15%, rgba(12,20,32,.10), rgba(12,20,32,.55)),
-        linear-gradient(180deg, rgba(12,20,32,0) 0%, rgba(12,20,32,.45) 85%, rgba(12,20,32,.65) 100%),
-        url('/assets/hero-bg.jpg'); background-size:cover; background-position:center; background-repeat:no-repeat}
-  .crest{width:92px;height:92px;margin:0 auto 22px;border-radius:18px;background:#fff;display:grid;place-items:center;box-shadow:0 18px 36px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.6)}
-  .crest img{width:58px;height:auto}
-  .hero h1{font-size: clamp(28px,4vw,48px);line-height:1.15;margin:0 0 12px;text-shadow:0 2px 14px rgba(0,0,0,.35)}
-  .hero p{max-width:800px;margin:0 auto 22px;color:#e7edf5;opacity:.92}
-  .cta{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:14px;border:1px solid #b98f44;background:linear-gradient(180deg,var(--gold-3),var(--gold));color:#1d1a13;font-weight:700;box-shadow:0 10px 20px rgba(201,168,106,.35)}
-  .cta:hover{filter:brightness(1.03)}
-  .slab{background:radial-gradient(800px 220px at 50% 0%, rgba(255,255,255,.06), transparent 60%), linear-gradient(180deg,#0e1624,#0b1421 60%);padding:74px 0 90px;border-top:1px solid rgba(255,255,255,.06)}
-  .eyebrow{letter-spacing:.18em;text-transform:uppercase;color:#d7c08b;font-weight:700;font-size:.85rem}
-  .kicker{font-size:clamp(22px,2.6vw,32px);font-weight:800;margin:10px 0 24px}
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-  @media (max-width:960px){.grid{grid-template-columns:1fr}}
-  .card{background:linear-gradient(180deg,#0f1a28,#0b1421);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-  .card h3{margin:0 0 8px}
-  .muted{color:var(--muted)}
-  .site-footer{background:#0b1421;border-top:1px solid rgba(255,255,255,.06);color:#cdd6e3}
-  .site-footer .inner{display:flex;justify-content:space-between;gap:18px;padding:26px 0}
-  .site-footer a{opacity:.9}
-</style>
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
+<!-- Header -->
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="/index.html">
-      <img src="/assets/logo.png" alt="Maltese First Capital Logo"><span>Maltese First Capital</span>
+      <img src="/assets/logo.png" alt="Maltese First Capital">
+      <span>Maltese First Capital</span>
     </a>
 
     <nav class="nav-links">
-      <a href="/private-banking.html">Private Banking</a>
+      <a href="/private-banking.html" aria-current="page">Private Banking</a>
       <a href="/wealth-management.html">Wealth Management</a>
       <a href="/about.html">About</a>
       <a href="/contact.html">Contact</a>
@@ -70,14 +30,14 @@
       <a class="btn btn--gold" href="/admin-login.html">Admin Portal</a>
     </div>
 
-    <button class="hamburger" aria-label="Menu" onclick="document.querySelector('.mobile-panel').style.display =
-      document.querySelector('.mobile-panel').style.display==='block'?'none':'block'">
+    <button class="hamburger" aria-label="Menu"
+      onclick="document.querySelector('.mobile-panel').style.display = document.querySelector('.mobile-panel').style.display==='block'?'none':'block'">
       <span></span><span></span><span></span>
     </button>
   </div>
 
   <div class="mobile-panel">
-    <a href="/private-banking.html">Private Banking</a>
+    <a href="/private-banking.html" aria-current="page">Private Banking</a>
     <a href="/wealth-management.html">Wealth Management</a>
     <a href="/about.html">About</a>
     <a href="/contact.html">Contact</a>
@@ -88,37 +48,46 @@
   </div>
 </header>
 
+<!-- Hero -->
 <section class="hero">
   <div class="container">
-    <div class="crest"><img src="/assets/logo-crest.png" alt="Maltese crest"></div>
+    <div class="crest"><img src="/assets/logo-crest.png" alt="Crest"></div>
     <h1>Private Banking</h1>
-    <p>Discreet, relationship-led banking with multi-currency access, transparent reporting, and secure authentication.</p>
-    <a class="cta" href="/client-register.html">Open an Account</a>
+    <p>Discreet banking for individuals and families with clear statements, two-step authentication, and secure access worldwide.</p>
+    <div style="height:18px"></div>
+    <a class="btn-wide" href="/client-register.html">Open an Account</a>
   </div>
 </section>
 
+<!-- Navy section -->
 <section class="slab">
   <div class="container">
-    <div class="eyebrow">Services</div>
-    <div class="kicker">Clarity, access, and tailored execution.</div>
+    <p class="eyebrow">WHAT YOU GET</p>
+    <h2 class="lead-title">Multi-currency accounts, cards, and secure document vault.</h2>
 
-    <div class="grid">
+    <div class="cards">
       <article class="card">
-        <h3>Multi-Currency Accounts</h3>
-        <p class="muted">EUR, USD, GBP and others with simple transfers and statements you can read at a glance.</p>
+        <h3>Multi-Currency</h3>
+        <p>Hold and move funds across major currencies with competitive FX and transparent fees.</p>
       </article>
       <article class="card">
-        <h3>Secure Access</h3>
-        <p class="muted">Two-step authentication, device checks, and document vault with granular permissions.</p>
+        <h3>Two-Step Authentication</h3>
+        <p>Modern security with OTP and device trust. Banking that travels with you, safely.</p>
       </article>
       <article class="card">
-        <h3>Payments & Custody</h3>
-        <p class="muted">Swift international payments and custody connectivity via trusted partners.</p>
+        <h3>Statements & Reports</h3>
+        <p>Clear monthly statements plus downloadable CSV/PDF for your accountant.</p>
       </article>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn-wide" href="/client-login.html">Client Login</a>
+      <a class="pill" href="/contact.html">Speak to a banker</a>
     </div>
   </div>
 </section>
 
+<!-- Footer -->
 <footer class="site-footer">
   <div class="container inner">
     <div>© 2025 Maltese First Capital · Valletta, Malta</div>
