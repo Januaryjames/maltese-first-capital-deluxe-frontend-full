@@ -4,116 +4,30 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>About — Maltese First Capital</title>
-<meta name="description" content="About Maltese First Capital — private & wealth banking with EU-grade compliance and tailored service." />
+<meta name="description" content="Our story, standards, and relationship-first operating model in Malta." />
 <link rel="icon" href="/assets/favicon.png">
-<style>
-  :root{
-    --bg:#0c1420;            /* deep navy */
-    --bg-2:#0f1a28;          /* slightly lighter navy */
-    --text:#e9eef5;          /* soft white */
-    --muted:#b8c2cf;         /* muted copy */
-    --ink:#0b1522;           /* dark ink for cards */
-    --gold:#c9a86a;
-    --gold-2:#b89453;
-    --gold-3:#d8bf86;
-    --ring: rgba(201,168,106,.45);
-  }
-  /* Reset / base */
-  *,*:before,*:after{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
-    color:var(--text); background:#10161f;
-  }
-  a{color:inherit; text-decoration:none}
-  .container{max-width:1200px; margin:0 auto; padding:0 20px}
-  /* Header */
-  .site-header{position:sticky; top:0; z-index:50; background:#fff; color:#1b2736; border-bottom:1px solid #e9edf3}
-  .nav{display:flex; align-items:center; justify-content:space-between; gap:16px; height:72px}
-  .brand{display:flex; align-items:center; gap:12px}
-  .brand img{width:42px; height:42px; border-radius:10px; box-shadow:0 8px 20px rgba(0,0,0,.12)}
-  .brand span{font-weight:700; letter-spacing:.2px}
-  .nav-links{display:flex; align-items:center; gap:26px}
-  .nav-links a{color:#1b2736; opacity:.85}
-  .nav-cta{display:flex; gap:12px}
-  .btn{appearance:none; border:1px solid #d6dee8; background:#fff; color:#0f1726; padding:10px 16px; border-radius:12px; font-weight:600}
-  .btn--gold{border:1px solid #b98f44; background:linear-gradient(180deg, var(--gold-3), var(--gold)); color:#1d1a13; box-shadow:0 6px 16px rgba(201,168,106,.35)}
-  .btn--gold:hover{filter:brightness(1.03)}
-  .hamburger{display:none; background:transparent; border:0; padding:8px; margin:-8px}
-  .hamburger span{display:block; width:24px; height:2px; background:#1b2736; margin:5px 0; border-radius:2px}
-  @media (max-width: 980px){
-    .nav-links,.nav-cta{display:none}
-    .hamburger{display:block}
-    .mobile-panel{display:none; background:#fff; border-top:1px solid #e9edf3}
-    .mobile-panel a{display:block; padding:14px 20px; border-bottom:1px solid #eef3f8; color:#1b2736}
-    .mobile-panel .m-cta{display:flex; gap:12px; padding:14px 20px}
-  }
-  /* Hero (image + vignette) */
-  .hero{
-    position:relative; color:#fff; text-align:center;
-    padding:88px 0 72px; background:#ccc;
-    background-image:
-      radial-gradient(1200px 380px at 50% 15%, rgba(12,20,32,.10), rgba(12,20,32,.55)),
-      linear-gradient(180deg, rgba(12,20,32,0) 0%, rgba(12,20,32,.45) 85%, rgba(12,20,32,.65) 100%),
-      url('/assets/hero-bg.jpg');
-    background-size:cover; background-position:center; background-repeat:no-repeat;
-  }
-  .crest{width:92px; height:92px; margin:0 auto 22px; border-radius:18px; background:#fff; display:grid; place-items:center;
-         box-shadow:0 18px 36px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.6)}
-  .crest img{width:58px; height:auto}
-  .hero h1{font-size: clamp(28px, 4vw, 48px); line-height:1.15; margin:0 0 12px; letter-spacing:.3px;
-           text-shadow: 0 2px 14px rgba(0,0,0,.35)}
-  .hero p{max-width:800px; margin:0 auto 22px; color:#e7edf5; opacity:.92}
-  .cta{display:inline-flex; align-items:center; gap:10px; padding:12px 20px; border-radius:14px; border:1px solid #b98f44;
-       background:linear-gradient(180deg, var(--gold-3), var(--gold)); color:#1d1a13; font-weight:700;
-       box-shadow:0 10px 20px rgba(201,168,106,.35)}
-  .cta:hover{filter:brightness(1.03)}
-  /* Navy section (no rounded top) */
-  .slab{
-    background:
-      radial-gradient(800px 220px at 50% 0%, rgba(255,255,255,.06), transparent 60%),
-      linear-gradient(180deg, #0e1624, #0b1421 60%);
-    padding:74px 0 90px; border-top:1px solid rgba(255,255,255,.06);
-  }
-  .eyebrow{letter-spacing:.18em; text-transform:uppercase; color:#d7c08b; font-weight:700; font-size:.85rem}
-  .kicker{font-size: clamp(22px, 2.6vw, 32px); font-weight:800; margin:10px 0 24px}
-  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
-  @media (max-width: 960px){ .grid{grid-template-columns:1fr} }
-  .card{
-    background:linear-gradient(180deg, #0f1a28, #0b1421); border:1px solid rgba(255,255,255,.07);
-    border-radius:16px; padding:22px; box-shadow:0 10px 30px rgba(0,0,0,.25)
-  }
-  .card h3{margin:0 0 8px}
-  .muted{color:var(--muted)}
-  /* Footer */
-  .site-footer{background:#0b1421; border-top:1px solid rgba(255,255,255,.06); color:#cdd6e3}
-  .site-footer .inner{display:flex; justify-content:space-between; gap:18px; padding:26px 0}
-  .site-footer a{opacity:.9}
-</style>
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="/index.html">
-      <img src="/assets/logo.png" alt="Maltese First Capital Logo">
+      <img src="/assets/logo.png" alt="Maltese First Capital">
       <span>Maltese First Capital</span>
     </a>
-
     <nav class="nav-links">
       <a href="/private-banking.html">Private Banking</a>
       <a href="/wealth-management.html">Wealth Management</a>
-      <a href="/about.html">About</a>
+      <a href="/about.html" aria-current="page">About</a>
       <a href="/contact.html">Contact</a>
     </nav>
-
     <div class="nav-cta">
       <a class="btn" href="/client-login.html">Client Login</a>
       <a class="btn btn--gold" href="/admin-login.html">Admin Portal</a>
     </div>
-
-    <button class="hamburger" aria-label="Menu" onclick="document.querySelector('.mobile-panel').style.display =
-      document.querySelector('.mobile-panel').style.display==='block'?'none':'block'">
+    <button class="hamburger" aria-label="Menu"
+      onclick="document.querySelector('.mobile-panel').style.display = document.querySelector('.mobile-panel').style.display==='block'?'none':'block'">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -121,7 +35,7 @@
   <div class="mobile-panel">
     <a href="/private-banking.html">Private Banking</a>
     <a href="/wealth-management.html">Wealth Management</a>
-    <a href="/about.html">About</a>
+    <a href="/about.html" aria-current="page">About</a>
     <a href="/contact.html">Contact</a>
     <div class="m-cta">
       <a class="btn" href="/client-login.html" style="flex:1;text-align:center">Client Login</a>
@@ -132,36 +46,37 @@
 
 <section class="hero">
   <div class="container">
-    <div class="crest"><img src="/assets/logo-crest.png" alt="Maltese crest"></div>
+    <div class="crest"><img src="/assets/logo-crest.png" alt="Crest"></div>
     <h1>Our Story & Standards</h1>
-    <p>Maltese First Capital was founded with a single purpose: combine discreet private banking with disciplined
-       wealth management under EU-grade compliance and a relationship-first approach.</p>
-    <a class="cta" href="/client-register.html">Open an Account</a>
+    <p>Maltese First Capital was founded to combine discreet private banking with disciplined wealth management—under EU-grade compliance and a relationship-first approach.</p>
+    <div style="height:18px"></div>
+    <a class="btn-wide" href="/client-register.html">Open an Account</a>
   </div>
 </section>
 
 <section class="slab">
   <div class="container">
-    <div class="eyebrow">Who We Are</div>
-    <div class="kicker">Private banking, built on trust.</div>
+    <p class="eyebrow">WHO WE ARE</p>
+    <h2 class="lead-title">Private banking, built on trust.</h2>
 
-    <div class="grid">
+    <div class="cards">
       <article class="card">
-        <h3>Relationship First</h3>
-        <p class="muted">Your dedicated relationship manager coordinates day-to-day banking, cross-border needs, and
-          curated opportunities with absolute discretion.</p>
+        <h3>Relationship-First</h3>
+        <p>Dedicated coverage that understands families, structures, and long-term goals.</p>
       </article>
-
       <article class="card">
         <h3>EU Compliance</h3>
-        <p class="muted">Robust KYC/AML, strong data protection, and rigorous governance — designed to protect both
-          client and institution.</p>
+        <p>Rigorous onboarding (KYC), AML controls, and transparent reporting.</p>
       </article>
-
       <article class="card">
-        <h3>Global Connectivity</h3>
-        <p class="muted">Access to multi-currency accounts, custody, reporting, and a trusted partner network across key jurisdictions.</p>
+        <h3>Global Network</h3>
+        <p>Access to a vetted partner ecosystem for custody, legal, and tax coordination.</p>
       </article>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn-wide" href="/contact.html">Speak to the team</a>
+      <a class="pill" href="/contact.html">Request materials</a>
     </div>
   </div>
 </section>
