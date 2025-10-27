@@ -1,69 +1,102 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
   <title>Maltese First Capital — Private & Wealth Banking</title>
-  <link rel="stylesheet" href="/styles.css?v=16" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/assets/favicon.png">
+  <!-- cache bust -->
+  <link rel="stylesheet" href="/styles.css?v=19">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container navbar">
-      <a class="brand" href="/index.html">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
-        <span>Maltese First Capital</span>
-      </a>
-      <nav class="nav">
-        <a href="/private-banking.html">Private Banking</a>
-        <a href="/wealth-management.html">Wealth Management</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
-      <div class="cta">
-        <a class="btn" href="/client-login.html">Client Login</a>
-        <a class="btn btn--gold" href="/admin-login.html">Admin Portal</a>
-      </div>
-    </div>
-  </header>
 
-  <section class="hero">
-    <div class="container hero-inner">
-      <div class="hero-logo">
-        <img src="/assets/logo-crest.png" alt="MFC crest" />
-      </div>
-      <h1>Unlocking Financial Potential</h1>
-      <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
-      <a class="btn btn--gold" href="/open-account.html">Open an Account</a>
-    </div>
-  </section>
+<header>
+  <div class="container nav">
+    <a href="/index.html" class="brand">
+      <img src="/assets/logo-crest.png" alt="Maltese First crest">
+      <span>Maltese First Capital</span>
+    </a>
 
-  <div class="curve"></div>
+    <nav class="nav-links">
+      <a href="/private-banking.html">Private Banking</a>
+      <a href="/wealth-management.html">Wealth Management</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
 
-  <section class="section-dark">
-    <div class="container">
-      <div class="eyebrow">OUR CORE SERVICES</div>
-      <h2>Trust, Performance, Discretion</h2>
-      <div class="grid">
-        <article class="card">
-          <h3>Private Banking</h3>
-          <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
-        </article>
-        <article class="card">
-          <h3>Wealth Management</h3>
-          <p>Consolidated portfolio reporting, disciplined strategy, and a secure document vault.</p>
-        </article>
-        <article class="card">
-          <h3>Corporate Advisory</h3>
-          <p>Capital structuring, M&amp;A support, and strategic guidance for enterprises.</p>
-        </article>
-      </div>
+    <div class="nav-actions">
+      <a class="btn btn-outline" href="/client-login.html">Client Login</a>
+      <a class="btn btn-gold" href="/admin-login.html">Admin Portal</a>
+      <button class="nav-toggle" id="menuBtn">☰</button>
     </div>
-  </section>
+  </div>
 
-  <footer class="footer">
-    <div class="container">
-      © 2025 Maltese First Capital · Valletta, Malta
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/private-banking.html">Private Banking</a>
+    <a href="/wealth-management.html">Wealth Management</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/client-login.html">Client Login</a>
+    <a href="/admin-login.html">Admin Portal</a>
+  </div>
+</header>
+
+<section class="hero">
+  <!-- Valletta background + overlays -->
+  <div class="hero-bg"></div>
+
+  <div class="container">
+    <div class="hero-logo">
+      <!-- white card keeps the crest visible over the photo -->
+      <img src="/assets/logo-crest.png" alt="Maltese crest">
     </div>
-  </footer>
+
+    <h1>Unlocking Financial Potential</h1>
+    <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
+
+    <div class="cta">
+      <a class="btn btn-gold" href="/open-account.html">Open an Account</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-navy">
+  <div class="container">
+    <div class="section-sub">OUR CORE SERVICES</div>
+    <h2 class="section-title">Trust, Performance, Discretion</h2>
+
+    <div class="cards">
+      <article class="card">
+        <h3>Private Banking</h3>
+        <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
+      </article>
+      <article class="card">
+        <h3>Wealth Management</h3>
+        <p>Consolidated portfolio reporting, disciplined strategy, and a secure document vault.</p>
+      </article>
+      <article class="card">
+        <h3>Corporate Advisory</h3>
+        <p>Capital structuring, M&A support, and strategic guidance for enterprises.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>© 2025 Maltese First Capital · Valletta, Malta</div>
+    <nav class="footer-links">
+      <a href="/private-banking.html">Private</a>
+      <a href="/wealth-management.html">Wealth</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // mobile menu
+  document.getElementById('menuBtn')?.addEventListener('click',()=>document.body.classList.toggle('mobile-open'));
+</script>
 </body>
 </html>
