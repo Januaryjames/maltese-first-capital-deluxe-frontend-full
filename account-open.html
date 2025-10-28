@@ -1,1 +1,76 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Open an Account — Maltese First Capital</title>
+<link rel="stylesheet" href="styles.css?v=16">
+</head><body>
+<header class="nav"><div class="nav__inner">
+  <a class="brand" href="index.html"><i class="brand__crest"></i><span class="brand__name">Maltese First Capital</span></a>
+  <a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a>
+  <a href="about.html">About</a><a href="contact.html">Contact</a>
+  <div class="nav__spacer"></div><a class="btn btn--outline" href="client-login.html">Client Login</a><a class="btn btn--gold" href="admin-login.html">Admin Portal</a>
+</div></header>
 
+<section class="hero hero--with-bg"><div class="container">
+  <div class="crest"></div><h1>Open an Account</h1>
+  <p>Complete KYC/AML. We’ll review and notify you.</p>
+</div></section>
+
+<section class="section"><div class="container">
+  <form id="kycForm" class="card form" enctype="multipart/form-data">
+    <h3>Applicant details</h3>
+    <div class="grid-3">
+      <div><label>First name</label><input class="input" name="firstName" required></div>
+      <div><label>Last name</label><input class="input" name="lastName" required></div>
+      <div><label>Date of birth</label><input class="input" type="date" name="dob" required></div>
+    </div>
+    <div class="grid-2">
+      <div><label>Nationality</label><input class="input" name="nationality" required></div>
+      <div><label>Country of residence</label><input class="input" name="residenceCountry" required></div>
+    </div>
+    <div class="grid-2">
+      <div><label>Email</label><input class="input" type="email" name="email" required></div>
+      <div><label>Phone</label><input class="input" name="phone" required></div>
+    </div>
+    <div><label>Residential address</label><input class="input" name="addressLine" required></div>
+    <div class="grid-3">
+      <div><label>City</label><input class="input" name="city" required></div>
+      <div><label>State/Region</label><input class="input" name="state"></div>
+      <div><label>Postal code</label><input class="input" name="postalCode" required></div>
+    </div>
+
+    <h3>KYC documents</h3>
+    <div class="grid-3">
+      <div><label>Government ID (passport/ID)</label><input class="input" type="file" name="idDocument" accept=".pdf,.jpg,.jpeg,.png" required></div>
+      <div><label>Proof of address (3 months)</label><input class="input" type="file" name="proofOfAddress" accept=".pdf,.jpg,.jpeg,.png" required></div>
+      <div><label>Selfie (liveness)</label><input class="input" type="file" name="selfie" accept=".jpg,.jpeg,.png" required></div>
+    </div>
+
+    <h3>AML & suitability</h3>
+    <div class="grid-2">
+      <div><label>Occupation</label><input class="input" name="occupation" required></div>
+      <div><label>Estimated annual income (USD)</label><input class="input" type="number" name="income" required></div>
+    </div>
+    <div class="grid-2">
+      <div>
+        <label>Source of funds</label>
+        <select class="input" name="sourceOfFunds" required>
+          <option value="">Select…</option>
+          <option>Employment income</option><option>Business income</option>
+          <option>Investments</option><option>Inheritance/Gift</option><option>Other</option>
+        </select>
+      </div>
+      <div><label>Anticipated monthly activity (USD)</label><input class="input" type="number" name="activity" required></div>
+    </div>
+    <label>Politically Exposed Person (PEP)?</label>
+    <select class="input" name="pep" required><option value="">Select…</option><option>No</option><option>Yes</option></select>
+
+    <label><input type="checkbox" required> I confirm the information is true and consent to compliance checks.</label>
+
+    <button class="btn btn--gold" type="submit">Submit application</button>
+    <div id="kycMsg" class="helper"></div>
+  </form>
+</div></section>
+
+<footer class="footer"><div class="container"><span>&copy; <script>document.write(new Date().getFullYear())</script> Maltese First Capital</span><span>Valletta, Malta</span></div></footer>
+<script src="scripts/forms.js?v=16"></script>
+</body></html>
