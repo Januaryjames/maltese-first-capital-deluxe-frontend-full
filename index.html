@@ -4,85 +4,126 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maltese First Capital — Private & Wealth Banking</title>
-  <meta name="description" content="Trust, performance, discretion. Private Banking and Wealth Management from Malta." />
-  <meta name="backend-base" content="https://maltese-first-capital-deluxe-backend.onrender.com" />
+
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <link rel="stylesheet" href="/styles.css?v=41" />
+
+  <meta name="description" content="Trust, performance, discretion. Private Banking and Wealth Management from Malta." />
+  <meta property="og:title" content="Maltese First Capital — Private & Wealth Banking" />
+  <meta property="og:description" content="Trust, performance, discretion. Private Banking and Wealth Management." />
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
+  <meta property="og:url" content="https://maltesefirst.com/" />
+  <meta name="theme-color" content="#0b1220" />
+
+  <link rel="stylesheet" href="/styles.css?v=40" />
 </head>
 <body>
+  <!-- Header / Nav -->
   <header class="header">
-    <nav class="navbar container" aria-label="Primary">
+    <nav class="navbar container">
       <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
-        <img class="crest" src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
+        <img src="/assets/logo-crest.png" alt="" />
         <span>Maltese First Capital</span>
       </a>
-      <ul class="nav-links" role="menubar">
-        <li role="none"><a class="active" role="menuitem" href="/index.html">Home</a></li>
-        <li role="none"><a role="menuitem" href="/private-banking.html">Private Banking</a></li>
-        <li role="none"><a role="menuitem" href="/wealth-management.html">Wealth Management</a></li>
-        <li role="none"><a role="menuitem" href="/about.html">About</a></li>
-        <li role="none"><a role="menuitem" href="/contact.html">Contact</a></li>
+
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-links">
+        <li class="active"><a href="/index.html">Home</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
+
       <div class="nav-cta">
         <a class="btn outline" href="/client-login.html">Client Login</a>
         <a class="btn gold" href="/admin-login.html">Admin Portal</a>
       </div>
-      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
     </nav>
-    <div class="mobile-drawer" id="mobile-menu">
-      <div class="container">
-        <ul>
-          <li><a href="/index.html">Home</a></li>
-          <li><a href="/private-banking.html">Private Banking</a></li>
-          <li><a href="/wealth-management.html">Wealth Management</a></li>
-          <li><a href="/about.html">About</a></li>
-          <li><a href="/contact.html">Contact</a></li>
-        </ul>
-        <div class="mobile-cta">
-          <a class="btn outline" href="/client-login.html">Client Login</a>
-          <a class="btn gold" href="/admin-login.html">Admin Portal</a>
-        </div>
+    <!-- Mobile drawer -->
+    <div class="mobile-drawer" id="mobileDrawer" hidden>
+      <a href="/index.html" class="m-link active">Home</a>
+      <a href="/private-banking.html" class="m-link">Private Banking</a>
+      <a href="/wealth-management.html" class="m-link">Wealth Management</a>
+      <a href="/about.html" class="m-link">About</a>
+      <a href="/contact.html" class="m-link">Contact</a>
+      <div class="m-cta">
+        <a class="btn outline" href="/client-login.html">Client Login</a>
+        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
       </div>
     </div>
   </header>
 
+  <!-- HERO -->
   <section class="hero page-hero">
     <div class="container hero-inner">
-      <div class="logo-badge"><img src="/assets/logo-crest.png" alt="Maltese First Capital crest" /></div>
+      <div class="logo-badge">
+        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
+      </div>
       <h1>Unlocking Financial Potential</h1>
-      <p class="lead">Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
+      <p class="lead">
+        Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth
+        for clients through tailored financial solutions.
+      </p>
       <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
     </div>
   </section>
 
+  <!-- CARDS -->
   <section class="section-cards" id="cards-band">
     <div class="container">
-      <p class="eyebrow">OUR CORE SERVICES</p>
-      <h2>Trust, Performance, Discretion</h2>
+      <p class="eyebrow centered">OUR CORE SERVICES</p>
+      <h2 class="centered">Trust, Performance, Discretion</h2>
+
       <div class="cards-grid">
-        <article class="card"><h3>Private Banking</h3><p>Relationship-driven banking with clear statements and secure access.</p><a class="card-link" href="/private-banking.html">Learn more</a></article>
-        <article class="card"><h3>Wealth Management</h3><p>Consolidated portfolio reporting, disciplined strategy, and a secure document vault.</p><a class="card-link" href="/wealth-management.html">Learn more</a></article>
-        <article class="card"><h3>Corporate Advisory</h3><p>Capital structuring, M&amp;A support, and strategic guidance for enterprises.</p><a class="card-link" href="/about.html">Learn more</a></article>
+        <article class="card gold-outline">
+          <h3>Private Banking</h3>
+          <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
+          <a class="card-link" href="/private-banking.html">Learn more</a>
+        </article>
+
+        <article class="card gold-outline">
+          <h3>Wealth Management</h3>
+          <p>Consolidated portfolio reporting, disciplined strategy, and a secure document vault.</p>
+          <a class="card-link" href="/wealth-management.html">Learn more</a>
+        </article>
+
+        <article class="card gold-outline">
+          <h3>Corporate Advisory</h3>
+          <p>Capital structuring, M&amp;A support, and strategic guidance for enterprises.</p>
+          <a class="card-link" href="/about.html">Learn more</a>
+        </article>
       </div>
     </div>
   </section>
 
-  <footer class="site-footer">
+  <!-- FOOTER (white) -->
+  <footer class="site-footer footer-light">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+      <p>
+        The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
     </div>
   </footer>
 
-  <script defer src="/scripts/nav.js?v=41"></script>
-  <script defer type="module" src="/scripts/forms.js?v=41"></script>
+  <!-- JS (tiny helper for mobile drawer) -->
+  <script>
+    (function () {
+      const toggle = document.querySelector('.nav-toggle');
+      const drawer = document.getElementById('mobileDrawer');
+      if (!toggle || !drawer) return;
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!open));
+        drawer.hidden = open;
+        document.body.classList.toggle('no-scroll', !open);
+      });
+    })();
+  </script>
 </body>
 </html>
