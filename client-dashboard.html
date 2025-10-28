@@ -2,32 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dashboard — Maltese First Capital</title>
-  <meta name="description" content="Your accounts and transactions." />
-  <link rel="stylesheet" href="/styles.css?v=19" />
-  <script src="/scripts/nav.js?v=19" defer></script>
-  <script src="/scripts/forms.js?v=19" defer></script>
-</head>
-<body onload="loadClient()">
-  <section class="hero">
-    <div class="wrap center">
-      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
-      <h1>Welcome, <span data-client-name>Client</span></h1>
-      <p class="lead">Account <b data-account-num>—</b> • Balance <b>$<span data-balance>0.00</span></b></p>
-    </div>
-  </section>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Client Dashboard — Maltese First Capital</title>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="card">
-        <h3 style="margin:0 0 10px;color:var(--ink)">Recent Transactions</h3>
-        <table class="table">
-          <thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Amount (USD)</th></tr></thead>
-          <tbody data-txs><tr><td colspan="4">Loading…</td></tr></tbody>
-        </table>
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="backend-base" content="https://maltese-first-capital-deluxe-backend.onrender.com" />
+
+  <link rel="stylesheet" href="/styles.css?v=42" />
+  <script defer src="/scripts/nav.js?v=42"></script>
+  <script defer type="module" src="/scripts/forms.js?v=42"></script>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar container">
+      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""/><span>Maltese First Capital</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu"></button>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+      </ul>
+      <div class="nav-cta">
+        <button class="btn outline" id="logout-btn">Logout</button>
+      </div>
+    </nav>
+  </header>
+
+  <section class="section-cards" style="padding-top:40px">
+    <div class="container">
+      <h2 id="client-name" style="margin-bottom:18px;">Client</h2>
+
+      <div class="cards-grid two">
+        <article class="card">
+          <h3>Accounts</h3>
+          <div id="accounts-list">
+            <p class="form-status">Loading accounts…</p>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Transactions</h3>
+          <div id="tx-wrap">
+            <p class="form-status">Select an account to view transactions.</p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
+
+  <footer class="site-footer footer-white">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('logout-btn')?.addEventListener('click', ()=>{
+      localStorage.removeItem('mfc_token');
+      location.href = '/client-login.html';
+    });
+  </script>
 </body>
 </html>
