@@ -120,3 +120,63 @@ textarea{min-height:120px;resize:vertical}
   .hero{min-height:60vh}
   .grid-2{grid-template-columns:1fr}
 }
+/* ===== v44 patch (append to end of styles.css) ===== */
+
+/* 1) HERO image fallback:
+   Ensures the Valletta hero appears even if .hero-bg div is missing */
+.hero{
+  position:relative; /* reaffirm */
+  overflow:hidden;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:
+    linear-gradient(180deg, rgba(11,18,32,.02) 0%, rgba(11,18,32,.28) 58%, rgba(11,18,32,.62) 100%),
+    url("/assets/hero-bg.jpg") center/cover no-repeat;
+}
+
+/* Keep existing .hero-bg working too (no clash). If both exist, the ::before sits under it. */
+
+/* 2) Readability & presence */
+.hero h1{
+  font-weight:900;               /* extra heavy */
+  letter-spacing:.01em;
+  text-shadow:0 10px 34px rgba(0,0,0,.6);
+}
+.hero .lead{
+  opacity:.98;
+  text-shadow:0 8px 26px rgba(0,0,0,.45);
+}
+
+/* 3) Bigger crests (nav + hero) on larger screens */
+@media (min-width: 1100px){
+  .brand-crest{ width:52px; height:52px; }  /* top-left */
+  .logo-badge img{ width:140px; height:140px; padding:20px; } /* hero center */
+}
+
+/* 4) Gold accents on service cards */
+.cards-grid .card{
+  border:1.25px solid rgba(202,169,104,.66);
+  box-shadow:0 12px 36px rgba(0,0,0,.35);
+}
+.cards-grid .card:hover{
+  border-color:rgba(202,169,104,.9);
+  box-shadow:0 20px 46px rgba(202,169,104,.28);
+}
+
+/* 5) Section label centering (desktop + mobile) */
+.eyebrow.centered, .section-title{ text-align:center }
+
+/* 6) Footer — lock to white on all pages (even if a page adds custom bands) */
+.site-footer{ background:#fff !important; color:#0e1629 !important; }
+.site-footer .footer-inner a{ color:#0e1629; }
+.site-footer .footer-address{ color:#233049; }
+
+/* 7) Sub-hero guard on inner pages (prevents any hero overlap edge cases) */
+.sub-hero{ position:relative; z-index:1; }
+
+/* 8) Minor polish */
+.btn.btn-primary{ filter:drop-shadow(0 10px 22px rgba(202,169,104,.35)); }
