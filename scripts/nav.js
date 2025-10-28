@@ -1,5 +1,4 @@
-<!-- include with: <script src="/scripts/nav.js?v=18" defer></script> -->
-<script>
+// v19 — shared header/footer injector
 const NAV = `
 <header class="site">
   <div class="navbar wrap">
@@ -19,24 +18,25 @@ const NAV = `
     </div>
   </div>
 </header>`;
+
 const FOOT = `
 <footer class="site">
   <div class="wrap" style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">
     <div>© 2025 Maltese First Capital. All rights reserved.</div>
     <div style="opacity:.8">The Exchange Building, Republic Street, Valletta VLT 1117, Malta •
-      <a href="mailto:hello@malteseFirst.com">hello@maltesefirst.com</a>
+      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
     </div>
   </div>
 </footer>`;
+
 document.addEventListener('DOMContentLoaded',()=>{
   document.body.insertAdjacentHTML('afterbegin', NAV);
   document.body.insertAdjacentHTML('beforeend', FOOT);
-  // highlight current link
+
+  // highlight current nav link
   const here = location.pathname.replace(/\/+$/,'');
   document.querySelectorAll('nav.links a').forEach(a=>{
-    if(here && a.getAttribute('href') && here.endsWith(a.getAttribute('href'))){
-      a.style.opacity='1'; a.style.textDecoration='underline';
-    }
+    const href=a.getAttribute('href'); if(!href) return;
+    if(here.endsWith(href)) a.classList.add('active');
   });
 });
-</script>
