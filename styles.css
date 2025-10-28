@@ -1,25 +1,21 @@
 /* ===== Maltese First Capital – UI Theme ===== */
-
 :root{
   /* Palette (lighter than before) */
-  --bg-1: #0f1422;          /* page background */
-  --bg-2: #141b2c;          /* elevated */
-  --ink-1:#eef3fb;          /* headings */
-  --ink-2:#c8d1e6;          /* paragraph */
+  --bg-1: #0f1422; /* page background */
+  --bg-2: #141b2c; /* elevated */
+  --ink-1:#eef3fb; /* headings */
+  --ink-2:#c8d1e6; /* paragraph */
   --ring: rgba(255,255,255,.12);
-
   /* Gold */
   --gold-1:#e7cf97;
   --gold-2:#c39d3f;
-
   /* Layout */
   --container: 1120px;
   --radius-lg: 22px;
   --radius-md: 16px;
   --radius-sm: 12px;
 }
-
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; } /* Basic reset */
 html { color-scheme: dark; }
 body{
   margin:0;
@@ -27,16 +23,17 @@ body{
   background: radial-gradient(900px 400px at 50% -200px, rgba(255,255,255,.06), transparent 60%) , var(--bg-1);
   color: var(--ink-2);
 }
-
 /* -------------- Containers */
 .container{ max-width: var(--container); margin: 0 auto; padding: 0 16px; }
-
 /* -------------- Top Nav */
 .nav{
   position: sticky; top:0; z-index: 50;
   background: rgba(12,18,28,.75);
   backdrop-filter: saturate(1.1) blur(10px);
   border-bottom: 1px solid var(--ring);
+}
+@supports not (backdrop-filter: blur(10px)) {
+  .nav { background: rgba(12,18,28,0.9); } /* Fallback for compatibility */
 }
 .nav__inner{
   display:flex; align-items:center; gap: 22px;
@@ -53,7 +50,6 @@ body{
 .nav a{ color:#e8eef8; text-decoration:none; opacity:.9; }
 .nav a.active{ opacity:1; }
 .nav__spacer{ flex:1; }
-
 /* Buttons */
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
@@ -61,6 +57,7 @@ body{
   text-decoration:none; border:1px solid var(--ring);
   transition: transform .05s ease, filter .15s ease;
 }
+.btn:focus { outline: 2px solid var(--gold-1); } /* Accessibility enhancement */
 .btn:active{ transform: translateY(1px); }
 .btn--outline{ background: transparent; color:#e9f0ff; }
 .btn--gold{
@@ -69,7 +66,6 @@ body{
   background: linear-gradient(180deg, var(--gold-1), var(--gold-2));
   box-shadow: 0 8px 28px rgba(214,178,84,.28), inset 0 0 0 1px rgba(255,255,255,.15);
 }
-
 /* -------------- Hero */
 .hero{
   padding: 96px 0 42px;
@@ -89,7 +85,6 @@ body{
   border-radius: 22px; background: #fff url('assets/logo-crest.png') center/68% no-repeat;
   box-shadow: 0 14px 34px rgba(0,0,0,.28);
 }
-
 /* Headings & text */
 h1,h2,h3{ color: var(--ink-1); margin: 0 0 10px; line-height: 1.15; }
 h1{ font-size: clamp(36px, 5.2vw, 56px); letter-spacing: .3px; }
@@ -97,14 +92,12 @@ h2{ font-size: clamp(26px, 3.6vw, 34px); }
 h3{ font-size: 20px; }
 p{ margin: 0 0 16px; color: var(--ink-2); }
 .eyebrow{ letter-spacing: .25em; text-transform: uppercase; color:#bfc7da; font-size: 13px; }
-
 /* -------------- Sections */
 .section{ padding: 56px 0; }
 .section--dark{
   background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
   border-top: 1px solid var(--ring);
 }
-
 /* Cards & panels */
 .cards{
   display:grid; gap: 18px;
@@ -118,7 +111,6 @@ p{ margin: 0 0 16px; color: var(--ink-2); }
   padding: 20px;
 }
 .grid-2{ display:grid; gap: 24px; grid-template-columns: 1.15fr .85fr; }
-
 /* Forms */
 .form label{ display:block; font-weight:700; margin-top:12px; color:#f4f7ff; }
 .form input, .form textarea{
@@ -129,7 +121,6 @@ p{ margin: 0 0 16px; color: var(--ink-2); }
   color:#fff;
 }
 .form input:focus, .form textarea:focus{ box-shadow: 0 0 0 3px rgba(214,178,84,.25); border-color: rgba(214,178,84,.55); }
-
 /* Footer */
 .footer{
   padding: 28px 0;
@@ -137,18 +128,18 @@ p{ margin: 0 0 16px; color: var(--ink-2); }
   border-top: 1px solid var(--ring);
 }
 .footer a{ color:#fff; text-decoration: underline; }
-
 /* Helpers */
 .text-link{ color:#fff; text-decoration: underline; }
 a:hover{ filter: brightness(1.08); }
-
 /* Responsive tweaks */
 @media (max-width: 820px){
   .grid-2{ grid-template-columns: 1fr; }
   .hero{ padding-top: 84px; }
   .brand__name{ display:none; } /* keep header tidy on phones */
 }
-
+@media (max-width: 480px) {
+  .cards { grid-template-columns: 1fr; } /* Mobile stacking */
+}
 /* Optional: slightly lighter look in light mode */
 @media (prefers-color-scheme: light){
   body{ background: linear-gradient(180deg,#e8edf7,#dfe6f3); color:#13203a; }
