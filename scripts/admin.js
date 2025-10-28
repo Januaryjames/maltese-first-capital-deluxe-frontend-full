@@ -1,80 +1,107 @@
-// scripts/admin.js v16
-const API = (window.API_BASE || "https://maltese-first-capital-deluxe-backend.onrender.com").replace(/\/+$/,"");
-const AEP = {
-  login: `${API}/api/admin/login`,
-  list:  `${API}/api/admin/clients`,
-  createAcct: `${API}/api/admin/accounts`,
-  postTx: `${API}/api/admin/transactions`
+/* ========== admin.js v41 ========== */
+const BACKEND =
+  document.querySelector('meta[name="backend-base"]')?.content?.trim() ||
+  'https://maltese-first-capital-deluxe-backend.onrender.com';
+
+const AdminRoutes = {
+  login:    `${BACKEND}/api/admin/login`,
+  users:    `${BACKEND}/api/admin/users`,
+  accounts: `${BACKEND}/api/admin/accounts`,
+  kyc:      `${BACKEND}/api/admin/kyc-submissions`
 };
 
-const tokenKey = "mfc.admin.jwt";
-const setAuth = (t)=>localStorage.setItem(tokenKey,t);
-const getAuth = ()=>localStorage.getItem(tokenKey);
-const authHeader = ()=>({Authorization:`Bearer ${getAuth()}`});
+function token(){ return localStorage.getItem('mfc_admin_token'); }
+function setToken(t){ localStorage.setItem('mfc_admin_token', t); }
+export function adminLogout(){ localStorage.removeItem('mfc_admin_token'); location.href='/admin-login.html'; }
 
-// Admin login
-const adminLoginForm = document.getElementById("adminLoginForm");
-if (adminLoginForm){
-  adminLoginForm.addEventListener("submit", async (e)=>{
+async function aget(url){
+  const r = await fetch(url, { headers:{ Authorization:`Bearer ${token()}` }});
+  if(!r.ok) throw new Error(await r.text()); return r.json();
+}
+async function apost(url, body){
+  const r = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${token()}` }, body: JSON.stringify(body) });
+  if(!r.ok) throw new Error(await r.text()); return r.json().catch(()=>({ok:true}));
+}
+
+/* Admin login */
+export function initAdminLogin(){
+  const f = document.getElementById('admin-login-form');
+  const status = document.getElementById('admin-login-status');
+  if(!f) return;
+  f.addEventListener('submit', async (e)=>{
     e.preventDefault();
-    const msg = document.getElementById("adminLoginMsg");
-    msg.textContent = "Signing in…";
+    status.textContent = 'Signing in...';
+    const { email, password } = Object.fromEntries(new FormData(f).entries());
     try{
-      const body = Object.fromEntries(new FormData(adminLoginForm).entries());
-      const r = await fetch(AEP.login,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
-      const j = await r.json(); if(!r.ok) throw new Error(j.error||"Login failed");
-      setAuth(j.token);
-      location.href = "admin-dashboard.html";
-    }catch(err){ msg.textContent = "Error: "+err.message; }
+      const res = await fetch(AdminRoutes.login,{method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email,password})});
+      if(!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      if(!data?.token) throw new Error('No token');
+      setToken(data.token);
+      location.href = '/admin-dashboard.html';
+    }catch(err){ status.textContent = 'Login failed.'; console.error(err); }
   });
 }
 
-// Dashboard actions
-const acctInput = document.getElementById("acctNumber");
-if (acctInput) acctInput.value = Math.floor(10_000_000 + Math.random()*89_999_999).toString();
+/* Admin dashboard */
+export function initAdminDashboard(){
+  if(!token()){ location.replace('/admin-login.html'); return; }
+  const createForm = document.getElementById('create-account-form');
+  const createStatus = document.getElementById('create-status');
+  const usersWrap = document.getElementById('users-wrap');
+  const kycWrap = document.getElementById('kyc-wrap');
 
-const createForm = document.getElementById("createAcctForm");
-if (createForm){
-  createForm.addEventListener("submit", async (e)=>{
-    e.preventDefault();
-    const msg = document.getElementById("createAcctMsg");
-    msg.textContent = "Creating…";
-    try{
-      const body = Object.fromEntries(new FormData(createForm).entries());
-      if(!body.number || body.number.length!==8) throw new Error("8-digit account number required");
-      const r = await fetch(AEP.createAcct,{method:"POST",headers:{...authHeader(),"Content-Type":"application/json"},body:JSON.stringify(body)});
-      const j = await r.json(); if(!r.ok) throw new Error(j.error||"Failed");
-      msg.textContent = `Created: ${j.currency} ${j.number} (balance ${j.balance})`;
-    }catch(err){ msg.textContent = "Error: "+err.message; }
-  });
-}
+  function gen8(){ return String(Math.floor(10_000_000 + Math.random()*89_999_999)); }
 
-const txForm = document.getElementById("postTxForm");
-if (txForm){
-  txForm.addEventListener("submit", async (e)=>{
-    e.preventDefault();
-    const msg = document.getElementById("postTxMsg");
-    msg.textContent = "Posting…";
-    try{
-      const body = Object.fromEntries(new FormData(txForm).entries());
-      body.amount = Number(body.amount);
-      const r = await fetch(AEP.postTx,{method:"POST",headers:{...authHeader(),"Content-Type":"application/json"},body:JSON.stringify(body)});
-      const j = await r.json(); if(!r.ok) throw new Error(j.error||"Failed");
-      msg.textContent = `OK. New balance: ${j.balance}`;
-    }catch(err){ msg.textContent = "Error: "+err.message; }
-  });
-}
+  if(createForm){
+    createForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      createStatus.textContent = 'Creating...';
+      const d = Object.fromEntries(new FormData(createForm).entries());
+      const body = {
+        email: d.email,
+        currency: d.currency || 'USD',
+        openingBalance: Number(d.openingBalance || 0),
+        accountNumber: d.accountNumber?.trim() || gen8()
+      };
+      try{
+        await apost(AdminRoutes.accounts, body);
+        createStatus.textContent = 'Account created.';
+        createForm.reset();
+      }catch(err){
+        createStatus.textContent = 'Failed to create.';
+        console.error(err);
+      }
+    });
+  }
 
-const adminList = document.getElementById("adminList");
-if (adminList){
   (async ()=>{
     try{
-      const r = await fetch(AEP.list,{headers:authHeader()});
-      const j = await r.json(); if(!r.ok) throw new Error(j.error||"Failed to fetch");
-      adminList.innerHTML = j.map(c=>`<div class="helper">${c.email} • ${c.accounts?.length||0} account(s)</div>`).join("") || "No clients yet.";
-    }catch(err){ adminList.textContent = "Error: "+err.message; }
-  })();
+      const users = await aget(AdminRoutes.users).catch(()=>[]);
+      usersWrap.innerHTML = Array.isArray(users) && users.length ? `
+        <table class="table">
+          <thead><tr><th>Name</th><th>Email</th><th>Status</th></tr></thead>
+          <tbody>${users.map(u=>`
+            <tr><td>${u.name || u.fullName || '-'}</td><td>${u.email || '-'}</td><td><span class="badge">${u.status || 'active'}</span></td></tr>
+          `).join('')}</tbody>
+        </table>` : '<p class="form-status">No users.</p>';
 
-  const logout = document.getElementById("adminLogout");
-  if(logout) logout.addEventListener("click",(e)=>{e.preventDefault();localStorage.removeItem(tokenKey);location.href="admin-login.html";});
+      const kyc = await aget(AdminRoutes.kyc).catch(()=>[]);
+      kycWrap.innerHTML = Array.isArray(kyc) && kyc.length ? `
+        <table class="table">
+          <thead><tr><th>Name</th><th>Email</th><th>Country</th><th>Submitted</th><th>Status</th></tr></thead>
+          <tbody>${kyc.map(k=>`
+            <tr><td>${k.fullName||'-'}</td><td>${k.email||'-'}</td><td>${k.country||'-'}</td>
+            <td>${new Date(k.createdAt||Date.now()).toLocaleString()}</td>
+            <td><span class="badge gold">${k.status||'pending'}</span></td></tr>`).join('')}
+          </tbody>
+        </table>` : '<p class="form-status">No KYC submissions.</p>';
+    }catch(e){ console.error(e); }
+  })();
 }
+
+/* Auto-init */
+document.addEventListener('DOMContentLoaded', ()=>{
+  initAdminLogin();
+  initAdminDashboard();
+});
