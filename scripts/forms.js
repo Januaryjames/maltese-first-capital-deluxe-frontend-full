@@ -1,4 +1,4 @@
-<script>
+// v19 — forms, auth, dashboards
 const API_BASE = 'https://maltese-first-capital-deluxe-backend.onrender.com';
 
 /* CONTACT */
@@ -41,7 +41,7 @@ async function submitKyc(e){
     out.textContent='Application received. Our team will contact you after review.';
     out.className='form-msg alert ok'; f.reset();
   }catch(err){
-    out.innerHTML=`Couldn’t submit right now. Please email <b>hello@maltesefirst.com</b> with your details.`;
+    out.innerHTML=`Couldn’t submit right now. Please email <b>hello@maltesefirst.com</b>.`;
     out.className='form-msg alert err';
   }
 }
@@ -66,29 +66,26 @@ async function clientLogin(e){
   }
 }
 
-/* DASHBOARD DATA */
+/* CLIENT DASHBOARD LOAD */
 async function loadClient(){
   const token = localStorage.getItem('mfc_token'); if(!token) return (location.href='/client-login.html');
   const h = {'Authorization':`Bearer ${token}`};
   const me = await fetch(`${API_BASE}/client/me`,{headers:h}).then(r=>r.json()).catch(()=>null);
   if(!me || me.error){localStorage.removeItem('mfc_token'); return location.href='/client-login.html'}
-  // hydrate UI
   document.querySelector('[data-client-name]').textContent = me.user?.fullName || me.user?.email;
-  const acct = me.account;
-  document.querySelector('[data-account-num]').textContent = acct?.number || '—';
-  document.querySelector('[data-balance]').textContent = acct ? (acct.balance/100).toFixed(2) : '0.00';
-
+  document.querySelector('[data-account-num]').textContent = me.account?.number || '—';
+  document.querySelector('[data-balance]').textContent = me.account ? (me.account.balance/100).toFixed(2) : '0.00';
   const tbody = document.querySelector('[data-txs]');
   tbody.innerHTML = (me.transactions||[]).map(tx=>`
     <tr>
       <td>${new Date(tx.createdAt).toLocaleDateString()}</td>
-      <td>${tx.type.toUpperCase()}</td>
+      <td>${tx.type?.toUpperCase?.()||''}</td>
       <td>${tx.description||''}</td>
       <td>${(tx.amount/100).toFixed(2)}</td>
     </tr>`).join('') || `<tr><td colspan="4">No transactions yet.</td></tr>`;
 }
 
-/* ADMIN AUTH (optional basic) */
+/* ADMIN AUTH */
 async function adminLogin(e){
   e.preventDefault();
   const f = e.target;
@@ -105,4 +102,36 @@ async function adminLogin(e){
     location.href='/admin-dashboard.html';
   }catch(err){ out.textContent=err.message; out.className='form-msg alert err'; }
 }
-</script>
+
+/* ADMIN ACTIONS */
+const ADMIN = ()=>localStorage.getItem('mfc_admin');
+
+async function adminCreateClient(e){
+  e.preventDefault(); const f=e.target, out=f.querySelector('.form-msg');
+  out.textContent='Saving...'; out.className='form-msg alert';
+  try{
+    const r = await fetch(`${API_BASE}/admin/clients`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${ADMIN()}`},
+      body:JSON.stringify(Object.fromEntries(new FormData(f).entries()))
+    });
+    const d=await r.json(); if(!r.ok) throw new Error(d?.message||'Error');
+    out.textContent='Client created.'; out.className='form-msg alert ok'; f.reset();
+  }catch(err){ out.textContent=err.message; out.className='form-msg alert err'; }
+  return false;
+}
+
+async function adminCredit(e){
+  e.preventDefault(); const f=e.target, out=f.querySelector('.form-msg');
+  out.textContent='Posting...'; out.className='form-msg alert';
+  try{
+    const r = await fetch(`${API_BASE}/admin/credit`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${ADMIN()}`},
+      body:JSON.stringify(Object.fromEntries(new FormData(f).entries()))
+    });
+    const d=await r.json(); if(!r.ok) throw new Error(d?.message||'Error');
+    out.textContent='Posted.'; out.className='form-msg alert ok'; f.reset();
+  }catch(err){ out.textContent=err.message; out.className='form-msg alert err'; }
+  return false;
+}
