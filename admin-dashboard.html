@@ -1,50 +1,43 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin Dashboard — Maltese First Capital</title>
-<link rel="stylesheet" href="styles.css?v=16"></head><body>
-<header class="nav"><div class="nav__inner">
-  <a class="brand" href="index.html"><i class="brand__crest"></i><span class="brand__name">Maltese First Capital</span></a>
-  <div class="nav__spacer"></div><a class="btn btn--outline" href="#" id="adminLogout">Logout</a>
-</div></header>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard — Maltese First Capital</title>
+  <meta name="description" content="Create accounts and post balances." />
+  <link rel="stylesheet" href="/styles.css?v=19" />
+  <script src="/scripts/nav.js?v=19" defer></script>
+  <script src="/scripts/forms.js?v=19" defer></script>
+</head>
+<body>
+  <section class="hero">
+    <div class="wrap center">
+      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
+      <h1>Admin Dashboard</h1>
+      <p class="lead">Create accounts and post balances.</p>
+    </div>
+  </section>
 
-<section class="section"><div class="container">
-  <div class="cards">
-    <div class="card">
-      <h3>Create Client Account</h3>
-      <form id="createAcctForm" class="form">
-        <div class="grid-2">
-          <div><label>Client email</label><input class="input" name="email" required></div>
-          <div><label>Currency</label><select class="input" name="ccy"><option>USD</option><option>EUR</option></select></div>
-        </div>
-        <div class="grid-2">
-          <div><label>Initial balance</label><input class="input" type="number" step="0.01" name="balance" value="0"></div>
-          <div><label>8-digit account number</label><input class="input" name="number" placeholder="auto" id="acctNumber"></div>
-        </div>
-        <button class="btn btn--gold" type="submit">Create</button>
-        <div class="helper" id="createAcctMsg"></div>
+  <section class="section">
+    <div class="wrap grid" style="grid-template-columns:1fr 1fr">
+      <form class="form" onsubmit="return adminCreateClient(event)">
+        <h3 style="margin:0 0 10px;color:var(--ink)">Create Client</h3>
+        <label>Full name</label><input name="fullName" required />
+        <label>Email</label><input type="email" name="email" required />
+        <label>Password</label><input type="password" name="password" required />
+        <button class="btn gold" type="submit">Create</button>
+        <div class="form-msg help"></div>
+      </form>
+
+      <form class="form" onsubmit="return adminCredit(event)">
+        <h3 style="margin:0 0 10px;color:var(--ink)">Credit Account</h3>
+        <label>Account number (8-digit)</label><input name="number" required pattern="\\d{8}" />
+        <label>Amount (USD)</label><input name="amount" required />
+        <label>Description</label><input name="description" />
+        <button class="btn gold" type="submit">Post</button>
+        <div class="form-msg help"></div>
       </form>
     </div>
-
-    <div class="card">
-      <h3>Post Transaction (Credit/Debit)</h3>
-      <form id="postTxForm" class="form">
-        <div class="grid-3">
-          <div><label>Account number</label><input class="input" name="number" required></div>
-          <div><label>Type</label><select class="input" name="type"><option>credit</option><option>debit</option></select></div>
-          <div><label>Amount</label><input class="input" type="number" step="0.01" name="amount" required></div>
-        </div>
-        <label>Description</label><input class="input" name="description" placeholder="Narrative…">
-        <button class="btn btn--gold" type="submit">Post</button>
-        <div class="helper" id="postTxMsg"></div>
-      </form>
-    </div>
-  </div>
-
-  <div class="card" style="margin-top:18px">
-    <h3>Recent Clients</h3>
-    <div id="adminList" class="helper">Loading…</div>
-  </div>
-</div></section>
-
-<script src="scripts/admin.js?v=16"></script>
-</body></html>
+  </section>
+</body>
+</html>
