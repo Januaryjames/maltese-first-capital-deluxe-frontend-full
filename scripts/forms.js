@@ -1,4 +1,4 @@
-/* ========== forms.js v41 ========== */
+/* ========== forms.js v42 ========== */
 const BACKEND_BASE =
   document.querySelector('meta[name="backend-base"]')?.content?.trim() ||
   'https://maltese-first-capital-deluxe-backend.onrender.com';
@@ -90,8 +90,12 @@ export async function initClientLogin(){
   });
 }
 
-/* Client Dashboard */
+/* Client Dashboard — only run on dashboard page */
 export async function initClientDashboard(){
+  // Guard: only initialize if dashboard elements exist
+  const onDash = document.getElementById('accounts-list') || document.getElementById('client-name') || document.getElementById('tx-wrap');
+  if(!onDash) return;
+
   const token = localStorage.getItem('mfc_token');
   if(!token){ window.location.replace('/client-login.html'); return; }
 
@@ -156,13 +160,10 @@ export async function initClientDashboard(){
   }
 }
 
-/* Utility */
-export function logout(){ localStorage.removeItem('mfc_token'); window.location.href='/client-login.html'; }
-
 /* Auto-init by page */
 document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initAccountOpenForm();
   initClientLogin();
-  initClientDashboard();
+  initClientDashboard(); // now safely guarded
 });
