@@ -1,40 +1,42 @@
-// Mobile menu toggle + legacy cleanup
-document.addEventListener('DOMContentLoaded', () => {
-  // Mobile menu
-  const toggle = document.querySelector('[data-menu-toggle]');
-  const nav = document.querySelector('.main-nav');
-  if (toggle && nav) {
-    toggle.addEventListener('click', () => {
-      nav.classList.toggle('open');
-    });
-  }
-
-  // Remove stray <a> or <br> nodes that some legacy pages render above header
-  const header = document.querySelector('.site-header');
-  if (header) {
-    const toRemove = [];
-    for (const node of document.body.childNodes) {
-      if (node === header) break;
-      if (node.nodeType === 1 && (node.tagName === 'A' || node.tagName === 'BR')) toRemove.push(node);
-      if (node.nodeType === 3 && !node.textContent.trim()) toRemove.push(node);
+<!-- include with: <script src="/scripts/nav.js?v=18" defer></script> -->
+<script>
+const NAV = `
+<header class="site">
+  <div class="navbar wrap">
+    <a class="brand" href="/index.html">
+      <img src="/assets/logo-crest.png" alt="MFC crest"/>
+      <span class="name">Maltese First Capital</span>
+    </a>
+    <nav class="links">
+      <a href="/private-banking.html">Private Banking</a>
+      <a href="/wealth-management.html">Wealth Management</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+    <div class="actions">
+      <a class="btn ghost" href="/client-login.html">Client Login</a>
+      <a class="btn gold" href="/admin-login.html">Admin Portal</a>
+    </div>
+  </div>
+</header>`;
+const FOOT = `
+<footer class="site">
+  <div class="wrap" style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <div>© 2025 Maltese First Capital. All rights reserved.</div>
+    <div style="opacity:.8">The Exchange Building, Republic Street, Valletta VLT 1117, Malta •
+      <a href="mailto:hello@malteseFirst.com">hello@maltesefirst.com</a>
+    </div>
+  </div>
+</footer>`;
+document.addEventListener('DOMContentLoaded',()=>{
+  document.body.insertAdjacentHTML('afterbegin', NAV);
+  document.body.insertAdjacentHTML('beforeend', FOOT);
+  // highlight current link
+  const here = location.pathname.replace(/\/+$/,'');
+  document.querySelectorAll('nav.links a').forEach(a=>{
+    if(here && a.getAttribute('href') && here.endsWith(a.getAttribute('href'))){
+      a.style.opacity='1'; a.style.textDecoration='underline';
     }
-    toRemove.forEach(n => n.remove());
-  }
-
-  // Contact form -> open mailto with prefilled body
-  const contactForm = document.getElementById('contact-form');
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = contactForm.querySelector('[name="name"]').value.trim();
-      const email = contactForm.querySelector('[name="email"]').value.trim();
-      const phone = contactForm.querySelector('[name="phone"]').value.trim();
-      const message = contactForm.querySelector('[name="message"]').value.trim();
-      const subject = encodeURIComponent(`Website enquiry from ${name || 'Prospect'}`);
-      const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`
-      );
-      window.location.href = `mailto:hello@maltesefirst.com?subject=${subject}&body=${body}`;
-    });
-  }
+  });
 });
+</script>
