@@ -1,61 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Admin Login • Maltese First Capital</title>
-  <link rel="icon" href="assets/logo.png">
-  <link rel="stylesheet" href="styles.css?v=21">
-</head>
-<body>
-  <div class="navbar-wrap">
-    <div class="container navbar">
-      <a class="brand navbar-brand" href="index.html">
-        <img src="assets/logo.png" alt="Maltese First Capital"><span>Maltese First Capital</span>
-      </a>
-      <nav class="links">
-        <a href="admin-login.html" class="highlight">Admin Login</a>
-      </nav>
-    </div>
-  </div>
-
-  <section class="hero">
-    <div class="container">
-      <img class="hero-logo" src="assets/logo.png" alt="MFC">
-      <h1>Admin Login</h1>
-      <div class="card" style="max-width:520px;margin:0 auto">
-        <form id="form">
-          <label>Username</label><input id="u" required>
-          <label>Password</label><input id="p" type="password" required>
-          <div class="cta-row" style="justify-content:flex-end;margin-top:12px">
-            <button class="btn gold" type="submit">Sign In</button>
-          </div>
-          <div id="note" class="muted" style="margin-top:8px"></div>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <footer><div class="container">© 2025 Maltese First Capital — Valletta, Malta</div></footer>
-
-<script>
-const API = localStorage.getItem('BACKEND_URL') || '';
-const note = document.getElementById('note');
-document.getElementById('form').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  note.textContent = 'Signing in…';
-  try{
-    const r = await fetch(`${API}/api/admin/login`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ username: document.getElementById('u').value.trim(), password: document.getElementById('p').value.trim() })
-    });
-    const data = await r.json();
-    if(!r.ok || !data.ok) throw new Error(data.error||'failed');
-    localStorage.setItem('ADMIN_TOKEN', data.token);
-    note.textContent = 'Success. Redirecting…';
-    location.href='admin-dashboard.html';
-  }catch(err){ note.textContent = 'Invalid credentials.'; }
-});
-</script>
-</body>
-</html>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Login — Maltese First Capital</title>
+<link rel="stylesheet" href="styles.css?v=16"></head><body>
+<header class="nav"><div class="nav__inner">
+  <a class="brand" href="index.html"><i class="brand__crest"></i><span class="brand__name">Maltese First Capital</span></a>
+</div></header>
+<section class="hero"><div class="container"><div class="crest"></div><h1>Admin Login</h1></div></section>
+<section class="section"><div class="container" style="max-width:680px">
+  <form id="adminLoginForm" class="card form">
+    <label>Email</label><input class="input" type="email" name="email" required>
+    <label>Password</label><input class="input" type="password" name="password" required>
+    <button class="btn btn--gold" type="submit">Sign in</button>
+    <div id="adminLoginMsg" class="helper"></div>
+  </form>
+</div></section>
+<script src="scripts/admin.js?v=16"></script>
+</body></html>
