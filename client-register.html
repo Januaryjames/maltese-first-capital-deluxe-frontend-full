@@ -1,76 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Open an Account • Maltese First Capital</title>
-  <link rel="icon" href="assets/logo.png">
-  <link rel="stylesheet" href="styles.css?v=21">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Registration - Maltese First Capital</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="navbar-wrap">
-    <div class="container navbar">
-      <a class="brand navbar-brand" href="index.html">
-        <img src="assets/logo.png" alt="Maltese First Capital"><span>Maltese First Capital</span>
-      </a>
-      <nav class="links">
-        <a href="private-banking.html">Private Banking</a>
-        <a href="wealth-management.html">Wealth Management</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <a class="highlight" href="client-login.html">Client Login</a>
-      </nav>
-    </div>
-  </div>
+    <header class="navbar">
+        <!-- Same as above -->
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Maltese First Capital Logo">
+                <span>Maltese First Capital</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="private-banking.html">Private Banking</a>
+                <a href="wealth-management.html">Wealth Management</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="nav-buttons">
+                <a href="client-login.html" class="btn btn-outline">Client Login</a>
+                <a href="admin-portal.html" class="btn btn-gold">Admin Portal</a>
+            </div>
+        </div>
+    </header>
 
-  <section class="hero">
-    <div class="container">
-      <img class="hero-logo" src="assets/logo.png" alt="MFC">
-      <h1>Open an Account</h1>
-      <p class="lead">Begin KYC to establish your Maltese First Capital relationship.</p>
+    <section class="section">
+        <div class="container">
+            <h1>Client Registration</h1>
+            <p>Provide your details for account opening and KYC/AML.</p>
+            <form id="registration-form">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
 
-      <div class="card" style="max-width:840px;margin:0 auto">
-        <form id="kycForm">
-          <div class="section" style="padding:0;border:none">
-            <h2>Personal Details</h2>
-            <label>Full name</label><input id="fullName" required>
-            <label>Email</label><input id="email" type="email" required>
-            <label>Phone</label><input id="phone" required>
-            <label>Residential Address</label><textarea id="addr" rows="3" required></textarea>
-            <label>Country</label><input id="country" required>
-          </div>
-          <div class="section" style="padding:0;border:none">
-            <h2>Profile</h2>
-            <label>Primary Currency</label>
-            <select id="currency"><option>EUR</option><option>USD</option><option>GBP</option></select>
-            <label>Source of Funds</label>
-            <select id="sof"><option>Professional Income</option><option>Business Proceeds</option><option>Investment Income</option><option>Other</option></select>
-          </div>
-          <div class="cta-row" style="justify-content:flex-end">
-            <button class="btn gold" type="submit">Continue</button>
-          </div>
-          <div id="status" class="muted" style="margin-top:8px"></div>
-        </form>
-      </div>
-    </div>
-  </section>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
 
-  <footer><div class="container">© 2025 Maltese First Capital — Valletta, Malta • <a href="mailto:hello@maltesefirst.com" style="color:inherit">hello@maltesefirst.com</a></div></footer>
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" required>
 
-<script>
-document.getElementById('kycForm').addEventListener('submit',(e)=>{
-  e.preventDefault();
-  // store minimally for prefill later
-  localStorage.setItem('CLIENT_PREFILL', JSON.stringify({
-    name: document.getElementById('fullName').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    phone: document.getElementById('phone').value.trim(),
-    addr: document.getElementById('addr').value.trim(),
-    currency: document.getElementById('currency').value
-  }));
-  document.getElementById('status').textContent = 'Submitted. Please proceed to Login to verify your email.';
-  setTimeout(()=>location.href='client-login.html', 1200);
-});
-</script>
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" required></textarea>
+
+                <label for="id_type">ID Type (e.g., Passport):</label>
+                <input type="text" id="id_type" name="id_type" required>
+
+                <label for="id_number">ID Number:</label>
+                <input type="text" id="id_number" name="id_number" required>
+
+                <button type="submit" class="btn btn-gold">Submit Registration</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Maltese First Capital. All rights reserved.</p>
+    </footer>
+
+    <script src="scripts/nav.js"></script>
+    <script src="scripts/forms.js"></script>
 </body>
 </html>
