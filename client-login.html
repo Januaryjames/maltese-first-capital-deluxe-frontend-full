@@ -1,27 +1,27 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Client Login — Maltese First Capital</title>
-<link rel="stylesheet" href="styles.css?v=16">
-</head><body>
-<header class="nav"><div class="nav__inner">
-  <a class="brand" href="index.html"><i class="brand__crest"></i><span class="brand__name">Maltese First Capital</span></a>
-  <a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a>
-  <a href="about.html">About</a><a href="contact.html">Contact</a>
-  <div class="nav__spacer"></div><a class="btn btn--gold" href="admin-login.html">Admin Portal</a>
-</div></header>
-
-<section class="hero"><div class="container">
-  <div class="crest"></div><h1>Client Login</h1><p>Secure access to your accounts.</p>
-</div></section>
-
-<section class="section"><div class="container" style="max-width:680px">
-  <form id="clientLoginForm" class="card form">
-    <label>Email</label><input class="input" type="email" name="email" required>
-    <label>Password</label><input class="input" type="password" name="password" required>
-    <button class="btn btn--gold" type="submit">Sign in</button>
-    <div id="clientLoginMsg" class="helper"></div>
-  </form>
-</div></section>
-
-<script src="scripts/forms.js?v=16"></script>
-</body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Client Login — Maltese First Capital</title>
+  <meta name="description" content="Secure access for clients." />
+  <link rel="stylesheet" href="/styles.css?v=19" />
+  <script src="/scripts/nav.js?v=19" defer></script>
+  <script src="/scripts/forms.js?v=19" defer></script>
+</head>
+<body>
+  <section class="hero">
+    <div class="wrap center">
+      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
+      <h1>Client Login</h1>
+      <p class="lead">Secure access to your account and statements.</p>
+      <form class="form" style="max-width:520px;margin:22px auto 0" onsubmit="clientLogin(event)">
+        <label>Email</label><input type="email" name="email" required />
+        <label>Password</label><input type="password" name="password" required />
+        <button class="btn gold" type="submit">Sign in</button>
+        <div class="form-msg help" style="margin-top:10px"></div>
+      </form>
+    </div>
+  </section>
+</body>
+</html>
