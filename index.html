@@ -3,66 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maltese First Capital - Private & Wealth Banking</title>
+    <title>Maltese First Capital - Unlocking Financial Potential</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <nav class="nav">
-        <div class="nav__inner">
-            <a href="/" class="brand">
-                <div class="brand__crest"></div>
-                <span class="brand__name">Maltese First Capital</span>
-            </a>
-            <a href="private-banking.html">Private Banking</a>
-            <a href="wealth-management.html">Wealth Management</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-            <div class="nav__spacer"></div>
-            <a href="client-login.html" class="btn btn--outline">Client Login</a>
-            <a href="admin-portal.html" class="btn btn--gold">Admin Portal</a>
-        </div>
-    </nav>
-
-    <section class="hero hero--with-bg">
+    <header class="navbar">
         <div class="container">
-            <div class="crest"></div>
+            <div class="logo">
+                <img src="assets/logo.png" alt="Maltese First Capital Logo">
+                <span>Maltese First Capital</span>
+            </div>
+            <nav class="nav-links">
+                <a href="private-banking.html">Private Banking</a>
+                <a href="wealth-management.html">Wealth Management</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="nav-buttons">
+                <a href="client-login.html" class="btn btn-outline">Client Login</a>
+                <a href="admin-portal.html" class="btn btn-gold">Admin Portal</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <img src="assets/logo.png" alt="Center Logo" class="hero-logo">
             <h1>Unlocking Financial Potential</h1>
             <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
-            <a href="account-open.html" class="btn btn--gold">Open an Account</a>
+            <a href="account-open.html" class="btn btn-gold">Open an Account</a>
         </div>
     </section>
 
-    <section class="section section--dark">
+    <section class="services">
         <div class="container">
-            <div class="text-center">
-                <span class="eyebrow">Our Core Services</span>
-                <h2>Trust, Performance, Discretion</h2>
-            </div>
-            <div class="cards">
-                <div class="card">
-                    <i class="fas fa-piggy-bank fa-3x" style="color: var(--gold-1);"></i>
-                    <h3>Private Banking</h3>
+            <h2>Our Core Services</h2>
+            <h3>Trust, Performance, Discretion</h3>
+            <div class="service-grid">
+                <div class="service-card">
+                    <i class="fas fa-piggy-bank fa-3x"></i>
+                    <h4>Private Banking</h4>
                     <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
                 </div>
-                <div class="card">
-                    <i class="fas fa-chart-line fa-3x" style="color: var(--gold-1);"></i>
-                    <h3>Wealth Management</h3>
+                <div class="service-card">
+                    <i class="fas fa-chart-line fa-3x"></i>
+                    <h4>Wealth Management</h4>
                     <p>Consolidated portfolio reporting, disciplined strategy, and a secure document vault.</p>
                 </div>
-                <div class="card">
-                    <i class="fas fa-briefcase fa-3x" style="color: var(--gold-1);"></i>
-                    <h3>Corporate Advisory</h3>
+                <div class="service-card">
+                    <i class="fas fa-briefcase fa-3x"></i>
+                    <h4>Corporate Advisory</h4>
                     <p>Capital structuring, M&A support, and strategic guidance for enterprises.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Maltese First Capital. All rights reserved. <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
-        </div>
+    <footer>
+        <p>&copy; 2025 Maltese First Capital. All rights reserved.</p>
     </footer>
 
     <script src="scripts/nav.js"></script>
