@@ -2,27 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>About — Maltese First Capital</title>
-  <meta name="description" content="Our story, standards, and governance." />
-  <link rel="stylesheet" href="/styles.css?v=19" />
-  <script src="/scripts/nav.js?v=19" defer></script>
-  <script src="/scripts/forms.js?v=19" defer></script>
+
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+
+  <meta name="description" content="Our story and standards: discreet private banking with disciplined wealth management under EU-grade compliance.">
+  <meta property="og:title" content="About — Maltese First Capital">
+  <meta property="og:description" content="Our story and standards: discreet private banking with disciplined wealth management under EU-grade compliance.">
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
+  <meta property="og:url" content="https://maltesefirst.com/about.html" />
+  <meta name="theme-color" content="#0b1220" />
+
+  <link rel="stylesheet" href="/styles.css?v=29" />
+  <link rel="stylesheet" href="/fixes.css?v=29" />
+
+  <script defer src="/scripts/nav.js?v=29"></script>
 </head>
 <body>
-  <section class="hero">
-    <div class="wrap center">
-      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
-      <h1>Our Story & Standards</h1>
+  <header class="header">
+    <nav class="navbar container">
+      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><span>Maltese First Capital</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu"></button>
+      <ul class="nav-links">
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li class="active"><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a class="btn outline" href="/client-login.html">Client Login</a>
+        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero page-hero">
+    <div class="container hero-inner">
+      <div class="logo-badge"><img src="/assets/logo-crest.png" alt=""></div>
+      <h1>Our Story &amp; Standards</h1>
       <p class="lead">Founded to combine discreet private banking with disciplined wealth management under EU-grade compliance.</p>
-      <div class="cta"><a class="btn gold" href="/account-open.html">Open an Account</a></div>
+      <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
     </div>
   </section>
-  <section class="section">
-    <div class="wrap grid" style="grid-template-columns:1fr 1fr">
-      <div class="card"><h3>Relationship-First</h3> We keep client coverage intentionally focused for clarity and speed.</div>
-      <div class="card"><h3>Compliance</h3> EU AML/CTF standards, independent audit, and layered approvals.</div>
+
+  <section class="section-cards">
+    <div class="container cards-grid two">
+      <article class="card">
+        <h3>Relationship-First</h3>
+        <p>We keep client coverage intentionally focused for clarity and speed.</p>
+      </article>
+      <article class="card">
+        <h3>Compliance</h3>
+        <p>EU AML/CTF standards, independent audit, and layered approvals.</p>
+      </article>
     </div>
   </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>
