@@ -1,4 +1,4 @@
-/* ========== styles.css v36 (final) ========== */
+/* ========== styles.css v38 ========== */
 
 /* 0) Reset & base */
 *,
@@ -28,6 +28,7 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
   --gold-2:#b99454;
   --brand:#e6e9ef;
   --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --shadow-gold: 0 12px 28px rgba(202,169,104,.22);
 }
 
 /* 1) Layout helpers */
@@ -36,11 +37,11 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 
 /* 2) Header / nav */
 .header { position: sticky; top: 0; z-index: 50; background: #0f1724; border-bottom: 1px solid rgba(255,255,255,.06); }
-.navbar { display:flex; align-items:center; justify-content:space-between; height:64px; }
+.navbar { display:flex; align-items:center; justify-content:space-between; height:70px; }
 .brand { display:flex; align-items:center; gap:.6rem; font-weight:700; color:var(--brand); white-space:nowrap; }
 .brand .crest{
-  width:42px; height:42px;
-  border-radius:12px; background:#fff; padding:6px; /* white tile for visibility */
+  width:52px; height:52px;         /* bigger navbar crest */
+  border-radius:14px; background:#fff; padding:7px;
   box-shadow: 0 6px 18px rgba(0,0,0,.25);
   image-rendering: -webkit-optimize-contrast;
 }
@@ -54,23 +55,23 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 .btn.gold { background: linear-gradient(180deg, var(--gold), var(--gold-2)); color:#1a1203; box-shadow:0 8px 24px rgba(202,169,104,.35); }
 .btn.gold:hover { filter: brightness(1.05); }
 
-/* 3) HERO (full-bleed, no rounded corners) */
+/* 3) HERO (full-bleed) */
 .page-hero{
   position:relative;
   isolation:isolate;
   padding: 96px 0 48px;
   background:
     linear-gradient(180deg, rgba(11,18,32,.10) 0%, rgba(11,18,32,.35) 55%, rgba(11,18,32,.60) 100%),
-    url("/assets/hero-bg.jpg?v=36") center/cover no-repeat;
-  border-radius: 0;      /* no rounded corners */
-  margin: 0;             /* edge-to-edge */
+    url("/assets/hero-bg.jpg?v=38") center/cover no-repeat;
+  border-radius: 0;
+  margin: 0;
   width: 100%;
   box-shadow: none;
 }
 .hero-inner { text-align:center; }
 .logo-badge img{
-  width:112px; height:112px;           /* bigger hero crest */
-  border-radius:18px; background:#fff; padding:14px;
+  width:132px; height:132px;       /* bigger hero crest */
+  border-radius:18px; background:#fff; padding:16px;
   box-shadow: 0 10px 30px rgba(0,0,0,.35);
   margin: 0 auto 20px;
 }
@@ -85,7 +86,7 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 .btn.btn-primary{
   background: linear-gradient(180deg, var(--gold), var(--gold-2));
   color:#1a1203; padding:.8rem 1.25rem; border-radius:14px; font-weight:800;
-  box-shadow: 0 10px 30px rgba(202,169,104,.35);
+  box-shadow: var(--shadow-gold);
 }
 .btn.btn-primary:hover{ filter:brightness(1.06); }
 
@@ -99,21 +100,32 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 .cards-grid{ display:grid; gap:18px; grid-template-columns: repeat(3, minmax(0,1fr)); }
 .cards-grid.two{ grid-template-columns: repeat(2, minmax(0,1fr)); }
 .cards-grid .card{
-  background: var(--card); border:1px solid var(--card-border);
-  border-radius:18px; padding:20px; box-shadow: var(--shadow);
+  background: linear-gradient(180deg, rgba(17,26,46,.98), rgba(17,26,46,.92));
+  border:1.5px solid rgba(202,169,104,.55);        /* gold outline */
+  border-radius:18px; padding:20px;
+  box-shadow: var(--shadow), 0 0 0 2px rgba(202,169,104,.12) inset;  /* subtle inner gold glow */
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 .cards-grid .card h3{ margin:.2rem 0 .35rem; }
 .cards-grid .card p{ color: var(--muted); }
 .card-link{ display:inline-block; margin-top:.5rem; color:var(--gold); font-weight:700; }
+.cards-grid .card:hover{
+  transform: translateY(-2px);
+  border-color: rgba(202,169,104,.9);
+  box-shadow: var(--shadow), 0 8px 28px rgba(202,169,104,.18);
+}
 
-/* 5) Footer (white text + links) */
-.site-footer{ border-top:1px solid rgba(255,255,255,.08); background:#0f1724; }
+/* 5) Footer — white bar */
+.site-footer{
+  border-top:1px solid #e9ecf3;
+  background:#ffffff;                 /* white footer */
+  color:#0b1220;
+}
 .footer-inner{
   padding:28px 0; text-align:center;
-  color: #ffffff;                    /* white footer text */
 }
 .footer-inner a{
-  color:#ffffff; text-decoration:underline; text-underline-offset:2px;
+  color:#0b1220; text-decoration:underline; text-underline-offset:2px;
 }
 
 /* 6) Responsive */
