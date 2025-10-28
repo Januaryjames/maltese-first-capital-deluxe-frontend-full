@@ -2,28 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Wealth Management — Maltese First Capital</title>
-  <meta name="description" content="Disciplined investment strategies and clear reporting." />
-  <link rel="stylesheet" href="/styles.css?v=19" />
-  <script src="/scripts/nav.js?v=19" defer></script>
-  <script src="/scripts/forms.js?v=19" defer></script>
+  <meta name="description" content="Generational planning with disciplined investment strategies and clear reporting." />
+  <link rel="icon" href="assets/logo-crest.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=15">
+  <script defer src="scripts/nav.js?v=15"></script>
 </head>
 <body>
-  <section class="hero">
-    <div class="wrap center">
-      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
-      <h1>Wealth Management</h1>
-      <p class="lead">Generational planning with disciplined investment strategies and clear reporting.</p>
-      <div class="cta"><a class="btn gold" href="/account-open.html">Open an Account</a></div>
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/logo.png" alt="Maltese First Capital logo" />
+      <span>Maltese First Capital</span>
+    </a>
+    <nav class="nav-links">
+      <a href="private-banking.html">Private Banking</a>
+      <a href="wealth-management.html">Wealth Management</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="cta-row">
+      <a class="btn btn--ghost" href="client-login.html">Client Login</a>
+      <a class="btn btn--gold" href="admin-login.html">Admin Portal</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <img class="crest" src="assets/logo-crest.png" alt="MFC crest">
+    <h1>Wealth Management</h1>
+    <p class="lead">Generational planning with disciplined investment strategies and clear reporting.</p>
+    <div class="cta">
+      <a class="btn btn--gold" href="account-open.html">Open an Account</a>
+    </div>
+  </div>
+</section>
+
+<main>
+  <section class="section container section--cards">
+    <div class="grid">
+      <div class="card col-4">
+        <h3 class="mt-0">Global Markets Access</h3>
+        <p>Equities, bonds, alternatives via trusted partners.</p>
+      </div>
+      <div class="card col-4">
+        <h3 class="mt-0">Risk & Analytics</h3>
+        <p>Portfolio diagnostics, performance reporting, scenario analysis.</p>
+      </div>
+      <div class="card col-4">
+        <h3 class="mt-0">Legacy & Estate</h3>
+        <p>Structured, tax-efficient planning with counsel coordination.</p>
+      </div>
     </div>
   </section>
-  <section class="section-dark">
-    <div class="wrap grid features">
-      <div class="card"><h3>Global Markets Access</h3> Equities, bonds, alternatives via trusted partners.</div>
-      <div class="card"><h3>Risk & Analytics</h3> Portfolio diagnostics, performance reporting, scenario analysis.</div>
-      <div class="card"><h3>Legacy & Estate</h3> Structured, tax-efficient planning with counsel coordination.</div>
-    </div>
-  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-wrap">
+    <small>© 2025 Maltese First Capital. All rights reserved.</small>
+    <small>The Exchange Building, Republic Street, Valletta VLT 1117, Malta • <a class="underline" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></small>
+  </div>
+</footer>
 </body>
 </html>
