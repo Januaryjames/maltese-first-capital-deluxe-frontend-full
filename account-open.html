@@ -2,52 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Open an Account — Maltese First Capital</title>
-  <meta name="description" content="KYC/AML onboarding form." />
-  <link rel="stylesheet" href="/styles.css?v=19" />
-  <script src="/scripts/nav.js?v=19" defer></script>
-  <script src="/scripts/forms.js?v=19" defer></script>
+
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="backend-base" content="https://maltese-first-capital-deluxe-backend.onrender.com" />
+
+  <link rel="stylesheet" href="/styles.css?v=42" />
+  <script defer src="/scripts/nav.js?v=42"></script>
+  <script defer type="module" src="/scripts/forms.js?v=42"></script>
 </head>
 <body>
-  <section class="hero">
-    <div class="wrap center">
-      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
-      <h1>Open an Account</h1>
-      <p class="lead">Complete KYC/AML information to begin onboarding.</p>
+  <header class="header">
+    <nav class="navbar container">
+      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""/><span>Maltese First Capital</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu"></button>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a class="btn outline" href="/client-login.html">Client Login</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="section-cards" style="padding-top:40px">
+    <div class="container">
+      <div class="cards-grid two">
+        <article class="card">
+          <h3>Application</h3>
+          <form id="kyc-form" enctype="multipart/form-data">
+            <div class="form-row"><label>Full name</label><input name="fullName" required /></div>
+            <div class="form-row"><label>Email</label><input type="email" name="email" required /></div>
+            <div class="form-row"><label>Phone</label><input name="phone" /></div>
+            <div class="form-row"><label>Nationality</label><input name="nationality" /></div>
+            <div class="form-row"><label>Address</label><input name="address" /></div>
+            <div class="form-row"><label>Source of funds</label><input name="sof" /></div>
+            <div class="form-row"><label>Passport (PDF/JPG)</label><input type="file" name="passport" accept=".pdf,.jpg,.jpeg,.png" /></div>
+            <div class="form-row"><label>Proof of address</label><input type="file" name="poa" accept=".pdf,.jpg,.jpeg,.png" /></div>
+            <button class="btn btn-primary" type="submit">Submit application</button>
+            <p class="form-status" id="kyc-status"></p>
+          </form>
+        </article>
+        <article class="card">
+          <h3>What happens next?</h3>
+          <p>Our onboarding team reviews your submission, sets up your client profile, and will contact you for any clarifications.</p>
+        </article>
+      </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="wrap">
-      <form class="form" onsubmit="submitKyc(event)">
-        <div class="grid" style="grid-template-columns:repeat(2,1fr)">
-          <div>
-            <label>Full name</label><input name="fullName" required />
-            <label>Email</label><input type="email" name="email" required />
-            <label>Phone</label><input name="phone" required />
-            <label>Date of birth</label><input type="date" name="dob" required />
-            <label>Nationality</label><input name="nationality" required />
-            <label>Residential address</label><input name="address" required />
-          </div>
-          <div>
-            <label>Source of funds</label>
-            <select name="sof" required>
-              <option value="">Select…</option>
-              <option>Employment income</option><option>Business income</option>
-              <option>Investments</option><option>Inheritance</option><option>Other</option>
-            </select>
-            <label>Expected monthly activity (USD)</label><input name="expectedActivity" required />
-            <label>Politically Exposed Person (PEP)</label>
-            <select name="pep" required><option value="">Select…</option><option>No</option><option>Yes</option></select>
-            <label>Upload ID (link)</label><input name="idLink" placeholder="Share a secure file link" required />
-            <label>Notes</label><textarea name="notes" rows="5" placeholder="Anything we should know?"></textarea>
-          </div>
-        </div>
-        <button class="btn gold" type="submit">Submit application</button>
-        <div class="form-msg help" style="margin-top:10px"></div>
-      </form>
+  <footer class="site-footer footer-white">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
     </div>
-  </section>
+  </footer>
 </body>
 </html>
