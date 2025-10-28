@@ -1,59 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Client Dashboard • Maltese First Capital</title>
-  <link rel="icon" href="assets/logo.png">
-  <link rel="stylesheet" href="styles.css?v=21">
-</head>
-<body>
-  <div class="navbar-wrap">
-    <div class="container navbar">
-      <a class="brand navbar-brand" href="index.html">
-        <img src="assets/logo.png" alt="Maltese First Capital"><span>Maltese First Capital</span>
-      </a>
-      <nav class="links">
-        <a href="client-profile.html">Profile & Documents</a>
-        <a class="highlight" href="#" id="logout">Log Out</a>
-      </nav>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Client Dashboard — Maltese First Capital</title>
+<link rel="stylesheet" href="styles.css?v=16">
+<script>window.__API_BASE__="/api";</script>
+</head><body>
+<header class="site-header"><div class="container navbar">
+  <a class="brand" href="index.html">
+    <img src="assets/logo-crest.png" alt=""><span class="brand-name">Maltese First Capital</span>
+  </a>
+  <div class="cta-row">
+    <span class="badge" id="client-name">•••</span>
+    <button class="btn btn-outline" id="client-logout">Log out</button>
+  </div>
+  <button class="menu-toggle" aria-label="Menu" data-menu>☰</button>
+</div></header>
+
+<section class="hero"><div class="container hero-inner">
+  <div class="brand-badge"><img src="assets/logo.png" alt=""></div>
+  <h1>Your Accounts</h1>
+  <p>Select an account to view your current balance and recent transactions.</p>
+</div></section>
+
+<section class="section-navy" id="client-dashboard"><div class="container">
+  <div class="form grid-2">
+    <div class="field"><label>Account</label>
+      <select id="account-select"></select>
+    </div>
+    <div class="field"><label>Current Balance</label>
+      <div class="badge"><span id="balance">0.00</span></div>
     </div>
   </div>
 
-  <section class="hero">
-    <div class="container">
-      <img class="hero-logo" src="assets/logo.png" alt="MFC">
-      <h1 id="welcome">Welcome</h1>
-      <p class="lead">Access your profile, upload required documents, and manage your relationship.</p>
-      <div class="cta-row">
-        <a class="btn gold" href="client-profile.html">Upload Documents</a>
-        <a class="btn" href="contact.html">Contact Support</a>
-      </div>
+  <div class="form mt-20">
+    <h3>Recent Transactions</h3>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Date</th><th>Type</th><th class="num">Amount</th><th>Memo</th></tr></thead>
+        <tbody id="txn-body"></tbody>
+      </table>
     </div>
-  </section>
+  </div>
+</div></section>
 
-  <section class="section">
-    <div class="container">
-      <h2>Overview</h2>
-      <p class="sub">A concise view of your relationship.</p>
-      <div class="cards">
-        <div class="card"><h3>Profile</h3><p>Keep your details current.</p></div>
-        <div class="card"><h3>Documents</h3><p>Upload ID, proof of address, and more.</p></div>
-        <div class="card"><h3>Support</h3><p>We’re available via secure message and email.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <footer><div class="container">© 2025 Maltese First Capital — Valletta, Malta • <a href="mailto:hello@maltesefirst.com" style="color:inherit">hello@maltesefirst.com</a></div></footer>
-
-<script>
-const name = (JSON.parse(localStorage.getItem('CLIENT_PREFILL')||'{}').name) || 'Client';
-document.getElementById('welcome').textContent = `Welcome, ${name}`;
-document.getElementById('logout').addEventListener('click',(e)=>{
-  e.preventDefault();
-  localStorage.removeItem('CLIENT_TOKEN');
-  location.href='client-login.html';
-});
-</script>
-</body>
-</html>
+<footer><div class="container foot"><div class="small">© Maltese First Capital</div></div></footer>
+<script src="scripts/nav.js?v=16"></script>
+<script src="scripts/client.js?v=16"></script>
+</body></html>
