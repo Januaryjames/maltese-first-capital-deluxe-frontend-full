@@ -1,27 +1,33 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Client Dashboard — Maltese First Capital</title>
-<link rel="stylesheet" href="styles.css?v=16">
-</head><body>
-<header class="nav"><div class="nav__inner">
-  <a class="brand" href="index.html"><i class="brand__crest"></i><span class="brand__name">Maltese First Capital</span></a>
-  <div class="nav__spacer"></div>
-  <a class="btn btn--outline" href="#" id="logoutBtn">Logout</a>
-</div></header>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — Maltese First Capital</title>
+  <meta name="description" content="Your accounts and transactions." />
+  <link rel="stylesheet" href="/styles.css?v=19" />
+  <script src="/scripts/nav.js?v=19" defer></script>
+  <script src="/scripts/forms.js?v=19" defer></script>
+</head>
+<body onload="loadClient()">
+  <section class="hero">
+    <div class="wrap center">
+      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
+      <h1>Welcome, <span data-client-name>Client</span></h1>
+      <p class="lead">Account <b data-account-num>—</b> • Balance <b>$<span data-balance>0.00</span></b></p>
+    </div>
+  </section>
 
-<section class="section"><div class="container">
-  <h2 id="welcome">Welcome</h2>
-  <div class="cards" id="accountCards"></div>
-
-  <div class="card" style="margin-top:18px">
-    <h3>Recent Transactions</h3>
-    <table class="table">
-      <thead><tr><th>Date</th><th>Account</th><th>Description</th><th align="right">Amount</th><th align="right">Balance</th></tr></thead>
-      <tbody id="txBody"></tbody>
-    </table>
-  </div>
-</div></section>
-
-<script src="scripts/forms.js?v=16"></script>
-<script>window.ClientDash && window.ClientDash.init();</script>
-</body></html>
+  <section class="section">
+    <div class="wrap">
+      <div class="card">
+        <h3 style="margin:0 0 10px;color:var(--ink)">Recent Transactions</h3>
+        <table class="table">
+          <thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Amount (USD)</th></tr></thead>
+          <tbody data-txs><tr><td colspan="4">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
