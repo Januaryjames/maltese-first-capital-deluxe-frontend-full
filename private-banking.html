@@ -4,43 +4,31 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Private Banking — Maltese First Capital</title>
-  <link rel="preload" as="image" href="assets/hero-bg.jpg">
-  <link rel="preload" as="image" href="assets/logo-crest.png">
-  <link rel="stylesheet" href="styles.css?v=17">
+  <meta name="description" content="Relationship-led private banking with secure access." />
+  <link rel="stylesheet" href="/styles.css?v=19" />
+  <script src="/scripts/nav.js?v=19" defer></script>
+  <script src="/scripts/forms.js?v=19" defer></script>
 </head>
 <body>
-  <header class="nav">
-    <div class="nav__inner">
-      <a class="brand" href="index.html"><i class="brand__crest"></i><span class="brand__name">Maltese First Capital</span></a>
-      <a class="active" href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <div class="nav__spacer"></div>
-      <a class="btn btn--outline" href="client-login.html">Client Login</a>
-      <a class="btn btn--gold" href="admin-login.html">Admin Portal</a>
-    </div>
-  </header>
-
-  <section class="hero hero--with-bg">
-    <div class="container">
-      <div class="crest" aria-hidden="true"></div>
+  <section class="hero">
+    <div class="wrap center">
+      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
       <h1>Private Banking</h1>
-      <p>Relationship-led banking with multi-currency access, clear statements, and secure authentication.</p>
-      <a class="btn btn--gold" href="account-open.html">Open an Account</a>
+      <p class="lead">Relationship-led banking with multi-currency access, clear statements, and secure authentication.</p>
+      <div class="cta"><a class="btn gold" href="/account-open.html">Open an Account</a></div>
     </div>
   </section>
-
-  <section class="section section--dark">
-    <div class="container">
-      <div class="cards">
-        <article class="card"><h3>Bespoke Accounts</h3><p>Flexible accounts tailored to personal and family needs.</p></article>
-        <article class="card"><h3>Payments &amp; FX</h3><p>Transparent fees and competitive foreign exchange.</p></article>
-        <article class="card"><h3>Security &amp; 2FA</h3><p>Modern authentication, secure documents, and alerts.</p></article>
+  <section class="section-dark">
+    <div class="wrap grid" style="grid-template-columns:1fr 1fr">
+      <div class="card">
+        <h3>Bespoke Accounts</h3>
+        Dedicated IBANs, standing orders, incoming international wires, and scheduled statements.
+      </div>
+      <div class="card">
+        <h3>Security & 2FA</h3>
+        Device fingerprinting, OTP login, and anomaly alerts for transactions.
       </div>
     </div>
   </section>
-
-  <footer class="footer"><div class="container"><div>Maltese First Capital</div><div>The Exchange Building, Republic Street, Valletta VLT 1117, Malta</div><div><a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div></div></footer>
 </body>
 </html>
