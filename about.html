@@ -4,43 +4,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>About — Maltese First Capital</title>
-  <link rel="preload" as="image" href="assets/hero-bg.jpg">
-  <link rel="preload" as="image" href="assets/logo-crest.png">
-  <link rel="stylesheet" href="styles.css?v=17">
+  <meta name="description" content="Our story, standards, and governance." />
+  <link rel="stylesheet" href="/styles.css?v=19" />
+  <script src="/scripts/nav.js?v=19" defer></script>
+  <script src="/scripts/forms.js?v=19" defer></script>
 </head>
 <body>
-  <header class="nav">
-    <div class="nav__inner">
-      <a class="brand" href="index.html"><i class="brand__crest"></i><span class="brand__name">Maltese First Capital</span></a>
-      <a href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a>
-      <a class="active" href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <div class="nav__spacer"></div>
-      <a class="btn btn--outline" href="client-login.html">Client Login</a>
-      <a class="btn btn--gold" href="admin-login.html">Admin Portal</a>
-    </div>
-  </header>
-
-  <section class="hero hero--with-bg">
-    <div class="container">
-      <div class="crest" aria-hidden="true"></div>
-      <h1>Our Story &amp; Standards</h1>
-      <p>Founded to combine discreet private banking with disciplined wealth management under EU-grade compliance.</p>
-      <a class="btn btn--gold" href="account-open.html">Open an Account</a>
+  <section class="hero">
+    <div class="wrap center">
+      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
+      <h1>Our Story & Standards</h1>
+      <p class="lead">Founded to combine discreet private banking with disciplined wealth management under EU-grade compliance.</p>
+      <div class="cta"><a class="btn gold" href="/account-open.html">Open an Account</a></div>
     </div>
   </section>
-
-  <section class="section section--dark">
-    <div class="container">
-      <div class="cards">
-        <article class="card"><h3>Relationship-First</h3><p>We prize clarity, stability, and discretion in every client interaction.</p></article>
-        <article class="card"><h3>Compliance-Led</h3><p>Robust AML/KYC processes and secure data handling.</p></article>
-        <article class="card"><h3>Global Network</h3><p>Coverage via EU and international partners.</p></article>
-      </div>
+  <section class="section">
+    <div class="wrap grid" style="grid-template-columns:1fr 1fr">
+      <div class="card"><h3>Relationship-First</h3> We keep client coverage intentionally focused for clarity and speed.</div>
+      <div class="card"><h3>Compliance</h3> EU AML/CTF standards, independent audit, and layered approvals.</div>
     </div>
   </section>
-
-  <footer class="footer"><div class="container"><div>Maltese First Capital</div><div>The Exchange Building, Republic Street, Valletta VLT 1117, Malta</div><div><a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div></div></footer>
 </body>
 </html>
