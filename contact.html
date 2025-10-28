@@ -1,37 +1,86 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Contact — Maltese First Capital</title>
-<meta name="backend-base" content="https://maltese-first-capital-deluxe-backend.onrender.com"/>
-<link rel="icon" href="/assets/logo-crest.png"/><link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
-<link rel="stylesheet" href="/styles.css?v=41"/></head><body>
-<header class="header">…(same header + mobile drawer)…</header>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact — Maltese First Capital</title>
 
-<section class="hero page-hero">
-  <div class="container hero-inner">
-    <div class="logo-badge"><img src="/assets/logo-crest.png" alt=""/></div>
-    <h1>Contact</h1>
-    <p class="lead">Start a confidential conversation with the team.</p>
-    <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
-  </div>
-</section>
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
 
-<section class="section-cards">
-  <div class="container">
-    <div class="form-card">
-      <form id="contact-form">
-        <div class="form-row">
-          <div class="form-col"><label>Full name</label><input name="name" required></div>
-          <div class="form-col"><label>Email</label><input type="email" name="email" required></div>
-        </div>
-        <div class="form-col"><label>Message</label><textarea name="message" rows="5" required></textarea></div>
-        <div class="form-actions"><button class="btn btn-primary" type="submit">Send</button></div>
-        <p id="contact-status" class="form-status"></p>
-      </form>
+  <meta name="description" content="Start a confidential conversation with the team." />
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="backend-base" content="https://maltese-first-capital-deluxe-backend.onrender.com" />
+
+  <link rel="stylesheet" href="/styles.css?v=42" />
+  <script defer src="/scripts/nav.js?v=42"></script>
+  <script defer type="module" src="/scripts/forms.js?v=42"></script>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar container">
+      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""/><span>Maltese First Capital</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu"></button>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li class="active"><a href="/contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a class="btn outline" href="/client-login.html">Client Login</a>
+        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero page-hero">
+    <div class="container hero-inner">
+      <div class="logo-badge"><img src="/assets/logo-crest.png" alt=""/></div>
+      <h1>Contact</h1>
+      <p class="lead">Start a confidential conversation with the team.</p>
+      <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer class="site-footer"><div class="container footer-inner"><p>© 2025 Maltese First Capital. All rights reserved.</p><p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p></div></footer>
-<script defer src="/scripts/nav.js?v=41"></script>
-<script defer type="module" src="/scripts/forms.js?v=41"></script>
-</body></html>
+  <section class="contact-section">
+    <div class="container contact-grid">
+      <div class="contact-card">
+        <h3>Send us a message</h3>
+        <form id="contact-form">
+          <div class="form-row">
+            <label>Full name</label>
+            <input name="name" required />
+          </div>
+          <div class="form-row">
+            <label>Email</label>
+            <input type="email" name="email" required />
+          </div>
+          <div class="form-row">
+            <label>Message</label>
+            <textarea name="message" rows="5" required></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Send</button>
+          <p class="form-status" id="contact-status"></p>
+        </form>
+      </div>
+
+      <div class="contact-card">
+        <h3>Valletta office</h3>
+        <p>The Exchange Building<br/>Republic Street<br/>Valletta VLT 1117<br/>Malta</p>
+        <p><a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer footer-white">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
