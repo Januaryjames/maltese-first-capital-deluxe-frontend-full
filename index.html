@@ -14,28 +14,57 @@
 
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <link rel="stylesheet" href="/styles.css?v=38" />
+  <link rel="stylesheet" href="/styles.css?v=40" />
 </head>
 <body>
   <!-- Header / Nav -->
   <header class="header">
-    <nav class="navbar container">
+    <nav class="navbar container" aria-label="Primary">
       <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
         <img class="crest" src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
         <span>Maltese First Capital</span>
       </a>
-      <ul class="nav-links">
-        <li><a class="active" href="/index.html">Home</a></li>
-        <li><a href="/private-banking.html">Private Banking</a></li>
-        <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/contact.html">Contact</a></li>
+
+      <ul class="nav-links" role="menubar">
+        <li role="none"><a class="active" role="menuitem" href="/index.html">Home</a></li>
+        <li role="none"><a role="menuitem" href="/private-banking.html">Private Banking</a></li>
+        <li role="none"><a role="menuitem" href="/wealth-management.html">Wealth Management</a></li>
+        <li role="none"><a role="menuitem" href="/about.html">About</a></li>
+        <li role="none"><a role="menuitem" href="/contact.html">Contact</a></li>
       </ul>
+
       <div class="nav-cta">
         <a class="btn outline" href="/client-login.html">Client Login</a>
         <a class="btn gold" href="/admin-login.html">Admin Portal</a>
       </div>
+
+      <!-- Mobile burger -->
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
     </nav>
+
+    <!-- Mobile drawer -->
+    <div class="mobile-drawer" id="mobile-menu">
+      <div class="container">
+        <ul>
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/private-banking.html">Private Banking</a></li>
+          <li><a href="/wealth-management.html">Wealth Management</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-cta">
+          <a class="btn outline" href="/client-login.html">Client Login</a>
+          <a class="btn gold" href="/admin-login.html">Admin Portal</a>
+        </div>
+      </div>
+    </div>
   </header>
 
   <!-- Hero -->
@@ -56,7 +85,7 @@
   <!-- Cards -->
   <section class="section-cards" id="cards-band">
     <div class="container">
-      <p class="eyebrow">Our Core Services</p>
+      <p class="eyebrow">OUR CORE SERVICES</p>
       <h2>Trust, Performance, Discretion</h2>
 
       <div class="cards-grid">
@@ -91,5 +120,7 @@
       </p>
     </div>
   </footer>
+
+  <script defer src="/scripts/nav.js?v=40"></script>
 </body>
 </html>
