@@ -1,0 +1,123 @@
+/* ========= Maltese First Capital — final visual fixes ========= */
+
+/* Force Valletta hero background across all pages using the shared hero section */
+.hero,
+.hero-section,
+.page-hero {
+  /* Keep your soft gradient but put the Valletta photo underneath and make it visible */
+  background:
+    radial-gradient(1200px 500px at 50% 30%, rgba(255,255,255,0.20), rgba(255,255,255,0.02) 60%, rgba(0,0,0,0.10) 100%),
+    url("/assets/hero-bg.jpg") center / cover no-repeat;
+  /* Parallax feel on desktop; turned off on mobile below */
+  background-attachment: fixed, fixed;
+}
+
+/* If your project was using the photo from the root, this line keeps it working too */
+@supports (background: paint(worklet)) {
+  /* no-op just to isolate the second rule; ignore */
+}
+.hero,
+.hero-section,
+.page-hero {
+  background-image:
+    radial-gradient(1200px 500px at 50% 30%, rgba(255,255,255,0.20), rgba(255,255,255,0.02) 60%, rgba(0,0,0,0.10) 100%),
+    url("/assets/hero-bg.jpg"), url("/hero-bg.jpg");
+}
+
+/* Slightly stronger, *darker* overlay for readability without washing out the image */
+.hero::before,
+.hero-section::before,
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    to bottom,
+    rgba(10,12,16,0.30) 0%,
+    rgba(10,12,16,0.25) 40%,
+    rgba(10,12,16,0.35) 100%
+  );
+  pointer-events: none;
+}
+
+/* Bigger crest badge in the hero */
+.hero .logo-badge,
+.hero-section .logo-badge,
+.page-hero .logo-badge {
+  width: 112px;
+  height: 112px;
+  padding: 18px;
+  border-radius: 28px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.55);
+}
+
+/* Keep header brand crest readable but not tiny */
+.header .brand img,
+.navbar .brand img {
+  width: 42px;
+  height: 42px;
+}
+
+/* Reduce heavy glow on hero title so it’s crisp over the photo */
+.hero h1,
+.hero-section h1,
+.page-hero h1 {
+  text-shadow:
+      0 8px 24px rgba(0,0,0,0.35),
+      0 2px 6px rgba(0,0,0,0.25);
+}
+
+/* Buttons: keep the warm gold but add a soft focus ring on hover/focus */
+.btn-primary,
+.button-primary,
+a.btn-primary {
+  background: linear-gradient(180deg, #c9a55f 0%, #b9924d 100%);
+  color: #111;
+  border: none;
+  box-shadow:
+     0 12px 28px rgba(201,165,95,0.30),
+     0 2px 0 rgba(0,0,0,0.08) inset;
+}
+.btn-primary:hover,
+.button-primary:hover,
+a.btn-primary:hover {
+  filter: brightness(1.04);
+  box-shadow:
+     0 14px 32px rgba(201,165,95,0.38),
+     0 2px 0 rgba(0,0,0,0.10) inset;
+}
+
+/* Contact page: make the email clearly visible and accessible */
+.contact-card a,
+.contact a[href^="mailto:"],
+footer a[href^="mailto:"] {
+  color: #0b63f3; /* accessible blue */
+  text-decoration: underline;
+}
+
+/* Fix rounded seam between hero and dark cards band */
+.section-cards,
+.cards-band,
+#cards-band {
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+}
+
+/* Mobile tuning: disable fixed background to prevent iOS jitter */
+@media (max-width: 900px) {
+  .hero,
+  .hero-section,
+  .page-hero {
+    background-attachment: scroll, scroll;
+    background-position: center;
+  }
+  .hero .logo-badge,
+  .hero-section .logo-badge,
+  .page-hero .logo-badge {
+    width: 96px;
+    height: 96px;
+  }
+}
