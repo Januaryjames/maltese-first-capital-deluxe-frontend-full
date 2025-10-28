@@ -1,4 +1,4 @@
-/* v18 — Maltese First Capital Frontend (single global stylesheet) */
+/* v19 — Maltese First Capital Frontend (single global stylesheet) */
 
 /* ---------- Base / Tokens ---------- */
 :root{
@@ -15,7 +15,7 @@
   --navy-2:#0f2234;
   --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 40px rgba(16,24,40,.08);
   --radius:18px;
-  --hero-logo-size:120px;   /* bump this if you want it larger */
+  --hero-logo-size:120px;   /* bump to 140px if you want it bigger */
 }
 
 *{box-sizing:border-box}
@@ -31,7 +31,6 @@ body{
 .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
 .grid{display:grid;gap:24px}
 .center{text-align:center}
-.hidden{display:none}
 
 /* ---------- Header / Nav ---------- */
 header.site{
@@ -49,7 +48,7 @@ nav.links{display:flex;gap:28px;align-items:center}
 nav.links a{
   color:var(--nav-ink);text-decoration:none;font-weight:600;opacity:.88
 }
-nav.links a:hover{opacity:1}
+nav.links a.active{opacity:1;text-decoration:underline}
 .actions{display:flex;gap:12px;align-items:center}
 
 /* ---------- Buttons ---------- */
@@ -104,6 +103,7 @@ nav.links a:hover{opacity:1}
 .card h3{margin:0 0 6px;color:#fff}
 .features{grid-template-columns:repeat(3,1fr)}
 @media (max-width:960px){.features{grid-template-columns:1fr}}
+
 /* ---------- Content ---------- */
 .section{padding:48px 0}
 .section h2{color:var(--ink);font-size:36px;margin:0 0 8px}
