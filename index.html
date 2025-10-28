@@ -3,51 +3,34 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Maltese First Capital — Private & Wealth Banking</title>
-
-  <!-- Icons -->
-  <link rel="icon" href="/assets/logo-crest.png" />
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-
-  <!-- SEO / Social -->
   <meta name="description" content="Trust, performance, discretion. Private Banking and Wealth Management from Malta." />
-  <link rel="canonical" href="https://maltesefirst.com/" />
   <meta property="og:title" content="Maltese First Capital — Private & Wealth Banking" />
   <meta property="og:description" content="Trust, performance, discretion. Private Banking and Wealth Management." />
   <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
   <meta property="og:url" content="https://maltesefirst.com/" />
   <meta name="theme-color" content="#0b1220" />
 
-  <!-- Preload hero to avoid grey overlay flash -->
-  <link rel="preload" as="image" href="/assets/hero-bg.jpg" />
-  <link rel="preload" as="image" href="/assets/logo-crest.png" />
-
-  <!-- Single source of truth CSS (no fixes.css) -->
-  <link rel="stylesheet" href="/styles.css?v=33" />
-
-  <!-- JS -->
-  <script defer src="/scripts/nav.js?v=33"></script>
-  <script defer src="/scripts/forms.js?v=33"></script>
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <link rel="stylesheet" href="/styles.css?v=36" />
 </head>
 <body>
-  <!-- Header -->
+  <!-- Header / Nav -->
   <header class="header">
-    <nav class="navbar container" aria-label="Primary">
+    <nav class="navbar container">
       <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
+        <img class="crest" src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
         <span>Maltese First Capital</span>
       </a>
-
-      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav"></button>
-
-      <ul id="primary-nav" class="nav-links">
-        <li class="active"><a href="/index.html">Home</a></li>
+      <ul class="nav-links">
+        <li><a class="active" href="/index.html">Home</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
         <li><a href="/about.html">About</a></li>
         <li><a href="/contact.html">Contact</a></li>
       </ul>
-
       <div class="nav-cta">
         <a class="btn outline" href="/client-login.html">Client Login</a>
         <a class="btn gold" href="/admin-login.html">Admin Portal</a>
@@ -55,24 +38,22 @@
     </nav>
   </header>
 
-  <!-- HERO (uses /assets/hero-bg.jpg from CSS .page-hero) -->
-  <section class="hero page-hero" role="region" aria-label="Intro">
+  <!-- Hero -->
+  <section class="hero page-hero">
     <div class="container hero-inner">
       <div class="logo-badge">
         <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
       </div>
-
       <h1>Unlocking Financial Potential</h1>
       <p class="lead">
-        Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth
-        for clients through tailored financial solutions.
+        Maltese First Capital is an investment bank focused on unlocking financial potential and
+        fostering growth for clients through tailored financial solutions.
       </p>
-
       <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
     </div>
   </section>
 
-  <!-- Services cards -->
+  <!-- Cards -->
   <section class="section-cards" id="cards-band">
     <div class="container">
       <p class="eyebrow">Our Core Services</p>
