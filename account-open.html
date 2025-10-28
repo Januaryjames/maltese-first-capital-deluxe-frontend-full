@@ -1,46 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Open an Account — Maltese First Capital</title>
-  <link rel="preload" as="image" href="assets/hero-bg.jpg">
-  <link rel="preload" as="image" href="assets/logo-crest.png">
-  <link rel="stylesheet" href="styles.css?v=17">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open an Account - Maltese First Capital</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="nav">
-    <div class="nav__inner">
-      <a class="brand" href="index.html"><i class="brand__crest"></i><span class="brand__name">Maltese First Capital</span></a>
-      <a href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <div class="nav__spacer"></div>
-      <a class="btn btn--outline" href="client-login.html">Client Login</a>
-      <a class="btn btn--gold" href="admin-login.html">Admin Portal</a>
-    </div>
-  </header>
+    <header class="navbar">
+        <!-- Same as index.html header -->
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Maltese First Capital Logo">
+                <span>Maltese First Capital</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="private-banking.html">Private Banking</a>
+                <a href="wealth-management.html">Wealth Management</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="nav-buttons">
+                <a href="client-login.html" class="btn btn-outline">Client Login</a>
+                <a href="admin-portal.html" class="btn btn-gold">Admin Portal</a>
+            </div>
+        </div>
+    </header>
 
-  <section class="hero hero--with-bg">
-    <div class="container">
-      <div class="crest" aria-hidden="true"></div>
-      <h1>Open an Account</h1>
-      <p>Complete the onboarding to enable secure access to private banking and wealth services.</p>
-    </div>
-  </section>
+    <section class="section">
+        <div class="container">
+            <h1>Open an Account</h1>
+            <p>To open an account with Maltese First Capital, please provide your details below for registration and KYC/AML verification.</p>
+            <a href="client-register.html" class="btn btn-gold">Start Registration</a>
+        </div>
+    </section>
 
-  <section class="section section--dark">
-    <div class="container">
-      <div class="panel">
-        <h3>Begin onboarding</h3>
-        <p>Use the secure onboarding to submit KYC/AML details and documents.</p>
-        <!-- When backend form is ready, replace the href below with your onboarding URL -->
-        <a class="btn btn--gold" href="client-register.html">Start now</a>
-      </div>
-    </div>
-  </section>
+    <footer>
+        <p>&copy; 2025 Maltese First Capital. All rights reserved.</p>
+    </footer>
 
-  <footer class="footer"><div class="container"><div>Maltese First Capital</div><div>The Exchange Building, Republic Street, Valletta VLT 1117, Malta</div><div><a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div></div></footer>
+    <script src="scripts/nav.js"></script>
+    <script src="scripts/forms.js"></script>
 </body>
 </html>
