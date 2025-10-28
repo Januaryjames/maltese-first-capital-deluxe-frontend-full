@@ -2,47 +2,26 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Client Dashboard — Maltese First Capital</title>
 <link rel="stylesheet" href="styles.css?v=16">
-<script>window.__API_BASE__="/api";</script>
 </head><body>
-<header class="site-header"><div class="container navbar">
-  <a class="brand" href="index.html">
-    <img src="assets/logo-crest.png" alt=""><span class="brand-name">Maltese First Capital</span>
-  </a>
-  <div class="cta-row">
-    <span class="badge" id="client-name">•••</span>
-    <button class="btn btn-outline" id="client-logout">Log out</button>
-  </div>
-  <button class="menu-toggle" aria-label="Menu" data-menu>☰</button>
+<header class="nav"><div class="nav__inner">
+  <a class="brand" href="index.html"><i class="brand__crest"></i><span class="brand__name">Maltese First Capital</span></a>
+  <div class="nav__spacer"></div>
+  <a class="btn btn--outline" href="#" id="logoutBtn">Logout</a>
 </div></header>
 
-<section class="hero"><div class="container hero-inner">
-  <div class="brand-badge"><img src="assets/logo.png" alt=""></div>
-  <h1>Your Accounts</h1>
-  <p>Select an account to view your current balance and recent transactions.</p>
-</div></section>
+<section class="section"><div class="container">
+  <h2 id="welcome">Welcome</h2>
+  <div class="cards" id="accountCards"></div>
 
-<section class="section-navy" id="client-dashboard"><div class="container">
-  <div class="form grid-2">
-    <div class="field"><label>Account</label>
-      <select id="account-select"></select>
-    </div>
-    <div class="field"><label>Current Balance</label>
-      <div class="badge"><span id="balance">0.00</span></div>
-    </div>
-  </div>
-
-  <div class="form mt-20">
+  <div class="card" style="margin-top:18px">
     <h3>Recent Transactions</h3>
-    <div class="table-wrap">
-      <table class="table">
-        <thead><tr><th>Date</th><th>Type</th><th class="num">Amount</th><th>Memo</th></tr></thead>
-        <tbody id="txn-body"></tbody>
-      </table>
-    </div>
+    <table class="table">
+      <thead><tr><th>Date</th><th>Account</th><th>Description</th><th align="right">Amount</th><th align="right">Balance</th></tr></thead>
+      <tbody id="txBody"></tbody>
+    </table>
   </div>
 </div></section>
 
-<footer><div class="container foot"><div class="small">© Maltese First Capital</div></div></footer>
-<script src="scripts/nav.js?v=16"></script>
-<script src="scripts/client.js?v=16"></script>
+<script src="scripts/forms.js?v=16"></script>
+<script>window.ClientDash && window.ClientDash.init();</script>
 </body></html>
