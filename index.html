@@ -1,102 +1,52 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maltese First Capital — Private & Wealth Banking</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="/assets/favicon.png">
-  <!-- cache bust -->
-  <link rel="stylesheet" href="/styles.css?v=19">
+  <link rel="preload" as="image" href="assets/hero-bg.jpg">
+  <link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body>
-
-<header>
-  <div class="container nav">
-    <a href="/index.html" class="brand">
-      <img src="/assets/logo-crest.png" alt="Maltese First crest">
-      <span>Maltese First Capital</span>
-    </a>
-
-    <nav class="nav-links">
-      <a href="/private-banking.html">Private Banking</a>
-      <a href="/wealth-management.html">Wealth Management</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-    </nav>
-
-    <div class="nav-actions">
-      <a class="btn btn-outline" href="/client-login.html">Client Login</a>
-      <a class="btn btn-gold" href="/admin-login.html">Admin Portal</a>
-      <button class="nav-toggle" id="menuBtn">☰</button>
+  <header class="nav">
+    <div class="nav__inner">
+      <a class="brand" href="index.html">
+        <i class="brand__crest"></i><span class="brand__name">Maltese First Capital</span>
+      </a>
+      <a href="private-banking.html">Private Banking</a>
+      <a href="wealth-management.html">Wealth Management</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <div class="nav__spacer"></div>
+      <a class="btn btn--outline" href="client-login.html">Client Login</a>
+      <a class="btn btn--gold" href="admin-login.html">Admin Portal</a>
     </div>
-  </div>
+  </header>
 
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="/private-banking.html">Private Banking</a>
-    <a href="/wealth-management.html">Wealth Management</a>
-    <a href="/about.html">About</a>
-    <a href="/contact.html">Contact</a>
-    <a href="/client-login.html">Client Login</a>
-    <a href="/admin-login.html">Admin Portal</a>
-  </div>
-</header>
-
-<section class="hero">
-  <!-- Valletta background + overlays -->
-  <div class="hero-bg"></div>
-
-  <div class="container">
-    <div class="hero-logo">
-      <!-- white card keeps the crest visible over the photo -->
-      <img src="/assets/logo-crest.png" alt="Maltese crest">
+  <section class="hero hero--with-bg">
+    <div class="container">
+      <div class="crest" aria-hidden="true"></div>
+      <h1>Unlocking Financial Potential</h1>
+      <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
+      <a class="btn btn--gold" href="account-open.html">Open an Account</a>
     </div>
+  </section>
 
-    <h1>Unlocking Financial Potential</h1>
-    <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
-
-    <div class="cta">
-      <a class="btn btn-gold" href="/open-account.html">Open an Account</a>
+  <section class="section" style="background:linear-gradient(180deg,#0a111f,#0b1220)">
+    <div class="container">
+      <p class="helper" style="letter-spacing:.3em;">OUR CORE SERVICES</p>
+      <h2 style="margin-top:6px">Trust, Performance, Discretion</h2>
+      <div class="cards">
+        <article class="card"><h3>Private Banking</h3><p>Relationship-driven banking with clear statements and secure access.</p></article>
+        <article class="card"><h3>Wealth Management</h3><p>Consolidated reporting, disciplined strategy, and a secure document vault.</p></article>
+        <article class="card"><h3>Corporate Advisory</h3><p>Capital structuring, M&amp;A support, and strategic guidance for enterprises.</p></article>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="section-navy">
-  <div class="container">
-    <div class="section-sub">OUR CORE SERVICES</div>
-    <h2 class="section-title">Trust, Performance, Discretion</h2>
-
-    <div class="cards">
-      <article class="card">
-        <h3>Private Banking</h3>
-        <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
-      </article>
-      <article class="card">
-        <h3>Wealth Management</h3>
-        <p>Consolidated portfolio reporting, disciplined strategy, and a secure document vault.</p>
-      </article>
-      <article class="card">
-        <h3>Corporate Advisory</h3>
-        <p>Capital structuring, M&A support, and strategic guidance for enterprises.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <div>© 2025 Maltese First Capital · Valletta, Malta</div>
-    <nav class="footer-links">
-      <a href="/private-banking.html">Private</a>
-      <a href="/wealth-management.html">Wealth</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-    </nav>
-  </div>
-</footer>
-
-<script>
-  // mobile menu
-  document.getElementById('menuBtn')?.addEventListener('click',()=>document.body.classList.toggle('mobile-open'));
-</script>
+  <footer class="footer"><div class="container">
+    <span>&copy; <script>document.write(new Date().getFullYear())</script> Maltese First Capital</span>
+    <span>The Exchange Building, Republic Street, Valletta VLT 1117, Malta</span>
+  </div></footer>
 </body>
 </html>
