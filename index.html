@@ -3,35 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Maltese First Capital — Private & Wealth Banking</title>
+  <title>Open an Account — Maltese First Capital</title>
 
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-
-  <meta name="description" content="Trust, performance, discretion. Private Banking and Wealth Management from Malta." />
-  <meta property="og:title" content="Maltese First Capital — Private & Wealth Banking" />
-  <meta property="og:description" content="Trust, performance, discretion. Private Banking and Wealth Management." />
-  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
-  <meta property="og:url" content="https://maltesefirst.com/" />
   <meta name="theme-color" content="#0b1220" />
-  <!-- Backend base (optional override) -->
   <meta name="backend-base" content="https://maltese-first-capital-deluxe-backend.onrender.com" />
 
   <link rel="stylesheet" href="/styles.css?v=42" />
-
   <script defer src="/scripts/nav.js?v=42"></script>
   <script defer type="module" src="/scripts/forms.js?v=42"></script>
 </head>
 <body>
   <header class="header">
     <nav class="navbar container">
-      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
-        <img src="/assets/logo-crest.png" alt="" />
-        <span>Maltese First Capital</span>
-      </a>
+      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""/><span>Maltese First Capital</span></a>
       <button class="nav-toggle" aria-label="Toggle menu"></button>
       <ul class="nav-links">
-        <li class="active"><a href="/index.html">Home</a></li>
+        <li><a href="/index.html">Home</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
         <li><a href="/about.html">About</a></li>
@@ -39,44 +28,31 @@
       </ul>
       <div class="nav-cta">
         <a class="btn outline" href="/client-login.html">Client Login</a>
-        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
       </div>
     </nav>
   </header>
 
-  <section class="hero page-hero">
-    <div class="container hero-inner">
-      <div class="logo-badge">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
-      </div>
-      <h1>Unlocking Financial Potential</h1>
-      <p class="lead">Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
-      <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
-    </div>
-  </section>
-
-  <section class="section-cards" id="cards-band">
+  <section class="section-cards" style="padding-top:40px">
     <div class="container">
-      <p class="eyebrow" style="text-align:center">OUR CORE SERVICES</p>
-      <h2 style="text-align:center;">Trust, Performance, Discretion</h2>
-
-      <div class="cards-grid">
-        <article class="card" style="border-color:rgba(202,169,104,.35)">
-          <h3>Private Banking</h3>
-          <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
-          <a class="card-link" href="/private-banking.html">Learn more</a>
+      <div class="cards-grid two">
+        <article class="card">
+          <h3>Application</h3>
+          <form id="kyc-form" enctype="multipart/form-data">
+            <div class="form-row"><label>Full name</label><input name="fullName" required /></div>
+            <div class="form-row"><label>Email</label><input type="email" name="email" required /></div>
+            <div class="form-row"><label>Phone</label><input name="phone" /></div>
+            <div class="form-row"><label>Nationality</label><input name="nationality" /></div>
+            <div class="form-row"><label>Address</label><input name="address" /></div>
+            <div class="form-row"><label>Source of funds</label><input name="sof" /></div>
+            <div class="form-row"><label>Passport (PDF/JPG)</label><input type="file" name="passport" accept=".pdf,.jpg,.jpeg,.png" /></div>
+            <div class="form-row"><label>Proof of address</label><input type="file" name="poa" accept=".pdf,.jpg,.jpeg,.png" /></div>
+            <button class="btn btn-primary" type="submit">Submit application</button>
+            <p class="form-status" id="kyc-status"></p>
+          </form>
         </article>
-
-        <article class="card" style="border-color:rgba(202,169,104,.35)">
-          <h3>Wealth Management</h3>
-          <p>Consolidated portfolio reporting, disciplined strategy, and a secure document vault.</p>
-          <a class="card-link" href="/wealth-management.html">Learn more</a>
-        </article>
-
-        <article class="card" style="border-color:rgba(202,169,104,.35)">
-          <h3>Corporate Advisory</h3>
-          <p>Capital structuring, M&amp;A support, and strategic guidance for enterprises.</p>
-          <a class="card-link" href="/about.html">Learn more</a>
+        <article class="card">
+          <h3>What happens next?</h3>
+          <p>Our onboarding team reviews your submission, sets up your client profile, and will contact you for any clarifications.</p>
         </article>
       </div>
     </div>
