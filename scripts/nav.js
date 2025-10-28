@@ -1,25 +1,41 @@
-// Simple mobile drawer
+// nav.js v43 — mobile dropdown + scroll lock + active link helper
 (function () {
   const toggle = document.querySelector('.nav-toggle');
-  const drawer = document.querySelector('.mobile-drawer');
+  const menu = document.getElementById('mobileMenu');
+  if (!toggle || !menu) return;
 
-  if (!toggle || !drawer) return;
-
-  function closeDrawer() {
-    drawer.classList.remove('open');
+  const openMenu = () => {
+    menu.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeMenu = () => {
+    menu.hidden = true;
     toggle.setAttribute('aria-expanded', 'false');
-  }
+    document.body.style.overflow = '';
+  };
 
   toggle.addEventListener('click', () => {
-    const open = drawer.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    expanded ? closeMenu() : openMenu();
   });
 
-  drawer.addEventListener('click', (e) => {
-    if (e.target.matches('a')) closeDrawer();
-  });
+  // Close on escape or link click
+  menu.addEventListener('click', (e) => { if (e.target.tagName === 'A') closeMenu(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeDrawer();
-  });
+  // Active state by path (desktop & mobile)
+  const path = location.pathname.replace(/\/+$/, '');
+  const markActive = (root) => {
+    root.querySelectorAll('a[href]').forEach(a => {
+      const href = a.getAttribute('href').replace(/\/+$/, '');
+      if (href && href.length > 1 && href === path) {
+        const li = a.closest('li');
+        li && li.classList.add('active');
+      }
+    });
+  };
+  const desktop = document.querySelector('.nav-links');
+  desktop && markActive(desktop);
+  markActive(menu);
 })();
