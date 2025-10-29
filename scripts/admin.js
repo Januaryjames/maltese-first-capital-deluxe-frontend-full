@@ -1,107 +1,89 @@
-/* ========== admin.js v41 ========== */
-const BACKEND =
-  document.querySelector('meta[name="backend-base"]')?.content?.trim() ||
-  'https://maltese-first-capital-deluxe-backend.onrender.com';
+<script>
+// ============ admin.js (KYC queue + approvals) ============
 
-const AdminRoutes = {
-  login:    `${BACKEND}/api/admin/login`,
-  users:    `${BACKEND}/api/admin/users`,
-  accounts: `${BACKEND}/api/admin/accounts`,
-  kyc:      `${BACKEND}/api/admin/kyc-submissions`
-};
-
-function token(){ return localStorage.getItem('mfc_admin_token'); }
-function setToken(t){ localStorage.setItem('mfc_admin_token', t); }
-export function adminLogout(){ localStorage.removeItem('mfc_admin_token'); location.href='/admin-login.html'; }
-
-async function aget(url){
-  const r = await fetch(url, { headers:{ Authorization:`Bearer ${token()}` }});
-  if(!r.ok) throw new Error(await r.text()); return r.json();
+const BACKEND_URL = localStorage.getItem('BACKEND_URL') || '';
+function needBackend() {
+  if (!BACKEND_URL) { alert('Set BACKEND_URL via localStorage first.'); throw new Error('BACKEND_URL missing'); }
 }
-async function apost(url, body){
-  const r = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${token()}` }, body: JSON.stringify(body) });
-  if(!r.ok) throw new Error(await r.text()); return r.json().catch(()=>({ok:true}));
+function authHeaders() {
+  const token = localStorage.getItem('MFC_ADMIN_JWT') || localStorage.getItem('MFC_JWT') || '';
+  return token ? { 'Authorization': `Bearer ${token}` } : {};
 }
 
-/* Admin login */
-export function initAdminLogin(){
-  const f = document.getElementById('admin-login-form');
-  const status = document.getElementById('admin-login-status');
-  if(!f) return;
-  f.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    status.textContent = 'Signing in...';
-    const { email, password } = Object.fromEntries(new FormData(f).entries());
-    try{
-      const res = await fetch(AdminRoutes.login,{method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email,password})});
-      if(!res.ok) throw new Error(await res.text());
-      const data = await res.json();
-      if(!data?.token) throw new Error('No token');
-      setToken(data.token);
-      location.href = '/admin-dashboard.html';
-    }catch(err){ status.textContent = 'Login failed.'; console.error(err); }
-  });
-}
+async function loadKycQueue() {
+  try {
+    needBackend();
+    const res = await fetch(`${BACKEND_URL}/api/admin/kyc/pending`, { headers: { ...authHeaders() } });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json?.message || 'Failed to load KYC queue');
 
-/* Admin dashboard */
-export function initAdminDashboard(){
-  if(!token()){ location.replace('/admin-login.html'); return; }
-  const createForm = document.getElementById('create-account-form');
-  const createStatus = document.getElementById('create-status');
-  const usersWrap = document.getElementById('users-wrap');
-  const kycWrap = document.getElementById('kyc-wrap');
+    const wrap = document.querySelector('[data-kyc-queue]');
+    if (!wrap) return;
 
-  function gen8(){ return String(Math.floor(10_000_000 + Math.random()*89_999_999)); }
+    wrap.innerHTML = (json.items || []).map(item => `
+      <div class="panel">
+        <div><strong>${item.fullName}</strong> — ${item.email}</div>
+        <div>${item.nationality || ''} · ${item.phone || ''}</div>
+        <div style="margin:.5rem 0">
+          ${item.idDocUrl ? `<a class="btn outline" target="_blank" href="${item.idDocUrl}">ID Document</a>` : ''}
+          ${item.proofAddrUrl ? `<a class="btn outline" target="_blank" href="${item.proofAddrUrl}">Proof of Address</a>` : ''}
+        </div>
+        <div class="form-row" style="margin-top:.5rem">
+          <label>Initial Balance (optional):</label>
+          <input type="number" step="0.01" data-init-for="${item._id}" placeholder="0.00" />
+        </div>
+        <div style="display:flex; gap:8px">
+          <button class="btn gold" onclick="approveKyc('${item._id}')">Approve & Create Account</button>
+          <button class="btn outline" onclick="rejectKyc('${item._id}')">Reject</button>
+        </div>
+      </div>
+    `).join('') || '<div class="panel">No pending applications.</div>';
 
-  if(createForm){
-    createForm.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      createStatus.textContent = 'Creating...';
-      const d = Object.fromEntries(new FormData(createForm).entries());
-      const body = {
-        email: d.email,
-        currency: d.currency || 'USD',
-        openingBalance: Number(d.openingBalance || 0),
-        accountNumber: d.accountNumber?.trim() || gen8()
-      };
-      try{
-        await apost(AdminRoutes.accounts, body);
-        createStatus.textContent = 'Account created.';
-        createForm.reset();
-      }catch(err){
-        createStatus.textContent = 'Failed to create.';
-        console.error(err);
-      }
-    });
+  } catch (err) {
+    alert(err.message || 'Error loading queue');
   }
-
-  (async ()=>{
-    try{
-      const users = await aget(AdminRoutes.users).catch(()=>[]);
-      usersWrap.innerHTML = Array.isArray(users) && users.length ? `
-        <table class="table">
-          <thead><tr><th>Name</th><th>Email</th><th>Status</th></tr></thead>
-          <tbody>${users.map(u=>`
-            <tr><td>${u.name || u.fullName || '-'}</td><td>${u.email || '-'}</td><td><span class="badge">${u.status || 'active'}</span></td></tr>
-          `).join('')}</tbody>
-        </table>` : '<p class="form-status">No users.</p>';
-
-      const kyc = await aget(AdminRoutes.kyc).catch(()=>[]);
-      kycWrap.innerHTML = Array.isArray(kyc) && kyc.length ? `
-        <table class="table">
-          <thead><tr><th>Name</th><th>Email</th><th>Country</th><th>Submitted</th><th>Status</th></tr></thead>
-          <tbody>${kyc.map(k=>`
-            <tr><td>${k.fullName||'-'}</td><td>${k.email||'-'}</td><td>${k.country||'-'}</td>
-            <td>${new Date(k.createdAt||Date.now()).toLocaleString()}</td>
-            <td><span class="badge gold">${k.status||'pending'}</span></td></tr>`).join('')}
-          </tbody>
-        </table>` : '<p class="form-status">No KYC submissions.</p>';
-    }catch(e){ console.error(e); }
-  })();
 }
 
-/* Auto-init */
-document.addEventListener('DOMContentLoaded', ()=>{
-  initAdminLogin();
-  initAdminDashboard();
+async function approveKyc(id) {
+  try {
+    needBackend();
+    const initBalInput = document.querySelector(`input[data-init-for="${id}"]`);
+    const initialBalance = initBalInput?.value ? Number(initBalInput.value) : undefined;
+
+    const res = await fetch(`${BACKEND_URL}/api/admin/kyc/${id}/approve`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ initialBalance })
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json?.message || 'Approval failed');
+
+    alert(`Approved. Account ${json.accountNumber8} created.`);
+    loadKycQueue();
+  } catch (err) {
+    alert(err.message || 'Approve failed');
+  }
+}
+
+async function rejectKyc(id) {
+  try {
+    needBackend();
+    const res = await fetch(`${BACKEND_URL}/api/admin/kyc/${id}/reject`, {
+      method: 'POST',
+      headers: { ...authHeaders() }
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json?.message || 'Reject failed');
+    alert('Application rejected.');
+    loadKycQueue();
+  } catch (err) {
+    alert(err.message || 'Reject failed');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.body.dataset.page === 'admin-kyc') {
+    loadKycQueue();
+  }
 });
+</script>
