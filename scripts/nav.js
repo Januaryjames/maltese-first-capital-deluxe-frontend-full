@@ -1,56 +1,64 @@
+<!-- /scripts/nav.js -->
 <script>
-/* Mobile menu toggle + active link highlighting */
-(() => {
-  const header = document.querySelector('.header');
+(function(){
+  // Build a mobile menu automatically if it's not present
+  const header = document.querySelector('header.header');
   if (!header) return;
 
-  // build mobile menu once if not present
-  let mobile = document.querySelector('.mobile-menu');
+  const navLinks = header.querySelector('.nav-links');
+  const cta      = header.querySelector('.nav-cta');
+
+  let mobile = document.getElementById('mobileMenu');
   if (!mobile) {
     mobile = document.createElement('div');
+    mobile.id = 'mobileMenu';
     mobile.className = 'mobile-menu';
-    mobile.innerHTML = `
-      <ul>
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/private-banking.html">Private Banking</a></li>
-        <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-        <div class="menu-divider"></div>
-        <li><a href="/client-login.html">Client Login</a></li>
-        <li><a href="/admin-login.html">Admin Portal</a></li>
-      </ul>`;
-    header.appendChild(mobile);
     mobile.style.display = 'none';
+    const list = document.createElement('ul');
+
+    if (navLinks) {
+      // Clone primary nav links
+      list.innerHTML = navLinks.innerHTML;
+    }
+
+    // Divider + CTAs
+    const divider = document.createElement('li');
+    divider.className = 'menu-divider';
+    list.appendChild(divider);
+
+    // Login CTA
+    const liClient = document.createElement('li');
+    liClient.innerHTML = `<a href="/client-login.html">Client Login</a>`;
+    list.appendChild(liClient);
+
+    // Admin CTA
+    const liAdmin = document.createElement('li');
+    liAdmin.innerHTML = `<a href="/admin-login.html">Admin Portal</a>`;
+    list.appendChild(liAdmin);
+
+    mobile.appendChild(list);
+    header.appendChild(mobile);
   }
 
-  // attach toggle if missing
-  let toggle = document.querySelector('.nav-toggle');
-  if (!toggle) {
-    const bar = document.createElement('button');
-    bar.className = 'nav-toggle';
-    bar.setAttribute('aria-label','Toggle menu');
-    bar.innerHTML = `<span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>`;
-    const nav = document.querySelector('.navbar');
-    if (nav) nav.insertBefore(bar, nav.querySelector('.nav-links'));
-    toggle = bar;
+  // Toggle logic
+  const toggle = header.querySelector('.nav-toggle');
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      mobile.style.display = (mobile.style.display === 'none' || !mobile.style.display) ? 'block' : 'none';
+    });
   }
 
-  toggle.addEventListener('click', () => {
-    mobile.style.display = (mobile.style.display === 'none') ? 'block' : 'none';
-  });
-
-  // close on link click (mobile)
-  mobile.addEventListener('click', e => {
+  // Close on link click (mobile)
+  mobile.addEventListener('click', (e) => {
     if (e.target.tagName === 'A') mobile.style.display = 'none';
   });
 
-  // mark active link
-  const path = location.pathname.replace(/\/+$/,'/');
-  for (const a of document.querySelectorAll('.nav-links a, .mobile-menu a')) {
-    const href = a.getAttribute('href');
-    if (!href) continue;
-    if (href === path) a.parentElement?.classList?.add('active');
-  }
+  // Hide menu when resizing up
+  let lastW = window.innerWidth;
+  window.addEventListener('resize', () => {
+    const w = window.innerWidth;
+    if (w > 1000 && lastW <= 1000) mobile.style.display = 'none';
+    lastW = w;
+  });
 })();
 </script>
