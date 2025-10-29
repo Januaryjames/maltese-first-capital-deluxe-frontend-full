@@ -7,72 +7,87 @@
 
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <meta name="description" content="KYC queue, document vault, users, and audit logs." />
-  <meta property="og:title" content="Admin Dashboard — Maltese First Capital" />
-  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
-  <meta name="theme-color" content="#0b1220" />
-
-  <link rel="stylesheet" href="/styles.css?v=48" />
-  <script defer src="/scripts/nav.js?v=48"></script>
-  <script defer src="/scripts/forms.js?v=48"></script>
+  <link rel="stylesheet" href="/styles.css?v=45" />
+  <script defer src="/scripts/nav.js?v=45"></script>
+  <script defer src="/scripts/api.js"></script>
 </head>
 <body>
   <header class="header">
-    <nav class="navbar container" aria-label="Primary">
+    <nav class="navbar container">
       <a class="brand" href="/index.html">
         <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
         <span class="brand-name">Maltese First Capital</span>
       </a>
-      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
       <ul class="nav-links">
-        <li><a href="/admin-dashboard.html" aria-current="page">Dashboard</a></li>
-        <li><a href="/admin-docs.html">Docs</a></li>
-        <li><a href="/admin-kyc.html">KYC</a></li>
-        <li><a href="/admin-login.html">Logout</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
       <div class="nav-cta">
-        <a class="btn outline" href="/admin-docs.html">Documents</a>
-        <a class="btn gold" href="/admin-kyc.html">KYC Queue</a>
+        <button id="adminSignOut" class="btn outline">Sign out</button>
       </div>
     </nav>
   </header>
 
+  <section class="sub-hero">
+    <div class="container">
+      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <h1>Admin Dashboard</h1>
+    </div>
+  </section>
+
   <section class="page-section">
-    <div class="container" style="display:grid; gap:22px;">
-      <div class="panel" style="display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;">
-        <div>
-          <h2 style="margin:0 0 6px;">Admin dashboard</h2>
-          <p class="form-status" style="margin:0">Quick shortcuts to core operations.</p>
+    <div class="container grid-2">
+      <!-- Left: client lookup and KYC -->
+      <div class="panel">
+        <p class="eyebrow">Clients</p>
+        <div class="form-row">
+          <label for="qEmail">Find by email</label>
+          <input id="qEmail" type="email" placeholder="client@email.com" />
         </div>
-        <div style="display:flex;gap:10px;">
-          <a class="btn btn-primary" href="/admin-kyc.html">Open KYC</a>
-          <a class="btn outline" href="/admin-docs.html">Open Vault</a>
+        <button id="btnFind" class="btn btn-primary">Search</button>
+        <p id="findMsg" class="form-status"></p>
+
+        <div id="clientBox" style="margin-top:14px; display:none;">
+          <h3 id="cName">Client</h3>
+          <p id="cInfo" class="form-status"></p>
+          <div class="form-row">
+            <label for="cKyc">KYC Status</label>
+            <select id="cKyc">
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <button id="btnSaveKyc" class="btn gold">Save KYC</button>
         </div>
       </div>
 
-      <div class="cards-grid two" style="align-items:stretch;">
-        <article class="card">
-          <h3>KYC Queue</h3>
-          <p>Pending: 7 · SLA: 24h</p>
-          <a class="card-link" href="/admin-kyc.html">Review applications</a>
-        </article>
-        <article class="card">
-          <h3>Document Vault</h3>
-          <p>New uploads today: 12</p>
-          <a class="card-link" href="/admin-docs.html">Open vault</a>
-        </article>
-        <article class="card">
-          <h3>Users</h3>
-          <p>Active clients: 1,284 · Admins: 6</p>
-          <a class="card-link" href="#">Manage users</a>
-        </article>
-        <article class="card">
-          <h3>Audit &amp; Alerts</h3>
-          <p>Zero critical alerts · 3 warnings</p>
-          <a class="card-link" href="#">View logs</a>
-        </article>
+      <!-- Right: account & transactions -->
+      <div class="panel">
+        <p class="eyebrow">Accounts & Transactions</p>
+        <div id="acctBox" style="display:none;">
+          <div class="form-row">
+            <label for="cBalance">Set Balance (USD)</label>
+            <input id="cBalance" type="number" step="0.01" />
+          </div>
+          <button id="btnSaveBal" class="btn btn-primary">Update Balance</button>
+
+          <hr class="menu-divider" />
+
+          <h4>Add Transaction</h4>
+          <div class="form-row">
+            <label for="tDesc">Description</label>
+            <input id="tDesc" type="text" placeholder="Transfer in" />
+          </div>
+          <div class="form-row">
+            <label for="tAmt">Amount (USD)</label>
+            <input id="tAmt" type="number" step="0.01" />
+          </div>
+          <button id="btnAddTx" class="btn gold">Post Transaction</button>
+        </div>
+        <p id="acctMsg" class="form-status"></p>
       </div>
     </div>
   </section>
@@ -80,8 +95,85 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
     </div>
   </footer>
+
+  <script>
+  (function(){
+    const msg  = s => (document.getElementById('findMsg').textContent = s);
+    const amsg = s => (document.getElementById('acctMsg').textContent = s);
+
+    document.getElementById('adminSignOut').onclick = () => {
+      localStorage.removeItem(mfcApi.tokenKey);
+      localStorage.removeItem(mfcApi.adminKey);
+      location.href = '/admin-login.html';
+    };
+
+    let current = null; // selected client
+
+    document.getElementById('btnFind').onclick = async () => {
+      msg('Searching…'); amsg('');
+      try{
+        const email = document.getElementById('qEmail').value.trim();
+        const data  = await mfcApi.get('/api/admin/clients?email='+encodeURIComponent(email));
+        const c     = (data.clients && data.clients[0]) || data.client || data;
+
+        if (!c || !c._id) { msg('No client found'); return; }
+
+        current = c;
+        document.getElementById('clientBox').style.display = '';
+        document.getElementById('acctBox').style.display   = '';
+
+        document.getElementById('cName').textContent = c.fullName || c.name || '(no name)';
+        document.getElementById('cInfo').textContent = `Account ${String(c.accountNumber||0).padStart(8,'0')} — ${c.email || email}`;
+        document.getElementById('cKyc').value        = c.kycStatus || 'pending';
+
+        // Load account for balance
+        try {
+          const accts = c.accounts || (await mfcApi.get('/api/accounts?clientId='+c._id)).accounts || [];
+          const a0    = accts[0] || {};
+          document.getElementById('cBalance').value = a0.balance ?? 0;
+        } catch(e){ /* ignore */ }
+
+        msg('Loaded.');
+      }catch(err){
+        msg('Error: '+err.message);
+      }
+    };
+
+    document.getElementById('btnSaveKyc').onclick = async () => {
+      if (!current) return;
+      try{
+        const v = document.getElementById('cKyc').value;
+        await mfcApi.patch(`/api/admin/clients/${current._id}/kyc`, { status:v });
+        msg('KYC updated.');
+      }catch(err){ msg('Failed: '+err.message); }
+    };
+
+    document.getElementById('btnSaveBal').onclick = async () => {
+      if (!current) return;
+      try{
+        const amt = +document.getElementById('cBalance').value;
+        await mfcApi.patch(`/api/admin/clients/${current._id}/balance`, { amount: amt });
+        amsg('Balance updated.');
+      }catch(err){ amsg('Failed: '+err.message); }
+    };
+
+    document.getElementById('btnAddTx').onclick = async () => {
+      if (!current) return;
+      try{
+        const description = document.getElementById('tDesc').value.trim();
+        const amount      = +document.getElementById('tAmt').value;
+        await mfcApi.post(`/api/admin/transactions`, {
+          clientId: current._id, description, amount, currency:'USD'
+        });
+        amsg('Transaction posted.');
+      }catch(err){ amsg('Failed: '+err.message); }
+    };
+  })();
+  </script>
 </body>
 </html>
