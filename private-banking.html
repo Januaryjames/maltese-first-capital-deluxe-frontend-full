@@ -7,15 +7,24 @@
 
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+
   <meta name="description" content="Dedicated private banking with multi-currency access, clear statements, and secure authentication." />
+  <meta property="og:title" content="Private Banking — Maltese First Capital" />
+  <meta property="og:description" content="Relationship-led banking with precision service and modern security." />
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
+  <meta property="og:url" content="https://maltesefirst.com/private-banking.html" />
   <meta name="theme-color" content="#0b1220" />
 
-  <link rel="stylesheet" href="/styles.css?v=46" />
-  <script defer src="/scripts/nav.js?v=46"></script>
-  <script defer src="/scripts/forms.js?v=46"></script>
+  <link rel="stylesheet" href="/styles.css?v=49" />
+  <link rel="stylesheet" href="/fixes.css?v=49" />
+
+  <!-- page-local patch: ensure equal-height feature cards -->
+  <style>
+    .cards-grid.features{align-items:stretch}
+    .cards-grid.features .card{height:100%}
+  </style>
 </head>
 <body>
-  <!-- Header (unchanged structure, matches home) -->
   <header class="header">
     <nav class="navbar container">
       <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
@@ -41,40 +50,38 @@
       </div>
     </nav>
 
-    <!-- Mobile menu (auto-populated by nav.js if you use it) -->
-    <div class="mobile-menu" hidden>
+    <!-- mobile dropdown -->
+    <div class="mobile-menu container" id="mobileMenuPB">
       <ul>
         <li><a href="/index.html">Home</a></li>
         <li><a href="/about.html">About</a></li>
-        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li class="active"><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
         <li><a href="/contact.html">Contact</a></li>
-        <div class="menu-divider"></div>
+        <li class="menu-divider"></li>
         <li><a href="/client-login.html">Client Login</a></li>
         <li><a href="/admin-login.html">Admin Portal</a></li>
       </ul>
     </div>
   </header>
 
-  <!-- Sub-page banner with Valletta background -->
+  <!-- Banner with Valletta background -->
   <section class="banner bg-valletta">
     <div class="container">
-      <div class="logo-badge">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital" />
+      <div class="page-mark">
+        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
       </div>
       <div>
         <p class="eyebrow">Private Banking</p>
         <h1>Precision service with clear, consolidated reporting</h1>
-        <p class="lead" style="max-width:760px;">
-          Dedicated private banking with multi-currency access, clear statements, and secure authentication.
-        </p>
+        <p class="lead">Dedicated private banking with multi-currency access, clear statements, and secure authentication.</p>
         <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
       </div>
     </div>
   </section>
 
   <!-- Capabilities -->
-  <section class="page-section">
+  <section class="section-cards">
     <div class="container">
       <p class="eyebrow centered">Capabilities</p>
       <h2 class="section-title">Precision Service, Modern Security</h2>
@@ -99,11 +106,20 @@
           <h3>Statements &amp; Vault</h3>
           <p>Secure document storage, downloadable statements, and archive.</p>
         </article>
+
+        <article class="card">
+          <h3>Security &amp; 2FA</h3>
+          <p>Device fingerprinting, OTP login, and anomaly alerts for transactions.</p>
+        </article>
+
+        <article class="card">
+          <h3>International Reach</h3>
+          <p>Multi-currency support and seamless incoming cross-border transfers.</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
@@ -113,5 +129,7 @@
       </p>
     </div>
   </footer>
+
+  <script defer src="/scripts/nav.js?v=49"></script>
 </body>
 </html>
