@@ -1,13 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Client Login — Maltese First Capital</title>
-
-  <link rel="icon" href="/assets/logo-crest.png" />
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <link rel="stylesheet" href="/styles.css?v=45" />
+  <link rel="icon" href="/assets/logo-crest.png"/>
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
+  <link rel="stylesheet" href="/styles.css?v=45"/>
   <script defer src="/scripts/nav.js?v=45"></script>
   <script defer src="/scripts/api.js"></script>
 </head>
@@ -15,7 +14,7 @@
   <header class="header">
     <nav class="navbar container">
       <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
         <span class="brand-name">Maltese First Capital</span>
       </a>
       <ul class="nav-links">
@@ -32,32 +31,28 @@
 
   <section class="sub-hero">
     <div class="container">
-      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <img class="page-mark" src="/assets/logo-crest.png" alt=""/>
       <h1>Client Login</h1>
     </div>
   </section>
 
   <section class="page-section">
-    <div class="container grid-2">
-      <form id="loginForm" class="panel" autocomplete="on">
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="you@example.com" required />
-        </div>
-        <div class="form-row">
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password" placeholder="••••••••" required />
-        </div>
-        <div class="form-actions">
-          <button class="btn btn-primary" type="submit">Sign in</button>
-        </div>
-        <p id="loginMsg" class="form-status"></p>
-      </form>
-
-      <div class="panel">
-        <p class="eyebrow">Security</p>
-        <h3>Protected client area</h3>
-        <p>Your session is protected with token-based authentication and HTTPS.</p>
+    <div class="container">
+      <div class="panel" style="max-width:520px;margin:0 auto">
+        <form id="loginForm" autocomplete="on">
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required/>
+          </div>
+          <div class="form-row">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="••••••••" required/>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary block" type="submit">Sign in</button>
+          </div>
+          <p id="loginMsg" class="form-status"></p>
+        </form>
       </div>
     </div>
   </section>
@@ -72,28 +67,28 @@
   </footer>
 
   <script>
-  (function(){
-    const form = document.getElementById('loginForm');
-    const msg  = document.getElementById('loginMsg');
+    (function(){
+      const form = document.getElementById('loginForm');
+      const msg  = document.getElementById('loginMsg');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      msg.textContent = 'Signing in…';
-      try {
-        const email    = form.email.value.trim();
-        const password = form.password.value;
-        const data = await mfcApi.post('/api/auth/login', { email, password }, { auth:false });
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        msg.textContent = 'Signing in…';
+        try {
+          const email = form.email.value.trim();
+          const password = form.password.value;
+          const data = await mfcApi.post('/api/auth/login', { email, password }, { auth:false });
 
-        // Expected: { token, client: { _id, accountNumber, fullName } }
-        localStorage.setItem(mfcApi.tokenKey, data.token);
-        if (data.client?._id) localStorage.setItem(mfcApi.clientKey, data.client._id);
+          // Expect: { token, client: { _id, accountNumber, fullName } }
+          localStorage.setItem(mfcApi.keys.token, data.token);
+          if (data.client?._id) localStorage.setItem(mfcApi.keys.client, data.client._id);
 
-        location.href = '/client-dashboard.html';
-      } catch (err) {
-        msg.textContent = 'Login failed: ' + (err.message || 'Unable to sign in');
-      }
-    });
-  })();
+          location.href = '/client-dashboard.html';
+        } catch (err) {
+          msg.textContent = 'Login failed: ' + (err.message || 'Unable to sign in');
+        }
+      });
+    })();
   </script>
 </body>
 </html>
