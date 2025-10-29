@@ -1,7 +1,7 @@
 {
   "name": "Maltese First Capital",
   "short_name": "MFC",
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0b1220",
   "theme_color": "#0b1220",
@@ -9,8 +9,12 @@
     {
       "src": "/assets/logo-crest.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable any"
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/logo-crest.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
