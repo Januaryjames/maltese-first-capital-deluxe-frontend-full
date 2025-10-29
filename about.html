@@ -7,25 +7,30 @@
 
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-
-  <meta name="description" content="We combine discreet private banking with disciplined wealth management under EU-grade compliance." />
+  <meta name="description" content="Our story and standards: discreet private banking with disciplined wealth management." />
+  <meta property="og:title" content="About — Maltese First Capital" />
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
   <meta name="theme-color" content="#0b1220" />
-  <meta name="backend-base" content="https://maltese-first-capital-deluxe-backend.onrender.com" />
 
-  <link rel="stylesheet" href="/styles.css?v=42" />
-  <script defer src="/scripts/nav.js?v=42"></script>
-  <script defer type="module" src="/scripts/forms.js?v=42"></script>
+  <link rel="stylesheet" href="/styles.css?v=48" />
+  <script defer src="/scripts/nav.js?v=48"></script>
+  <script defer src="/scripts/forms.js?v=48"></script>
 </head>
 <body>
   <header class="header">
-    <nav class="navbar container">
-      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""/><span>Maltese First Capital</span></a>
-      <button class="nav-toggle" aria-label="Toggle menu"></button>
+    <nav class="navbar container" aria-label="Primary">
+      <a class="brand" href="/index.html">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
       <ul class="nav-links">
         <li><a href="/index.html">Home</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li class="active"><a href="/about.html">About</a></li>
+        <li class="active"><a aria-current="page" href="/about.html">About</a></li>
         <li><a href="/contact.html">Contact</a></li>
       </ul>
       <div class="nav-cta">
@@ -35,9 +40,9 @@
     </nav>
   </header>
 
-  <section class="hero page-hero">
-    <div class="container hero-inner">
-      <div class="logo-badge"><img src="/assets/logo-crest.png" alt=""/></div>
+  <section class="hero" style="min-height:40vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
+    <div class="hero-inner container">
+      <div class="logo-badge"><img src="/assets/logo-crest.png" alt="" /></div>
       <h1>Our Story &amp; Standards</h1>
       <p class="lead">Founded to combine discreet private banking with disciplined wealth management under EU-grade compliance.</p>
       <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
@@ -46,25 +51,37 @@
 
   <section class="section-cards">
     <div class="container">
-      <div class="cards-grid two">
-        <article class="card" style="border-color:rgba(202,169,104,.35)">
+      <p class="eyebrow centered">Principles</p>
+      <h2 class="section-title">Relationship First, Always</h2>
+
+      <div class="cards-grid two" style="align-items:stretch;">
+        <article class="card">
           <h3>Relationship-First</h3>
-          <p>We keep client coverage intentionally focused for clarity and speed.</p>
+          <p>We keep client coverage intentionally focused for clarity and speed. You get direct access and fast execution.</p>
         </article>
-        <article class="card" style="border-color:rgba(202,169,104,.35)">
+
+        <article class="card">
           <h3>Compliance</h3>
-          <p>EU AML/CTF standards, independent audit, and layered approvals.</p>
+          <p>EU AML/CTF standards, ongoing monitoring, and layered approvals — with clear audit trails.</p>
+        </article>
+
+        <article class="card">
+          <h3>Independent Audit</h3>
+          <p>Regular reviews of processes and controls to maintain a high bar for governance and risk.</p>
+        </article>
+
+        <article class="card">
+          <h3>Approvals &amp; Controls</h3>
+          <p>Segregation of duties across onboarding, payments, and reporting; anomaly alerts for transactions.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <footer class="site-footer footer-white">
+  <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
     </div>
   </footer>
 </body>
