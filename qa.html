@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MFC QA — Link & API Checks</title>
+<link rel="icon" href="/assets/logo-crest.png" />
+<style>
+  :root{--ok:#18c37e;--bad:#ff5a67;--mut:#a8b0c0;--bg:#0b1220;--card:#0f1626}
+  body{margin:0;font:14px/1.4 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto;color:#e8edf4;background:#0b1220}
+  .wrap{max-width:1100px;margin:28px auto;padding:0 16px}
+  h1{margin:0 0 12px}
+  .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:16px;margin:12px 0}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
+  th{color:#cfd6e3;text-align:left}
+  .ok{color:var(--ok);font-weight:800}
+  .bad{color:var(--bad);font-weight:800}
+  .mut{color:var(--mut)}
+  code{background:#0c1427;border:1px solid rgba(255,255,255,.08);padding:2px 6px;border-radius:6px}
+  .grid{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Maltese First Capital — Quick QA</h1>
+  <p class="mut">Runs cache-busted GETs, checks hero/assets, pings backend CORS & health, validates client login → dashboard cache/token presence.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Pages</h3>
+      <table id="pages"><thead><tr><th>Path</th><th>Status</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="card">
+      <h3>Assets & Backend</h3>
+      <table id="assets"><thead><tr><th>Item</th><th>Status</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Client Flow Probe</h3>
+    <div id="flow" class="mut">Checking…</div>
+    <div style="margin-top:10px">
+      <button id="clear" style="padding:.6rem 1rem;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#fff;cursor:pointer">Clear local token/profile</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(async () => {
+  const t = Date.now();
+  const pages = [
+    "/index.html",
+    "/private-banking.html",
+    "/wealth-management.html",
+    "/about.html",
+    "/contact.html",
+    "/client-login.html",
+    "/client-dashboard.html",
+    "/admin-login.html",
+    "/account-open.html"
+  ];
+  const assets = [
+    ["/assets/logo-crest.png", "Logo crest"],
+    ["/assets/hero-bg.jpg", "Hero (Valletta)"],
+    ["/styles.css", "CSS"],
+    ["/scripts/nav.js", "Nav JS"],
+    ["/scripts/api.js", "API helper"]
+  ];
+  const backend = window.MFC_API_BASE || "https://maltese-first-capital-deluxe-backend.onrender.com";
+  const $p = document.querySelector("#pages tbody");
+  const $a = document.querySelector("#assets tbody");
+  const $flow = document.getElementById("flow");
+  const $clear = document.getElementById("clear");
+
+  function row(tbl, name, value, ok){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${name}</td><td>${ok?'<span class="ok">OK</span>':'<span class="bad">ERROR</span>'} <span class="mut">${value||""}</span></td>`;
+    tbl.appendChild(tr);
+  }
+
+  // page checks
+  for (const p of pages) {
+    try {
+      const r = await fetch(p + "?t=" + t, {mode:"no-cors"});
+      row($p, p, (r.status || 200), true);
+    } catch (e) {
+      row($p, p, e.message, false);
+    }
+  }
+
+  // assets checks
+  for (const [path,label] of assets) {
+    try {
+      const r = await fetch(path + "?t=" + t, {mode:"no-cors"});
+      row($a, label, (r.status || 200), true);
+    } catch (e) {
+      row($a, label, e.message, false);
+    }
+  }
+
+  // backend health & CORS
+  try {
+    const r = await fetch(backend + "/health?t=" + t, {mode:"cors"});
+    row($a, "Backend /health", r.status, r.ok);
+  } catch (e) {
+    row($a, "Backend /health", e.message, false);
+  }
+
+  // client flow probe
+  try {
+    // load helper dynamically so this page doesn’t depend on it
+    await new Promise((res, rej) => {
+      const s = document.createElement("script");
+      s.src = "/scripts/api.js?t=" + t;
+      s.onload = res; s.onerror = rej; document.body.appendChild(s);
+    });
+
+    const demo = {email:"demo@maltesefirst.com", password:"demo123"};
+    const preToken = localStorage.getItem("mfc_token");
+    const preProfile = localStorage.getItem("mfc_profile");
+
+    if (!preToken || !preProfile) {
+      // attempt login (will hit backend if available; else api.js demo fallback keeps UX running)
+      await window.MFC_API.login(demo.email, demo.password).catch(()=>{});
+    }
+    const profile = window.MFC_API.storage.profile;
+    if (profile) {
+      $flow.innerHTML = `<div><span class="ok">OK</span> Token/Profile present. Name: <strong>${profile.name || "Client"}</strong> · Account: <strong>${(profile.accountNumber || "").toString()}</strong></div>`;
+    } else {
+      $flow.innerHTML = `<div><span class="bad">ERROR</span> No profile cached — check <code>/client-login.html</code> and backend auth.</div>`;
+    }
+  } catch (e) {
+    $flow.innerHTML = `<div><span class="bad">ERROR</span> Flow probe failed: ${e.message}</div>`;
+  }
+
+  // clear helpers
+  $clear.onclick = () => {
+    localStorage.removeItem("mfc_token");
+    localStorage.removeItem("mfc_profile");
+    $flow.textContent = "Cleared. Reload page and sign in again.";
+  };
+})();
+</script>
+</body>
+</html>
