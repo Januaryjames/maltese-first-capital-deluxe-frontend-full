@@ -161,3 +161,54 @@ textarea{min-height:120px;resize:vertical}
   .hero{min-height:60vh}
   .grid-2{grid-template-columns:1fr}
 }
+/* ===== v46 subpage banner + uniform cards (safe append) ===== */
+
+/* Sub-page banner that uses the Valletta image with a soft gradient.
+   Only appears where the 'banner' class is used (not on home). */
+.banner{
+  position: relative;
+  isolation: isolate;
+  padding: 42px 0 26px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.banner .container{
+  display: flex; align-items: center; gap: 18px; min-height: 200px;
+}
+.banner .logo-badge img{
+  width: 86px; height: 86px; padding: 14px; border-radius: 20px;
+  background: #fff; box-shadow: 0 12px 34px rgba(0,0,0,.38);
+}
+.banner h1{
+  margin: 0; font-size: clamp(28px, 4vw, 42px); font-weight: 900;
+  text-shadow: 0 8px 28px rgba(0,0,0,.5);
+}
+.banner.bg-valletta::before{
+  content:"";
+  position:absolute; inset:0; z-index:-1;
+  background:
+    linear-gradient(180deg, rgba(11,18,32,.00) 0%, rgba(11,18,32,.26) 62%, rgba(11,18,32,.64) 100%),
+    url("/assets/hero-bg.jpg") center/cover no-repeat;
+  filter: saturate(.9) brightness(.92);
+}
+
+/* Uniform feature cards on subpages */
+.cards-grid.features{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+.cards-grid.features .card{
+  min-height: 170px; display:flex; flex-direction:column; justify-content:flex-start;
+}
+
+/* Tweak the gold outline & hover depth (consistent with home) */
+.cards-grid.features .card{
+  border: 1.25px solid rgba(202,169,104,.66);
+  box-shadow: 0 12px 36px rgba(0,0,0,.35);
+}
+.cards-grid.features .card:hover{
+  border-color: rgba(202,169,104,.9);
+  box-shadow: 0 20px 46px rgba(202,169,104,.28);
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .cards-grid.features{ grid-template-columns: 1fr; }
+  .cards-grid.features .card{ min-height: unset; }
+}
