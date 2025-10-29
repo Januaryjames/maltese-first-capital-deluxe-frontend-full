@@ -1,26 +1,29 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Client Login — Maltese First Capital</title>
 
-  <link rel="icon" href="/assets/logo-crest.png" />
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <meta name="description" content="Secure client login with OTP and device fingerprinting." />
-  <meta property="og:title" content="Client Login — Maltese First Capital" />
-  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
-  <meta name="theme-color" content="#0b1220" />
+  <link rel="icon" href="/assets/logo-crest.png"/>
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
+  <meta name="description" content="Secure client access with 2-step verification."/>
+  <meta property="og:title" content="Client Login — Maltese First Capital"/>
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg"/>
+  <meta name="theme-color" content="#0b1220"/>
 
-  <link rel="stylesheet" href="/styles.css?v=48" />
+  <!-- Optional default backend (overridden by localStorage.BACKEND_URL) -->
+  <!-- <meta name="mfc-backend" content="https://maltese-first-capital-deluxe-backend.onrender.com"> -->
+
+  <link rel="stylesheet" href="/styles.css?v=48"/>
   <script defer src="/scripts/nav.js?v=48"></script>
-  <script defer src="/scripts/forms.js?v=48"></script>
 </head>
 <body>
+  <!-- Header -->
   <header class="header">
-    <nav class="navbar container" aria-label="Primary">
-      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+    <nav class="navbar container" aria-label="Client">
+      <a class="brand" href="/index.html">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
         <span class="brand-name">Maltese First Capital</span>
       </a>
 
@@ -29,83 +32,268 @@
       </button>
 
       <ul class="nav-links">
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/private-banking.html">Private Banking</a></li>
-        <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/about.html">About</a></li>
+        <li class="active"><a aria-current="page" href="/client-login.html">Client Login</a></li>
+        <li><a href="/account-open.html">Open Account</a></li>
         <li><a href="/contact.html">Contact</a></li>
       </ul>
 
       <div class="nav-cta">
-        <a class="btn outline" href="/client-login.html" aria-current="page">Client Login</a>
-        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
+        <a class="btn outline" href="/private-banking.html">Private Banking</a>
+        <a class="btn gold" href="/wealth-management.html">Wealth Management</a>
       </div>
     </nav>
 
+    <!-- Mobile dropdown -->
     <div id="mobile-menu" class="mobile-menu" hidden>
       <div class="container">
         <ul role="menu">
-          <li role="none"><a role="menuitem" href="/index.html">Home</a></li>
-          <li role="none"><a role="menuitem" href="/private-banking.html">Private Banking</a></li>
-          <li role="none"><a role="menuitem" href="/wealth-management.html">Wealth Management</a></li>
-          <li role="none"><a role="menuitem" href="/about.html">About</a></li>
-          <li role="none"><a role="menuitem" href="/contact.html">Contact</a></li>
+          <li><a role="menuitem" href="/client-login.html" aria-current="page">Client Login</a></li>
+          <li><a role="menuitem" href="/account-open.html">Open Account</a></li>
+          <li><a role="menuitem" href="/contact.html">Contact</a></li>
         </ul>
-        <div class="menu-divider"></div>
-        <div style="display:flex; gap:10px; margin-top:10px;">
-          <a class="btn outline" href="/client-login.html" style="flex:1;" aria-current="page">Client Login</a>
-          <a class="btn gold" href="/admin-login.html" style="flex:1;">Admin Portal</a>
-        </div>
       </div>
     </div>
   </header>
 
   <!-- Compact Valletta hero -->
-  <section class="hero" style="min-height:40vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
+  <section class="hero" style="min-height:34vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
     <div class="hero-inner container">
-      <div class="logo-badge"><img src="/assets/logo-crest.png" alt="Maltese First Capital crest" /></div>
+      <div class="logo-badge"><img src="/assets/logo-crest.png" alt="Maltese First Capital crest"/></div>
       <h1>Client Login</h1>
-      <p class="lead">Secure access with email, password, and OTP verification.</p>
+      <p class="lead">Enter your credentials, then verify with a one-time code.</p>
     </div>
   </section>
 
+  <!-- Login / OTP panels -->
   <section class="page-section">
-    <div class="container grid-2">
-      <form id="clientLoginForm" class="panel" autocomplete="on" aria-labelledby="loginTitle">
-        <h2 id="loginTitle" style="margin-top:0">Sign in</h2>
+    <div class="container" style="display:grid;gap:22px;grid-template-columns:1fr 1fr;">
+      <!-- Credentials panel -->
+      <form id="loginForm" class="panel" aria-labelledby="loginTitle">
+        <h2 id="loginTitle" style="margin-top:0;">Sign in</h2>
 
         <div class="form-row">
-          <label for="loginEmail">Email</label>
-          <input id="loginEmail" name="email" type="email" placeholder="you@email.com" required />
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="username" placeholder="you@domain.com" required />
         </div>
 
         <div class="form-row">
-          <label for="loginPassword">Password</label>
-          <input id="loginPassword" name="password" type="password" placeholder="Your password" required />
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
         </div>
 
-        <div class="form-actions" style="display:flex; gap:10px;">
+        <div class="form-actions" style="display:flex;gap:10px;flex-wrap:wrap;">
           <button class="btn btn-primary" type="submit">Continue</button>
-          <a class="btn outline" href="/client-register.html">Create account</a>
+          <button class="btn outline" type="button" id="sendOtpBtn" title="Send a fresh code to your email">Send code</button>
         </div>
 
-        <p class="form-status" id="loginStatus">You’ll be asked to verify with OTP on trusted devices.</p>
-        <p style="margin-top:10px;"><a href="#">Forgot password?</a></p>
+        <p id="loginStatus" class="form-status">Use your registered email and password. A one-time code will be sent to your inbox.</p>
       </form>
 
-      <aside class="panel">
-        <h3 style="margin-top:0">Security</h3>
-        <p>We use device fingerprinting, OTP codes, and anomaly detection. If this is a new device, you’ll be prompted for a one-time verification code.</p>
-        <p>Problems receiving codes? Check your spam folder or request a new code from the OTP screen.</p>
-      </aside>
+      <!-- OTP panel -->
+      <form id="otpForm" class="panel" aria-labelledby="otpTitle" hidden>
+        <h2 id="otpTitle" style="margin-top:0;">Verify code</h2>
+
+        <div class="form-row">
+          <label for="otp">6-digit code</label>
+          <input id="otp" name="otp" inputmode="numeric" pattern="[0-9]{4,8}" maxlength="8" placeholder="123456" required />
+        </div>
+
+        <div class="form-actions" style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" type="submit">Verify &amp; Sign in</button>
+          <button class="btn outline" type="button" id="resendOtpBtn">Resend code</button>
+        </div>
+
+        <p id="otpStatus" class="form-status">Check your email for the latest code. It expires shortly.</p>
+      </form>
     </div>
   </section>
 
+  <!-- Footer (white) -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+      <p class="footer-address">
+        The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
     </div>
   </footer>
+
+  <!-- Inline logic -->
+  <script>
+    (function(){
+      const $ = (id) => document.getElementById(id);
+
+      // Resolve backend base URL
+      const BACKEND =
+        localStorage.getItem('BACKEND_URL') ||
+        document.querySelector('meta[name="mfc-backend"]')?.content ||
+        '';
+
+      if (!BACKEND) {
+        console.warn('Set localStorage.BACKEND_URL to your backend base URL.');
+        $('loginStatus').textContent = 'Backend not set. Open console and set BACKEND_URL.';
+      }
+
+      let tempToken = '';   // issued after password stage (for OTP verification)
+      let loginEmail = '';  // used for resend
+
+      function setStatus(id, text, ok=false){
+        const el = $(id);
+        if (!el) return;
+        el.textContent = text;
+        el.style.color = ok ? '#9EE493' : '';
+      }
+
+      async function api(path, {method='GET', body, headers}={}){
+        const url = (BACKEND||'').replace(/\/$/,'') + path;
+        const res = await fetch(url, {
+          method,
+          headers: Object.assign({'Content-Type':'application/json'}, headers||{}),
+          body: body ? JSON.stringify(body) : undefined,
+          credentials: 'omit'
+        });
+        const isJSON = (res.headers.get('content-type')||'').includes('application/json');
+        const data = isJSON ? await res.json() : await res.text();
+        if (!res.ok) {
+          const msg = (data && data.message) ? data.message : ('HTTP ' + res.status);
+          throw new Error(msg);
+        }
+        return data;
+      }
+
+      // Try a list of possible endpoint paths (first that succeeds wins)
+      async function tryEndpoints(list, payload){
+        for (const p of list) {
+          try { return await api(p.path, { method:p.method||'POST', body: payload }); }
+          catch(e){ /* try next */ }
+        }
+        throw new Error('No matching endpoint responded.');
+      }
+
+      // Submit credentials
+      $('loginForm').addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        if (!BACKEND) return setStatus('loginStatus', 'Backend not configured. Set BACKEND_URL first.');
+        const email = $('email').value.trim();
+        const password = $('password').value;
+        loginEmail = email;
+
+        setStatus('loginStatus', 'Checking credentials…');
+
+        try {
+          const payload = { email, password };
+          // Common backend patterns:
+          const result = await tryEndpoints([
+            { path:'/api/auth/login', method:'POST' },
+            { path:'/api/login', method:'POST' },
+            { path:'/api/client/login', method:'POST' }
+          ], payload);
+
+          // Possible shapes:
+          // 1) { token:"final_jwt" }  -> direct login (no OTP)
+          // 2) { tempToken:"xx", otp:true } -> requires OTP
+          // 3) { message:"OTP sent", tempToken:"xx" }
+          if (result.token) {
+            localStorage.setItem('CLIENT_TOKEN', result.token);
+            setStatus('loginStatus', 'Signed in. Redirecting…', true);
+            return location.replace('/client-dashboard.html');
+          }
+          if (result.tempToken || result.otp) {
+            tempToken = result.tempToken || tempToken || '';
+            $('otpForm').hidden = false;
+            $('otp').focus();
+            setStatus('loginStatus', 'Code required — please check your email.', true);
+            setStatus('otpStatus', 'Enter the 6-digit code we sent to your email.', true);
+
+            // If no tempToken yet, try to trigger an OTP send:
+            if (!tempToken) {
+              try {
+                const sent = await tryEndpoints([
+                  { path:'/api/auth/otp/send', method:'POST' },
+                  { path:'/api/otp/send', method:'POST' }
+                ], { email });
+                tempToken = sent.tempToken || tempToken || '';
+              } catch(_) {}
+            }
+            return;
+          }
+
+          // Fallback (unknown shape but OK)
+          setStatus('loginStatus', 'Continue with OTP if prompted.', true);
+          $('otpForm').hidden = false;
+          $('otp').focus();
+        } catch(err){
+          setStatus('loginStatus', 'Sign-in failed: ' + err.message);
+        }
+      });
+
+      // Manually send code (before or after password, depending on backend)
+      $('sendOtpBtn').addEventListener('click', async ()=>{
+        if (!BACKEND) return setStatus('loginStatus', 'Backend not configured. Set BACKEND_URL first.');
+        const email = $('email').value.trim();
+        if (!email) return setStatus('loginStatus', 'Enter your email first.');
+        setStatus('loginStatus', 'Requesting a code…');
+        try {
+          const out = await tryEndpoints([
+            { path:'/api/auth/otp/send', method:'POST' },
+            { path:'/api/otp/send', method:'POST' }
+          ], { email });
+          tempToken = out.tempToken || tempToken || '';
+          $('otpForm').hidden = false;
+          $('otp').focus();
+          setStatus('loginStatus', 'Code sent. Check your inbox.', true);
+          setStatus('otpStatus', 'Enter the latest code we sent to your email.', true);
+        } catch(err){
+          setStatus('loginStatus', 'Could not send code: ' + err.message);
+        }
+      });
+
+      // Resend code in OTP panel
+      $('resendOtpBtn').addEventListener('click', async ()=>{
+        if (!BACKEND) return setStatus('otpStatus', 'Backend not configured.');
+        const email = loginEmail || $('email').value.trim();
+        if (!email) return setStatus('otpStatus', 'Enter your email on the left first.');
+        setStatus('otpStatus', 'Resending code…');
+        try {
+          const out = await tryEndpoints([
+            { path:'/api/auth/otp/send', method:'POST' },
+            { path:'/api/otp/send', method:'POST' }
+          ], { email });
+          tempToken = out.tempToken || tempToken || '';
+          setStatus('otpStatus', 'A new code was sent. Use the latest one.', true);
+        } catch(err){
+          setStatus('otpStatus', 'Could not resend: ' + err.message);
+        }
+      });
+
+      // Verify OTP
+      $('otpForm').addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        if (!BACKEND) return setStatus('otpStatus', 'Backend not configured.');
+        const code = $('otp').value.trim();
+        if (!code) return setStatus('otpStatus', 'Enter the 6-digit code.');
+
+        setStatus('otpStatus', 'Verifying…');
+        try {
+          // Try common verify routes
+          const result = await tryEndpoints([
+            { path:'/api/auth/otp/verify', method:'POST' },
+            { path:'/api/auth/verify-otp', method:'POST' },
+            { path:'/api/otp/verify', method:'POST' }
+          ], { code, tempToken });
+
+          const token = result.token || result.jwt || '';
+          if (!token) throw new Error('No token returned');
+
+          localStorage.setItem('CLIENT_TOKEN', token);
+          setStatus('otpStatus', 'Verified. Signing you in…', true);
+          location.replace('/client-dashboard.html');
+        } catch(err){
+          setStatus('otpStatus', 'Verification failed: ' + err.message);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
