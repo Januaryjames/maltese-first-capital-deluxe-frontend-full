@@ -17,10 +17,14 @@
         <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
         <span class="brand-name">Maltese First Capital</span>
       </a>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
       <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/about.html">About</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/about.html">About</a></li>
         <li><a href="/contact.html">Contact</a></li>
       </ul>
       <div class="nav-cta">
@@ -78,11 +82,8 @@
           const email = form.email.value.trim();
           const password = form.password.value;
           const data = await mfcApi.post('/api/auth/login', { email, password }, { auth:false });
-
-          // Expect: { token, client: { _id, accountNumber, fullName } }
           localStorage.setItem(mfcApi.keys.token, data.token);
           if (data.client?._id) localStorage.setItem(mfcApi.keys.client, data.client._id);
-
           location.href = '/client-dashboard.html';
         } catch (err) {
           msg.textContent = 'Login failed: ' + (err.message || 'Unable to sign in');
