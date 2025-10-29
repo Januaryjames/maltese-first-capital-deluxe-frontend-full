@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://maltesefirst.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <lastmod>2025-10-29</lastmod>
-  </url>
-  <url><loc>https://maltesefirst.com/private-banking.html</loc><changefreq>monthly</changefreq><priority>0.90</priority><lastmod>2025-10-29</lastmod></url>
-  <url><loc>https://maltesefirst.com/wealth-management.html</loc><changefreq>monthly</changefreq><priority>0.90</priority><lastmod>2025-10-29</lastmod></url>
-  <url><loc>https://maltesefirst.com/about.html</loc><changefreq>monthly</changefreq><priority>0.70</priority><lastmod>2025-10-29</lastmod></url>
-  <url><loc>https://maltesefirst.com/contact.html</loc><changefreq>monthly</changefreq><priority>0.70</priority><lastmod>2025-10-29</lastmod></url>
-  <url><loc>https://maltesefirst.com/account-open.html</loc><changefreq>monthly</changefreq><priority>0.85</priority><lastmod>2025-10-29</lastmod></url>
-  <url><loc>https://maltesefirst.com/client-login.html</loc><changefreq>monthly</changefreq><priority>0.80</priority><lastmod>2025-10-29</lastmod></url>
-  <url><loc>https://maltesefirst.com/client-dashboard.html</loc><changefreq>weekly</changefreq><priority>0.85</priority><lastmod>2025-10-29</lastmod></url>
-  <url><loc>https://maltesefirst.com/admin-login.html</loc><changefreq>monthly</changefreq><priority>0.40</priority><lastmod>2025-10-29</lastmod></url>
-  <url><loc>https://maltesefirst.com/admin-dashboard.html</loc><changefreq>weekly</changefreq><priority>0.40</priority><lastmod>2025-10-29</lastmod></url>
-  <url><loc>https://maltesefirst.com/maintenance.html</loc><changefreq>monthly</changefreq><priority>0.20</priority><lastmod>2025-10-29</lastmod></url>
-  <url><loc>https://maltesefirst.com/404.html</loc><changefreq>yearly</changefreq><priority>0.10</priority><lastmod>2025-10-29</lastmod></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://maltesefirst.com/</loc></url>
+  <url><loc>https://maltesefirst.com/private-banking.html</loc></url>
+  <url><loc>https://maltesefirst.com/wealth-management.html</loc></url>
+  <url><loc>https://maltesefirst.com/about.html</loc></url>
+  <url><loc>https://maltesefirst.com/contact.html</loc></url>
+  <url><loc>https://maltesefirst.com/account-open.html</loc></url>
+  <url><loc>https://maltesefirst.com/client-login.html</loc></url>
+  <url><loc>https://maltesefirst.com/client-dashboard.html</loc></url>
+  <url><loc>https://maltesefirst.com/admin-login.html</loc></url>
+  <url><loc>https://maltesefirst.com/admin-dashboard.html</loc></url>
+  <url><loc>https://maltesefirst.com/404.html</loc></url>
+  <url><loc>https://maltesefirst.com/maintenance.html</loc></url>
 </urlset>
