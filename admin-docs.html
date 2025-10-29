@@ -1,189 +1,187 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Admin • Documents • Maltese First Capital</title>
-  <link rel="icon" href="assets/logo.png"/>
-  <link rel="stylesheet" href="styles.css?v=30"/>
-  <style>
-    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0}
-    .filters{display:flex;gap:10px;align-items:center}
-    .muted{color:#9fb1c7}
-    .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-    dialog{border:none;border-radius:16px;background:#0f1a27;padding:18px;color:#e6edf5;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
-    dialog::backdrop{background:rgba(0,0,0,.35)}
-    .row-actions{display:flex;gap:8px}
-    .badge{padding:5px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.08);color:#cfd8e3;font-size:12px}
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Docs — Maltese First Capital</title>
+
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <meta name="description" content="Document vault: upload, organize, and retrieve client documents." />
+  <meta property="og:title" content="Admin Docs — Maltese First Capital" />
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
+  <meta name="theme-color" content="#0b1220" />
+
+  <link rel="stylesheet" href="/styles.css?v=48" />
+  <script defer src="/scripts/nav.js?v=48"></script>
+  <script defer src="/scripts/forms.js?v=48"></script>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <div class="navbar-wrap">
-    <div class="container navbar">
-      <a class="brand navbar-brand" href="index.html">
-        <img src="assets/logo.png" alt="Maltese First Capital"/>
-        <span>Maltese First Capital</span>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar container" aria-label="Admin">
+      <a class="brand" href="/admin-dashboard.html" aria-label="Admin dashboard">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <span class="brand-name">Maltese First Capital</span>
       </a>
-      <nav class="links">
-        <a href="admin-dashboard.html">Dashboard</a>
-        <a class="highlight" href="admin-docs.html">Documents</a>
-        <a href="#" id="logoutLink">Log Out</a>
-      </nav>
-    </div>
-  </div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container">
-      <img class="hero-logo" src="assets/logo.png" alt="MFC">
-      <h1>Client Documents</h1>
-      <p class="lead">Review and decide on pending uploads.</p>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="/admin-dashboard.html">Dashboard</a></li>
+        <li class="active"><a aria-current="page" href="/admin-docs.html">Docs</a></li>
+        <li><a href="/admin-kyc.html">KYC</a></li>
+        <li><a href="/admin-login.html">Logout</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a class="btn outline" href="/admin-kyc.html">KYC Queue</a>
+        <a class="btn gold" href="/admin-docs.html">Open Vault</a>
+      </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="mobile-menu" hidden>
+      <div class="container">
+        <ul role="menu">
+          <li><a role="menuitem" href="/admin-dashboard.html">Dashboard</a></li>
+          <li><a role="menuitem" href="/admin-docs.html" aria-current="page">Docs</a></li>
+          <li><a role="menuitem" href="/admin-kyc.html">KYC</a></li>
+          <li><a role="menuitem" href="/admin-login.html">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Compact Valletta hero -->
+  <section class="hero" style="min-height:34vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
+    <div class="hero-inner container">
+      <div class="logo-badge"><img src="/assets/logo-crest.png" alt="Maltese First Capital crest" /></div>
+      <h1>Document Vault</h1>
+      <p class="lead">Upload, tag, and retrieve client files with a clear audit trail.</p>
     </div>
   </section>
 
-  <main class="section" style="border:none">
-    <div class="container">
-      <div class="toolbar">
-        <div>
-          <span class="badge">API: <span class="mono" id="apiHost">unset</span></span>
+  <!-- Vault UI -->
+  <section class="page-section">
+    <div class="container" style="display:grid;gap:22px;">
+      <!-- Upload panel -->
+      <form id="docUploadForm" class="panel" aria-labelledby="uploadTitle">
+        <h2 id="uploadTitle" style="margin-top:0">Upload documents</h2>
+
+        <div class="grid-2" style="gap:16px;">
+          <div>
+            <div class="form-row">
+              <label for="docClient">Client name / ID</label>
+              <input id="docClient" name="client" type="text" placeholder="e.g., A. Al-Mutairi / CL-1029" required />
+            </div>
+
+            <div class="form-row">
+              <label for="docCategory">Category</label>
+              <select id="docCategory" name="category" required>
+                <option value="">Select a category…</option>
+                <option>KYC</option>
+                <option>Statements</option>
+                <option>Contracts</option>
+                <option>Proof of Address</option>
+                <option>Source of Funds</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <div class="form-row">
+              <label for="docFile">File (PDF/JPG/PNG)</label>
+              <input id="docFile" name="file" type="file" accept=".pdf,.jpg,.jpeg,.png" required />
+            </div>
+            <div class="form-row">
+              <label for="docNotes">Notes (optional)</label>
+              <input id="docNotes" name="notes" type="text" placeholder="Short internal note" />
+            </div>
+          </div>
         </div>
-        <div class="filters">
-          <input id="fltQ" placeholder="Search email / filename" />
-          <button class="btn" id="btnReload">Reload</button>
+
+        <div class="form-actions" style="display:flex;gap:10px;">
+          <button class="btn btn-primary" type="submit">Upload</button>
+          <button class="btn outline" type="reset">Clear</button>
+        </div>
+
+        <p id="docUploadStatus" class="form-status">Files are virus-scanned and versioned automatically.</p>
+      </form>
+
+      <!-- Filters -->
+      <div class="panel">
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+          <strong>Filter:</strong>
+          <label><input type="radio" name="fcat" value="all" checked /> All</label>
+          <label><input type="radio" name="fcat" value="KYC" /> KYC</label>
+          <label><input type="radio" name="fcat" value="Statements" /> Statements</label>
+          <label><input type="radio" name="fcat" value="Contracts" /> Contracts</label>
+          <label><input type="radio" name="fcat" value="Proof of Address" /> Proof of Address</label>
+          <label><input type="radio" name="fcat" value="Source of Funds" /> Source of Funds</label>
+
+          <div style="flex:1"></div>
+          <input id="vaultSearch" type="search" placeholder="Search filename or client…" style="max-width:320px;width:100%;"/>
         </div>
       </div>
 
-      <section class="admin-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Uploaded</th>
-              <th>Client</th>
-              <th>Type</th>
-              <th>File</th>
-              <th>Status</th>
-              <th style="width:280px">Actions</th>
-            </tr>
-          </thead>
-          <tbody id="docsBody"><tr><td class="empty" colspan="6">Loading…</td></tr></tbody>
-        </table>
-      </section>
+      <!-- Table -->
+      <div class="panel" aria-labelledby="vaultTitle">
+        <h2 id="vaultTitle" style="margin:0 0 10px;">Recent uploads</h2>
+        <div style="overflow:auto;">
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(255,255,255,.12);">
+                <th style="text-align:left;padding:10px;">File</th>
+                <th style="text-align:left;padding:10px;">Client</th>
+                <th style="text-align:left;padding:10px;">Category</th>
+                <th style="text-align:left;padding:10px;">Uploaded</th>
+                <th style="text-align:left;padding:10px;">Owner</th>
+                <th style="text-align:left;padding:10px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="vaultRows">
+              <!-- Example rows -->
+              <tr>
+                <td style="padding:10px;">passport_al-mutairi.pdf</td>
+                <td style="padding:10px;">CL-1029</td>
+                <td style="padding:10px;">KYC</td>
+                <td style="padding:10px;">29 Oct 2025, 09:10</td>
+                <td style="padding:10px;">ops@maltesefirst.com</td>
+                <td style="padding:10px;display:flex;gap:8px;">
+                  <a class="btn outline" href="#">View</a>
+                  <a class="btn gold" href="#">Download</a>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px;">statement_q3_2025.pdf</td>
+                <td style="padding:10px;">CL-0774</td>
+                <td style="padding:10px;">Statements</td>
+                <td style="padding:10px;">28 Oct 2025, 16:22</td>
+                <td style="padding:10px;">reports@maltesefirst.com</td>
+                <td style="padding:10px;display:flex;gap:8px;">
+                  <a class="btn outline" href="#">View</a>
+                  <a class="btn gold" href="#">Download</a>
+                </td>
+              </tr>
+              <!-- /examples -->
+            </tbody>
+          </table>
+        </div>
+        <p class="form-status">Retention policy: 7 years minimum; archived thereafter.</p>
+      </div>
     </div>
-  </main>
+  </section>
 
-  <footer><div class="container">© 2025 Maltese First Capital — Valletta, Malta</div></footer>
-
-  <dialog id="decisionDlg">
-    <form id="decisionForm" method="dialog">
-      <h3 id="decisionTitle">Decision</h3>
-      <input type="hidden" id="docId">
-      <label for="note">Note to client (optional)</label>
-      <textarea id="note" rows="4" placeholder="e.g., Please upload a clearer scan…"></textarea>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-        <button class="btn" value="cancel">Cancel</button>
-        <button class="btn gold" id="decisionSubmit" value="ok">Submit</button>
-      </div>
-      <div class="muted" id="decisionStatus" style="margin-top:6px"></div>
-    </form>
-  </dialog>
-
-<script>
-const API   = localStorage.getItem('BACKEND_URL') || '';
-const token = localStorage.getItem('ADMIN_TOKEN') || '';
-document.getElementById('apiHost').textContent = API || 'not set';
-
-document.getElementById('logoutLink').addEventListener('click', (e)=>{
-  e.preventDefault();
-  localStorage.removeItem('ADMIN_TOKEN');
-  location.href='admin-login.html';
-});
-
-function hdr(extra={}){ return { 'Accept':'application/json', ...(token?{'Authorization':`Bearer ${token}`}:{}) , ...extra}; }
-
-async function fetchJSON(path, opts={}) {
-  const res = await fetch(`${API}${path}`, { ...opts, headers: hdr(opts.headers||{}) });
-  if(!res.ok) throw new Error(await res.text());
-  try { return await res.json(); } catch { return {}; }
-}
-
-function escape(s){return (s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
-function statusClass(s){ if(s==='approved') return 'complete'; if(s==='rejected') return 'red'; if(s==='review') return 'review'; return 'pending'; }
-
-async function loadDocs(){
-  const tbody = document.getElementById('docsBody');
-  tbody.innerHTML = `<tr><td class="empty" colspan="6">Loading…</td></tr>`;
-  try{
-    const data = await fetchJSON(`/api/admin/docs`);
-    const docs = (data.docs||[]).filter(Boolean);
-    const q = document.getElementById('fltQ').value.trim().toLowerCase();
-    const filtered = q ? docs.filter(d =>
-      (d.userId?.email||'').toLowerCase().includes(q) ||
-      (d.originalName||'').toLowerCase().includes(q)
-    ) : docs;
-
-    if(!filtered.length){ tbody.innerHTML = `<tr><td class="empty" colspan="6">No pending documents.</td></tr>`; return; }
-
-    tbody.innerHTML = filtered.map(d=>`
-      <tr>
-        <td>${new Date(d.createdAt||Date.now()).toLocaleString()}</td>
-        <td>
-          <div><strong>${escape(d.userId?.email||'Client')}</strong></div>
-          <div class="muted mono">${escape(String(d._id||''))}</div>
-        </td>
-        <td>${escape(d.docType||'—')}</td>
-        <td>${d.filename ? `<a class="btn" href="${API}/uploads/${d.filename}" target="_blank" rel="noopener">View</a>` : escape(d.originalName||'file')}</td>
-        <td><span class="status ${statusClass(d.status)}">${escape(d.status||'pending')}</span></td>
-        <td class="row-actions">
-          <button class="btn" data-act="approve" data-id="${d._id}">Approve</button>
-          <button class="btn" data-act="reject"  data-id="${d._id}">Reject</button>
-        </td>
-      </tr>
-    `).join('');
-  }catch(err){
-    tbody.innerHTML = `<tr><td class="empty" colspan="6">Unable to load documents.</td></tr>`;
-  }
-}
-
-document.getElementById('btnReload').addEventListener('click', loadDocs);
-
-// Decision dialog
-const dlg = document.getElementById('decisionDlg');
-const form = document.getElementById('decisionForm');
-const statusEl = document.getElementById('decisionStatus');
-let decisionAction = 'approve';
-
-document.getElementById('docsBody').addEventListener('click', (e)=>{
-  const btn = e.target.closest('button[data-act]');
-  if(!btn) return;
-  decisionAction = btn.dataset.act; // approve or reject
-  document.getElementById('docId').value = btn.dataset.id;
-  document.getElementById('decisionTitle').textContent = decisionAction === 'approve' ? 'Approve Document' : 'Reject Document';
-  document.getElementById('note').value = '';
-  statusEl.textContent = '';
-  dlg.showModal();
-});
-
-document.getElementById('decisionSubmit').addEventListener('click', async (e)=>{
-  e.preventDefault();
-  statusEl.textContent = 'Submitting…';
-  try{
-    const id = document.getElementById('docId').value;
-    const note = document.getElementById('note').value.trim();
-    await fetchJSON(`/api/admin/docs/${encodeURIComponent(id)}/decision`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ action: decisionAction, note })
-    });
-    statusEl.textContent = 'Saved.';
-    setTimeout(()=>{ dlg.close(); loadDocs(); }, 600);
-  }catch{
-    statusEl.textContent = 'Failed to save.';
-  }
-});
-
-// Go
-loadDocs();
-</script>
+  <!-- Footer (white) -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+    </div>
+  </footer>
 </body>
 </html>
