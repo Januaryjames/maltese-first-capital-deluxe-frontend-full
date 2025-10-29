@@ -1,49 +1,50 @@
 <script>
+/* Minimal API client for MFC */
 (() => {
-  // ===== Minimal API client for MFC front-end =====
   const DEFAULT_BASE = 'https://maltese-first-capital-deluxe-backend.onrender.com';
+  const LS = localStorage;
 
-  window.API_BASE = localStorage.getItem('API_BASE') || DEFAULT_BASE;
+  window.API_BASE = LS.getItem('API_BASE') || DEFAULT_BASE;
 
-  const tokenKey  = 'mfc_token';
-  const clientKey = 'mfc_client_id';
-  const adminKey  = 'mfc_admin';
+  const keys = {
+    token:  'mfc_token',
+    client: 'mfc_client_id',
+    admin:  'mfc_admin'
+  };
 
   async function api(path, { method='GET', body, auth=true, headers={}, ...rest } = {}) {
-    const opts = {
-      method,
-      headers: { 'Content-Type': 'application/json', ...headers },
-      ...rest
-    };
+    const opts = { method, headers: { 'Content-Type':'application/json', ...headers }, ...rest };
     if (auth) {
-      const tok = localStorage.getItem(tokenKey);
-      if (tok) opts.headers['Authorization'] = `Bearer ${tok}`;
+      const t = LS.getItem(keys.token);
+      if (t) opts.headers['Authorization'] = `Bearer ${t}`;
     }
     if (body) opts.body = JSON.stringify(body);
 
     const res = await fetch(`${window.API_BASE}${path}`, opts);
-
     if (res.status === 401) {
-      localStorage.removeItem(tokenKey);
+      // kick to appropriate login
+      LS.removeItem(keys.token);
       if (location.pathname.includes('admin')) location.href = '/admin-login.html';
       else location.href = '/client-login.html';
       throw new Error('Unauthorized');
     }
-    if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
-
+    if (!res.ok) {
+      let msg = '';
+      try { const j = await res.json(); msg = j.message || JSON.stringify(j); } catch { msg = await res.text(); }
+      throw new Error(`${res.status} ${msg}`);
+    }
     const ct = res.headers.get('content-type') || '';
     return ct.includes('application/json') ? res.json() : res.text();
   }
 
-  // Expose helpers
   window.mfcApi = {
-    setBase(u){ localStorage.setItem('API_BASE', u); window.API_BASE = u; },
+    setBase(u){ LS.setItem('API_BASE', u); window.API_BASE = u; },
     getBase(){ return window.API_BASE; },
-    tokenKey, clientKey, adminKey,
-    get:   (p,o)   => api(p, { method:'GET',   ...(o||{}) }),
-    post:  (p,b,o) => api(p, { method:'POST',  body:b, ...(o||{}) }),
-    patch: (p,b,o) => api(p, { method:'PATCH', body:b, ...(o||{}) }),
-    del:   (p,o)   => api(p, { method:'DELETE', ...(o||{}) })
+    keys,
+    get:  (p,o)=>api(p,{method:'GET', ...(o||{})}),
+    post: (p,b,o)=>api(p,{method:'POST', body:b, ...(o||{})}),
+    patch:(p,b,o)=>api(p,{method:'PATCH',body:b, ...(o||{})}),
+    del:  (p,o)=>api(p,{method:'DELETE', ...(o||{})})
   };
 })();
 </script>
