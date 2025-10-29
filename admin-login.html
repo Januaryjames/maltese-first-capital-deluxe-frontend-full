@@ -1,111 +1,92 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin Login — Maltese First Capital</title>
 
-  <link rel="icon" href="/assets/logo-crest.png"/>
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
-  <meta name="description" content="Secure administrator access."/>
-  <meta property="og:title" content="Admin Login — Maltese First Capital"/>
-  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg"/>
-  <meta name="theme-color" content="#0b1220"/>
-
-  <link rel="stylesheet" href="/styles.css?v=48"/>
-  <script defer src="/scripts/nav.js?v=48"></script>
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <link rel="stylesheet" href="/styles.css?v=45" />
+  <script defer src="/scripts/nav.js?v=45"></script>
+  <script defer src="/scripts/api.js"></script>
 </head>
 <body>
   <header class="header">
-    <nav class="navbar container" aria-label="Admin">
+    <nav class="navbar container">
       <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
         <span class="brand-name">Maltese First Capital</span>
       </a>
-      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
       <ul class="nav-links">
-        <li class="active"><a aria-current="page" href="/admin-login.html">Admin Login</a></li>
-        <li><a href="/client-login.html">Client Login</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
-      <div class="nav-cta">
-        <a class="btn outline" href="/private-banking.html">Private Banking</a>
-        <a class="btn gold" href="/account-open.html">Open an Account</a>
-      </div>
     </nav>
-    <div id="mobile-menu" class="mobile-menu" hidden>
-      <div class="container">
-        <ul role="menu">
-          <li><a role="menuitem" href="/admin-login.html" aria-current="page">Admin Login</a></li>
-          <li><a role="menuitem" href="/client-login.html">Client Login</a></li>
-        </ul>
-      </div>
-    </div>
   </header>
 
-  <section class="hero" style="min-height:34vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
-    <div class="hero-inner container">
-      <div class="logo-badge"><img src="/assets/logo-crest.png" alt=""/></div>
-      <h1>Administrator</h1>
-      <p class="lead">Authenticate to manage accounts, balances, and documents.</p>
+  <section class="sub-hero">
+    <div class="container">
+      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <h1>Admin Portal Login</h1>
     </div>
   </section>
 
   <section class="page-section">
-    <div class="container" style="display:grid;gap:22px;max-width:700px;">
-      <form id="adminLogin" class="panel" aria-labelledby="aTitle">
-        <h2 id="aTitle" style="margin-top:0;">Sign in</h2>
+    <div class="container grid-2">
+      <form id="adminLogin" class="panel">
         <div class="form-row">
-          <label for="aUser">Username</label>
-          <input id="aUser" required placeholder="admin@maltesefirst.com"/>
+          <label for="email">Email</label>
+          <input id="email" type="email" required />
         </div>
         <div class="form-row">
-          <label for="aPass">Password</label>
-          <input id="aPass" type="password" required placeholder="••••••••"/>
+          <label for="password">Password</label>
+          <input id="password" type="password" required />
         </div>
-        <div class="form-actions" style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button class="btn btn-primary" type="submit">Continue</button>
-          <a class="btn outline" href="/index.html">Cancel</a>
-        </div>
-        <p id="aStatus" class="form-status">Use your admin credentials.</p>
+        <button class="btn btn-primary" type="submit">Sign in</button>
+        <p id="msg" class="form-status"></p>
       </form>
+
+      <div class="panel">
+        <p class="eyebrow">Access</p>
+        <p>Authorized staff only. Actions are logged.</p>
+      </div>
     </div>
   </section>
 
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
     </div>
   </footer>
 
   <script>
-    (function(){
-      const $ = id=>document.getElementById(id);
-      const BACKEND =
-        localStorage.getItem('BACKEND_URL') ||
-        document.querySelector('meta[name="mfc-backend"]')?.content || '';
+  (function(){
+    const form = document.getElementById('adminLogin');
+    const msg  = document.getElementById('msg');
 
-      async function apiLogin(username,password){
-        const candidates = [
-          { path:'/api/admin/login', method:'POST' },
-          { path:'/api/auth/admin/login', method:'POST' }
-        ];
-        for (const c of candidates){
-          try{
-            const r = await fetch((BACKEND||'').replace(/\/$/,'')+c.path,{
-              method:c.method, headers:{'Content-Type':'application/json'},
-              body:JSON.stringify({ username, password })
-            });
-            if (!r.ok) throw 0;
-            const data = await r.json();
-            if (data.token){ return data.token; }
-          }catch(_){ /* try next */ }
-        }
-        throw new Error('Login failed');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = 'Signing in…';
+      try{
+        const data = await mfcApi.post('/api/admin/login', {
+          email: form.email.value.trim(),
+          password: form.password.value
+        }, { auth:false });
+
+        localStorage.setItem(mfcApi.tokenKey, data.token);
+        localStorage.setItem(mfcApi.adminKey, '1');
+        location.href = '/admin-dashboard.html';
+      }catch(err){
+        msg.textContent = 'Login failed: ' + (err.message || 'Unable to sign in');
       }
-
-      $('adminLogin').addEventListener('submit', async (e)=>{
-        e.preventDefault();
-        if (!BACKEND
+    });
+  })();
+  </script>
+</body>
+</html>
