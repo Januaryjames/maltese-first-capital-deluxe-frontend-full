@@ -1,36 +1,40 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Meta -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <title>Maltese First Capital — Private & Wealth Banking</title>
   <meta name="description" content="Trust, performance, discretion. Private Banking and Wealth Management from Malta." />
+
+  <!-- Open Graph -->
   <meta property="og:title" content="Maltese First Capital — Private & Wealth Banking" />
   <meta property="og:description" content="Trust, performance, discretion. Private Banking and Wealth Management." />
   <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
   <meta property="og:url" content="https://maltesefirst.com/" />
   <meta name="theme-color" content="#0b1220" />
 
+  <!-- Icons / PWA -->
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <link rel="manifest" href="/site.webmanifest" />
 
-  <link rel="preload" as="image" href="/assets/hero-bg.jpg" imagesrcset="/assets/hero-bg.jpg 1x" />
-  <link rel="stylesheet" href="/styles.css?v=42" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="/styles.css?v=46" />
 
-  <script defer src="/scripts/nav.js?v=42"></script>
-  <!-- Keep your forms.js if needed: <script defer src="/scripts/forms.js?v=42"></script> -->
+  <!-- JS (nav only) -->
+  <script defer src="/scripts/nav.js?v=46"></script>
 </head>
 <body>
-  <!-- Header / Navigation -->
-  <header class="header" role="banner">
-    <nav class="navbar container" aria-label="Primary">
-      <a class="brand" href="/index.html">
+  <!-- ===== Header / Nav ===== -->
+  <header class="header">
+    <nav class="navbar container">
+      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
         <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
         <span class="brand-name">Maltese First Capital</span>
       </a>
 
-      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <button class="nav-toggle" aria-label="Toggle menu">
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
@@ -38,55 +42,42 @@
 
       <ul class="nav-links">
         <li class="active"><a href="/index.html">Home</a></li>
+        <li><a href="/about.html">About</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/about.html">About</a></li>
         <li><a href="/contact.html">Contact</a></li>
       </ul>
 
       <div class="nav-cta">
-        <a class="btn outline" href="/client-login.html">Client Login</a>
-        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
-      </div>
-
-      <!-- Mobile dropdown -->
-      <div id="mobileMenu" class="mobile-menu" hidden>
-        <ul>
-          <li class="active"><a href="/index.html">Home</a></li>
-          <li><a href="/private-banking.html">Private Banking</a></li>
-          <li><a href="/wealth-management.html">Wealth Management</a></li>
-          <li><a href="/about.html">About</a></li>
-          <li><a href="/contact.html">Contact</a></li>
-          <li class="menu-divider"></li>
-          <li><a class="btn block outline" href="/client-login.html">Client Login</a></li>
-          <li><a class="btn block gold" href="/admin-login.html">Admin Portal</a></li>
-        </ul>
+        <a class="btn outline" href="/account-open.html">Open Account</a>
+        <a class="btn gold" href="/client-login.html">Client Login</a>
+        <a class="btn gold" href="/admin-login.html">Admin</a>
       </div>
     </nav>
   </header>
 
-  <!-- HERO -->
+  <!-- ===== Hero ===== -->
   <section class="hero">
-    <div class="hero-bg" role="img" aria-label="Valletta skyline background"></div>
+    <!-- Background image (Valletta) -->
+    <div class="hero-bg"></div>
+
     <div class="container hero-inner">
       <div class="logo-badge">
         <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
       </div>
-
       <h1>Unlocking Financial Potential</h1>
       <p class="lead">
-        Maltese First Capital is an investment bank focused on unlocking financial potential
-        and fostering growth for clients through tailored financial solutions.
+        Maltese First Capital is an investment bank focused on unlocking financial potential and fostering
+        growth for clients through tailored financial solutions.
       </p>
-
       <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
     </div>
   </section>
 
-  <!-- SERVICES -->
-  <section class="section-cards">
+  <!-- ===== Core Services ===== -->
+  <section class="section-cards" id="cards-band">
     <div class="container">
-      <p class="eyebrow centered">OUR CORE SERVICES</p>
+      <p class="eyebrow centered">Our Core Services</p>
       <h2 class="section-title">Trust, Performance, Discretion</h2>
 
       <div class="cards-grid">
@@ -111,8 +102,8 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="site-footer" role="contentinfo">
+  <!-- ===== Footer (white bar) ===== -->
+  <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
       <p class="footer-address">
