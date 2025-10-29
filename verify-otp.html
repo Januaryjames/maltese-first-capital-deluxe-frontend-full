@@ -3,74 +3,42 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Verify OTP — Maltese First Capital</title>
-
+  <title>Verify Code — Maltese First Capital</title>
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <meta name="description" content="Enter your one-time passcode to complete sign-in." />
-  <meta property="og:title" content="Verify OTP — Maltese First Capital" />
-  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
-  <meta name="theme-color" content="#0b1220" />
-
-  <link rel="stylesheet" href="/styles.css?v=48" />
-  <script defer src="/scripts/nav.js?v=48"></script>
-  <script defer src="/scripts/forms.js?v=48"></script>
+  <link rel="stylesheet" href="/styles.css?v=45" />
+  <script defer src="/scripts/forms.js?v=45"></script>
 </head>
 <body>
   <header class="header">
     <nav class="navbar container">
-      <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
-        <span class="brand-name">Maltese First Capital</span>
-      </a>
-      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
-      <ul class="nav-links">
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/private-banking.html">Private Banking</a></li>
-        <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-      </ul>
-      <div class="nav-cta">
-        <a class="btn outline" href="/client-login.html" aria-current="page">Client Login</a>
-        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
-      </div>
+      <a class="brand" href="/index.html"><img class="brand-crest" src="/assets/logo-crest.png" alt="" /><span class="brand-name">Maltese First Capital</span></a>
     </nav>
   </header>
 
-  <section class="page-section">
-    <div class="container grid-2">
-      <form id="otpForm" class="panel" autocomplete="one-time-code" aria-labelledby="otpTitle">
-        <h2 id="otpTitle" style="margin-top:0">Enter your code</h2>
-        <p>We sent a 6-digit code to your email. Enter it below to finish signing in.</p>
-
-        <div class="form-row">
-          <label for="otp">One-time passcode</label>
-          <input id="otp" name="otp" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="••••••" required />
-        </div>
-
-        <div class="form-actions" style="display:flex; gap:10px;">
-          <button class="btn btn-primary" type="submit">Verify</button>
-          <a class="btn outline" href="/client-login.html">Back</a>
-        </div>
-
-        <p class="form-status" id="otpStatus">Didn’t receive it? <a href="#">Resend code</a>.</p>
-      </form>
-
-      <aside class="panel">
-        <h3 style="margin-top:0">Trust this device</h3>
-        <p>Successful verification will trust this device for quicker sign-in in the future. You can revoke trusted devices from your profile at any time.</p>
-      </aside>
+  <section class="sub-hero">
+    <div class="container">
+      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <h1>Enter the code we sent</h1>
     </div>
   </section>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+  <section class="page-section">
+    <div class="container grid-2">
+      <form id="otpForm" class="panel">
+        <div class="form-row"><label>One-time Passcode (OTP)</label><input name="otp" inputmode="numeric" maxlength="8" placeholder="e.g. 842193" required></div>
+        <div class="form-actions"><button class="btn btn-primary" type="submit">Verify</button></div>
+        <div class="form-status"></div>
+      </form>
+      <div class="panel">
+        <p>We sent the code to your registered email address. This keeps your account secure.</p>
+      </div>
     </div>
-  </footer>
+  </section>
+
+  <footer class="site-footer"><div class="container footer-inner">
+    <p>© 2025 Maltese First Capital. All rights reserved.</p>
+    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+  </div></footer>
 </body>
 </html>
