@@ -2,26 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin Portal — Maltese First Capital</title>
-  <meta name="description" content="Staff access only." />
-  <link rel="stylesheet" href="/styles.css?v=19" />
-  <script src="/scripts/nav.js?v=19" defer></script>
-  <script src="/scripts/forms.js?v=19" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login — Maltese First Capital</title>
+
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <meta name="description" content="Restricted access: administrator authentication with OTP." />
+  <meta property="og:title" content="Admin Login — Maltese First Capital" />
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
+  <meta name="theme-color" content="#0b1220" />
+
+  <link rel="stylesheet" href="/styles.css?v=48" />
+  <script defer src="/scripts/nav.js?v=48"></script>
+  <script defer src="/scripts/forms.js?v=48"></script>
 </head>
 <body>
-  <section class="hero">
-    <div class="wrap center">
-      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
-      <h1>Admin Portal</h1>
-      <p class="lead">Staff access only.</p>
-      <form class="form" style="max-width:520px;margin:22px auto 0" onsubmit="adminLogin(event)">
-        <label>Email</label><input type="email" name="email" required />
-        <label>Password</label><input type="password" name="password" required />
-        <button class="btn gold" type="submit">Sign in</button>
-        <div class="form-msg help" style="margin-top:10px"></div>
-      </form>
+  <header class="header">
+    <nav class="navbar container" aria-label="Primary">
+      <a class="brand" href="/index.html">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a class="btn outline" href="/client-login.html">Client Login</a>
+        <a class="btn gold" aria-current="page" href="/admin-login.html">Admin Portal</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero" style="min-height:36vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
+    <div class="hero-inner container">
+      <div class="logo-badge"><img src="/assets/logo-crest.png" alt="" /></div>
+      <h1>Admin Login</h1>
+      <p class="lead">Restricted access for administrators. OTP required on untrusted devices.</p>
     </div>
   </section>
+
+  <section class="page-section">
+    <div class="container grid-2">
+      <form id="adminLoginForm" class="panel" aria-labelledby="adminTitle">
+        <h2 id="adminTitle" style="margin-top:0">Authenticate</h2>
+        <div class="form-row">
+          <label for="aEmail">Admin email</label>
+          <input id="aEmail" name="email" type="email" required />
+        </div>
+        <div class="form-row">
+          <label for="aPass">Password</label>
+          <input id="aPass" name="password" type="password" required />
+        </div>
+        <div class="form-actions" style="display:flex;gap:10px;">
+          <button class="btn btn-primary" type="submit">Continue</button>
+          <a class="btn outline" href="/index.html">Cancel</a>
+        </div>
+        <p class="form-status" id="adminStatus">You’ll be prompted for OTP if needed.</p>
+      </form>
+
+      <aside class="panel">
+        <h3 style="margin-top:0">Operational controls</h3>
+        <p>Access KYC queue, document vault, audit logs, and user management from the dashboard.</p>
+      </aside>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+    </div>
+  </footer>
 </body>
 </html>
