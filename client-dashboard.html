@@ -7,75 +7,69 @@
 
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <meta name="theme-color" content="#0b1220" />
-
   <link rel="stylesheet" href="/styles.css?v=45" />
   <script defer src="/scripts/nav.js?v=45"></script>
+  <script defer src="/scripts/api.js"></script>
 </head>
 <body>
   <header class="header">
     <nav class="navbar container">
-      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
+      <a class="brand" href="/index.html">
         <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
         <span class="brand-name">Maltese First Capital</span>
       </a>
-      <button class="nav-toggle" aria-label="Toggle menu">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
       <ul class="nav-links">
-        <li><a href="/index.html">Home</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/contact.html">Support</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
       <div class="nav-cta">
-        <button id="btnSignOut" class="btn outline">Sign out</button>
+        <button id="signOut" class="btn outline">Sign out</button>
       </div>
     </nav>
   </header>
 
   <section class="sub-hero">
-    <div class="container" style="justify-content:space-between;">
-      <div style="display:flex;align-items:center;gap:14px">
-        <img class="page-mark" src="/assets/logo-crest.png" alt="">
-        <div>
-          <p class="eyebrow">Account Overview</p>
-          <h1 id="welcomeTitle" style="margin:.15rem 0 0;">Welcome</h1>
-        </div>
-      </div>
-      <div id="acctBox" class="panel" style="display:flex;gap:18px;align-items:center;border-color:rgba(202,169,104,.6);">
-        <div>
-          <div class="eyebrow">Account</div>
-          <div id="acctNumber" style="font-weight:900;font-size:1.35rem;letter-spacing:.06em">—</div>
-        </div>
-      </div>
+    <div class="container">
+      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <h1>Welcome back</h1>
     </div>
   </section>
 
   <section class="page-section">
     <div class="container">
-      <div class="cards-grid two">
+      <div class="cards-grid" id="summaryGrid">
         <article class="card">
-          <h3>Balances</h3>
-          <div id="balances">
-            <p class="form-status">Loading…</p>
-          </div>
+          <h3 id="clientName">Client</h3>
+          <p class="muted">Name on file</p>
         </article>
         <article class="card">
-          <h3>Recent Transactions</h3>
-          <div id="txList">
-            <p class="form-status">Loading…</p>
-          </div>
+          <h3 id="accountNumber">—</h3>
+          <p class="muted">8-digit account number</p>
+        </article>
+        <article class="card">
+          <h3 id="totalBalance">—</h3>
+          <p class="muted">Total balance</p>
         </article>
       </div>
 
-      <div class="cards-grid" style="margin-top:18px">
-        <article class="card">
-          <h3>Statements</h3>
-          <p id="statementText" class="form-status">—</p>
-          <!-- Optional: link if backend serves PDFs -->
-          <div id="statementLinks"></div>
-        </article>
+      <div class="panel" style="margin-top:22px;">
+        <h3>Recent Transactions</h3>
+        <div style="overflow:auto;">
+          <table id="txTable" style="width:100%; border-collapse:collapse;">
+            <thead>
+              <tr>
+                <th style="text-align:left; padding:10px;">Date</th>
+                <th style="text-align:left; padding:10px;">Description</th>
+                <th style="text-align:right; padding:10px;">Amount</th>
+                <th style="text-align:right; padding:10px;">Balance</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p id="txMsg" class="form-status"></p>
       </div>
     </div>
   </section>
@@ -89,94 +83,64 @@
     </div>
   </footer>
 
-  <script src="/scripts/api.js?v=46"></script>
   <script>
-    (async function(){
-      const {storage, getOverview, logout} = window.MFC_API;
+  (async function(){
+    const pad8 = n => String(n ?? '').padStart(8,'0');
+    const fmt  = n => new Intl.NumberFormat('en-GB', { style:'currency', currency:'USD' }).format(+n || 0);
+    const fdate= s => (s ? new Date(s) : new Date());
+    const fdmY = d => d.toLocaleDateString('en-GB', {year:'numeric',month:'short',day:'2-digit'});
 
-      // Guard: if no token and no cached profile, send to login
-      if (!storage.token && !storage.profile) {
-        window.location.replace("/client-login.html");
-        return;
-      }
+    document.getElementById('signOut').onclick = () => {
+      localStorage.removeItem(mfcApi.tokenKey);
+      localStorage.removeItem(mfcApi.clientKey);
+      location.href = '/client-login.html';
+    };
 
-      document.getElementById("btnSignOut").addEventListener("click", async () => {
-        await logout();
-        window.location.replace("/client-login.html");
-      });
-
-      const fmt = (n) => n.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
-      const mask8 = (s) => {
-        // normalize to 8 characters (or nicely spaced)
-        const raw = (s || "").replace(/\D/g,"").padStart(8,"0").slice(-8);
-        return raw.replace(/(\d{2})(\d{3})(\d{3})/, "$1-$2-$3");
-      };
-
+    let profile;
+    try {
+      // Prefer /me, fallback to explicit id for older API
       try {
-        const client = await getOverview();
-
-        // Header
-        document.getElementById("welcomeTitle").textContent = `Welcome, ${client?.name || "Client"}`;
-        document.getElementById("acctNumber").textContent = mask8(client?.accountNumber || "00000000");
-
-        // Balances
-        const balancesEl = document.getElementById("balances");
-        balancesEl.innerHTML = "";
-        (client?.balances || []).forEach(b => {
-          const row = document.createElement("div");
-          row.style.display = "flex";
-          row.style.justifyContent = "space-between";
-          row.style.padding = "8px 0";
-          row.innerHTML = `<strong>${b.currency}</strong><span>${fmt(Number(b.amount || 0))}</span>`;
-          balancesEl.appendChild(row);
-        });
-        if (!balancesEl.children.length) balancesEl.innerHTML = `<p class="form-status">No balances to display.</p>`;
-
-        // Transactions
-        const txEl = document.getElementById("txList");
-        txEl.innerHTML = "";
-        (client?.transactions || []).slice(0,10).forEach(t => {
-          const row = document.createElement("div");
-          row.style.display = "grid";
-          row.style.gridTemplateColumns = "1fr auto auto";
-          row.style.gap = "10px";
-          row.style.padding = "10px 0";
-          row.style.borderBottom = "1px solid rgba(255,255,255,.08)";
-          const amt = Number(t.amount || 0);
-          const sign = amt >= 0 ? "" : "-";
-          row.innerHTML = `
-            <div><strong>${t.description || "Transaction"}</strong><div class="form-status" style="margin-top:2px">${t.id || ""} · ${t.date || ""}</div></div>
-            <div style="opacity:.85">${t.currency || ""}</div>
-            <div style="font-weight:900">${sign}${fmt(Math.abs(amt))}</div>
-          `;
-          txEl.appendChild(row);
-        });
-        if (!txEl.children.length) txEl.innerHTML = `<p class="form-status">No recent transactions.</p>`;
-
-        // Statement text (if admin provides it on backend)
-        const sText = client?.statementText || "Your consolidated statements appear monthly in your document vault.";
-        document.getElementById("statementText").textContent = sText;
-
-        // Optional statement links (e.g., client.statementFiles = [{name, url}])
-        const sLinks = document.getElementById("statementLinks");
-        (client?.statementFiles || []).forEach(f => {
-          const a = document.createElement("a");
-          a.href = f.url; a.textContent = f.name || "Statement";
-          a.className = "card-link"; a.target = "_blank"; a.rel = "noopener";
-          sLinks.appendChild(a);
-        });
-
-      } catch (err) {
-        // If a cached profile exists, render it; otherwise bounce to login
-        if (storage.profile) {
-          console.warn("API unreachable, showing cached profile:", err);
-          document.getElementById("welcomeTitle").textContent = `Welcome, ${storage.profile.name || "Client"}`;
-          document.getElementById("acctNumber").textContent = (storage.profile.accountNumber || "00000000");
-        } else {
-          window.location.replace("/client-login.html");
-        }
+        profile = await mfcApi.get('/api/clients/me');
+      } catch {
+        const id = localStorage.getItem(mfcApi.clientKey);
+        profile = await mfcApi.get(`/api/clients/${id}`);
       }
-    })();
+
+      const fullName = profile.fullName || profile.name || 'Client';
+      const account  = (profile.accountNumber) || (profile.account?.number);
+      const accounts = profile.accounts || (await mfcApi.get('/api/accounts?clientId='+profile._id)).accounts || [];
+      const primary  = accounts[0] || profile.account || {};
+      const balance  = primary.balance ?? profile.balance ?? 0;
+
+      document.getElementById('clientName').textContent   = fullName;
+      document.getElementById('accountNumber').textContent= pad8(account || primary.number || 0);
+      document.getElementById('totalBalance').textContent = fmt(balance);
+
+      // Transactions
+      let tx;
+      try {
+        tx = await mfcApi.get(`/api/transactions?clientId=${profile._id}`);
+        tx = tx.transactions || tx || [];
+      } catch {
+        // Optional older route
+        tx = await mfcApi.get(`/api/clients/${profile._id}/transactions`);
+      }
+
+      const tbody = document.querySelector('#txTable tbody');
+      tbody.innerHTML = (tx && tx.length)
+        ? tx.slice(0,25).map(t => `
+            <tr>
+              <td style="padding:8px 10px;">${fdmY(fdate(t.date))}</td>
+              <td style="padding:8px 10px;">${t.description || t.memo || '-'}</td>
+              <td style="padding:8px 10px; text-align:right;">${fmt(t.amount)}</td>
+              <td style="padding:8px 10px; text-align:right;">${fmt(t.balanceAfter ?? t.balance)}</td>
+            </tr>
+          `).join('')
+        : `<tr><td colspan="4" style="padding:12px;">No transactions yet.</td></tr>`;
+    } catch (e) {
+      document.getElementById('txMsg').textContent = 'Unable to load data: ' + e.message;
+    }
+  })();
   </script>
 </body>
 </html>
