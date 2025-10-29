@@ -1,26 +1,25 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Contact — Maltese First Capital</title>
 
-  <link rel="icon" href="/assets/logo-crest.png" />
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <meta name="description" content="Start a confidential conversation with the team." />
-  <meta property="og:title" content="Contact — Maltese First Capital" />
-  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
-  <meta name="theme-color" content="#0b1220" />
+  <link rel="icon" href="/assets/logo-crest.png"/>
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
+  <meta name="description" content="Reach your banker or send a message to Maltese First Capital."/>
+  <meta property="og:title" content="Contact — Maltese First Capital"/>
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg"/>
+  <meta name="theme-color" content="#0b1220"/>
 
-  <link rel="stylesheet" href="/styles.css?v=48" />
+  <link rel="stylesheet" href="/styles.css?v=48"/>
   <script defer src="/scripts/nav.js?v=48"></script>
-  <script defer src="/scripts/forms.js?v=48"></script>
 </head>
 <body>
   <header class="header">
-    <nav class="navbar container" aria-label="Primary">
+    <nav class="navbar container">
       <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
         <span class="brand-name">Maltese First Capital</span>
       </a>
       <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
@@ -35,56 +34,58 @@
       </ul>
       <div class="nav-cta">
         <a class="btn outline" href="/client-login.html">Client Login</a>
-        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
+        <a class="btn gold" href="/account-open.html">Open an Account</a>
       </div>
     </nav>
+    <div id="mobile-menu" class="mobile-menu" hidden>
+      <div class="container">
+        <ul role="menu">
+          <li><a role="menuitem" href="/index.html">Home</a></li>
+          <li><a role="menuitem" href="/private-banking.html">Private Banking</a></li>
+          <li><a role="menuitem" href="/wealth-management.html">Wealth Management</a></li>
+          <li><a role="menuitem" href="/about.html">About</a></li>
+          <li><a role="menuitem" href="/contact.html" aria-current="page">Contact</a></li>
+        </ul>
+      </div>
+    </div>
   </header>
 
-  <section class="hero" style="min-height:36vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
+  <section class="hero" style="min-height:34vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
     <div class="hero-inner container">
-      <div class="logo-badge"><img src="/assets/logo-crest.png" alt="" /></div>
+      <div class="logo-badge"><img src="/assets/logo-crest.png" alt=""/></div>
       <h1>Say Hello & Contact Us</h1>
-      <p class="lead">Start a confidential conversation with the team.</p>
+      <p class="lead">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
     </div>
   </section>
 
-  <section class="page-section">
-    <div class="container grid-2">
-      <form id="contactForm" class="panel" aria-labelledby="contactTitle">
-        <h2 id="contactTitle" style="margin-top:0">Send us a message</h2>
-
+  <section class="contact-section">
+    <div class="container contact-grid">
+      <form id="contactForm" class="contact-card" aria-labelledby="cTitle">
+        <h2 id="cTitle" style="margin-top:0;">Send a message</h2>
         <div class="form-row">
           <label for="cName">Full name</label>
-          <input id="cName" name="name" type="text" placeholder="Full name" required />
+          <input id="cName" name="name" placeholder="Your name" required />
         </div>
-
         <div class="form-row">
           <label for="cEmail">Email</label>
-          <input id="cEmail" name="email" type="email" placeholder="you@email.com" required />
+          <input id="cEmail" name="email" type="email" placeholder="you@domain.com" required />
         </div>
-
         <div class="form-row">
-          <label for="cPhone">Phone</label>
-          <input id="cPhone" name="phone" type="tel" placeholder="+356 ..." />
+          <label for="cMsg">Message</label>
+          <textarea id="cMsg" name="message" placeholder="How can we help?" required></textarea>
         </div>
-
-        <div class="form-row">
-          <label for="cMessage">Message</label>
-          <textarea id="cMessage" name="message" placeholder="How can we help?" required></textarea>
+        <div class="form-actions" style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" type="submit">Send</button>
+          <button class="btn outline" type="reset">Clear</button>
         </div>
-
-        <div class="form-actions">
-          <button class="btn btn-primary" type="submit">Send message</button>
-        </div>
-
-        <p class="form-status" id="contactStatus">We typically respond within one business day.</p>
+        <p id="cStatus" class="form-status">We aim to reply within one business day.</p>
       </form>
 
-      <aside class="panel">
-        <h3 style="margin-top:0">Valletta office</h3>
-        <p>The Exchange Building<br/>Republic Street<br/>Valletta VLT 1117<br/>Malta</p>
-        <p><strong>Email:</strong> <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-        <p class="form-status">Meetings by appointment only.</p>
+      <aside class="contact-card">
+        <h2 style="margin-top:0;">Reach us</h2>
+        <p>The Exchange Building<br/>Republic Street<br/>Valletta VLT 1117, Malta</p>
+        <p><a class="btn outline" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+        <p><a class="btn gold" href="/account-open.html">Open an Account</a></p>
       </aside>
     </div>
   </section>
@@ -95,5 +96,38 @@
       <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
     </div>
   </footer>
+
+  <script>
+    (function(){
+      const $ = id => document.getElementById(id);
+      const BACKEND =
+        localStorage.getItem('BACKEND_URL') ||
+        document.querySelector('meta[name="mfc-backend"]')?.content || '';
+      $('contactForm').addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const name = $('cName').value.trim();
+        const email = $('cEmail').value.trim();
+        const message = $('cMsg').value.trim();
+        if (!BACKEND) {
+          // Fallback to mailto
+          window.location.href = `mailto:hello@maltesefirst.com?subject=Website%20enquiry%20from%20${encodeURIComponent(name)}&body=${encodeURIComponent(message + '\n\nFrom: ' + email)}`;
+          return;
+        }
+        $('cStatus').textContent = 'Sending…';
+        try{
+          const res = await fetch(BACKEND.replace(/\/$/,'') + '/api/public/contact', {
+            method:'POST',
+            headers: { 'Content-Type':'application/json' },
+            body: JSON.stringify({ name, email, message })
+          });
+          if (!res.ok) throw new Error('HTTP '+res.status);
+          $('cStatus').textContent = 'Message sent. Thank you.';
+          e.target.reset();
+        }catch(err){
+          $('cStatus').textContent = 'Could not send. Please email hello@maltesefirst.com.';
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
