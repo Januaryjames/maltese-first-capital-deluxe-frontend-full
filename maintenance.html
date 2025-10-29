@@ -6,7 +6,8 @@
   <title>Scheduled Maintenance — Maltese First Capital</title>
   <link rel="icon" href="/assets/logo-crest.png"/>
   <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
-  <link rel="stylesheet" href="/styles.css?v=45"/>
+  <link rel="stylesheet" href="/styles.css?v=46"/>
+  <script defer src="/scripts/nav.js?v=46"></script>
 </head>
 <body>
   <header class="header">
@@ -15,21 +16,38 @@
         <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
         <span class="brand-name">Maltese First Capital</span>
       </a>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
     </nav>
   </header>
 
   <section class="sub-hero">
     <div class="container">
       <img class="page-mark" src="/assets/logo-crest.png" alt=""/>
-      <h1>Scheduled Maintenance</h1>
+      <h1>Scheduled maintenance</h1>
     </div>
   </section>
 
   <section class="page-section">
     <div class="container">
-      <div class="panel" style="max-width:720px;margin:0 auto">
-        <p>Our systems are undergoing maintenance and will be available again shortly.</p>
-        <p>If you need assistance, contact <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>.</p>
+      <div class="panel" style="max-width:720px;margin:0 auto;text-align:center">
+        <p class="eyebrow">Brief pause</p>
+        <h2 class="section-title" style="margin-bottom:.75rem">We’ll be back shortly</h2>
+        <p style="color:#b8c3d6">
+          Our systems are undergoing routine maintenance. Please check back soon.
+          Urgent queries: <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>.
+        </p>
+        <p style="margin-top:14px">
+          <a class="btn btn-primary" href="/index.html">Return to homepage</a>
+        </p>
       </div>
     </div>
   </section>
