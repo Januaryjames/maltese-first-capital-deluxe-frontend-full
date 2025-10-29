@@ -1,23 +1,91 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Not Found | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Page Not Found — Maltese First Capital</title>
+
+  <link rel="icon" href="/assets/logo-crest.png"/>
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
+  <meta name="description" content="The page you’re looking for cannot be found."/>
+  <meta property="og:title" content="404 — Maltese First Capital"/>
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg"/>
+  <meta name="theme-color" content="#0b1220"/>
+  <link rel="manifest" href="/site.webmanifest"/>
+
+  <link rel="stylesheet" href="/styles.css?v=48"/>
+  <script defer src="/scripts/nav.js?v=48"></script>
 </head>
 <body>
-  <section class="hero compact">
-    <img src="logo.png" alt="Maltese First Capital" class="hero-logo">
-    <h1>404 — Page Not Found</h1>
-    <p class="lead">The page you’re seeking may have been relocated or renamed.</p>
-    <div style="text-align:center; margin-top:24px;">
-      <a href="index.html" class="btn">Return Home</a>
+  <header class="header">
+    <nav class="navbar container">
+      <a class="brand" href="/index.html">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a class="btn outline" href="/client-login.html">Client Login</a>
+        <a class="btn gold" href="/account-open.html">Open an Account</a>
+      </div>
+    </nav>
+    <div id="mobile-menu" class="mobile-menu" hidden>
+      <div class="container">
+        <ul role="menu">
+          <li><a role="menuitem" href="/index.html">Home</a></li>
+          <li><a role="menuitem" href="/private-banking.html">Private Banking</a></li>
+          <li><a role="menuitem" href="/wealth-management.html">Wealth Management</a></li>
+          <li><a role="menuitem" href="/about.html">About</a></li>
+          <li><a role="menuitem" href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Compact Valletta band -->
+  <section class="hero" style="min-height:34vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
+    <div class="hero-inner container">
+      <div class="logo-badge"><img src="/assets/logo-crest.png" alt=""/></div>
+      <h1>Page Not Found</h1>
+      <p class="lead">The page you requested doesn’t exist, has moved, or is temporarily unavailable.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a class="btn btn-primary" href="/index.html">Back to Home</a>
+        <a class="btn outline" href="/contact.html">Contact Support</a>
+      </div>
     </div>
   </section>
 
-  <footer>
-    © 2025 Maltese First Capital — Valletta, Malta
+  <section class="page-section">
+    <div class="container">
+      <div class="panel">
+        <h2 style="margin-top:0;">Quick Links</h2>
+        <ul style="display:grid;gap:10px;">
+          <li><a class="card-link" href="/account-open.html">Open an Account</a></li>
+          <li><a class="card-link" href="/client-login.html">Client Login</a></li>
+          <li><a class="card-link" href="/private-banking.html">Private Banking</a></li>
+          <li><a class="card-link" href="/wealth-management.html">Wealth Management</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p class="footer-address">
+        The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
+    </div>
   </footer>
 </body>
 </html>
