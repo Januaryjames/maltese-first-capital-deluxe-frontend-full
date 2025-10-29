@@ -1,169 +1,204 @@
-/* ========== forms.js v42 ========== */
-const BACKEND_BASE =
-  document.querySelector('meta[name="backend-base"]')?.content?.trim() ||
-  'https://maltese-first-capital-deluxe-backend.onrender.com';
+<script>
+// ============ forms.js (client-side wiring) ============
 
-const Routes = {
-  contact: [`${BACKEND_BASE}/api/public/contact`, `${BACKEND_BASE}/api/public/enquiry`],
-  kyc:     [`${BACKEND_BASE}/api/public/kyc`,     `${BACKEND_BASE}/api/public/account-open`],
-  login:   `${BACKEND_BASE}/api/auth/login`,
-  me:      `${BACKEND_BASE}/api/client/me`,
-  accounts:`${BACKEND_BASE}/api/client/accounts`,
-  tx:      (accountId) => `${BACKEND_BASE}/api/client/transactions?accountId=${encodeURIComponent(accountId)}`
-};
-
-async function postWithFallback(urls, body, isForm=false) {
-  const list = Array.isArray(urls) ? urls : [urls];
-  let lastErr;
-  for (const u of list) {
-    try {
-      const res = await fetch(u, {
-        method: 'POST',
-        body: isForm ? body : JSON.stringify(body),
-        headers: isForm ? {} : {'Content-Type':'application/json'}
-      });
-      if (!res.ok) throw new Error(await res.text());
-      return await res.json().catch(()=>({ok:true}));
-    } catch (e) { lastErr = e; }
+// Resolve backend URL (uses your saved one; if not set, it warns)
+const BACKEND_URL = localStorage.getItem('BACKEND_URL') || '';
+function needBackend() {
+  if (!BACKEND_URL) {
+    alert('Set BACKEND_URL first in the browser console:\nlocalStorage.setItem("BACKEND_URL","https://YOUR-BACKEND.onrender.com")');
+    throw new Error('BACKEND_URL missing');
   }
-  throw lastErr || new Error('Network error');
+}
+function authHeaders() {
+  const token = localStorage.getItem('MFC_JWT') || '';
+  return token ? { 'Authorization': `Bearer ${token}` } : {};
 }
 
-/* Contact */
-export async function initContactForm(){
-  const f = document.getElementById('contact-form');
-  const status = document.getElementById('contact-status');
-  if(!f) return;
-  f.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    status.textContent = 'Sending...';
-    const data = Object.fromEntries(new FormData(f).entries());
-    try{
-      await postWithFallback(Routes.contact, data);
-      status.textContent = 'Thanks — we will get back to you shortly.';
-      f.reset();
-    }catch(err){
-      status.textContent = 'Could not send. Please try again in a moment.';
-      console.error(err);
-    }
-  });
-}
+// ---------- KYC: account-open.html ----------
+async function handleKycSubmit(e) {
+  e.preventDefault();
+  try {
+    needBackend();
+    const form = e.currentTarget;
+    const btn = form.querySelector('button[type="submit"]');
+    const status = form.querySelector('.form-status');
+    const data = new FormData(form);
 
-/* Account Open (KYC) */
-export async function initAccountOpenForm(){
-  const f = document.getElementById('kyc-form');
-  const status = document.getElementById('kyc-status');
-  if(!f) return;
-  f.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    status.textContent = 'Submitting...';
-    const fd = new FormData(f);
-    try{
-      await postWithFallback(Routes.kyc, fd, true);
-      status.textContent = 'Application received. Our team will contact you.';
-      f.reset();
-    }catch(err){
-      status.textContent = 'Submission failed. Please check fields and try again.';
-      console.error(err);
-    }
-  });
-}
+    btn.disabled = true; btn.textContent = 'Submitting…';
+    status.textContent = 'Uploading documents…';
 
-/* Client Login */
-export async function initClientLogin(){
-  const f = document.getElementById('login-form');
-  const status = document.getElementById('login-status');
-  if(!f) return;
-  f.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    status.textContent = 'Signing in...';
-    const { email, password } = Object.fromEntries(new FormData(f).entries());
-    try{
-      const res = await postWithFallback(Routes.login, { email, password });
-      if(!res?.token) throw new Error('No token returned');
-      localStorage.setItem('mfc_token', res.token);
-      window.location.href = '/client-dashboard.html';
-    }catch(err){
-      status.textContent = 'Login failed. Check details.';
-      console.error(err);
-    }
-  });
-}
-
-/* Client Dashboard — only run on dashboard page */
-export async function initClientDashboard(){
-  // Guard: only initialize if dashboard elements exist
-  const onDash = document.getElementById('accounts-list') || document.getElementById('client-name') || document.getElementById('tx-wrap');
-  if(!onDash) return;
-
-  const token = localStorage.getItem('mfc_token');
-  if(!token){ window.location.replace('/client-login.html'); return; }
-
-  const meEl = document.getElementById('client-name');
-  const acctList = document.getElementById('accounts-list');
-  const txWrap = document.getElementById('tx-wrap');
-
-  async function authedGet(url){
-    const r = await fetch(url, { headers:{ Authorization:`Bearer ${token}` }});
-    if(!r.ok) throw new Error(await r.text());
-    return r.json();
-  }
-
-  try{
-    const me = await authedGet(Routes.me);
-    if(meEl) meEl.textContent = me?.name || me?.fullName || me?.email || 'Client';
-
-    const accounts = await authedGet(Routes.accounts);
-    if(Array.isArray(accounts) && accounts.length){
-      acctList.innerHTML = accounts.map((a,i)=>`
-        <div class="form-card" data-id="${a._id || a.id}">
-          <p class="eyebrow">Account ${i+1}</p>
-          <h3 style="margin:.25rem 0 .35rem;">${a.currency || 'USD'} • ${String(a.accountNumber || '').padStart(8,'0')}</h3>
-          <p>Balance: <strong>${Number(a.balance ?? 0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</strong></p>
-          <button class="btn outline view-tx" data-ac="${a._id || a.id}">View transactions</button>
-        </div>
-      `).join('');
-    } else {
-      acctList.innerHTML = `<div class="form-card"><p>No accounts yet.</p></div>`;
-    }
-
-    acctList.addEventListener('click', async (e)=>{
-      const btn = e.target.closest('.view-tx');
-      if(!btn) return;
-      txWrap.innerHTML = '<p class="form-status">Loading transactions…</p>';
-      try{
-        const tx = await authedGet(Routes.tx(btn.dataset.ac));
-        const rows = (tx || []).map(t=>`
-          <tr>
-            <td>${new Date(t.createdAt || t.date || Date.now()).toLocaleString()}</td>
-            <td>${t.type || t.side || '-'}</td>
-            <td>${t.description || '-'}</td>
-            <td>${(t.currency || 'USD')}</td>
-            <td>${Number(t.amount ?? 0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
-          </tr>
-        `).join('');
-        txWrap.innerHTML = `
-          <table class="table">
-            <thead><tr><th>Date</th><th>Type</th><th>Details</th><th>Cur</th><th>Amount</th></tr></thead>
-            <tbody>${rows || '<tr><td colspan="5">No transactions.</td></tr>'}</tbody>
-          </table>`;
-      }catch(err){
-        txWrap.innerHTML = '<p class="form-status">Could not load transactions.</p>';
-        console.error(err);
-      }
+    const res = await fetch(`${BACKEND_URL}/api/kyc/submit`, {
+      method: 'POST',
+      body: data
     });
+    const json = await res.json();
 
-  }catch(err){
-    console.error(err);
-    localStorage.removeItem('mfc_token');
-    window.location.replace('/client-login.html');
+    if (!res.ok) throw new Error(json?.message || 'KYC submit failed');
+
+    status.textContent = 'Submitted. Our team will review shortly.';
+    btn.textContent = 'Submitted';
+    form.reset();
+  } catch (err) {
+    alert(err.message || 'Error submitting KYC');
+  } finally {
+    const btn = e.currentTarget.querySelector('button[type="submit"]');
+    if (btn) btn.disabled = false, btn.textContent = 'Continue';
   }
 }
 
-/* Auto-init by page */
+// ---------- Client Login (email + password triggers OTP) ----------
+async function handleClientLogin(e) {
+  e.preventDefault();
+  try {
+    needBackend();
+    const form = e.currentTarget;
+    const btn = form.querySelector('button[type="submit"]');
+    const status = form.querySelector('.form-status');
+
+    const payload = Object.fromEntries(new FormData(form).entries());
+
+    btn.disabled = true; btn.textContent = 'Sending OTP…';
+    status.textContent = 'Requesting OTP…';
+
+    const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json?.message || 'Login failed');
+
+    // server should return a short-lived temp token or nonce for OTP verification
+    sessionStorage.setItem('MFC_LOGIN_NONCE', json?.nonce || '');
+    sessionStorage.setItem('MFC_LOGIN_EMAIL', payload.email);
+    window.location.href = '/verify-otp.html';
+  } catch (err) {
+    alert(err.message || 'Login error');
+  } finally {
+    const btn = e.currentTarget.querySelector('button[type="submit"]');
+    if (btn) btn.disabled = false, btn.textContent = 'Sign in';
+  }
+}
+
+// ---------- Verify OTP ----------
+async function handleVerifyOtp(e) {
+  e.preventDefault();
+  try {
+    needBackend();
+    const form = e.currentTarget;
+    const btn = form.querySelector('button[type="submit"]');
+    const status = form.querySelector('.form-status');
+
+    const email = sessionStorage.getItem('MFC_LOGIN_EMAIL') || '';
+    const nonce = sessionStorage.getItem('MFC_LOGIN_NONCE') || '';
+    const otp = (new FormData(form)).get('otp');
+
+    if (!email || !nonce) throw new Error('Session expired. Please login again.');
+
+    btn.disabled = true; btn.textContent = 'Verifying…';
+    status.textContent = 'Checking code…';
+
+    const res = await fetch(`${BACKEND_URL}/api/auth/verify-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, nonce, otp })
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json?.message || 'Invalid OTP');
+
+    // store JWT, proceed
+    localStorage.setItem('MFC_JWT', json.token);
+    sessionStorage.removeItem('MFC_LOGIN_EMAIL');
+    sessionStorage.removeItem('MFC_LOGIN_NONCE');
+    window.location.href = '/client-dashboard.html';
+  } catch (err) {
+    alert(err.message || 'OTP error');
+  } finally {
+    const btn = e.currentTarget.querySelector('button[type="submit"]');
+    if (btn) btn.disabled = false, btn.textContent = 'Verify';
+  }
+}
+
+// ---------- Client Dashboard boot ----------
+async function loadClientOverview() {
+  try {
+    needBackend();
+    const res = await fetch(`${BACKEND_URL}/api/client/overview`, {
+      headers: { ...authHeaders() }
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json?.message || 'Failed to fetch overview');
+
+    // Expected shape:
+    // {
+    //   client: { name, email },
+    //   accounts: [{ accountNumber8, balance, currency }],
+    //   statements: [{ id, month, url }],
+    //   transactions: [{ id, date, amount, type, description }]
+    // }
+
+    // Header name
+    const nameEl = document.querySelector('[data-client-name]');
+    if (nameEl && json?.client?.name) nameEl.textContent = json.client.name;
+
+    // Accounts
+    const accWrap = document.querySelector('[data-accounts]');
+    if (accWrap) {
+      accWrap.innerHTML = (json.accounts || []).map(a => `
+        <div class="panel">
+          <div><strong>Account:</strong> ${a.accountNumber8}</div>
+          <div><strong>Balance:</strong> ${Number(a.balance).toLocaleString()} ${a.currency || 'USD'}</div>
+        </div>
+      `).join('') || '<div class="panel">No accounts yet.</div>';
+    }
+
+    // Transactions
+    const txWrap = document.querySelector('[data-transactions]');
+    if (txWrap) {
+      txWrap.innerHTML = (json.transactions || []).slice(0, 20).map(t => `
+        <div class="panel">
+          <div><strong>${t.date?.slice(0,10) || ''}</strong> — ${t.description || ''}</div>
+          <div>${t.type || ''} · ${Number(t.amount).toLocaleString()} ${t.currency || 'USD'}</div>
+        </div>
+      `).join('') || '<div class="panel">No transactions yet.</div>';
+    }
+
+    // Statements
+    const stWrap = document.querySelector('[data-statements]');
+    if (stWrap) {
+      stWrap.innerHTML = (json.statements || []).map(s => `
+        <div class="panel">
+          <div><strong>${s.month}</strong></div>
+          ${s.url ? `<a class="btn outline" href="${s.url}" target="_blank" rel="noopener">View PDF</a>` : '<em>Not available</em>'}
+        </div>
+      `).join('') || '<div class="panel">No statements published.</div>';
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert(err.message || 'Could not load dashboard');
+    // optional: redirect to login if unauthorized
+    // window.location.href = '/client-login.html';
+  }
+}
+
+// ---------- Hook forms by page ----------
 document.addEventListener('DOMContentLoaded', () => {
-  initContactForm();
-  initAccountOpenForm();
-  initClientLogin();
-  initClientDashboard(); // now safely guarded
+  // KYC form
+  const kycForm = document.querySelector('#kycForm');
+  if (kycForm) kycForm.addEventListener('submit', handleKycSubmit);
+
+  // login
+  const loginForm = document.querySelector('#loginForm');
+  if (loginForm) loginForm.addEventListener('submit', handleClientLogin);
+
+  // verify otp
+  const otpForm = document.querySelector('#otpForm');
+  if (otpForm) otpForm.addEventListener('submit', handleVerifyOtp);
+
+  // dashboard
+  if (document.body.dataset.page === 'client-dashboard') {
+    loadClientOverview();
+  }
 });
+</script>
