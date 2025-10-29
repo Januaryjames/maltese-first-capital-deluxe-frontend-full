@@ -4,50 +4,108 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Client Login — Maltese First Capital</title>
+
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <meta name="theme-color" content="#0b1220" />
+
   <link rel="stylesheet" href="/styles.css?v=45" />
-  <script defer src="/scripts/forms.js?v=45"></script>
+  <script defer src="/scripts/nav.js?v=45"></script>
 </head>
 <body>
   <header class="header">
     <nav class="navbar container">
-      <a class="brand" href="/index.html"><img class="brand-crest" src="/assets/logo-crest.png" alt="" /><span class="brand-name">Maltese First Capital</span></a>
+      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
       <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
         <li><a href="/about.html">About</a></li>
         <li><a href="/contact.html">Contact</a></li>
       </ul>
-      <div class="nav-cta"><a class="btn gold" href="/account-open.html">Open an Account</a></div>
+      <div class="nav-cta">
+        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
+      </div>
     </nav>
   </header>
 
+  <!-- Sub-hero: keeps pages clean without the Valletta photo -->
   <section class="sub-hero">
-    <div class="container">
-      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
-      <h1>Client Login</h1>
+    <div class="container" style="justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:14px">
+        <img class="page-mark" src="/assets/logo-crest.png" alt="">
+        <div>
+          <p class="eyebrow">Secure Access</p>
+          <h1 style="margin:.15rem 0 0;">Client Login</h1>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="page-section">
     <div class="container grid-2">
-      <form id="loginForm" class="panel">
-        <div class="form-row"><label>Email</label><input name="email" type="email" required></div>
-        <div class="form-row"><label>Password</label><input name="password" type="password" required></div>
-        <div class="form-actions"><button class="btn btn-primary" type="submit">Sign in</button></div>
-        <div class="form-status"></div>
+      <form id="loginForm" class="panel" novalidate>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@domain.com" required />
+        </div>
+        <div class="form-row">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="••••••••" required />
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Sign in</button>
+        </div>
+        <p id="loginStatus" class="form-status" role="status"></p>
+        <p class="form-status" style="margin-top:8px;opacity:.8">
+          Tip: For a quick demo without backend, use <code>demo@maltesefirst.com</code> / <code>demo123</code>.
+        </p>
       </form>
+
       <div class="panel">
-        <p><strong>Two-Step Security.</strong> After you sign in we’ll email you a one-time passcode (OTP) to confirm it’s you.</p>
-        <p><a class="btn outline" href="/account-open.html">Open an account</a></p>
+        <h3>Having trouble?</h3>
+        <p>For assistance with your credentials or multi-factor authentication, contact your relationship manager or email <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>.</p>
       </div>
     </div>
   </section>
 
-  <footer class="site-footer"><div class="container footer-inner">
-    <p>© 2025 Maltese First Capital. All rights reserved.</p>
-    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-  </div></footer>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- API + login logic -->
+  <script src="/scripts/api.js?v=46"></script>
+  <script>
+    (function(){
+      const f = document.getElementById("loginForm");
+      const statusEl = document.getElementById("loginStatus");
+
+      f.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        statusEl.textContent = "Signing in…";
+        const email = f.email.value.trim();
+        const password = f.password.value;
+
+        try {
+          await window.MFC_API.login(email, password);
+          statusEl.textContent = "Success. Redirecting…";
+          window.location.href = "/client-dashboard.html";
+        } catch (err) {
+          statusEl.textContent = `Sign-in failed: ${err.message || "Please try again."}`;
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
