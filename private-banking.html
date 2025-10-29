@@ -1,134 +1,75 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Private Banking — Maltese First Capital</title>
-
-  <link rel="icon" href="/assets/logo-crest.png" />
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-
-  <meta name="description" content="Dedicated private banking with multi-currency access, clear statements, and secure authentication." />
-  <meta property="og:title" content="Private Banking — Maltese First Capital" />
-  <meta property="og:description" content="Relationship-first private banking, modern security, and disciplined reporting." />
-  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
-  <meta property="og:url" content="https://maltesefirst.com/private-banking.html" />
-  <meta name="theme-color" content="#0b1220" />
-
-  <!-- keep current working versions -->
-  <link rel="stylesheet" href="/styles.css?v=48" />
-  <script defer src="/scripts/nav.js?v=48"></script>
-  <script defer src="/scripts/forms.js?v=48"></script>
+  <link rel="icon" href="/assets/logo-crest.png"/>
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
+  <link rel="stylesheet" href="/styles.css?v=45"/>
+  <script defer src="/scripts/nav.js?v=45"></script>
 </head>
 <body>
-  <!-- Header -->
   <header class="header">
-    <nav class="navbar container" aria-label="Primary">
-      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+    <nav class="navbar container">
+      <a class="brand" href="/index.html">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
         <span class="brand-name">Maltese First Capital</span>
       </a>
-
-      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
-        <span class="nav-toggle-bar"></span>
-        <span class="nav-toggle-bar"></span>
-        <span class="nav-toggle-bar"></span>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
       </button>
-
       <ul class="nav-links">
         <li><a href="/index.html">Home</a></li>
-        <li class="active"><a href="/private-banking.html" aria-current="page">Private Banking</a></li>
-        <li><a href="/wealth-management.html">Wealth Management</a></li>
         <li><a href="/about.html">About</a></li>
+        <li class="active"><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
         <li><a href="/contact.html">Contact</a></li>
       </ul>
-
       <div class="nav-cta">
         <a class="btn outline" href="/client-login.html">Client Login</a>
         <a class="btn gold" href="/admin-login.html">Admin Portal</a>
       </div>
     </nav>
-
-    <!-- Mobile dropdown -->
-    <div id="mobile-menu" class="mobile-menu" hidden>
-      <div class="container">
-        <ul role="menu">
-          <li role="none"><a role="menuitem" href="/index.html">Home</a></li>
-          <li role="none"><a role="menuitem" href="/private-banking.html">Private Banking</a></li>
-          <li role="none"><a role="menuitem" href="/wealth-management.html">Wealth Management</a></li>
-          <li role="none"><a role="menuitem" href="/about.html">About</a></li>
-          <li role="none"><a role="menuitem" href="/contact.html">Contact</a></li>
-        </ul>
-        <div class="menu-divider"></div>
-        <div style="display:flex; gap:10px; margin-top:10px;">
-          <a class="btn outline" href="/client-login.html" style="flex:1;">Client Login</a>
-          <a class="btn gold" href="/admin-login.html" style="flex:1;">Admin Portal</a>
-        </div>
-      </div>
-    </div>
   </header>
 
-  <!-- Valletta hero (compact) -->
-  <section
-    class="hero"
-    style="
-      min-height:44vh;
-      border-radius:18px;
-      width:min(1280px, calc(100% - 24px));
-      margin:18px auto 0;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    "
-  >
-    <div class="hero-inner container">
-      <div class="logo-badge">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
-      </div>
-      <h1>Private Banking</h1>
-      <p class="lead" style="max-width:820px;margin:0 auto 22px;">
-        Dedicated private banking with multi-currency access, clear statements, and secure authentication.
-      </p>
-      <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
-    </div>
-  </section>
-
-  <!-- Capabilities 2×2 (aligned) -->
-  <section class="section-cards">
+  <section class="sub-hero">
     <div class="container">
-      <p class="eyebrow centered">Capabilities</p>
-      <h2 class="section-title">Precision Service, Modern Security</h2>
+      <img class="page-mark" src="/assets/logo-crest.png" alt=""/>
+      <h1>Private Banking</h1>
+    </div>
+  </section>
 
-      <!-- force clean 2×2 with equal-height rows -->
-      <div class="cards-grid two" style="align-items:stretch;">
+  <section class="page-section">
+    <div class="container">
+      <p class="eyebrow centered">Relationship-led banking</p>
+      <h2 class="section-title">Precision service with clear, consolidated reporting</h2>
+
+      <div class="cards-grid">
         <article class="card">
-          <h3>Bespoke Accounts</h3>
-          <p>Dedicated IBANs, standing orders, incoming international wires, and scheduled statements.</p>
+          <h3>Dedicated Coverage</h3>
+          <p>Responsive, tailored service with a single point of contact.</p>
         </article>
-
         <article class="card">
-          <h3>Security &amp; 2FA</h3>
-          <p>Device fingerprinting, OTP login, and anomaly alerts for transactions.</p>
+          <h3>Credit & Liquidity</h3>
+          <p>Disciplined structuring aligned to goals and market conditions.</p>
         </article>
-
         <article class="card">
-          <h3>Clear Statements</h3>
-          <p>Consolidated monthly and on-demand statements for balances, movements, and charges.</p>
+          <h3>Payments & Cash</h3>
+          <p>Streamlined operations with secure approvals and audit trail.</p>
         </article>
-
         <article class="card">
-          <h3>International Reach</h3>
-          <p>Multi-currency support and seamless inbound cross-border transfers from trusted counterparties.</p>
+          <h3>Statements & Vault</h3>
+          <p>Secure document storage, downloadable statements, and archive.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">
-        The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
         <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
       </p>
     </div>
