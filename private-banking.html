@@ -2,46 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Private Banking — Maltese First Capital</title>
-  <meta name="description" content="Dedicated private banking with multi-currency access, clear statements, and secure authentication." />
-  <link rel="preload" as="image" href="/assets/hero-bg.jpg">
-  <link rel="icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=49">
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
+
   <!-- Header -->
   <header class="header">
     <div class="container navbar">
-      <a href="/index.html" class="brand" aria-label="Maltese First Capital">
-        <img class="brand-crest" src="/assets/logo-crest.png?v=2" alt="" width="56" height="56" />
+      <a href="/index.html" class="brand" aria-label="Maltese First Capital — Home">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
         <span class="brand-name">Maltese First Capital</span>
       </a>
-      <nav aria-label="Primary">
+
+      <nav aria-label="Main">
         <ul class="nav-links">
           <li><a href="/index.html">Home</a></li>
+          <li><a href="/about.html">About</a></li>
           <li class="active"><a href="/private-banking.html">Private Banking</a></li>
           <li><a href="/wealth-management.html">Wealth Management</a></li>
-          <li><a href="/about.html">About</a></li>
           <li><a href="/contact.html">Contact</a></li>
         </ul>
       </nav>
+
       <div class="nav-cta">
-        <a class="btn outline" href="/client-login.html">Client Login</a>
-        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
+        <a href="/client-login.html" class="btn outline">Client Login</a>
+        <a href="/admin-login.html" class="btn gold">Admin Portal</a>
       </div>
-      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
     </div>
-    <div class="mobile-menu" id="mobileMenu">
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
       <ul>
         <li><a href="/index.html">Home</a></li>
+        <li><a href="/about.html">About</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/about.html">About</a></li>
         <li><a href="/contact.html">Contact</a></li>
         <li class="menu-divider"></li>
         <li><a href="/client-login.html">Client Login</a></li>
@@ -50,11 +53,12 @@
     </div>
   </header>
 
-  <!-- Banner (Valletta + crest INSIDE the badge) -->
-  <section class="banner bg-valletta" role="region" aria-label="Private Banking banner">
+  <!-- Banner (Valletta background via CSS) -->
+  <section class="banner bg-valletta">
     <div class="container">
       <div class="logo-badge">
-        <img src="/assets/logo-crest.png?v=2" alt="Maltese First Capital crest" width="128" height="128" />
+        <!-- Crest will be ensured by the injector below -->
+        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
       </div>
       <div>
         <p class="eyebrow">Private Banking</p>
@@ -89,7 +93,7 @@
 
         <article class="card">
           <h3>Clear Statements</h3>
-          <p>Consolidated monthly and on-demand statements with a clear view of balances, movements, and charges.</p>
+          <p>Monthly and on-demand statements with a consolidated overview of balances and charges.</p>
         </article>
 
         <article class="card">
@@ -99,7 +103,7 @@
 
         <article class="card">
           <h3>International Reach</h3>
-          <p>Multi-currency support and seamless incoming cross-border transfers from trusted counterparties.</p>
+          <p>Multi-currency support and seamless incoming cross-border transfers.</p>
         </article>
       </div>
     </div>
@@ -109,43 +113,45 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>© 2025 Maltese First Capital. All rights reserved.</div>
-      <div class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </div>
+      <div class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div>
     </div>
   </footer>
 
-  <!-- Tiny helper: fallback crest path & hide empty badge if image fails -->
+  <!-- Crest injector (ensures the crest image always renders inside .logo-badge) -->
   <script>
-    (function () {
-      // Mobile menu
-      const btn = document.querySelector('.nav-toggle');
-      const menu = document.getElementById('mobileMenu');
-      if (btn && menu) {
-        btn.addEventListener('click', () => {
-          const open = document.body.classList.toggle('menu-open');
-          btn.setAttribute('aria-expanded', String(open));
-        });
+  (function () {
+    document.querySelectorAll('.logo-badge').forEach(function (host) {
+      let img = host.querySelector('img');
+      if (!img) {
+        img = document.createElement('img');
+        img.alt = 'Maltese First Capital crest';
+        img.decoding = 'async';
+        host.appendChild(img);
       }
-      // Crest fallback (covers /assets/ vs assets/ and any caching)
-      document.querySelectorAll('.logo-badge img, .brand-crest').forEach(function (img) {
-        function tryFallback() {
-          if (img.dataset.fallback) {
-            // second failure: hide the empty badge to avoid a white square
-            const host = img.closest('.logo-badge');
-            if (host) host.remove();
-            return;
-          }
-          img.dataset.fallback = '1';
-          img.src = img.src.includes('/assets/') ? 'assets/logo-crest.png?v=2' : '/assets/logo-crest.png?v=2';
-        }
-        if (!img.complete) {
-          img.addEventListener('error', tryFallback, { once: true });
-        } else if (img.naturalWidth === 0) {
-          tryFallback();
-        }
-      });
-    })();
+      Object.assign(img.style, { width:'100%', height:'100%', objectFit:'contain', display:'block' });
+
+      const headerCrest = document.querySelector('.brand-crest');
+      const candidates = [];
+      if (headerCrest && (headerCrest.currentSrc || headerCrest.src)) {
+        candidates.push(headerCrest.currentSrc || headerCrest.src);
+      }
+      ['/assets/logo-crest.png','assets/logo-crest.png','/assets/logo-crest.svg','assets/logo-crest.svg','/assets/logo-crest.jpg','assets/logo-crest.jpg']
+        .forEach(p => candidates.push(p + '?v=2'));
+
+      let i = 0;
+      const next = () => { if (i < candidates.length) img.src = candidates[i++]; else host.remove(); };
+      img.addEventListener('error', next);
+      img.addEventListener('load', function () { if (!img.naturalWidth) next(); }, { once:true });
+      next();
+    });
+
+    const btn = document.querySelector('.nav-toggle');
+    const menu = document.getElementById('mobileMenu');
+    if (btn && menu) btn.addEventListener('click', () => {
+      const open = document.body.classList.toggle('menu-open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  })();
   </script>
 </body>
 </html>
