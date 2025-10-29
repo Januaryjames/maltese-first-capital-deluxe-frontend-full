@@ -7,18 +7,36 @@
 
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <meta name="theme-color" content="#0b1220" />
-  <meta name="backend-base" content="https://maltese-first-capital-deluxe-backend.onrender.com" />
 
-  <link rel="stylesheet" href="/styles.css?v=42" />
-  <script defer src="/scripts/nav.js?v=42"></script>
-  <script defer type="module" src="/scripts/forms.js?v=42"></script>
+  <meta name="description" content="Open a private or wealth management account with Maltese First Capital." />
+  <meta property="og:title" content="Open an Account — Maltese First Capital" />
+  <meta property="og:description" content="Relationship-first private banking with disciplined wealth management." />
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
+  <meta property="og:url" content="https://maltesefirst.com/account-open.html" />
+  <meta name="theme-color" content="#0b1220" />
+
+  <!-- Keep your working CSS version -->
+  <link rel="stylesheet" href="/styles.css?v=48" />
+
+  <!-- Your existing scripts -->
+  <script defer src="/scripts/nav.js?v=48"></script>
+  <script defer src="/scripts/forms.js?v=48"></script>
 </head>
 <body>
+  <!-- Header / Nav (unchanged structure) -->
   <header class="header">
-    <nav class="navbar container">
-      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""/><span>Maltese First Capital</span></a>
-      <button class="nav-toggle" aria-label="Toggle menu"></button>
+    <nav class="navbar container" aria-label="Primary">
+      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
       <ul class="nav-links">
         <li><a href="/index.html">Home</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
@@ -26,42 +44,128 @@
         <li><a href="/about.html">About</a></li>
         <li><a href="/contact.html">Contact</a></li>
       </ul>
+
       <div class="nav-cta">
         <a class="btn outline" href="/client-login.html">Client Login</a>
+        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
       </div>
     </nav>
+
+    <!-- Mobile dropdown -->
+    <div id="mobile-menu" class="mobile-menu" hidden>
+      <div class="container">
+        <ul role="menu">
+          <li role="none"><a role="menuitem" href="/index.html">Home</a></li>
+          <li role="none"><a role="menuitem" href="/private-banking.html">Private Banking</a></li>
+          <li role="none"><a role="menuitem" href="/wealth-management.html">Wealth Management</a></li>
+          <li role="none"><a role="menuitem" href="/about.html">About</a></li>
+          <li role="none"><a role="menuitem" href="/contact.html">Contact</a></li>
+        </ul>
+        <div class="menu-divider"></div>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <a class="btn outline" href="/client-login.html" style="flex:1;">Client Login</a>
+          <a class="btn gold" href="/admin-login.html" style="flex:1;">Admin Portal</a>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <section class="section-cards" style="padding-top:40px">
+  <!-- Sub-hero (prevents hero bleed on forms pages) -->
+  <section class="sub-hero">
     <div class="container">
-      <div class="cards-grid two">
-        <article class="card">
-          <h3>Application</h3>
-          <form id="kyc-form" enctype="multipart/form-data">
-            <div class="form-row"><label>Full name</label><input name="fullName" required /></div>
-            <div class="form-row"><label>Email</label><input type="email" name="email" required /></div>
-            <div class="form-row"><label>Phone</label><input name="phone" /></div>
-            <div class="form-row"><label>Nationality</label><input name="nationality" /></div>
-            <div class="form-row"><label>Address</label><input name="address" /></div>
-            <div class="form-row"><label>Source of funds</label><input name="sof" /></div>
-            <div class="form-row"><label>Passport (PDF/JPG)</label><input type="file" name="passport" accept=".pdf,.jpg,.jpeg,.png" /></div>
-            <div class="form-row"><label>Proof of address</label><input type="file" name="poa" accept=".pdf,.jpg,.jpeg,.png" /></div>
-            <button class="btn btn-primary" type="submit">Submit application</button>
-            <p class="form-status" id="kyc-status"></p>
-          </form>
-        </article>
-        <article class="card">
-          <h3>What happens next?</h3>
-          <p>Our onboarding team reviews your submission, sets up your client profile, and will contact you for any clarifications.</p>
-        </article>
+      <div class="page-mark">
+        <img src="/assets/logo-crest.png" alt="" />
+      </div>
+      <div>
+        <p class="eyebrow">Open an Account</p>
+        <h1>Start Private &amp; Wealth Banking</h1>
       </div>
     </div>
   </section>
 
-  <footer class="site-footer footer-white">
+  <!-- Form + Next steps -->
+  <main>
+    <section class="page-section">
+      <div class="container grid-2">
+        <!-- Application form -->
+        <form class="panel" id="account-open-form" data-form="account-open"
+              method="post" action="/"
+              enctype="multipart/form-data" novalidate>
+          <h2 class="section-title" style="margin-top:0; text-align:left;">Application</h2>
+
+          <div class="form-row">
+            <label for="fullName">Full name</label>
+            <input id="fullName" name="full_name" type="text" autocomplete="name" required placeholder="First Last" />
+          </div>
+
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@domain.com" />
+          </div>
+
+          <div class="form-row">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required placeholder="+356 0000 0000" />
+          </div>
+
+          <div class="form-row">
+            <label for="nationality">Nationality</label>
+            <input id="nationality" name="nationality" type="text" required placeholder="e.g., Maltese" />
+          </div>
+
+          <div class="form-row">
+            <label for="address">Address</label>
+            <input id="address" name="address" type="text" autocomplete="street-address" required placeholder="Street, City, Postcode, Country" />
+          </div>
+
+          <div class="form-row">
+            <label for="sofs">Source of funds</label>
+            <input id="sofs" name="source_of_funds" type="text" required placeholder="Employment, business income, investments…" />
+          </div>
+
+          <div class="form-row">
+            <label for="passport">Passport (PDF/JPG/PNG)</label>
+            <input id="passport" name="passport_file" type="file" accept=".pdf,.jpg,.jpeg,.png" required />
+          </div>
+
+          <div class="form-row">
+            <label for="poa">Proof of address (PDF/JPG/PNG)</label>
+            <input id="poa" name="poa_file" type="file" accept=".pdf,.jpg,.jpeg,.png" required />
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Submit application</button>
+            <p class="form-status" id="account-open-status" aria-live="polite"></p>
+          </div>
+        </form>
+
+        <!-- Next steps panel -->
+        <aside class="panel">
+          <h2 class="section-title" style="margin-top:0; text-align:left;">What happens next?</h2>
+          <p>
+            Our onboarding team reviews your submission, verifies identity documents and address,
+            sets up your client profile, and will contact you for any clarifications.
+          </p>
+          <div class="menu-divider"></div>
+          <ul style="line-height:1.6; margin-top:12px;">
+            <li>Document checks (passport and address).</li>
+            <li>Compliance review of declared source of funds.</li>
+            <li>Account creation and secure credential setup.</li>
+          </ul>
+          <p style="margin-top:14px;">
+            Questions? Email <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>.
+          </p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (white bar) -->
+  <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+      <p class="footer-address">
+        The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
         <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
       </p>
     </div>
