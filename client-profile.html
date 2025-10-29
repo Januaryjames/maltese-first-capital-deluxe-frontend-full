@@ -1,199 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Profile & Documents • Maltese First Capital</title>
-  <link rel="icon" href="assets/logo.png"/>
-  <link rel="stylesheet" href="styles.css?v=30"/>
-  <style>
-    .two{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
-    .card{background:#0f1a27;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}
-    .muted{color:#9fb1c7}
-    .err{color:#ff9b9b;font-weight:700}
-    .kv{display:grid;grid-template-columns:140px 1fr;gap:8px;row-gap:10px}
-    .docs{display:grid;gap:10px;margin-top:8px}
-    .docrow{display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px;background:#0b1520}
-    .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-    @media (max-width:980px){ .two{grid-template-columns:1fr} .kv{grid-template-columns:1fr} }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Client Profile — Maltese First Capital</title>
+
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <meta name="description" content="Manage your personal details, trusted devices, and KYC status." />
+  <meta property="og:title" content="Client Profile — Maltese First Capital" />
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
+  <meta name="theme-color" content="#0b1220" />
+
+  <link rel="stylesheet" href="/styles.css?v=48" />
+  <script defer src="/scripts/nav.js?v=48"></script>
+  <script defer src="/scripts/forms.js?v=48"></script>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <div class="navbar-wrap">
-    <div class="container navbar">
-      <a class="brand navbar-brand" href="index.html">
-        <img src="assets/logo.png" alt="Maltese First Capital">
-        <span>Maltese First Capital</span>
+  <header class="header">
+    <nav class="navbar container" aria-label="Primary">
+      <a class="brand" href="/index.html">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <span class="brand-name">Maltese First Capital</span>
       </a>
-      <nav class="links">
-        <a class="highlight" href="client-dashboard.html">Dashboard</a>
-        <a href="#" id="logoutLink">Log Out</a>
-      </nav>
-    </div>
-  </div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container">
-      <img class="hero-logo" src="assets/logo.png" alt="MFC">
-      <h1>Your Profile & Documents</h1>
-      <p class="lead">Upload additional KYC documents securely and manage your details.</p>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="/client-dashboard.html">Dashboard</a></li>
+        <li class="active"><a href="/client-profile.html" aria-current="page">Profile</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a class="btn outline" href="/client-dashboard.html">Back to dashboard</a>
+        <a class="btn gold" href="/client-login.html">Logout</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="page-section">
+    <div class="container grid-2">
+      <form id="clientProfileForm" class="panel" aria-labelledby="profileTitle">
+        <h2 id="profileTitle" style="margin-top:0">Personal details</h2>
+
+        <div class="form-row">
+          <label for="cpName">Full name</label>
+          <input id="cpName" name="name" type="text" value="" placeholder="Full name" />
+        </div>
+
+        <div class="form-row">
+          <label for="cpEmail">Email</label>
+          <input id="cpEmail" name="email" type="email" value="" placeholder="you@email.com" />
+        </div>
+
+        <div class="form-row">
+          <label for="cpPhone">Phone</label>
+          <input id="cpPhone" name="phone" type="tel" value="" placeholder="+356 ..." />
+        </div>
+
+        <div class="form-row">
+          <label for="cpAddress">Address</label>
+          <input id="cpAddress" name="address" type="text" value="" placeholder="Street, city, country" />
+        </div>
+
+        <div class="form-actions" style="display:flex; gap:10px;">
+          <button class="btn btn-primary" type="submit">Save changes</button>
+          <a class="btn outline" href="/client-dashboard.html">Cancel</a>
+        </div>
+
+        <p class="form-status" id="profileStatus">Update your details; changes apply to statements and correspondence.</p>
+      </form>
+
+      <aside class="panel">
+        <h3 style="margin-top:0">Security &amp; KYC</h3>
+        <p><strong>Trusted devices:</strong> 2 · <a href="#">Manage</a></p>
+        <p><strong>KYC status:</strong> Pending documents</p>
+        <div class="form-actions" style="display:flex; gap:10px;">
+          <a class="btn outline" href="#">Upload Passport</a>
+          <a class="btn outline" href="#">Upload Proof of Address</a>
+        </div>
+        <p class="form-status" style="margin-top:10px;">Uploads appear instantly in your secure document vault.</p>
+      </aside>
     </div>
   </section>
 
-  <main class="section" style="border:none">
-    <div class="container two">
-      <!-- Left: Profile & Docs -->
-      <section class="card">
-        <h2>Profile</h2>
-        <div class="kv" id="profileKV">
-          <div class="muted">Name</div><div id="kvName">—</div>
-          <div class="muted">Email</div><div id="kvEmail">—</div>
-          <div class="muted">Phone</div><div id="kvPhone">—</div>
-          <div class="muted">Address</div><div id="kvAddr">—</div>
-          <div class="muted">Primary Currency</div><div id="kvCur">—</div>
-        </div>
-
-        <hr style="border-color:rgba(255,255,255,.06);margin:16px 0"/>
-
-        <h2>Upload Documents</h2>
-        <form id="docForm" class="card" style="padding:12px;margin-top:8px">
-          <label for="docType">Document Type</label>
-          <select id="docType">
-            <option value="passport">Government ID / Passport</option>
-            <option value="proof_of_address">Proof of Address</option>
-            <option value="bank_statement">Bank Statement</option>
-            <option value="source_of_funds">Source of Funds</option>
-            <option value="other">Other</option>
-          </select>
-          <label for="doc">File (PDF/JPG/PNG)</label>
-          <input id="doc" type="file" accept=".pdf,.jpg,.jpeg,.png" required/>
-          <div style="display:flex;gap:10px;align-items:center;justify-content:flex-end">
-            <button class="btn" type="button" id="docClear">Clear</button>
-            <button class="btn gold" type="submit">Upload</button>
-          </div>
-          <div id="docStatus" class="muted" style="margin-top:6px"></div>
-        </form>
-
-        <h3 style="margin-top:14px">Recent uploads (this session)</h3>
-        <div class="docs" id="docList">
-          <div class="muted">None yet.</div>
-        </div>
-      </section>
-
-      <!-- Right: Password -->
-      <section class="card">
-        <h2>Change Password</h2>
-        <form id="pwdForm">
-          <label for="curPwd">Current password</label>
-          <input id="curPwd" type="password" autocomplete="current-password"/>
-          <label for="newPwd">New password</label>
-          <input id="newPwd" type="password" autocomplete="new-password" minlength="8" required/>
-          <label for="newPwd2">Confirm new password</label>
-          <input id="newPwd2" type="password" autocomplete="new-password" minlength="8" required/>
-          <div style="display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:10px">
-            <button class="btn gold" type="submit">Update Password</button>
-          </div>
-          <div id="pwdStatus" class="muted" style="margin-top:6px"></div>
-        </form>
-
-        <hr style="border-color:rgba(255,255,255,.06);margin:16px 0"/>
-
-        <h3>Security</h3>
-        <p class="muted">If you suspect unauthorised access, change your password and contact <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>.</p>
-      </section>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
     </div>
-  </main>
-
-  <footer><div class="container">© 2025 Maltese First Capital — Valletta, Malta</div></footer>
-
-<script>
-const API   = localStorage.getItem('BACKEND_URL') || '';
-const token = localStorage.getItem('CLIENT_TOKEN') || '';
-const pre   = JSON.parse(localStorage.getItem('CLIENT_PREFILL')||'{}');
-
-function authHeaders(extra={}){ return { ...extra, ...(token ? {'Authorization':`Bearer ${token}`} : {}) }; }
-
-// Fill profile (prefill fallback)
-(function(){
-  document.getElementById('kvName').textContent  = pre.name || 'Client';
-  document.getElementById('kvEmail').textContent = pre.email || localStorage.getItem('CLIENT_EMAIL') || '—';
-  document.getElementById('kvPhone').textContent = pre.phone || '—';
-  document.getElementById('kvAddr').textContent  = pre.addr  || '—';
-  document.getElementById('kvCur').textContent   = pre.currency || 'EUR';
-})();
-
-// Logout
-document.getElementById('logoutLink').addEventListener('click', (e)=>{
-  e.preventDefault();
-  localStorage.removeItem('CLIENT_TOKEN');
-  location.href='client-login.html';
-});
-
-// Upload handling
-const docStatus = document.getElementById('docStatus');
-const docList   = document.getElementById('docList');
-const sessionDocs = [];
-
-document.getElementById('docClear').addEventListener('click', ()=>{
-  document.getElementById('doc').value = '';
-  docStatus.textContent = '';
-});
-
-document.getElementById('docForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  if(!API){ docStatus.textContent = 'Backend not set.'; return; }
-  if(!token){ docStatus.textContent = 'Please log in again.'; return; }
-
-  const file = document.getElementById('doc').files[0];
-  const docType = document.getElementById('docType').value;
-  if(!file){ docStatus.textContent='Select a file.'; return; }
-  if(file.size > 15*1024*1024){ docStatus.textContent='File too large (max 15MB).'; return; }
-
-  docStatus.textContent = 'Uploading…';
-  try{
-    const fd = new FormData();
-    fd.append('docType', docType);
-    fd.append('file', file);
-
-    const r = await fetch(`${API}/api/client/upload-docs`,{
-      method:'POST', headers: authHeaders(), body: fd
-    });
-    const data = await r.json();
-    if(!r.ok || !data.ok){ throw new Error(data.error||'Upload failed'); }
-    docStatus.textContent = 'Uploaded.';
-    document.getElementById('doc').value='';
-
-    const row = {
-      type: data.document?.docType || docType,
-      name: data.document?.originalName || file.name,
-      url:  data.document ? (`${API}/uploads/${data.document.filename}`) : ''
-    };
-    sessionDocs.unshift(row);
-    renderSessionDocs();
-  }catch(err){
-    docStatus.textContent = 'Upload failed.';
-  }
-});
-
-function renderSessionDocs(){
-  if(!sessionDocs.length){ docList.innerHTML = '<div class="muted">None yet.</div>'; return; }
-  docList.innerHTML = sessionDocs.map(d=>`
-    <div class="docrow">
-      <div>
-        <div><strong>${escape(d.type)}</strong></div>
-        <div class="muted mono" style="font-size:12px">${escape(d.name)}</div>
-      </div>
-      <div>
-        ${d.url?`<a class="btn" href="${d.url}" target="_blank" rel="noopener">View</a>`:''}
-      </div>
-    </div>
-  `).join('');
-}
-
-function escape(s){return (s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
-renderSessionDocs();
-</script>
+  </footer>
 </body>
 </html>
