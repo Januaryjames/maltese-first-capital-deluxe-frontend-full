@@ -1,13 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Admin Login — Maltese First Capital</title>
-
-  <link rel="icon" href="/assets/logo-crest.png" />
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <link rel="stylesheet" href="/styles.css?v=45" />
+  <link rel="icon" href="/assets/logo-crest.png"/>
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
+  <link rel="stylesheet" href="/styles.css?v=45"/>
   <script defer src="/scripts/nav.js?v=45"></script>
   <script defer src="/scripts/api.js"></script>
 </head>
@@ -15,7 +14,7 @@
   <header class="header">
     <nav class="navbar container">
       <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
         <span class="brand-name">Maltese First Capital</span>
       </a>
       <ul class="nav-links">
@@ -29,29 +28,28 @@
 
   <section class="sub-hero">
     <div class="container">
-      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <img class="page-mark" src="/assets/logo-crest.png" alt=""/>
       <h1>Admin Portal Login</h1>
     </div>
   </section>
 
   <section class="page-section">
-    <div class="container grid-2">
-      <form id="adminLogin" class="panel">
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input id="email" type="email" required />
-        </div>
-        <div class="form-row">
-          <label for="password">Password</label>
-          <input id="password" type="password" required />
-        </div>
-        <button class="btn btn-primary" type="submit">Sign in</button>
-        <p id="msg" class="form-status"></p>
-      </form>
-
-      <div class="panel">
-        <p class="eyebrow">Access</p>
-        <p>Authorized staff only. Actions are logged.</p>
+    <div class="container">
+      <div class="panel" style="max-width:520px;margin:0 auto">
+        <form id="adminForm" autocomplete="on">
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" type="email" required/>
+          </div>
+          <div class="form-row">
+            <label for="password">Password</label>
+            <input id="password" type="password" required/>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary block" type="submit">Sign in</button>
+          </div>
+          <p id="msg" class="form-status"></p>
+        </form>
       </div>
     </div>
   </section>
@@ -66,27 +64,27 @@
   </footer>
 
   <script>
-  (function(){
-    const form = document.getElementById('adminLogin');
-    const msg  = document.getElementById('msg');
+    (function(){
+      const form = document.getElementById('adminForm');
+      const msg  = document.getElementById('msg');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      msg.textContent = 'Signing in…';
-      try{
-        const data = await mfcApi.post('/api/admin/login', {
-          email: form.email.value.trim(),
-          password: form.password.value
-        }, { auth:false });
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        msg.textContent = 'Signing in…';
+        try{
+          const data = await mfcApi.post('/api/admin/login', {
+            email: form.email.value.trim(),
+            password: form.password.value
+          }, { auth:false });
 
-        localStorage.setItem(mfcApi.tokenKey, data.token);
-        localStorage.setItem(mfcApi.adminKey, '1');
-        location.href = '/admin-dashboard.html';
-      }catch(err){
-        msg.textContent = 'Login failed: ' + (err.message || 'Unable to sign in');
-      }
-    });
-  })();
+          localStorage.setItem(mfcApi.keys.token, data.token);
+          localStorage.setItem(mfcApi.keys.admin, '1');
+          location.href = '/admin-dashboard.html';
+        }catch(err){
+          msg.textContent = 'Login failed: ' + (err.message || 'Unable to sign in');
+        }
+      });
+    })();
   </script>
 </body>
 </html>
