@@ -3,204 +3,39 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin KYC — Maltese First Capital</title>
-
+  <title>KYC Review — Admin · Maltese First Capital</title>
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <meta name="description" content="Review onboarding submissions, verify identity, and record approvals." />
-  <meta property="og:title" content="Admin KYC — Maltese First Capital" />
-  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
-  <meta name="theme-color" content="#0b1220" />
-
-  <link rel="stylesheet" href="/styles.css?v=48" />
-  <script defer src="/scripts/nav.js?v=48"></script>
-  <script defer src="/scripts/forms.js?v=48"></script>
+  <link rel="stylesheet" href="/styles.css?v=45" />
+  <script defer src="/scripts/admin.js?v=45"></script>
 </head>
-<body>
+<body data-page="admin-kyc">
   <header class="header">
-    <nav class="navbar container" aria-label="Admin">
-      <a class="brand" href="/admin-dashboard.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
-        <span class="brand-name">Maltese First Capital</span>
-      </a>
-
-      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
-
+    <nav class="navbar container">
+      <a class="brand" href="/index.html"><img class="brand-crest" src="/assets/logo-crest.png" alt="" /><span class="brand-name">Maltese First Capital</span></a>
       <ul class="nav-links">
-        <li><a href="/admin-dashboard.html">Dashboard</a></li>
-        <li><a href="/admin-docs.html">Docs</a></li>
-        <li class="active"><a aria-current="page" href="/admin-kyc.html">KYC</a></li>
-        <li><a href="/admin-login.html">Logout</a></li>
+        <li class="active"><a href="/admin-kyc.html">KYC</a></li>
+        <li><a href="/admin-dashboard.html">Accounts</a></li>
       </ul>
-
-      <div class="nav-cta">
-        <a class="btn outline" href="/admin-docs.html">Open Vault</a>
-        <a class="btn gold" href="/admin-kyc.html">KYC Queue</a>
-      </div>
     </nav>
-
-    <div id="mobile-menu" class="mobile-menu" hidden>
-      <div class="container">
-        <ul role="menu">
-          <li><a role="menuitem" href="/admin-dashboard.html">Dashboard</a></li>
-          <li><a role="menuitem" href="/admin-docs.html">Docs</a></li>
-          <li><a role="menuitem" href="/admin-kyc.html" aria-current="page">KYC</a></li>
-          <li><a role="menuitem" href="/admin-login.html">Logout</a></li>
-        </ul>
-      </div>
-    </div>
   </header>
 
-  <!-- Compact hero -->
-  <section class="hero" style="min-height:34vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
-    <div class="hero-inner container">
-      <div class="logo-badge"><img src="/assets/logo-crest.png" alt="" /></div>
-      <h1>KYC Queue</h1>
-      <p class="lead">Verify identity, source of funds, and address; record approvals with audit notes.</p>
+  <section class="sub-hero">
+    <div class="container">
+      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <h1>Pending Applications</h1>
     </div>
   </section>
 
-  <!-- KYC UI -->
   <section class="page-section">
-    <div class="container" style="display:grid;gap:22px;">
-
-      <!-- Metrics + filters -->
-      <div class="panel" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
-        <div><strong>Pending:</strong> 7</div>
-        <div><strong>In review:</strong> 2</div>
-        <div><strong>Approved today:</strong> 4</div>
-        <div style="flex:1"></div>
-        <label style="display:flex;gap:8px;align-items:center;">
-          <span>Show</span>
-          <select id="kycStage">
-            <option value="all">All</option>
-            <option value="pending">Pending</option>
-            <option value="inreview">In review</option>
-            <option value="approved">Approved</option>
-            <option value="rejected">Rejected</option>
-          </select>
-        </label>
-        <input id="kycSearch" type="search" placeholder="Search name or ID…" style="max-width:280px;width:100%;">
-      </div>
-
-      <!-- Queue list -->
-      <div class="panel">
-        <h2 style="margin:0 0 10px;">Applications</h2>
-        <div style="overflow:auto;">
-          <table style="width:100%;border-collapse:collapse;">
-            <thead>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.12);">
-                <th style="text-align:left;padding:10px;">Client ID</th>
-                <th style="text-align:left;padding:10px;">Name</th>
-                <th style="text-align:left;padding:10px;">Submitted</th>
-                <th style="text-align:left;padding:10px;">Status</th>
-                <th style="text-align:left;padding:10px;">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="padding:10px;">CL-1029</td>
-                <td style="padding:10px;">Abdulaziz A. Al-Mutairi</td>
-                <td style="padding:10px;">29 Oct 2025, 09:04</td>
-                <td style="padding:10px;">Pending</td>
-                <td style="padding:10px;display:flex;gap:8px;">
-                  <a class="btn outline" href="#review-CL-1029">Review</a>
-                  <a class="btn gold" href="/admin-docs.html">Docs</a>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:10px;">CL-0774</td>
-                <td style="padding:10px;">Noura M. Al-Harthy</td>
-                <td style="padding:10px;">28 Oct 2025, 18:41</td>
-                <td style="padding:10px;">In review</td>
-                <td style="padding:10px;display:flex;gap:8px;">
-                  <a class="btn outline" href="#review-CL-0774">Review</a>
-                  <a class="btn gold" href="/admin-docs.html">Docs</a>
-                </td>
-              </tr>
-              <!-- Add more rows as needed -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Review workspace -->
-      <div id="review-CL-1029" class="grid-2">
-        <!-- Left: Application details -->
-        <div class="panel" aria-labelledby="reviewTitle">
-          <h2 id="reviewTitle" style="margin-top:0">Application details</h2>
-
-          <div class="form-row">
-            <label>Client</label>
-            <input type="text" value="CL-1029 — Abdulaziz A. Al-Mutairi" readonly />
-          </div>
-
-          <div class="form-row">
-            <label>Nationality</label>
-            <input type="text" value="Saudi" readonly />
-          </div>
-
-          <div class="form-row">
-            <label>Address</label>
-            <input type="text" value="Riyadh, KSA" readonly />
-          </div>
-
-          <div class="form-row">
-            <label>Source of funds</label>
-            <input type="text" value="Business income" readonly />
-          </div>
-
-          <div class="form-row">
-            <label>Files</label>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <a class="btn outline" href="/admin-docs.html">Passport.pdf</a>
-              <a class="btn outline" href="/admin-docs.html">ProofOfAddress.pdf</a>
-              <a class="btn outline" href="/admin-docs.html">SoF.pdf</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Checklist + decision -->
-        <form id="kycDecisionForm" class="panel" aria-labelledby="checklistTitle">
-          <h2 id="checklistTitle" style="margin-top:0">KYC checklist</h2>
-
-          <div class="form-row">
-            <label><input type="checkbox" required /> Passport clear &amp; valid</label>
-          </div>
-          <div class="form-row">
-            <label><input type="checkbox" required /> Proof of address &lt; 3 months</label>
-          </div>
-          <div class="form-row">
-            <label><input type="checkbox" required /> Source of funds explanation</label>
-          </div>
-          <div class="form-row">
-            <label><input type="checkbox" required /> Sanctions/PEP screening negative</label>
-          </div>
-
-          <div class="form-row">
-            <label for="kycNotes">Reviewer notes</label>
-            <textarea id="kycNotes" name="notes" placeholder="Internal comments..."></textarea>
-          </div>
-
-          <div class="form-actions" style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn btn-primary" type="submit" name="decision" value="approve">Approve</button>
-            <button class="btn outline" type="submit" name="decision" value="reject">Reject</button>
-            <a class="btn outline" href="/admin-docs.html">Open Docs</a>
-          </div>
-
-          <p id="kycStatus" class="form-status">Decision is recorded with timestamp and reviewer ID.</p>
-        </form>
-      </div>
+    <div class="container">
+      <div data-kyc-queue style="display:grid; gap:12px;"></div>
     </div>
   </section>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-    </div>
-  </footer>
+  <footer class="site-footer"><div class="container footer-inner">
+    <p>© 2025 Maltese First Capital. All rights reserved.</p>
+    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+  </div></footer>
 </body>
 </html>
