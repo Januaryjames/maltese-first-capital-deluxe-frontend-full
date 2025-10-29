@@ -1,4 +1,7 @@
 User-agent: *
+Disallow: /admin-login.html
+Disallow: /admin-dashboard.html
+Disallow: /scripts/
 Allow: /
 
 Sitemap: https://maltesefirst.com/sitemap.xml
