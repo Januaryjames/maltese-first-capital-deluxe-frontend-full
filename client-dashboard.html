@@ -7,62 +7,100 @@
 
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <meta name="theme-color" content="#0b1220" />
-  <meta name="backend-base" content="https://maltese-first-capital-deluxe-backend.onrender.com" />
 
-  <link rel="stylesheet" href="/styles.css?v=42" />
-  <script defer src="/scripts/nav.js?v=42"></script>
-  <script defer type="module" src="/scripts/forms.js?v=42"></script>
+  <meta name="description" content="Account overview, balances, recent activity, and secure document vault." />
+  <meta property="og:title" content="Client Dashboard — Maltese First Capital" />
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
+  <meta name="theme-color" content="#0b1220" />
+
+  <link rel="stylesheet" href="/styles.css?v=48" />
+  <script defer src="/scripts/nav.js?v=48"></script>
+  <script defer src="/scripts/forms.js?v=48"></script>
 </head>
 <body>
   <header class="header">
-    <nav class="navbar container">
-      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""/><span>Maltese First Capital</span></a>
-      <button class="nav-toggle" aria-label="Toggle menu"></button>
+    <nav class="navbar container" aria-label="Primary">
+      <a class="brand" href="/index.html">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
+
       <ul class="nav-links">
         <li><a href="/index.html">Home</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
+
       <div class="nav-cta">
-        <button class="btn outline" id="logout-btn">Logout</button>
+        <a class="btn outline" href="/client-profile.html">Profile</a>
+        <a class="btn gold" href="/client-login.html">Logout</a>
       </div>
     </nav>
   </header>
 
-  <section class="section-cards" style="padding-top:40px">
-    <div class="container">
-      <h2 id="client-name" style="margin-bottom:18px;">Client</h2>
+  <section class="page-section">
+    <div class="container" style="display:grid; gap:22px;">
+      <div class="panel" style="display:flex; justify-content:space-between; gap:18px; align-items:center; flex-wrap:wrap;">
+        <div>
+          <h2 style="margin:0 0 6px;">Welcome back</h2>
+          <p class="form-status" style="margin:0">Here’s a quick snapshot of your accounts and recent activity.</p>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <a class="btn btn-primary" href="#">Open new account</a>
+          <a class="btn outline" href="#">Statements</a>
+        </div>
+      </div>
 
-      <div class="cards-grid two">
+      <!-- Account cards -->
+      <div class="cards-grid two" style="align-items:stretch;">
         <article class="card">
-          <h3>Accounts</h3>
-          <div id="accounts-list">
-            <p class="form-status">Loading accounts…</p>
-          </div>
+          <h3>EUR Current</h3>
+          <p class="form-status">IBAN: MT84 MALT 0110 0001 2345 MTLC ASTS</p>
+          <h2 style="margin:.5rem 0 0">€42,180.30</h2>
         </article>
+
         <article class="card">
-          <h3>Transactions</h3>
-          <div id="tx-wrap">
-            <p class="form-status">Select an account to view transactions.</p>
-          </div>
+          <h3>USD Current</h3>
+          <p class="form-status">IBAN: MT28 MALT 0110 0009 8765 MTLC ASTS</p>
+          <h2 style="margin:.5rem 0 0">$61,505.10</h2>
         </article>
+      </div>
+
+      <!-- Activity + Vault -->
+      <div class="grid-2">
+        <div class="panel">
+          <h3 style="margin-top:0">Recent activity</h3>
+          <ul style="margin:0; padding-left:0; list-style:none; display:grid; gap:10px;">
+            <li><strong>Incoming SEPA</strong> · €12,500.00 · 28 Oct</li>
+            <li><strong>Card top-up</strong> · €450.00 · 27 Oct</li>
+            <li><strong>International wire</strong> · $4,200.00 · 25 Oct</li>
+            <li><strong>Monthly statement</strong> generated · 01 Oct</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3 style="margin-top:0">Secure document vault</h3>
+          <p>Upload or download statements and reports.</p>
+          <div class="form-actions" style="display:flex; gap:10px;">
+            <a class="btn outline" href="#">Upload document</a>
+            <a class="btn btn-primary" href="#">View vault</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <footer class="site-footer footer-white">
+  <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
     </div>
   </footer>
-
-  <script>
-    document.getElementById('logout-btn')?.addEventListener('click', ()=>{
-      localStorage.removeItem('mfc_token');
-      location.href = '/client-login.html';
-    });
-  </script>
 </body>
 </html>
