@@ -7,26 +7,31 @@
 
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-
   <meta name="description" content="Start a confidential conversation with the team." />
+  <meta property="og:title" content="Contact — Maltese First Capital" />
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
   <meta name="theme-color" content="#0b1220" />
-  <meta name="backend-base" content="https://maltese-first-capital-deluxe-backend.onrender.com" />
 
-  <link rel="stylesheet" href="/styles.css?v=42" />
-  <script defer src="/scripts/nav.js?v=42"></script>
-  <script defer type="module" src="/scripts/forms.js?v=42"></script>
+  <link rel="stylesheet" href="/styles.css?v=48" />
+  <script defer src="/scripts/nav.js?v=48"></script>
+  <script defer src="/scripts/forms.js?v=48"></script>
 </head>
 <body>
   <header class="header">
-    <nav class="navbar container">
-      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""/><span>Maltese First Capital</span></a>
-      <button class="nav-toggle" aria-label="Toggle menu"></button>
+    <nav class="navbar container" aria-label="Primary">
+      <a class="brand" href="/index.html">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
       <ul class="nav-links">
         <li><a href="/index.html">Home</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
         <li><a href="/about.html">About</a></li>
-        <li class="active"><a href="/contact.html">Contact</a></li>
+        <li class="active"><a aria-current="page" href="/contact.html">Contact</a></li>
       </ul>
       <div class="nav-cta">
         <a class="btn outline" href="/client-login.html">Client Login</a>
@@ -35,51 +40,59 @@
     </nav>
   </header>
 
-  <section class="hero page-hero">
-    <div class="container hero-inner">
-      <div class="logo-badge"><img src="/assets/logo-crest.png" alt=""/></div>
+  <section class="hero" style="min-height:36vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
+    <div class="hero-inner container">
+      <div class="logo-badge"><img src="/assets/logo-crest.png" alt="" /></div>
       <h1>Contact</h1>
       <p class="lead">Start a confidential conversation with the team.</p>
-      <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
     </div>
   </section>
 
-  <section class="contact-section">
-    <div class="container contact-grid">
-      <div class="contact-card">
-        <h3>Send us a message</h3>
-        <form id="contact-form">
-          <div class="form-row">
-            <label>Full name</label>
-            <input name="name" required />
-          </div>
-          <div class="form-row">
-            <label>Email</label>
-            <input type="email" name="email" required />
-          </div>
-          <div class="form-row">
-            <label>Message</label>
-            <textarea name="message" rows="5" required></textarea>
-          </div>
-          <button class="btn btn-primary" type="submit">Send</button>
-          <p class="form-status" id="contact-status"></p>
-        </form>
-      </div>
+  <section class="page-section">
+    <div class="container grid-2">
+      <form id="contactForm" class="panel" aria-labelledby="contactTitle">
+        <h2 id="contactTitle" style="margin-top:0">Send us a message</h2>
 
-      <div class="contact-card">
-        <h3>Valletta office</h3>
+        <div class="form-row">
+          <label for="cName">Full name</label>
+          <input id="cName" name="name" type="text" placeholder="Full name" required />
+        </div>
+
+        <div class="form-row">
+          <label for="cEmail">Email</label>
+          <input id="cEmail" name="email" type="email" placeholder="you@email.com" required />
+        </div>
+
+        <div class="form-row">
+          <label for="cPhone">Phone</label>
+          <input id="cPhone" name="phone" type="tel" placeholder="+356 ..." />
+        </div>
+
+        <div class="form-row">
+          <label for="cMessage">Message</label>
+          <textarea id="cMessage" name="message" placeholder="How can we help?" required></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Send message</button>
+        </div>
+
+        <p class="form-status" id="contactStatus">We typically respond within one business day.</p>
+      </form>
+
+      <aside class="panel">
+        <h3 style="margin-top:0">Valletta office</h3>
         <p>The Exchange Building<br/>Republic Street<br/>Valletta VLT 1117<br/>Malta</p>
-        <p><a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-      </div>
+        <p><strong>Email:</strong> <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+        <p class="form-status">Meetings by appointment only.</p>
+      </aside>
     </div>
   </section>
 
-  <footer class="site-footer footer-white">
+  <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
     </div>
   </footer>
 </body>
