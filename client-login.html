@@ -7,23 +7,18 @@
 
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <meta name="theme-color" content="#0b1220" />
-
   <link rel="stylesheet" href="/styles.css?v=45" />
   <script defer src="/scripts/nav.js?v=45"></script>
+  <script defer src="/scripts/api.js"></script>
 </head>
 <body>
   <header class="header">
     <nav class="navbar container">
-      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
+      <a class="brand" href="/index.html">
         <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
         <span class="brand-name">Maltese First Capital</span>
       </a>
-      <button class="nav-toggle" aria-label="Toggle menu">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
       <ul class="nav-links">
-        <li><a href="/index.html">Home</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
         <li><a href="/about.html">About</a></li>
@@ -35,25 +30,19 @@
     </nav>
   </header>
 
-  <!-- Sub-hero: keeps pages clean without the Valletta photo -->
   <section class="sub-hero">
-    <div class="container" style="justify-content:space-between;">
-      <div style="display:flex;align-items:center;gap:14px">
-        <img class="page-mark" src="/assets/logo-crest.png" alt="">
-        <div>
-          <p class="eyebrow">Secure Access</p>
-          <h1 style="margin:.15rem 0 0;">Client Login</h1>
-        </div>
-      </div>
+    <div class="container">
+      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <h1>Client Login</h1>
     </div>
   </section>
 
   <section class="page-section">
     <div class="container grid-2">
-      <form id="loginForm" class="panel" novalidate>
+      <form id="loginForm" class="panel" autocomplete="on">
         <div class="form-row">
           <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="you@domain.com" required />
+          <input id="email" name="email" type="email" placeholder="you@example.com" required />
         </div>
         <div class="form-row">
           <label for="password">Password</label>
@@ -62,15 +51,13 @@
         <div class="form-actions">
           <button class="btn btn-primary" type="submit">Sign in</button>
         </div>
-        <p id="loginStatus" class="form-status" role="status"></p>
-        <p class="form-status" style="margin-top:8px;opacity:.8">
-          Tip: For a quick demo without backend, use <code>demo@maltesefirst.com</code> / <code>demo123</code>.
-        </p>
+        <p id="loginMsg" class="form-status"></p>
       </form>
 
       <div class="panel">
-        <h3>Having trouble?</h3>
-        <p>For assistance with your credentials or multi-factor authentication, contact your relationship manager or email <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>.</p>
+        <p class="eyebrow">Security</p>
+        <h3>Protected client area</h3>
+        <p>Your session is protected with token-based authentication and HTTPS.</p>
       </div>
     </div>
   </section>
@@ -84,28 +71,29 @@
     </div>
   </footer>
 
-  <!-- API + login logic -->
-  <script src="/scripts/api.js?v=46"></script>
   <script>
-    (function(){
-      const f = document.getElementById("loginForm");
-      const statusEl = document.getElementById("loginStatus");
+  (function(){
+    const form = document.getElementById('loginForm');
+    const msg  = document.getElementById('loginMsg');
 
-      f.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        statusEl.textContent = "Signing in…";
-        const email = f.email.value.trim();
-        const password = f.password.value;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = 'Signing in…';
+      try {
+        const email    = form.email.value.trim();
+        const password = form.password.value;
+        const data = await mfcApi.post('/api/auth/login', { email, password }, { auth:false });
 
-        try {
-          await window.MFC_API.login(email, password);
-          statusEl.textContent = "Success. Redirecting…";
-          window.location.href = "/client-dashboard.html";
-        } catch (err) {
-          statusEl.textContent = `Sign-in failed: ${err.message || "Please try again."}`;
-        }
-      });
-    })();
+        // Expected: { token, client: { _id, accountNumber, fullName } }
+        localStorage.setItem(mfcApi.tokenKey, data.token);
+        if (data.client?._id) localStorage.setItem(mfcApi.clientKey, data.client._id);
+
+        location.href = '/client-dashboard.html';
+      } catch (err) {
+        msg.textContent = 'Login failed: ' + (err.message || 'Unable to sign in');
+      }
+    });
+  })();
   </script>
 </body>
 </html>
