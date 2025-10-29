@@ -1,13 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Admin Dashboard — Maltese First Capital</title>
-
-  <link rel="icon" href="/assets/logo-crest.png" />
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <link rel="stylesheet" href="/styles.css?v=45" />
+  <link rel="icon" href="/assets/logo-crest.png"/>
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
+  <link rel="stylesheet" href="/styles.css?v=45"/>
   <script defer src="/scripts/nav.js?v=45"></script>
   <script defer src="/scripts/api.js"></script>
 </head>
@@ -15,7 +14,7 @@
   <header class="header">
     <nav class="navbar container">
       <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
         <span class="brand-name">Maltese First Capital</span>
       </a>
       <ul class="nav-links">
@@ -32,24 +31,24 @@
 
   <section class="sub-hero">
     <div class="container">
-      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <img class="page-mark" src="/assets/logo-crest.png" alt=""/>
       <h1>Admin Dashboard</h1>
     </div>
   </section>
 
   <section class="page-section">
     <div class="container grid-2">
-      <!-- Left: client lookup and KYC -->
+      <!-- Clients & KYC -->
       <div class="panel">
         <p class="eyebrow">Clients</p>
         <div class="form-row">
           <label for="qEmail">Find by email</label>
-          <input id="qEmail" type="email" placeholder="client@email.com" />
+          <input id="qEmail" type="email" placeholder="client@email.com"/>
         </div>
         <button id="btnFind" class="btn btn-primary">Search</button>
         <p id="findMsg" class="form-status"></p>
 
-        <div id="clientBox" style="margin-top:14px; display:none;">
+        <div id="clientBox" style="margin-top:14px;display:none;">
           <h3 id="cName">Client</h3>
           <p id="cInfo" class="form-status"></p>
           <div class="form-row">
@@ -64,26 +63,26 @@
         </div>
       </div>
 
-      <!-- Right: account & transactions -->
+      <!-- Account & Transactions -->
       <div class="panel">
         <p class="eyebrow">Accounts & Transactions</p>
         <div id="acctBox" style="display:none;">
           <div class="form-row">
             <label for="cBalance">Set Balance (USD)</label>
-            <input id="cBalance" type="number" step="0.01" />
+            <input id="cBalance" type="number" step="0.01"/>
           </div>
           <button id="btnSaveBal" class="btn btn-primary">Update Balance</button>
 
-          <hr class="menu-divider" />
+          <hr class="menu-divider"/>
 
           <h4>Add Transaction</h4>
           <div class="form-row">
             <label for="tDesc">Description</label>
-            <input id="tDesc" type="text" placeholder="Transfer in" />
+            <input id="tDesc" type="text" placeholder="Transfer in"/>
           </div>
           <div class="form-row">
             <label for="tAmt">Amount (USD)</label>
-            <input id="tAmt" type="number" step="0.01" />
+            <input id="tAmt" type="number" step="0.01"/>
           </div>
           <button id="btnAddTx" class="btn gold">Post Transaction</button>
         </div>
@@ -102,78 +101,73 @@
   </footer>
 
   <script>
-  (function(){
-    const msg  = s => (document.getElementById('findMsg').textContent = s);
-    const amsg = s => (document.getElementById('acctMsg').textContent = s);
+    (function(){
+      const msg  = s => document.getElementById('findMsg').textContent = s;
+      const amsg = s => document.getElementById('acctMsg').textContent = s;
 
-    document.getElementById('adminSignOut').onclick = () => {
-      localStorage.removeItem(mfcApi.tokenKey);
-      localStorage.removeItem(mfcApi.adminKey);
-      location.href = '/admin-login.html';
-    };
+      document.getElementById('adminSignOut').onclick = () => {
+        localStorage.removeItem(mfcApi.keys.token);
+        localStorage.removeItem(mfcApi.keys.admin);
+        location.href = '/admin-login.html';
+      };
 
-    let current = null; // selected client
+      let current = null;
 
-    document.getElementById('btnFind').onclick = async () => {
-      msg('Searching…'); amsg('');
-      try{
-        const email = document.getElementById('qEmail').value.trim();
-        const data  = await mfcApi.get('/api/admin/clients?email='+encodeURIComponent(email));
-        const c     = (data.clients && data.clients[0]) || data.client || data;
+      document.getElementById('btnFind').onclick = async () => {
+        msg('Searching…'); amsg('');
+        try{
+          const email = document.getElementById('qEmail').value.trim();
+          const data  = await mfcApi.get('/api/admin/clients?email='+encodeURIComponent(email));
+          const c     = (data.clients && data.clients[0]) || data.client || data;
+          if (!c || !c._id) { msg('No client found'); return; }
 
-        if (!c || !c._id) { msg('No client found'); return; }
+          current = c;
+          document.getElementById('clientBox').style.display = '';
+          document.getElementById('acctBox').style.display   = '';
 
-        current = c;
-        document.getElementById('clientBox').style.display = '';
-        document.getElementById('acctBox').style.display   = '';
+          document.getElementById('cName').textContent = c.fullName || c.name || '(no name)';
+          document.getElementById('cInfo').textContent = `Account ${String(c.accountNumber||0).padStart(8,'0')} — ${c.email || email}`;
+          document.getElementById('cKyc').value        = c.kycStatus || 'pending';
 
-        document.getElementById('cName').textContent = c.fullName || c.name || '(no name)';
-        document.getElementById('cInfo').textContent = `Account ${String(c.accountNumber||0).padStart(8,'0')} — ${c.email || email}`;
-        document.getElementById('cKyc').value        = c.kycStatus || 'pending';
+          try {
+            const accts = c.accounts || (await mfcApi.get('/api/accounts?clientId='+c._id)).accounts || [];
+            const a0    = accts[0] || {};
+            document.getElementById('cBalance').value = a0.balance ?? 0;
+          } catch {}
+          msg('Loaded.');
+        }catch(err){ msg('Error: '+err.message); }
+      };
 
-        // Load account for balance
-        try {
-          const accts = c.accounts || (await mfcApi.get('/api/accounts?clientId='+c._id)).accounts || [];
-          const a0    = accts[0] || {};
-          document.getElementById('cBalance').value = a0.balance ?? 0;
-        } catch(e){ /* ignore */ }
+      document.getElementById('btnSaveKyc').onclick = async () => {
+        if (!current) return;
+        try{
+          const v = document.getElementById('cKyc').value;
+          await mfcApi.patch(`/api/admin/clients/${current._id}/kyc`, { status:v });
+          msg('KYC updated.');
+        }catch(err){ msg('Failed: '+err.message); }
+      };
 
-        msg('Loaded.');
-      }catch(err){
-        msg('Error: '+err.message);
-      }
-    };
+      document.getElementById('btnSaveBal').onclick = async () => {
+        if (!current) return;
+        try{
+          const amt = +document.getElementById('cBalance').value;
+          await mfcApi.patch(`/api/admin/clients/${current._id}/balance`, { amount: amt });
+          amsg('Balance updated.');
+        }catch(err){ amsg('Failed: '+err.message); }
+      };
 
-    document.getElementById('btnSaveKyc').onclick = async () => {
-      if (!current) return;
-      try{
-        const v = document.getElementById('cKyc').value;
-        await mfcApi.patch(`/api/admin/clients/${current._id}/kyc`, { status:v });
-        msg('KYC updated.');
-      }catch(err){ msg('Failed: '+err.message); }
-    };
-
-    document.getElementById('btnSaveBal').onclick = async () => {
-      if (!current) return;
-      try{
-        const amt = +document.getElementById('cBalance').value;
-        await mfcApi.patch(`/api/admin/clients/${current._id}/balance`, { amount: amt });
-        amsg('Balance updated.');
-      }catch(err){ amsg('Failed: '+err.message); }
-    };
-
-    document.getElementById('btnAddTx').onclick = async () => {
-      if (!current) return;
-      try{
-        const description = document.getElementById('tDesc').value.trim();
-        const amount      = +document.getElementById('tAmt').value;
-        await mfcApi.post(`/api/admin/transactions`, {
-          clientId: current._id, description, amount, currency:'USD'
-        });
-        amsg('Transaction posted.');
-      }catch(err){ amsg('Failed: '+err.message); }
-    };
-  })();
+      document.getElementById('btnAddTx').onclick = async () => {
+        if (!current) return;
+        try{
+          const description = document.getElementById('tDesc').value.trim();
+          const amount      = +document.getElementById('tAmt').value;
+          await mfcApi.post(`/api/admin/transactions`, {
+            clientId: current._id, description, amount, currency:'USD'
+          });
+          amsg('Transaction posted.');
+        }catch(err){ amsg('Failed: '+err.message); }
+      };
+    })();
   </script>
 </body>
 </html>
