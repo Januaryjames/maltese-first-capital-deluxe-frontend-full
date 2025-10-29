@@ -17,10 +17,14 @@
         <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
         <span class="brand-name">Maltese First Capital</span>
       </a>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
       <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/about.html">About</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/about.html">About</a></li>
         <li><a href="/contact.html">Contact</a></li>
       </ul>
       <div class="nav-cta">
@@ -98,7 +102,6 @@
 
       try {
         let profile;
-        // Prefer /api/clients/me
         try {
           profile = await mfcApi.get('/api/clients/me');
         } catch {
@@ -110,7 +113,6 @@
         const acctNum  = profile.accountNumber || profile.account?.number;
         let balance    = profile.balance ?? 0;
 
-        // Load accounts (if separate)
         try {
           const a = await mfcApi.get('/api/accounts?clientId='+profile._id);
           const primary = (a.accounts||[])[0];
@@ -121,7 +123,6 @@
         document.getElementById('accountNumber').textContent = pad8(acctNum || 0);
         document.getElementById('totalBalance').textContent  = fmt(balance);
 
-        // Transactions via new or legacy route
         let tx = [];
         try {
           const t1 = await mfcApi.get(`/api/transactions?clientId=${profile._id}`);
