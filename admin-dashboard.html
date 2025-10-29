@@ -2,42 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin Dashboard — Maltese First Capital</title>
-  <meta name="description" content="Create accounts and post balances." />
-  <link rel="stylesheet" href="/styles.css?v=19" />
-  <script src="/scripts/nav.js?v=19" defer></script>
-  <script src="/scripts/forms.js?v=19" defer></script>
+
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <meta name="description" content="KYC queue, document vault, users, and audit logs." />
+  <meta property="og:title" content="Admin Dashboard — Maltese First Capital" />
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
+  <meta name="theme-color" content="#0b1220" />
+
+  <link rel="stylesheet" href="/styles.css?v=48" />
+  <script defer src="/scripts/nav.js?v=48"></script>
+  <script defer src="/scripts/forms.js?v=48"></script>
 </head>
 <body>
-  <section class="hero">
-    <div class="wrap center">
-      <img class="crest" src="/assets/logo-crest.png" alt="MFC crest"/>
-      <h1>Admin Dashboard</h1>
-      <p class="lead">Create accounts and post balances.</p>
+  <header class="header">
+    <nav class="navbar container" aria-label="Primary">
+      <a class="brand" href="/index.html">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="/admin-dashboard.html" aria-current="page">Dashboard</a></li>
+        <li><a href="/admin-docs.html">Docs</a></li>
+        <li><a href="/admin-kyc.html">KYC</a></li>
+        <li><a href="/admin-login.html">Logout</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a class="btn outline" href="/admin-docs.html">Documents</a>
+        <a class="btn gold" href="/admin-kyc.html">KYC Queue</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="page-section">
+    <div class="container" style="display:grid; gap:22px;">
+      <div class="panel" style="display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;">
+        <div>
+          <h2 style="margin:0 0 6px;">Admin dashboard</h2>
+          <p class="form-status" style="margin:0">Quick shortcuts to core operations.</p>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <a class="btn btn-primary" href="/admin-kyc.html">Open KYC</a>
+          <a class="btn outline" href="/admin-docs.html">Open Vault</a>
+        </div>
+      </div>
+
+      <div class="cards-grid two" style="align-items:stretch;">
+        <article class="card">
+          <h3>KYC Queue</h3>
+          <p>Pending: 7 · SLA: 24h</p>
+          <a class="card-link" href="/admin-kyc.html">Review applications</a>
+        </article>
+        <article class="card">
+          <h3>Document Vault</h3>
+          <p>New uploads today: 12</p>
+          <a class="card-link" href="/admin-docs.html">Open vault</a>
+        </article>
+        <article class="card">
+          <h3>Users</h3>
+          <p>Active clients: 1,284 · Admins: 6</p>
+          <a class="card-link" href="#">Manage users</a>
+        </article>
+        <article class="card">
+          <h3>Audit &amp; Alerts</h3>
+          <p>Zero critical alerts · 3 warnings</p>
+          <a class="card-link" href="#">View logs</a>
+        </article>
+      </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="wrap grid" style="grid-template-columns:1fr 1fr">
-      <form class="form" onsubmit="return adminCreateClient(event)">
-        <h3 style="margin:0 0 10px;color:var(--ink)">Create Client</h3>
-        <label>Full name</label><input name="fullName" required />
-        <label>Email</label><input type="email" name="email" required />
-        <label>Password</label><input type="password" name="password" required />
-        <button class="btn gold" type="submit">Create</button>
-        <div class="form-msg help"></div>
-      </form>
-
-      <form class="form" onsubmit="return adminCredit(event)">
-        <h3 style="margin:0 0 10px;color:var(--ink)">Credit Account</h3>
-        <label>Account number (8-digit)</label><input name="number" required pattern="\\d{8}" />
-        <label>Amount (USD)</label><input name="amount" required />
-        <label>Description</label><input name="description" />
-        <button class="btn gold" type="submit">Post</button>
-        <div class="form-msg help"></div>
-      </form>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
     </div>
-  </section>
+  </footer>
 </body>
 </html>
