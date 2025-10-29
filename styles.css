@@ -1,9 +1,9 @@
 /* =========================================================
-   Maltese First Capital — styles.css (v49, drop-in)
-   - Crest fills its container (nav + hero)
-   - Valletta hero/background across site
+   Maltese First Capital — styles.css (v49)
+   - Crest image fills its container (nav + hero)
+   - Valletta hero hard-locked on all pages
    - White footer, gold-accent cards, mobile menu
-   - Uniform feature cards (equal height) + clean 2×2 when four
+   - Subpage crest/watermark fix + uniform feature cards
    ========================================================= */
 
 /* 0) Reset & Base */
@@ -45,11 +45,7 @@ button{font:inherit}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.65rem 1rem;border-radius:12px;font-weight:800;line-height:1}
 .btn.block{width:100%}
 .btn.outline{border:1px solid rgba(255,255,255,.18);color:#fff;background:transparent}
-.btn.gold,.btn.btn-primary{
-  background:linear-gradient(180deg,var(--gold),var(--gold-2));
-  color:#211405;border-radius:14px;padding:.9rem 1.25rem;
-  box-shadow:0 12px 30px rgba(202,169,104,.38)
-}
+.btn.gold,.btn.btn-primary{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#211405;border-radius:14px;padding:.9rem 1.25rem;box-shadow:0 12px 30px rgba(202,169,104,.38)}
 .btn.gold:hover,.btn.btn-primary:hover{filter:brightness(1.07)}
 .btn.btn-primary{filter:drop-shadow(0 10px 22px rgba(202,169,104,.35))}
 
@@ -59,12 +55,10 @@ button{font:inherit}
 .brand{display:flex;align-items:center;gap:.75rem}
 .brand-name{font-weight:800;color:#fff;white-space:nowrap}
 
-/* Crest in navbar (IMG is the container) */
+/* Crest in navbar (IMG acts as the container) */
 .brand-crest{
   width:56px;height:56px;border-radius:12px;background:#fff;
-  padding:0; /* no inner gap */
-  object-fit:contain; /* crest fits inside the white box */
-  box-shadow:0 6px 18px rgba(0,0,0,.35)
+  padding:0; object-fit:contain; box-shadow:0 6px 18px rgba(0,0,0,.35)
 }
 
 .nav-links{display:flex;gap:28px}
@@ -76,18 +70,13 @@ button{font:inherit}
 .nav-toggle{display:none;width:42px;height:36px;border:0;background:transparent;cursor:pointer;border-radius:10px;padding:6px}
 .nav-toggle-bar{display:block;width:100%;height:3px;background:#e9eef6;border-radius:2px}
 .nav-toggle-bar+.nav-toggle-bar{margin-top:5px}
-.mobile-menu{
-  display:none;position:absolute;top:68px;left:0;right:0;
-  background:rgba(8,12,22,.98);backdrop-filter:blur(6px);
-  border-bottom:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow);
-  padding:12px 16px 18px
-}
+.mobile-menu{display:none;position:absolute;top:68px;left:0;right:0;background:rgba(8,12,22,.98);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow);padding:12px 16px 18px}
 .mobile-menu ul{display:flex;flex-direction:column;gap:10px}
 .mobile-menu a{display:block;padding:10px 8px;border-radius:10px;color:#eaf0f8;font-weight:700}
 .mobile-menu a:hover{background:rgba(255,255,255,.06)}
 body.menu-open .mobile-menu,.mobile-menu.active{display:block}
 
-/* 6) HERO — force Valletta on main hero blocks */
+/* 6) HERO — force Valletta on all pages */
 .hero,.page-hero{
   position:relative;isolation:isolate;min-height:56vh;overflow:hidden;text-align:center;
   background:
@@ -95,6 +84,7 @@ body.menu-open .mobile-menu,.mobile-menu.active{display:block}
     url("/assets/hero-bg.jpg") center/cover no-repeat !important;
   border-radius:0 !important;
 }
+.hero-bg{display:none !important}
 .hero-inner{padding:56px 0 24px}
 
 /* Crest container in hero (DIV is the container; IMG fills it) */
@@ -102,9 +92,8 @@ body.menu-open .mobile-menu,.mobile-menu.active{display:block}
   width:160px;height:160px;border-radius:24px;background:#fff;
   padding:0;margin:0 auto 20px;box-shadow:0 12px 34px rgba(0,0,0,.38);position:relative;z-index:1
 }
-.logo-badge img{
-  width:100%;height:100%;object-fit:contain;border-radius:inherit;background:transparent
-}
+.logo-badge img{width:100%;height:100%;object-fit:contain;border-radius:inherit;background:transparent}
+
 .hero h1{
   font-size:clamp(32px,5vw,58px);margin:0 0 12px;font-weight:900;letter-spacing:.01em;
   text-shadow:0 8px 28px rgba(0,0,0,.55);position:relative;z-index:1
@@ -114,72 +103,30 @@ body.menu-open .mobile-menu,.mobile-menu.active{display:block}
   text-shadow:0 8px 26px rgba(0,0,0,.45);position:relative;z-index:1
 }
 
-/* 7) Sub-hero for inner pages (uses Valletta + soft gold seam) */
-.sub-hero{
-  position:relative;isolation:isolate;min-height:200px;
-  background:
-    linear-gradient(180deg, rgba(11,18,32,.10) 0%, rgba(11,18,32,.42) 55%, rgba(11,18,32,.72) 100%),
-    url("/assets/hero-bg.jpg") center/cover no-repeat !important;
-  border-bottom:1px solid rgba(255,255,255,.06)
-}
-.sub-hero::after{
-  content:"";position:absolute;left:0;right:0;bottom:-20px;height:40px;z-index:0;
-  background:radial-gradient(120% 80% at 50% 0%, rgba(202,169,104,.26), rgba(11,18,32,0) 58%)
-}
-.sub-hero .container{display:flex;align-items:center;gap:14px;min-height:200px}
-.sub-hero .page-mark{
-  width:64px;height:64px;border-radius:16px;background:#fff;padding:0;
-  box-shadow:0 10px 30px rgba(0,0,0,.35)
-}
+/* 7) Sub-hero for inner pages (legacy use) */
+.sub-hero{position:relative;z-index:1;background:linear-gradient(180deg,#0f1525,#0b1220);border-bottom:1px solid rgba(255,255,255,.06)}
+.sub-hero .container{display:flex;align-items:center;gap:14px;min-height:160px}
+.sub-hero .page-mark{width:64px;height:64px;border-radius:16px;background:#fff;padding:0;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .sub-hero .page-mark img{width:100%;height:100%;object-fit:contain;border-radius:inherit}
-.sub-hero h1{margin:0;font-size:clamp(28px,4vw,42px);font-weight:900;text-shadow:0 8px 28px rgba(0,0,0,.5)}
+.sub-hero h1{margin:0;font-size:clamp(24px,3.2vw,36px);font-weight:900}
 
-/* 8) Optional banner block (safe to keep; not required) */
-.banner{
-  position:relative;isolation:isolate;padding:42px 0 26px;border-bottom:1px solid rgba(255,255,255,.06)
-}
-.banner .container{display:flex;align-items:center;gap:18px;min-height:200px}
-.banner .logo-badge img{width:86px;height:86px;padding:14px;border-radius:20px;background:#fff;box-shadow:0 12px 34px rgba(0,0,0,.38)}
-.banner h1{margin:0;font-size:clamp(28px,4vw,42px);font-weight:900;text-shadow:0 8px 28px rgba(0,0,0,.5)}
-.banner.bg-valletta::before{
-  content:"";position:absolute;inset:0;z-index:-1;
-  background:
-    linear-gradient(180deg, rgba(11,18,32,.00) 0%, rgba(11,18,32,.26) 62%, rgba(11,18,32,.64) 100%),
-    url("/assets/hero-bg.jpg") center/cover no-repeat;
-  filter:saturate(.9) brightness(.92)
-}
-
-/* 9) Services band */
+/* 8) Services band */
 .section-cards{background:linear-gradient(180deg,#0f1525,#0b1220);padding:54px 0 84px}
 .section-cards .eyebrow,.section-cards .section-title{text-align:center}
-.cards-grid{display:grid;gap:18px;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+.cards-grid{display:grid;gap:18px;grid-template-columns:repeat(3,minmax(0,1fr))}
 .cards-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
-.card{
-  background:var(--card);border:1.25px solid rgba(202,169,104,.66);border-radius:18px;padding:20px;
-  box-shadow:var(--shadow);
-  height:100%;display:flex;flex-direction:column
-}
+.card{background:var(--card);border:1.25px solid rgba(202,169,104,.66);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
 .card:hover{border-color:rgba(202,169,104,.9);box-shadow:0 20px 46px rgba(202,169,104,.28)}
 .card h3{margin:.2rem 0 .35rem}
 .card p{color:var(--muted)}
 .card-link{display:inline-block;margin-top:.6rem;color:var(--gold);font-weight:800}
 
-/* Equal-height feature cards and tidy 2×2 when exactly four */
-.cards-grid.features{grid-template-columns:repeat(3,minmax(0,1fr))}
-.cards-grid.features .card{min-height:170px}
-@supports(selector(:has(*))){
-  .cards-grid:has(.card:nth-child(4):last-child){
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:22px;
-  }
-}
-
-/* 10) Generic sections & grids */
+/* 9) Generic sections & grids */
 .page-section{padding:48px 0;background:#0b1220}
 .grid-2{display:grid;gap:22px;grid-template-columns:1.1fr .9fr}
 .panel{background:var(--panel);border:1px solid var(--card-border);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
 
-/* 11) Forms */
+/* 10) Forms */
 .form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
 label{font-weight:700}
 input,textarea,select{background:#0c1427;color:#e8edf4;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px}
@@ -187,28 +134,66 @@ input::placeholder,textarea::placeholder{color:#98a6bf}
 textarea{min-height:120px;resize:vertical}
 .form-actions{margin-top:10px}
 
-/* 12) Footer — white everywhere */
+/* 11) Footer — white everywhere */
 .site-footer{background:#fff !important;color:#0e1629 !important;border-top:1px solid #e6e8ef}
 .footer-inner{padding:26px 0;text-align:center}
 .site-footer a{color:#0e1629 !important;text-decoration:underline}
 .footer-address{color:#233049}
 
-/* 13) Responsive */
+/* 12) Responsive */
 @media (max-width:1100px){
   .brand-crest{width:52px;height:52px}
   .logo-badge{width:140px;height:140px}
-}
-@media (min-width:1100px){
-  .sub-hero .page-mark{width:82px;height:82px;border-radius:20px}
 }
 @media (max-width:1000px){
   .nav-links,.nav-cta{display:none}
   .nav-toggle{display:flex}
 }
 @media (max-width:900px){
-  .cards-grid,.cards-grid.two,.cards-grid.features{grid-template-columns:1fr}
-  .cards-grid.features .card{min-height:unset}
+  .cards-grid,.cards-grid.two{grid-template-columns:1fr}
   .logo-badge{width:120px;height:120px}
   .hero{min-height:60vh}
   .grid-2{grid-template-columns:1fr}
+}
+
+/* ===== Subpage banner + uniform features ===== */
+.banner{
+  position:relative; isolation:isolate; padding:42px 0 26px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.banner .container{display:flex;align-items:center;gap:18px;min-height:200px}
+.banner h1{
+  margin:0; font-size:clamp(30px,4.6vw,48px); font-weight:900;
+  text-shadow:0 8px 28px rgba(0,0,0,.5);
+}
+.banner .lead{max-width:820px;color:var(--brand);opacity:.98;text-shadow:0 8px 26px rgba(0,0,0,.45)}
+.banner.bg-valletta::before{
+  content:""; position:absolute; inset:0; z-index:-1;
+  background:
+    linear-gradient(180deg, rgba(11,18,32,.04) 0%, rgba(11,18,32,.28) 58%, rgba(11,18,32,.64) 100%),
+    url("/assets/hero-bg.jpg") center/cover no-repeat;
+  filter:saturate(.92) brightness(.94);
+}
+
+/* Small crest card in banner */
+.banner .logo-badge{width:120px;height:120px;border-radius:22px;background:#fff;box-shadow:0 12px 34px rgba(0,0,0,.38);padding:0}
+.banner .logo-badge img{width:100%;height:100%;object-fit:contain;border-radius:inherit;display:block !important}
+
+/* Hide any legacy/watermark hero logos inside banners */
+.banner img.watermark,
+.banner img.hero-logo,
+.banner img.brand-watermark,
+.banner img[src*="logo"],
+.banner img[src*="crest"]{display:none !important}
+
+/* Feature grids */
+.cards-grid.features{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+.cards-grid.features .card{ min-height:170px; display:flex; flex-direction:column; justify-content:flex-start; }
+.cards-grid.features .card{ border:1.25px solid rgba(202,169,104,.66); box-shadow:0 12px 36px rgba(0,0,0,.35); }
+.cards-grid.features .card:hover{ border-color:rgba(202,169,104,.9); box-shadow:0 20px 46px rgba(202,169,104,.28); }
+
+@media (min-width:1100px){ .banner .logo-badge{width:130px;height:130px} }
+@media (max-width:900px){
+  .cards-grid.features{ grid-template-columns:1fr }
+  .cards-grid.features .card{ min-height:unset }
 }
