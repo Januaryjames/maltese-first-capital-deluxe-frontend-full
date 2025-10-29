@@ -1,182 +1,228 @@
-/* ========== styles.css v43 ========== */
+/* =========================================================
+   Maltese First Capital — styles.css (v46)
+   - Valletta hero image locked on .hero/.page-hero
+   - No rounded corners on hero
+   - White footer everywhere
+   - Gold-accent cards
+   - Mobile dropdown nav
+   ========================================================= */
 
-/* Base / Reset */
-*,*::before,*::after{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-  color:#e8edf4;background:#0b1220;
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale
+/* 0) Reset & Base */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #e8edf4;
+  background: #0b1220;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-img{display:block;max-width:100%;height:auto}
-a{color:inherit;text-decoration:none}
-ul{margin:0;padding:0;list-style:none}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+button { font: inherit; }
 
+/* 1) Theme Tokens */
 :root{
-  --bg:#0b1220;
-  --bg-soft:#0f1724;
-  --panel:#0e1629;
-  --card:#101a2d;
-  --card-border:rgba(202,169,104,.45);
-  --muted:#b8c3d6;
-  --text:#e8edf4;
-  --gold:#caa968;
-  --gold-2:#b99254;
-  --brand:#f1f4f9;
-  --shadow:0 10px 30px rgba(0,0,0,.35)
+  --bg: #0b1220;
+  --bg-soft: #0f1724;
+  --panel: #0e1629;
+  --card: #101a2d;
+  --card-border: rgba(202,169,104,.45);
+  --muted: #b8c3d6;
+  --text: #e8edf4;
+  --brand: #f1f4f9;
+  --gold: #caa968;
+  --gold-2: #b99254;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
 }
 
-.container{max-width:1200px;margin:0 auto;padding:0 20px}
-.eyebrow{letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-size:.8rem;margin:0 0 .5rem;opacity:.95}
-.eyebrow.centered{text-align:center}
-.section-title{text-align:center;font-size:clamp(24px,4vw,34px);margin:.25rem 0 1.5rem}
-
-/* Buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.65rem 1rem;border-radius:12px;font-weight:800;line-height:1}
-.btn.block{width:100%}
-.btn.outline{border:1px solid rgba(255,255,255,.18);color:#fff;background:transparent}
-.btn.gold{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#211405;box-shadow:0 10px 26px rgba(202,169,104,.35)}
-.btn.gold:hover{filter:brightness(1.06)}
-.btn.btn-primary{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#211405;border-radius:14px;padding:.9rem 1.25rem;box-shadow:0 12px 30px rgba(202,169,104,.38)}
-.btn.btn-primary:hover{filter:brightness(1.07)}
-
-/* Header / Nav */
-.header{position:sticky;top:0;z-index:50;background:var(--bg-soft);border-bottom:1px solid rgba(255,255,255,.06)}
-.navbar{display:flex;align-items:center;gap:18px;justify-content:space-between;height:68px}
-.brand{display:flex;align-items:center;gap:.75rem}
-.brand-crest{width:42px;height:42px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.35);background:#fff;padding:6px}
-.brand-name{font-weight:800;color:#fff;white-space:nowrap}
-.nav-links{display:flex;gap:28px}
-.nav-links a{color:#d7deea;font-weight:700}
-.nav-links li.active a,.nav-links a:hover{color:#fff}
-.nav-cta{display:flex;gap:10px}
-.nav-toggle{display:none;flex-direction:column;gap:4px;width:42px;height:36px;border:0;background:transparent;cursor:pointer}
-.nav-toggle-bar{display:block;width:100%;height:3px;background:#e9eef6;border-radius:2px}
-
-/* Mobile dropdown */
-.mobile-menu{position:absolute;top:68px;left:0;right:0;background:rgba(8,12,22,.98);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow);padding:12px 16px 18px}
-.mobile-menu ul{display:flex;flex-direction:column;gap:10px}
-.mobile-menu a{display:block;padding:10px 8px;border-radius:10px;color:#eaf0f8;font-weight:700}
-.mobile-menu a:hover{background:rgba(255,255,255,.06)}
-.menu-divider{height:1px;background:rgba(255,255,255,.08);margin:6px 0}
-
-/* HERO: home only */
-.hero{position:relative;isolation:isolate;min-height:56vh;display:grid;place-items:center;text-align:center;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:
-  linear-gradient(180deg,rgba(11,18,32,.00) 0%,rgba(11,18,32,.25) 60%,rgba(11,18,32,.55) 100%),
-  url("/assets/hero-bg.jpg") center/cover no-repeat;z-index:-1}
-.hero-inner{padding:56px 0 24px}
-.logo-badge img{width:120px;height:120px;border-radius:22px;background:#fff;padding:18px;box-shadow:0 12px 34px rgba(0,0,0,.38);margin:0 auto 20px}
-.hero h1{font-size:clamp(32px,5vw,58px);margin:0 0 12px;font-weight:900;letter-spacing:.01em;text-shadow:0 8px 28px rgba(0,0,0,.55)}
-.hero .lead{max-width:820px;margin:0 auto 22px;color:var(--brand);opacity:.95}
-
-/* SUBPAGE BANNER (prevents hero bleed on forms/pages) */
-.sub-hero{background:linear-gradient(180deg,#0f1525,#0b1220);border-bottom:1px solid rgba(255,255,255,.06)}
-.sub-hero .container{display:flex;align-items:center;gap:14px;min-height:160px}
-.sub-hero .page-mark{width:64px;height:64px;border-radius:16px;background:#fff;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.sub-hero h1{margin:0;font-size:clamp(24px,3.2vw,36px);font-weight:900}
-
-/* Services band */
-.section-cards{background:linear-gradient(180deg,#0f1525,#0b1220);padding:54px 0 84px}
-.cards-grid{display:grid;gap:18px;grid-template-columns:repeat(3,minmax(0,1fr))}
-.card{background:var(--card);border:1px solid var(--card-border);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
-.card:hover{box-shadow:0 16px 40px rgba(202,169,104,.25);border-color:rgba(202,169,104,.75)}
-.card h3{margin:.2rem 0 .35rem}
-.card p{color:var(--muted)}
-.card-link{display:inline-block;margin-top:.6rem;color:var(--gold);font-weight:800}
-
-/* Generic page section + grids */
-.page-section{padding:48px 0;background:#0b1220}
-.grid-2{display:grid;gap:22px;grid-template-columns:1.1fr .9fr}
-.panel{background:var(--panel);border:1px solid var(--card-border);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
-
-/* Forms */
-.form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-label{font-weight:700}
-input,textarea,select{
-  background:#0c1427;color:#e8edf4;border:1px solid rgba(255,255,255,.14);
-  border-radius:12px;padding:12px 14px
+/* 2) Layout helpers */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.eyebrow {
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-size: .8rem;
+  margin: 0 0 .5rem;
+  opacity: .95;
 }
-input::placeholder,textarea::placeholder{color:#98a6bf}
-textarea{min-height:120px;resize:vertical}
-.form-actions{margin-top:10px}
+.eyebrow.centered { text-align: center; }
+.section-title { text-align: center; font-size: clamp(24px, 4vw, 34px); margin: .25rem 0 1.5rem; }
 
-/* Footer (white bar) */
-.site-footer{background:#fff;color:#0e1629;border-top:1px solid #e6e8ef}
-.footer-inner{padding:26px 0;text-align:center}
-.footer-inner a{color:#0e1629;text-decoration:underline}
-.footer-address{color:#233049}
+/* 3) Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: .5rem; padding: .65rem 1rem; border-radius: 12px;
+  font-weight: 800; line-height: 1;
+}
+.btn.block { width: 100%; }
+.btn.outline { border: 1px solid rgba(255,255,255,.18); color: #fff; background: transparent; }
+.btn.gold,
+.btn.btn-primary {
+  background: linear-gradient(180deg, var(--gold), var(--gold-2));
+  color: #211405;
+  border-radius: 14px;
+  padding: .9rem 1.25rem;
+  box-shadow: 0 12px 30px rgba(202,169,104,.38);
+}
+.btn.gold:hover, .btn.btn-primary:hover { filter: brightness(1.07); }
 
-/* Responsive */
-@media (max-width:1000px){
-  .brand-crest{width:38px;height:38px}
-  .nav-links,.nav-cta{display:none}
-  .nav-toggle{display:flex}
+/* 4) Header / Nav */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg-soft);
+  border-bottom: 1px solid rgba(255,255,255,.06);
 }
-@media (max-width:900px){
-  .cards-grid{grid-template-columns:1fr}
-  .logo-badge img{width:100px;height:100px;padding:16px}
-  .hero{min-height:60vh}
-  .grid-2{grid-template-columns:1fr}
+.navbar {
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
 }
-/* ===== v44 patch (append to end of styles.css) ===== */
+.brand { display: flex; align-items: center; gap: .75rem; }
+.brand-crest {
+  width: 42px; height: 42px; border-radius: 12px; background: #fff; padding: 6px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.35);
+}
+.brand-name { font-weight: 800; color: #fff; white-space: nowrap; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a { color: #d7deea; font-weight: 700; }
+.nav-links li.active a, .nav-links a:hover { color: #fff; }
+.nav-cta { display: flex; gap: 10px; }
 
-/* 1) HERO image fallback:
-   Ensures the Valletta hero appears even if .hero-bg div is missing */
-.hero{
-  position:relative; /* reaffirm */
-  overflow:hidden;
+/* 5) Mobile nav toggle & menu */
+.nav-toggle {
+  display: none; width: 42px; height: 36px; border: 0; background: transparent; cursor: pointer;
+  border-radius: 10px; padding: 6px;
 }
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:-1;
+.nav-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.nav-toggle-bar { display: block; width: 100%; height: 3px; background: #e9eef6; border-radius: 2px; }
+.nav-toggle-bar + .nav-toggle-bar { margin-top: 5px; }
+
+/* Dropdown panel (hidden by default) */
+.mobile-menu {
+  display: none;
+  position: absolute; top: 68px; left: 0; right: 0;
+  background: rgba(8,12,22,.98);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: var(--shadow);
+  padding: 12px 16px 18px;
+}
+.mobile-menu ul { display: flex; flex-direction: column; gap: 10px; }
+.mobile-menu a { display: block; padding: 10px 8px; border-radius: 10px; color: #eaf0f8; font-weight: 700; }
+.mobile-menu a:hover { background: rgba(255,255,255,.06); }
+.menu-divider { height: 1px; background: rgba(255,255,255,.08); margin: 6px 0; }
+
+/* Make menu visible when JS adds a flag */
+body.menu-open .mobile-menu,
+.mobile-menu.active { display: block; }
+
+/* 6) HERO — home & any page using .hero or .page-hero */
+.hero, .page-hero {
+  position: relative; isolation: isolate;
+  min-height: 56vh; overflow: hidden; text-align: center;
+  /* Gradient overlay + Valletta photo combined so nothing can cover it */
   background:
-    linear-gradient(180deg, rgba(11,18,32,.02) 0%, rgba(11,18,32,.28) 58%, rgba(11,18,32,.62) 100%),
-    url("/assets/hero-bg.jpg") center/cover no-repeat;
+    linear-gradient(180deg,
+      rgba(11,18,32,0.00) 0%,
+      rgba(11,18,32,0.26) 58%,
+      rgba(11,18,32,0.60) 100%),
+    url("/assets/hero-bg.jpg") center/cover no-repeat !important;
+  border-radius: 0 !important;  /* remove rounded corners */
+}
+.hero-inner { padding: 56px 0 24px; }
+.logo-badge img {
+  width: 120px; height: 120px; border-radius: 22px; background: #fff; padding: 18px;
+  box-shadow: 0 12px 34px rgba(0,0,0,.38); margin: 0 auto 20px;
+  position: relative; z-index: 1;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 58px); margin: 0 0 12px; font-weight: 900; letter-spacing: .01em;
+  text-shadow: 0 8px 28px rgba(0,0,0,.55); position: relative; z-index: 1;
+}
+.hero .lead {
+  max-width: 820px; margin: 0 auto 22px; color: var(--brand); opacity: .98;
+  text-shadow: 0 8px 26px rgba(0,0,0,.45); position: relative; z-index: 1;
 }
 
-/* Keep existing .hero-bg working too (no clash). If both exist, the ::before sits under it. */
-
-/* 2) Readability & presence */
-.hero h1{
-  font-weight:900;               /* extra heavy */
-  letter-spacing:.01em;
-  text-shadow:0 10px 34px rgba(0,0,0,.6);
+/* 7) Subpage banner (for inner pages) */
+.sub-hero {
+  position: relative; z-index: 1;
+  background: linear-gradient(180deg, #0f1525, #0b1220);
+  border-bottom: 1px solid rgba(255,255,255,.06);
 }
-.hero .lead{
-  opacity:.98;
-  text-shadow:0 8px 26px rgba(0,0,0,.45);
+.sub-hero .container { display: flex; align-items: center; gap: 14px; min-height: 160px; }
+.sub-hero .page-mark {
+  width: 64px; height: 64px; border-radius: 16px; background: #fff; padding: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+.sub-hero h1 { margin: 0; font-size: clamp(24px, 3.2vw, 36px); font-weight: 900; }
+
+/* 8) Services band */
+.section-cards {
+  background: linear-gradient(180deg, #0f1525, #0b1220);
+  padding: 54px 0 84px;
+}
+.section-cards .eyebrow { text-align: center; display: block; }
+.section-cards .section-title { text-align: center; }
+
+.cards-grid { display: grid; gap: 18px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cards-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.card {
+  background: var(--card);
+  border: 1.25px solid rgba(202,169,104,.66);
+  border-radius: 18px; padding: 20px; box-shadow: var(--shadow);
+}
+.card:hover {
+  border-color: rgba(202,169,104,.9);
+  box-shadow: 0 20px 46px rgba(202,169,104,.28);
+}
+.card h3 { margin: .2rem 0 .35rem; }
+.card p { color: var(--muted); }
+.card-link { display: inline-block; margin-top: .6rem; color: var(--gold); font-weight: 800; }
+
+/* 9) Generic sections & grids */
+.page-section { padding: 48px 0; background: #0b1220; }
+.grid-2 { display: grid; gap: 22px; grid-template-columns: 1.1fr .9fr; }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--card-border);
+  border-radius: 18px; padding: 22px; box-shadow: var(--shadow);
 }
 
-/* 3) Bigger crests (nav + hero) on larger screens */
-@media (min-width: 1100px){
-  .brand-crest{ width:52px; height:52px; }  /* top-left */
-  .logo-badge img{ width:140px; height:140px; padding:20px; } /* hero center */
+/* 10) Forms */
+.form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+label { font-weight: 700; }
+input, textarea, select {
+  background: #0c1427; color: #e8edf4; border: 1px solid rgba(255,255,255,.14);
+  border-radius: 12px; padding: 12px 14px;
+}
+input::placeholder, textarea::placeholder { color: #98a6bf; }
+textarea { min-height: 120px; resize: vertical; }
+.form-actions { margin-top: 10px; }
+
+/* 11) Footer (white bar locked) */
+.site-footer { background: #fff !important; color: #0e1629 !important; border-top: 1px solid #e6e8ef; }
+.footer-inner { padding: 26px 0; text-align: center; }
+.site-footer a { color: #0e1629 !important; text-decoration: underline; }
+.footer-address { color: #233049; }
+
+/* 12) Responsive */
+@media (max-width: 1100px){
+  .brand-crest { width: 46px; height: 46px; }
+  .logo-badge img { width: 130px; height: 130px; padding: 18px; }
+}
+@media (max-width: 1000px){
+  .nav-links, .nav-cta { display: none; }
+  .nav-toggle { display: flex; }
+}
+@media (max-width: 900px){
+  .cards-grid, .cards-grid.two { grid-template-columns: 1fr; }
+  .logo-badge img { width: 110px; height: 110px; padding: 16px; }
+  .hero { min-height: 60vh; }
+  .grid-2 { grid-template-columns: 1fr; }
 }
 
-/* 4) Gold accents on service cards */
-.cards-grid .card{
-  border:1.25px solid rgba(202,169,104,.66);
-  box-shadow:0 12px 36px rgba(0,0,0,.35);
-}
-.cards-grid .card:hover{
-  border-color:rgba(202,169,104,.9);
-  box-shadow:0 20px 46px rgba(202,169,104,.28);
-}
-
-/* 5) Section label centering (desktop + mobile) */
-.eyebrow.centered, .section-title{ text-align:center }
-
-/* 6) Footer — lock to white on all pages (even if a page adds custom bands) */
-.site-footer{ background:#fff !important; color:#0e1629 !important; }
-.site-footer .footer-inner a{ color:#0e1629; }
-.site-footer .footer-address{ color:#233049; }
-
-/* 7) Sub-hero guard on inner pages (prevents any hero overlap edge cases) */
-.sub-hero{ position:relative; z-index:1; }
-
-/* 8) Minor polish */
-.btn.btn-primary{ filter:drop-shadow(0 10px 22px rgba(202,169,104,.35)); }
+/* 13) Small polish */
+.btn.btn-primary { filter: drop-shadow(0 10px 22px rgba(202,169,104,.35)); }
