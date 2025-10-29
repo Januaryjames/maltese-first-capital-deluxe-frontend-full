@@ -2,74 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Wealth Management — Maltese First Capital</title>
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="preload" href="/assets/hero-bg.jpg" as="image" />
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="stylesheet" href="/styles.css?v=49">
+  <style>
+    /* Page-local safety: identical to Private Banking to guarantee crest + even grid */
+    .banner .logo-badge{width:108px;height:108px;border-radius:22px;background:#fff;box-shadow:0 12px 34px rgba(0,0,0,.38);padding:12px}
+    .banner .logo-badge img{width:100%;height:100%;object-fit:contain;border-radius:inherit;background:transparent;display:block}
+    .cards-grid.features{align-items:stretch}
+    .cards-grid.features .card{height:100%;min-height:180px}
+  </style>
 </head>
 <body>
-
-  <!-- Header -->
+  <!-- Header / Nav (unchanged) -->
   <header class="header">
     <div class="container navbar">
-      <a href="/index.html" class="brand" aria-label="Maltese First Capital — Home">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
+      <a class="brand" href="/index.html" aria-label="Maltese First Capital">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="Maltese First Capital" width="56" height="56" />
         <span class="brand-name">Maltese First Capital</span>
       </a>
-
-      <nav aria-label="Main">
-        <ul class="nav-links">
-          <li><a href="/index.html">Home</a></li>
-          <li><a href="/about.html">About</a></li>
-          <li><a href="/private-banking.html">Private Banking</a></li>
-          <li class="active"><a href="/wealth-management.html">Wealth Management</a></li>
-          <li><a href="/contact.html">Contact</a></li>
-        </ul>
+      <nav aria-label="Primary" class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li class="active"><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </nav>
-
       <div class="nav-cta">
-        <a href="/client-login.html" class="btn outline">Client Login</a>
-        <a href="/admin-login.html" class="btn gold">Admin Portal</a>
+        <a class="btn outline" href="/client-login.html">Client Login</a>
+        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
       </div>
-
-      <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
-        <span class="nav-toggle-bar"></span>
-        <span class="nav-toggle-bar"></span>
-        <span class="nav-toggle-bar"></span>
+      <button class="nav-toggle" aria-label="Menu">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
       </button>
     </div>
-
-    <!-- Mobile menu -->
-    <div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <div class="mobile-menu" id="mobileMenu">
       <ul>
         <li><a href="/index.html">Home</a></li>
         <li><a href="/about.html">About</a></li>
         <li><a href="/private-banking.html">Private Banking</a></li>
         <li><a href="/wealth-management.html">Wealth Management</a></li>
         <li><a href="/contact.html">Contact</a></li>
-        <li class="menu-divider"></li>
+        <div class="menu-divider"></div>
         <li><a href="/client-login.html">Client Login</a></li>
         <li><a href="/admin-login.html">Admin Portal</a></li>
       </ul>
     </div>
   </header>
 
-  <!-- Banner -->
+  <!-- Valletta banner -->
   <section class="banner bg-valletta">
     <div class="container">
-      <div class="logo-badge">
-        <!-- Crest ensured by injector -->
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
+      <div class="logo-badge" aria-hidden="true">
+        <img src="/assets/logo-crest.png" alt="" loading="eager" decoding="async" />
       </div>
       <div>
         <p class="eyebrow">Wealth Management</p>
         <h1>A framework for long-term outcomes</h1>
         <p class="lead">Objectives-aligned planning with disciplined risk budgeting, consolidated reporting, and robust governance.</p>
-        <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
+        <a href="/account-open.html" class="btn btn-primary">Open an Account</a>
       </div>
     </div>
   </section>
 
-  <!-- Program -->
+  <!-- Capabilities -->
   <section class="section-cards">
     <div class="container">
       <p class="eyebrow centered">Clarity &amp; Control</p>
@@ -93,17 +91,17 @@
 
         <article class="card">
           <h3>Coordination</h3>
-          <p>Working with your legal and tax advisors where needed.</p>
+          <p>Working with legal and tax advisors where needed.</p>
         </article>
 
         <article class="card">
           <h3>Asset Allocation</h3>
-          <p>Risk-aware allocation and rebalancing to maintain target exposures.</p>
+          <p>Disciplined allocation framework aligned to goals and constraints.</p>
         </article>
 
         <article class="card">
           <h3>Secure Vault</h3>
-          <p>Centralized, secure repository for statements and documents.</p>
+          <p>Documents and statements stored and retrievable at any time.</p>
         </article>
       </div>
     </div>
@@ -112,46 +110,16 @@
   <!-- Footer -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div>© 2025 Maltese First Capital. All rights reserved.</div>
+      <div>&copy; 2025 Maltese First Capital. All rights reserved.</div>
       <div class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div>
     </div>
   </footer>
 
-  <!-- Crest injector (same as above, embedded for drop-in) -->
   <script>
-  (function () {
-    document.querySelectorAll('.logo-badge').forEach(function (host) {
-      let img = host.querySelector('img');
-      if (!img) {
-        img = document.createElement('img');
-        img.alt = 'Maltese First Capital crest';
-        img.decoding = 'async';
-        host.appendChild(img);
-      }
-      Object.assign(img.style, { width:'100%', height:'100%', objectFit:'contain', display:'block' });
-
-      const headerCrest = document.querySelector('.brand-crest');
-      const candidates = [];
-      if (headerCrest && (headerCrest.currentSrc || headerCrest.src)) {
-        candidates.push(headerCrest.currentSrc || headerCrest.src);
-      }
-      ['/assets/logo-crest.png','assets/logo-crest.png','/assets/logo-crest.svg','assets/logo-crest.svg','/assets/logo-crest.jpg','assets/logo-crest.jpg']
-        .forEach(p => candidates.push(p + '?v=2'));
-
-      let i = 0;
-      const next = () => { if (i < candidates.length) img.src = candidates[i++]; else host.remove(); };
-      img.addEventListener('error', next);
-      img.addEventListener('load', function () { if (!img.naturalWidth) next(); }, { once:true });
-      next();
+    document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+      document.body.classList.toggle('menu-open');
+      document.getElementById('mobileMenu')?.classList.toggle('active');
     });
-
-    const btn = document.querySelector('.nav-toggle');
-    const menu = document.getElementById('mobileMenu');
-    if (btn && menu) btn.addEventListener('click', () => {
-      const open = document.body.classList.toggle('menu-open');
-      btn.setAttribute('aria-expanded', String(open));
-    });
-  })();
   </script>
 </body>
 </html>
