@@ -1,55 +1,182 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Client Dashboard — Maltese First Capital</title>
+
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <meta name="theme-color" content="#0b1220" />
+
   <link rel="stylesheet" href="/styles.css?v=45" />
-  <script defer src="/scripts/forms.js?v=45"></script>
+  <script defer src="/scripts/nav.js?v=45"></script>
 </head>
-<body data-page="client-dashboard">
+<body>
   <header class="header">
     <nav class="navbar container">
-      <a class="brand" href="/index.html"><img class="brand-crest" src="/assets/logo-crest.png" alt="" /><span class="brand-name">Maltese First Capital</span></a>
+      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
       <ul class="nav-links">
-        <li class="active"><a href="/client-dashboard.html">Dashboard</a></li>
-        <li><a href="/client-profile.html">Profile & Documents</a></li>
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/contact.html">Support</a></li>
       </ul>
       <div class="nav-cta">
-        <a class="btn outline" href="/client-login.html" onclick="localStorage.removeItem('MFC_JWT')">Sign out</a>
+        <button id="btnSignOut" class="btn outline">Sign out</button>
       </div>
     </nav>
   </header>
 
   <section class="sub-hero">
-    <div class="container">
-      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
-      <h1>Welcome, <span data-client-name>Client</span></h1>
+    <div class="container" style="justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:14px">
+        <img class="page-mark" src="/assets/logo-crest.png" alt="">
+        <div>
+          <p class="eyebrow">Account Overview</p>
+          <h1 id="welcomeTitle" style="margin:.15rem 0 0;">Welcome</h1>
+        </div>
+      </div>
+      <div id="acctBox" class="panel" style="display:flex;gap:18px;align-items:center;border-color:rgba(202,169,104,.6);">
+        <div>
+          <div class="eyebrow">Account</div>
+          <div id="acctNumber" style="font-weight:900;font-size:1.35rem;letter-spacing:.06em">—</div>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="page-section">
-    <div class="container grid-2">
-      <div>
-        <p class="eyebrow">Accounts</p>
-        <div data-accounts style="display:grid; gap:12px;"></div>
-
-        <p class="eyebrow" style="margin-top:22px">Recent Transactions</p>
-        <div data-transactions style="display:grid; gap:12px;"></div>
+    <div class="container">
+      <div class="cards-grid two">
+        <article class="card">
+          <h3>Balances</h3>
+          <div id="balances">
+            <p class="form-status">Loading…</p>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Recent Transactions</h3>
+          <div id="txList">
+            <p class="form-status">Loading…</p>
+          </div>
+        </article>
       </div>
 
-      <div>
-        <p class="eyebrow">Statements</p>
-        <div data-statements style="display:grid; gap:12px;"></div>
+      <div class="cards-grid" style="margin-top:18px">
+        <article class="card">
+          <h3>Statements</h3>
+          <p id="statementText" class="form-status">—</p>
+          <!-- Optional: link if backend serves PDFs -->
+          <div id="statementLinks"></div>
+        </article>
       </div>
     </div>
   </section>
 
-  <footer class="site-footer"><div class="container footer-inner">
-    <p>© 2025 Maltese First Capital. All rights reserved.</p>
-    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-  </div></footer>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="/scripts/api.js?v=46"></script>
+  <script>
+    (async function(){
+      const {storage, getOverview, logout} = window.MFC_API;
+
+      // Guard: if no token and no cached profile, send to login
+      if (!storage.token && !storage.profile) {
+        window.location.replace("/client-login.html");
+        return;
+      }
+
+      document.getElementById("btnSignOut").addEventListener("click", async () => {
+        await logout();
+        window.location.replace("/client-login.html");
+      });
+
+      const fmt = (n) => n.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+      const mask8 = (s) => {
+        // normalize to 8 characters (or nicely spaced)
+        const raw = (s || "").replace(/\D/g,"").padStart(8,"0").slice(-8);
+        return raw.replace(/(\d{2})(\d{3})(\d{3})/, "$1-$2-$3");
+      };
+
+      try {
+        const client = await getOverview();
+
+        // Header
+        document.getElementById("welcomeTitle").textContent = `Welcome, ${client?.name || "Client"}`;
+        document.getElementById("acctNumber").textContent = mask8(client?.accountNumber || "00000000");
+
+        // Balances
+        const balancesEl = document.getElementById("balances");
+        balancesEl.innerHTML = "";
+        (client?.balances || []).forEach(b => {
+          const row = document.createElement("div");
+          row.style.display = "flex";
+          row.style.justifyContent = "space-between";
+          row.style.padding = "8px 0";
+          row.innerHTML = `<strong>${b.currency}</strong><span>${fmt(Number(b.amount || 0))}</span>`;
+          balancesEl.appendChild(row);
+        });
+        if (!balancesEl.children.length) balancesEl.innerHTML = `<p class="form-status">No balances to display.</p>`;
+
+        // Transactions
+        const txEl = document.getElementById("txList");
+        txEl.innerHTML = "";
+        (client?.transactions || []).slice(0,10).forEach(t => {
+          const row = document.createElement("div");
+          row.style.display = "grid";
+          row.style.gridTemplateColumns = "1fr auto auto";
+          row.style.gap = "10px";
+          row.style.padding = "10px 0";
+          row.style.borderBottom = "1px solid rgba(255,255,255,.08)";
+          const amt = Number(t.amount || 0);
+          const sign = amt >= 0 ? "" : "-";
+          row.innerHTML = `
+            <div><strong>${t.description || "Transaction"}</strong><div class="form-status" style="margin-top:2px">${t.id || ""} · ${t.date || ""}</div></div>
+            <div style="opacity:.85">${t.currency || ""}</div>
+            <div style="font-weight:900">${sign}${fmt(Math.abs(amt))}</div>
+          `;
+          txEl.appendChild(row);
+        });
+        if (!txEl.children.length) txEl.innerHTML = `<p class="form-status">No recent transactions.</p>`;
+
+        // Statement text (if admin provides it on backend)
+        const sText = client?.statementText || "Your consolidated statements appear monthly in your document vault.";
+        document.getElementById("statementText").textContent = sText;
+
+        // Optional statement links (e.g., client.statementFiles = [{name, url}])
+        const sLinks = document.getElementById("statementLinks");
+        (client?.statementFiles || []).forEach(f => {
+          const a = document.createElement("a");
+          a.href = f.url; a.textContent = f.name || "Statement";
+          a.className = "card-link"; a.target = "_blank"; a.rel = "noopener";
+          sLinks.appendChild(a);
+        });
+
+      } catch (err) {
+        // If a cached profile exists, render it; otherwise bounce to login
+        if (storage.profile) {
+          console.warn("API unreachable, showing cached profile:", err);
+          document.getElementById("welcomeTitle").textContent = `Welcome, ${storage.profile.name || "Client"}`;
+          document.getElementById("acctNumber").textContent = (storage.profile.accountNumber || "00000000");
+        } else {
+          window.location.replace("/client-login.html");
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
