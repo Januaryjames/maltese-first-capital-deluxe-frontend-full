@@ -1,50 +1,56 @@
+<!-- /scripts/api.js -->
 <script>
-/* Minimal API client for MFC */
-(() => {
-  const DEFAULT_BASE = 'https://maltese-first-capital-deluxe-backend.onrender.com';
-  const LS = localStorage;
-
-  window.API_BASE = LS.getItem('API_BASE') || DEFAULT_BASE;
-
+// Lightweight API client used across pages
+window.mfcApi = (function () {
   const keys = {
-    token:  'mfc_token',
-    client: 'mfc_client_id',
-    admin:  'mfc_admin'
+    token:  'MFC_TOKEN',
+    client: 'MFC_CLIENT_ID',
+    admin:  'MFC_IS_ADMIN'
   };
 
-  async function api(path, { method='GET', body, auth=true, headers={}, ...rest } = {}) {
-    const opts = { method, headers: { 'Content-Type':'application/json', ...headers }, ...rest };
-    if (auth) {
-      const t = LS.getItem(keys.token);
-      if (t) opts.headers['Authorization'] = `Bearer ${t}`;
-    }
-    if (body) opts.body = JSON.stringify(body);
-
-    const res = await fetch(`${window.API_BASE}${path}`, opts);
-    if (res.status === 401) {
-      // kick to appropriate login
-      LS.removeItem(keys.token);
-      if (location.pathname.includes('admin')) location.href = '/admin-login.html';
-      else location.href = '/client-login.html';
-      throw new Error('Unauthorized');
-    }
-    if (!res.ok) {
-      let msg = '';
-      try { const j = await res.json(); msg = j.message || JSON.stringify(j); } catch { msg = await res.text(); }
-      throw new Error(`${res.status} ${msg}`);
-    }
-    const ct = res.headers.get('content-type') || '';
-    return ct.includes('application/json') ? res.json() : res.text();
+  function base() {
+    // Primary: explicit global; Fallbacks: localStorage
+    return window.API_BASE
+        || localStorage.getItem('API_BASE')
+        || localStorage.getItem('BACKEND_URL')
+        || ''; // empty -> will throw with a clear message
   }
 
-  window.mfcApi = {
-    setBase(u){ LS.setItem('API_BASE', u); window.API_BASE = u; },
-    getBase(){ return window.API_BASE; },
+  async function request(method, path, body, { auth = true } = {}) {
+    const url = base();
+    if (!url) throw new Error('Backend not configured');
+
+    const headers = { 'Content-Type': 'application/json' };
+    if (auth) {
+      const t = localStorage.getItem(keys.token);
+      if (!t) throw new Error('Not signed in');
+      headers['Authorization'] = `Bearer ${t}`;
+    }
+
+    const res = await fetch(url + path, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: 'omit',
+      mode: 'cors'
+    });
+
+    if (!res.ok) {
+      let msg = res.statusText;
+      try { const j = await res.json(); msg = j.message || JSON.stringify(j); } catch {}
+      throw new Error(msg || `HTTP ${res.status}`);
+    }
+    // Allow empty JSON
+    const text = await res.text();
+    return text ? JSON.parse(text) : {};
+  }
+
+  return {
     keys,
-    get:  (p,o)=>api(p,{method:'GET', ...(o||{})}),
-    post: (p,b,o)=>api(p,{method:'POST', body:b, ...(o||{})}),
-    patch:(p,b,o)=>api(p,{method:'PATCH',body:b, ...(o||{})}),
-    del:  (p,o)=>api(p,{method:'DELETE', ...(o||{})})
+    get:   (p, o) => request('GET',    p, null, o),
+    post:  (p, b, o) => request('POST', p, b, o),
+    patch: (p, b, o) => request('PATCH',p, b, o),
+    del:   (p, o) => request('DELETE',  p, null, o)
   };
 })();
 </script>
