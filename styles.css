@@ -212,3 +212,41 @@ textarea{min-height:120px;resize:vertical}
   .cards-grid.features{ grid-template-columns: 1fr; }
   .cards-grid.features .card{ min-height: unset; }
 }
+/* ===== v48.2 patch (append to end) ===== */
+
+/* 1) Sub-hero: use Valletta on inner pages + soft seam */
+.sub-hero{
+  position: relative;
+  isolation: isolate;
+  min-height: 200px;
+  background:
+    linear-gradient(180deg, rgba(11,18,32,.10) 0%, rgba(11,18,32,.42) 55%, rgba(11,18,32,.72) 100%),
+    url("/assets/hero-bg.jpg") center/cover no-repeat !important;
+}
+.sub-hero::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:-20px; height:40px; z-index:0;
+  background: radial-gradient(120% 80% at 50% 0%, rgba(202,169,104,.26), rgba(11,18,32,0) 58%);
+  pointer-events:none;
+}
+
+/* 2) Feature cards: equal height + tidy 2×2 when exactly four */
+.cards-grid{ align-items: stretch; }
+.cards-grid .card{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Auto-detect 4 cards and switch to 2 columns (modern Safari/Chrome/Edge support) */
+@supports(selector(:has(*))){
+  .cards-grid:has(.card:nth-child(4):last-child){
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+}
+
+/* 3) Sub-hero crest a touch larger on desktop for balance */
+@media (min-width: 1100px){
+  .sub-hero .page-mark{ width:82px; height:82px; border-radius:20px; }
+}
