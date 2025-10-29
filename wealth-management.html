@@ -1,41 +1,21 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wealth Management — Maltese First Capital</title>
-
-  <link rel="icon" href="/assets/logo-crest.png" />
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-
-  <meta name="description" content="Objectives-aligned planning with disciplined risk budgeting, consolidated reporting, and robust governance." />
-  <meta property="og:title" content="Wealth Management — Maltese First Capital" />
-  <meta property="og:description" content="Clarity & control with consolidated performance views and downloadable statements." />
-  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg" />
-  <meta property="og:url" content="https://maltesefirst.com/wealth-management.html" />
-  <meta name="theme-color" content="#0b1220" />
-
-  <link rel="stylesheet" href="/styles.css?v=49" />
-  <link rel="stylesheet" href="/fixes.css?v=49" />
-
-  <!-- page-local patch: ensure equal-height feature cards -->
-  <style>
-    .cards-grid.features{align-items:stretch}
-    .cards-grid.features .card{height:100%}
-  </style>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <header class="header">
-    <nav class="navbar container">
-      <a class="brand" href="/index.html" aria-label="Maltese First Capital home">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
-        <span class="brand-name">Maltese First Capital</span>
-      </a>
 
-      <button class="nav-toggle" aria-label="Toggle menu">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
+<header class="header">
+  <div class="container navbar">
+    <a href="/index.html" class="brand">
+      <img class="brand-crest" src="/assets/logo-crest.png" alt="Maltese First Capital">
+      <span class="brand-name">Maltese First Capital</span>
+    </a>
 
+    <nav aria-label="Primary">
       <ul class="nav-links">
         <li><a href="/index.html">Home</a></li>
         <li><a href="/about.html">About</a></li>
@@ -43,92 +23,93 @@
         <li class="active"><a href="/wealth-management.html">Wealth Management</a></li>
         <li><a href="/contact.html">Contact</a></li>
       </ul>
-
-      <div class="nav-cta">
-        <a class="btn outline" href="/client-login.html">Client Login</a>
-        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
-      </div>
     </nav>
 
-    <!-- mobile dropdown -->
-    <div class="mobile-menu container" id="mobileMenuWM">
-      <ul>
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/private-banking.html">Private Banking</a></li>
-        <li class="active"><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-        <li class="menu-divider"></li>
-        <li><a href="/client-login.html">Client Login</a></li>
-        <li><a href="/admin-login.html">Admin Portal</a></li>
-      </ul>
+    <div class="nav-cta">
+      <a class="btn outline" href="/client-login.html">Client Login</a>
+      <a class="btn gold" href="/admin-login.html">Admin Portal</a>
     </div>
-  </header>
 
-  <!-- Banner with Valletta background -->
-  <section class="banner bg-valletta">
-    <div class="container">
-      <div class="page-mark">
-        <img src="/assets/logo-crest.png" alt="Maltese First Capital crest" />
-      </div>
-      <div>
-        <p class="eyebrow">Wealth Management</p>
-        <h1>A framework for long-term outcomes</h1>
-        <p class="lead">Objectives-aligned planning with disciplined risk budgeting, consolidated reporting, and robust governance.</p>
-      </div>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.body.classList.toggle('menu-open')">
+      <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu">
+    <ul>
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/private-banking.html">Private Banking</a></li>
+      <li class="active"><a href="/wealth-management.html">Wealth Management</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li class="menu-divider"></li>
+      <li><a href="/client-login.html">Client Login</a></li>
+      <li><a href="/admin-login.html">Admin Portal</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- Banner -->
+<section class="banner bg-valletta">
+  <div class="container">
+    <div class="logo-badge"><img src="/assets/logo-crest.png" alt="Maltese First Capital crest"></div>
+    <div>
+      <p class="eyebrow">Wealth Management</p>
+      <h1>A framework for long-term outcomes</h1>
+      <p class="lead">Objectives-aligned planning with disciplined risk budgeting, consolidated reporting, and robust governance.</p>
+      <a class="btn btn-primary" href="/account-open.html">Open an Account</a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Clarity & Control -->
-  <section class="section-cards">
-    <div class="container">
-      <p class="eyebrow centered">Clarity &amp; Control</p>
-      <h2 class="section-title">Long-term outcomes, measured and managed</h2>
+<!-- Clarity & Control -->
+<section class="section-cards">
+  <div class="container">
+    <p class="eyebrow centered">Clarity &amp; Control</p>
+    <h2 class="section-title">Long-term outcomes, measured and managed</h2>
 
-      <div class="cards-grid features">
-        <article class="card">
-          <h3>Portfolio Strategy</h3>
-          <p>Objectives-aligned planning with disciplined risk budgeting.</p>
-        </article>
+    <div class="cards-grid features">
+      <article class="card">
+        <h3>Portfolio Strategy</h3>
+        <p>Objectives-aligned planning with disciplined risk budgeting.</p>
+      </article>
 
-        <article class="card">
-          <h3>Reporting</h3>
-          <p>Consolidated performance views and downloadable statements.</p>
-        </article>
+      <article class="card">
+        <h3>Reporting</h3>
+        <p>Consolidated performance views and downloadable statements.</p>
+      </article>
 
-        <article class="card">
-          <h3>Governance</h3>
-          <p>Controls, approvals, and document trail for key decisions.</p>
-        </article>
+      <article class="card">
+        <h3>Governance</h3>
+        <p>Controls, approvals, and document trail for key decisions.</p>
+      </article>
 
-        <article class="card">
-          <h3>Coordination</h3>
-          <p>Working with your legal and tax advisors where needed.</p>
-        </article>
+      <article class="card">
+        <h3>Coordination</h3>
+        <p>Working with your legal and tax advisors where needed.</p>
+      </article>
 
-        <article class="card">
-          <h3>Risk &amp; Objectives</h3>
-          <p>Mandate definition, rebalancing discipline, and review cadence.</p>
-        </article>
+      <article class="card">
+        <h3>Risk &amp; Allocation</h3>
+        <p>Model portfolios and guardrails tailored to the mandate.</p>
+      </article>
 
-        <article class="card">
-          <h3>Secure Vault</h3>
-          <p>Encrypted document vault for statements and key records.</p>
-        </article>
-      </div>
+      <article class="card">
+        <h3>Secure Vault</h3>
+        <p>Statement archive, signed documents, and audit trail.</p>
+      </article>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">
-        The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </p>
-    </div>
-  </footer>
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>© 2025 Maltese First Capital. All rights reserved.</p>
+    <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+    </p>
+  </div>
+</footer>
 
-  <script defer src="/scripts/nav.js?v=49"></script>
 </body>
 </html>
