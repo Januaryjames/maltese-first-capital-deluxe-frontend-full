@@ -1,309 +1,55 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Client Dashboard — Maltese First Capital</title>
-
-  <link rel="icon" href="/assets/logo-crest.png"/>
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
-  <meta name="description" content="Secure access to balances, account number, transactions, and statements."/>
-  <meta property="og:title" content="Client Dashboard — Maltese First Capital"/>
-  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg"/>
-  <meta name="theme-color" content="#0b1220"/>
-
-  <!-- Optional: set a default backend here (overridden by localStorage.BACKEND_URL) -->
-  <!-- <meta name="mfc-backend" content="https://maltese-first-capital-deluxe-backend.onrender.com"> -->
-
-  <link rel="stylesheet" href="/styles.css?v=48"/>
-  <script defer src="/scripts/nav.js?v=48"></script>
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
+  <link rel="stylesheet" href="/styles.css?v=45" />
+  <script defer src="/scripts/forms.js?v=45"></script>
 </head>
-<body>
-  <!-- Header -->
+<body data-page="client-dashboard">
   <header class="header">
-    <nav class="navbar container" aria-label="Client">
-      <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
-        <span class="brand-name">Maltese First Capital</span>
-      </a>
-
-      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
-
+    <nav class="navbar container">
+      <a class="brand" href="/index.html"><img class="brand-crest" src="/assets/logo-crest.png" alt="" /><span class="brand-name">Maltese First Capital</span></a>
       <ul class="nav-links">
-        <li class="active"><a aria-current="page" href="/client-dashboard.html">Dashboard</a></li>
-        <li><a href="/account-open.html">Open Account</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-        <li><a href="#" id="logoutLink">Logout</a></li>
+        <li class="active"><a href="/client-dashboard.html">Dashboard</a></li>
+        <li><a href="/client-profile.html">Profile & Documents</a></li>
       </ul>
-
       <div class="nav-cta">
-        <a class="btn outline" href="/private-banking.html">Private Banking</a>
-        <a class="btn gold" href="/wealth-management.html">Wealth Management</a>
+        <a class="btn outline" href="/client-login.html" onclick="localStorage.removeItem('MFC_JWT')">Sign out</a>
       </div>
     </nav>
-
-    <div id="mobile-menu" class="mobile-menu" hidden>
-      <div class="container">
-        <ul role="menu">
-          <li><a role="menuitem" href="/client-dashboard.html" aria-current="page">Dashboard</a></li>
-          <li><a role="menuitem" href="/account-open.html">Open Account</a></li>
-          <li><a role="menuitem" href="/contact.html">Contact</a></li>
-          <li><a role="menuitem" href="#" id="logoutLinkMobile">Logout</a></li>
-        </ul>
-      </div>
-    </div>
   </header>
 
-  <!-- Compact Valletta hero -->
-  <section class="hero" style="min-height:34vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
-    <div class="hero-inner container">
-      <div class="logo-badge"><img src="/assets/logo-crest.png" alt="Maltese First Capital crest"/></div>
-      <h1>Client Dashboard</h1>
-      <p class="lead">Secure access to your balance, 8-digit account number, transactions, and statements.</p>
+  <section class="sub-hero">
+    <div class="container">
+      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <h1>Welcome, <span data-client-name>Client</span></h1>
     </div>
   </section>
 
-  <!-- Dashboard content -->
   <section class="page-section">
-    <div class="container" style="display:grid;gap:22px;">
+    <div class="container grid-2">
+      <div>
+        <p class="eyebrow">Accounts</p>
+        <div data-accounts style="display:grid; gap:12px;"></div>
 
-      <!-- Overview cards -->
-      <div class="cards-grid two" style="align-items:stretch;">
-        <article class="card" aria-labelledby="accTitle">
-          <h3 id="accTitle" style="margin-top:0;">Account Overview</h3>
-          <p><strong>Name:</strong> <span id="cd_name">—</span></p>
-          <p><strong>Account No. (8-digit):</strong> <span id="cd_accountNo">—</span></p>
-          <p><strong>Currency:</strong> <span id="cd_ccy">—</span></p>
-          <p><strong>Available Balance:</strong> <span id="cd_balance">—</span></p>
-          <p class="form-status" id="cd_updated">Last updated: —</p>
-          <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
-            <a class="btn btn-primary" href="#transactions">View Transactions</a>
-            <a class="btn outline" href="#statements">Statements</a>
-          </div>
-        </article>
-
-        <article class="card">
-          <h3 style="margin-top:0;">Profile &amp; Documents</h3>
-          <p><strong>Email:</strong> <span id="cd_email">—</span></p>
-          <p><strong>Client ID:</strong> <span id="cd_clientId">—</span></p>
-          <p class="form-status">For updates, contact your banker or upload documents via the vault.</p>
-          <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
-            <a class="btn outline" href="/contact.html">Contact Banker</a>
-            <a class="btn gold" href="#statements">Download Latest Statement</a>
-          </div>
-        </article>
+        <p class="eyebrow" style="margin-top:22px">Recent Transactions</p>
+        <div data-transactions style="display:grid; gap:12px;"></div>
       </div>
 
-      <!-- Transactions -->
-      <div id="transactions" class="panel" aria-labelledby="txTitle">
-        <h2 id="txTitle" style="margin:0 0 10px;">Recent Transactions</h2>
-        <div style="overflow:auto;">
-          <table style="width:100%;border-collapse:collapse;">
-            <thead>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.12);">
-                <th style="text-align:left;padding:10px;">Date</th>
-                <th style="text-align:left;padding:10px;">Type</th>
-                <th style="text-align:left;padding:10px;">Description</th>
-                <th style="text-align:left;padding:10px;">Amount</th>
-                <th style="text-align:left;padding:10px;">Balance</th>
-              </tr>
-            </thead>
-            <tbody id="cd_tx_rows">
-              <tr><td style="padding:10px;" colspan="5" id="cd_tx_empty" class="form-status">No transactions to display.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Statements -->
-      <div id="statements" class="panel" aria-labelledby="stTitle">
-        <h2 id="stTitle" style="margin:0 0 10px;">Statements</h2>
-        <div id="cd_stmt_list" style="display:flex;flex-wrap:wrap;gap:10px;">
-          <span class="form-status">No statements available.</span>
-        </div>
+      <div>
+        <p class="eyebrow">Statements</p>
+        <div data-statements style="display:grid; gap:12px;"></div>
       </div>
     </div>
   </section>
 
-  <!-- Footer (white) -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">
-        The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </p>
-    </div>
-  </footer>
-
-  <!-- Inline data script (does not touch global files) -->
-  <script>
-    (function() {
-      const BACKEND =
-        localStorage.getItem('BACKEND_URL') ||
-        document.querySelector('meta[name="mfc-backend"]')?.content || '';
-
-      const TOKEN =
-        localStorage.getItem('CLIENT_TOKEN') ||
-        new URLSearchParams(location.search).get('token') || '';
-
-      const $ = (id) => document.getElementById(id);
-
-      function fmtMoney(n, ccy) {
-        try {
-          return new Intl.NumberFormat(undefined, { style: 'currency', currency: ccy || 'USD' }).format(Number(n||0));
-        } catch {
-          return (ccy || '') + ' ' + (Number(n||0).toFixed(2));
-        }
-      }
-      function isoToDate(iso) {
-        try { return new Date(iso).toLocaleString(); } catch { return iso || ''; }
-      }
-
-      function setText(id, v) { const el = $(id); if (el) el.textContent = v ?? '—'; }
-
-      function renderOverview(data) {
-        // adapt to several possible backend shapes
-        const user = data.user || data.client || {};
-        const acct = data.account || data.accountInfo || data.acct || {};
-        const name = user.fullName || user.name || user.displayName || '—';
-        const email = user.email || user.username || '—';
-        const clientId = user.clientId || user._id || user.id || '—';
-        const accountNo = acct.accountNumber || acct.number || acct.acctNo || '—';
-        const currency = acct.currency || acct.ccy || 'USD';
-        const balance = acct.balance ?? acct.available ?? 0;
-        const updatedAt = data.updatedAt || acct.updatedAt || new Date().toISOString();
-
-        setText('cd_name', name);
-        setText('cd_email', email);
-        setText('cd_clientId', clientId);
-        setText('cd_accountNo', accountNo);
-        setText('cd_ccy', currency);
-        setText('cd_balance', fmtMoney(balance, currency));
-        setText('cd_updated', 'Last updated: ' + isoToDate(updatedAt));
-      }
-
-      function renderTransactions(list, currencyDefault) {
-        const tbody = $('cd_tx_rows');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        if (!Array.isArray(list) || list.length === 0) {
-          tbody.innerHTML = '<tr><td style="padding:10px;" colspan="5" class="form-status">No transactions to display.</td></tr>';
-          return;
-        }
-        list.slice(0, 25).forEach(tx => {
-          const date = isoToDate(tx.date || tx.createdAt);
-          const type = (tx.type || '').toString().toUpperCase();
-          const desc = tx.description || tx.memo || '';
-          const ccy = tx.currency || currencyDefault || 'USD';
-          const amt = fmtMoney(tx.amount || 0, ccy);
-          const bal = fmtMoney(tx.balanceAfter ?? tx.runningBalance ?? 0, ccy);
-
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td style="padding:10px;">${date}</td>
-            <td style="padding:10px;">${type}</td>
-            <td style="padding:10px;">${desc}</td>
-            <td style="padding:10px;">${amt}</td>
-            <td style="padding:10px;">${bal}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
-      function renderStatements(items) {
-        const box = $('cd_stmt_list');
-        if (!box) return;
-        box.innerHTML = '';
-        if (!Array.isArray(items) || items.length === 0) {
-          box.innerHTML = '<span class="form-status">No statements available.</span>';
-          return;
-        }
-        items.slice(0, 12).forEach(s => {
-          const label = s.label || s.month || s.period || 'Statement';
-          const url = s.url || s.href || '#';
-          const a = document.createElement('a');
-          a.className = 'btn outline';
-          a.href = url;
-          a.target = '_blank';
-          a.rel = 'noopener';
-          a.textContent = label;
-          box.appendChild(a);
-        });
-      }
-
-      async function fetchJSON(path, opts = {}) {
-        if (!BACKEND) throw new Error('Backend URL not set');
-        const headers = Object.assign(
-          { 'Content-Type': 'application/json' },
-          TOKEN ? { 'Authorization': 'Bearer ' + TOKEN } : {}
-        );
-        const res = await fetch(BACKEND.replace(/\/$/,'') + path, Object.assign({ headers, credentials: 'omit' }, opts));
-        if (!res.ok) throw new Error('HTTP '+res.status);
-        return res.json();
-      }
-
-      async function loadAll() {
-        // Try a few likely overview endpoints
-        const overviewEndpoints = ['/api/client/overview','/api/client/me','/api/accounts/me'];
-        let overview;
-        for (const ep of overviewEndpoints) {
-          try { overview = await fetchJSON(ep); if (overview) break; } catch(e){}
-        }
-        if (overview) {
-          renderOverview(overview);
-
-          const acct = overview.account || overview.accountInfo || overview.acct || {};
-          const currency = acct.currency || acct.ccy || 'USD';
-
-          // Transactions
-          let tx;
-          try { tx = await fetchJSON('/api/client/transactions'); }
-          catch(e){ try { tx = await fetchJSON('/api/transactions/me'); } catch(_){} }
-          if (tx && Array.isArray(tx.transactions)) renderTransactions(tx.transactions, currency);
-          else if (Array.isArray(tx)) renderTransactions(tx, currency);
-          else renderTransactions([], currency);
-
-          // Statements
-          let st;
-          try { st = await fetchJSON('/api/client/statements'); }
-          catch(e){ try { st = await fetchJSON('/api/statements/me'); } catch(_){} }
-          if (st && Array.isArray(st.statements)) renderStatements(st.statements);
-          else if (Array.isArray(st)) renderStatements(st);
-          else renderStatements([]);
-        } else {
-          // Fallback UI message
-          setText('cd_name','—'); setText('cd_email','—'); setText('cd_clientId','—');
-          setText('cd_accountNo','—'); setText('cd_ccy','—'); setText('cd_balance','—');
-          setText('cd_updated','Set BACKEND_URL and log in again.');
-        }
-      }
-
-      // Logout
-      function doLogout() {
-        localStorage.removeItem('CLIENT_TOKEN');
-        location.href = '/client-login.html';
-      }
-      document.getElementById('logoutLink')?.addEventListener('click', (e)=>{e.preventDefault();doLogout();});
-      document.getElementById('logoutLinkMobile')?.addEventListener('click', (e)=>{e.preventDefault();doLogout();});
-
-      // Guards
-      if (!BACKEND) {
-        console.warn('Set localStorage.BACKEND_URL to your backend base URL.');
-      }
-      if (!TOKEN) {
-        console.warn('CLIENT_TOKEN missing — redirecting to login.');
-        // Soft redirect after a beat so page paints
-        setTimeout(()=>{ location.href = '/client-login.html'; }, 600);
-      } else {
-        loadAll().catch(err => {
-          console.error(err);
-          setText('cd_updated','Unable to reach server. Please try again.');
-        });
-      }
-    })();
-  </script>
+  <footer class="site-footer"><div class="container footer-inner">
+    <p>© 2025 Maltese First Capital. All rights reserved.</p>
+    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+  </div></footer>
 </body>
 </html>
