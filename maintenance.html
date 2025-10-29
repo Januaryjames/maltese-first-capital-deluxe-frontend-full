@@ -1,23 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Under Maintenance | Maltese First Capital</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Scheduled Maintenance — Maltese First Capital</title>
+
+  <link rel="icon" href="/assets/logo-crest.png"/>
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
+  <meta name="description" content="Our systems are undergoing scheduled maintenance."/>
+  <meta property="og:title" content="Maintenance — Maltese First Capital"/>
+  <meta property="og:image" content="https://maltesefirst.com/assets/hero-bg.jpg"/>
+  <meta name="theme-color" content="#0b1220"/>
+  <link rel="manifest" href="/site.webmanifest"/>
+
+  <link rel="stylesheet" href="/styles.css?v=48"/>
+  <script defer src="/scripts/nav.js?v=48"></script>
 </head>
 <body>
-  <section class="hero compact">
-    <img src="logo.png" alt="Maltese First Capital" class="hero-logo">
-    <h1>Temporary Maintenance</h1>
-    <p class="lead">Our team is performing scheduled updates to enhance your experience.<br>We’ll be back online shortly.</p>
-    <div style="text-align:center; margin-top:24px;">
-      <a href="mailto:hello@maltesefirst.com" class="btn">Contact Support</a>
+  <header class="header">
+    <nav class="navbar container">
+      <a class="brand" href="/index.html">
+        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
+        <span class="brand-name">Maltese First Capital</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/private-banking.html">Private Banking</a></li>
+        <li><a href="/wealth-management.html">Wealth Management</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <span class="btn outline" aria-disabled="true">Client Login</span>
+        <span class="btn gold" aria-disabled="true">Open an Account</span>
+      </div>
+    </nav>
+    <div id="mobile-menu" class="mobile-menu" hidden>
+      <div class="container"><ul><li><a href="/index.html">Home</a></li></ul></div>
+    </div>
+  </header>
+
+  <section class="hero" style="min-height:38vh;border-radius:18px;width:min(1280px,calc(100% - 24px));margin:18px auto 0;box-shadow:var(--shadow);overflow:hidden;">
+    <div class="hero-inner container">
+      <div class="logo-badge"><img src="/assets/logo-crest.png" alt=""/></div>
+      <h1>Scheduled Maintenance</h1>
+      <p class="lead">We’re updating our systems. Service will resume shortly.</p>
     </div>
   </section>
 
-  <footer>
-    © 2025 Maltese First Capital — Valletta, Malta
+  <section class="page-section">
+    <div class="container">
+      <div class="panel">
+        <h2 style="margin-top:0;">Status</h2>
+        <p>Core services are temporarily unavailable while we complete routine maintenance. Account access, statements, and transfers will be back online soon.</p>
+        <p>For urgent help, email <a class="card-link" href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Maltese First Capital. All rights reserved.</p>
+      <p class="footer-address">
+        The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+      </p>
+    </div>
   </footer>
 </body>
 </html>
