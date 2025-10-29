@@ -1,13 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Client Dashboard — Maltese First Capital</title>
-
-  <link rel="icon" href="/assets/logo-crest.png" />
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png" />
-  <link rel="stylesheet" href="/styles.css?v=45" />
+  <link rel="icon" href="/assets/logo-crest.png"/>
+  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
+  <link rel="stylesheet" href="/styles.css?v=45"/>
   <script defer src="/scripts/nav.js?v=45"></script>
   <script defer src="/scripts/api.js"></script>
 </head>
@@ -15,7 +14,7 @@
   <header class="header">
     <nav class="navbar container">
       <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt="" />
+        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
         <span class="brand-name">Maltese First Capital</span>
       </a>
       <ul class="nav-links">
@@ -32,7 +31,7 @@
 
   <section class="sub-hero">
     <div class="container">
-      <img class="page-mark" src="/assets/logo-crest.png" alt="" />
+      <img class="page-mark" src="/assets/logo-crest.png" alt=""/>
       <h1>Welcome back</h1>
     </div>
   </section>
@@ -57,13 +56,13 @@
       <div class="panel" style="margin-top:22px;">
         <h3>Recent Transactions</h3>
         <div style="overflow:auto;">
-          <table id="txTable" style="width:100%; border-collapse:collapse;">
+          <table id="txTable" style="width:100%;border-collapse:collapse;">
             <thead>
               <tr>
-                <th style="text-align:left; padding:10px;">Date</th>
-                <th style="text-align:left; padding:10px;">Description</th>
-                <th style="text-align:right; padding:10px;">Amount</th>
-                <th style="text-align:right; padding:10px;">Balance</th>
+                <th style="text-align:left;padding:10px;">Date</th>
+                <th style="text-align:left;padding:10px;">Description</th>
+                <th style="text-align:right;padding:10px;">Amount</th>
+                <th style="text-align:right;padding:10px;">Balance</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -84,63 +83,69 @@
   </footer>
 
   <script>
-  (async function(){
-    const pad8 = n => String(n ?? '').padStart(8,'0');
-    const fmt  = n => new Intl.NumberFormat('en-GB', { style:'currency', currency:'USD' }).format(+n || 0);
-    const fdate= s => (s ? new Date(s) : new Date());
-    const fdmY = d => d.toLocaleDateString('en-GB', {year:'numeric',month:'short',day:'2-digit'});
+    (async function(){
+      const LS = localStorage;
+      const pad8 = n => String(n ?? '').padStart(8,'0');
+      const fmt  = n => new Intl.NumberFormat('en-GB',{style:'currency',currency:'USD'}).format(+n||0);
+      const fdate= s => (s ? new Date(s) : new Date());
+      const fdmY = d => d.toLocaleDateString('en-GB',{year:'numeric',month:'short',day:'2-digit'});
 
-    document.getElementById('signOut').onclick = () => {
-      localStorage.removeItem(mfcApi.tokenKey);
-      localStorage.removeItem(mfcApi.clientKey);
-      location.href = '/client-login.html';
-    };
+      document.getElementById('signOut').onclick = () => {
+        LS.removeItem(mfcApi.keys.token);
+        LS.removeItem(mfcApi.keys.client);
+        location.href = '/client-login.html';
+      };
 
-    let profile;
-    try {
-      // Prefer /me, fallback to explicit id for older API
       try {
-        profile = await mfcApi.get('/api/clients/me');
-      } catch {
-        const id = localStorage.getItem(mfcApi.clientKey);
-        profile = await mfcApi.get(`/api/clients/${id}`);
+        let profile;
+        // Prefer /api/clients/me
+        try {
+          profile = await mfcApi.get('/api/clients/me');
+        } catch {
+          const id = LS.getItem(mfcApi.keys.client);
+          profile = await mfcApi.get(`/api/clients/${id}`);
+        }
+
+        const fullName = profile.fullName || profile.name || 'Client';
+        const acctNum  = profile.accountNumber || profile.account?.number;
+        let balance    = profile.balance ?? 0;
+
+        // Load accounts (if separate)
+        try {
+          const a = await mfcApi.get('/api/accounts?clientId='+profile._id);
+          const primary = (a.accounts||[])[0];
+          if (primary) balance = primary.balance ?? balance;
+        } catch {}
+
+        document.getElementById('clientName').textContent    = fullName;
+        document.getElementById('accountNumber').textContent = pad8(acctNum || 0);
+        document.getElementById('totalBalance').textContent  = fmt(balance);
+
+        // Transactions via new or legacy route
+        let tx = [];
+        try {
+          const t1 = await mfcApi.get(`/api/transactions?clientId=${profile._id}`);
+          tx = t1.transactions || t1 || [];
+        } catch {
+          const t2 = await mfcApi.get(`/api/clients/${profile._id}/transactions`);
+          tx = t2.transactions || t2 || [];
+        }
+
+        const tbody = document.querySelector('#txTable tbody');
+        tbody.innerHTML = (tx && tx.length)
+          ? tx.slice(0,25).map(t => `
+              <tr>
+                <td style="padding:8px 10px;">${fdmY(fdate(t.date))}</td>
+                <td style="padding:8px 10px;">${t.description || t.memo || '-'}</td>
+                <td style="padding:8px 10px;text-align:right;">${fmt(t.amount)}</td>
+                <td style="padding:8px 10px;text-align:right;">${fmt(t.balanceAfter ?? t.balance)}</td>
+              </tr>
+            `).join('')
+          : `<tr><td colspan="4" style="padding:12px;">No transactions yet.</td></tr>`;
+      } catch (e) {
+        document.getElementById('txMsg').textContent = 'Unable to load data: ' + e.message;
       }
-
-      const fullName = profile.fullName || profile.name || 'Client';
-      const account  = (profile.accountNumber) || (profile.account?.number);
-      const accounts = profile.accounts || (await mfcApi.get('/api/accounts?clientId='+profile._id)).accounts || [];
-      const primary  = accounts[0] || profile.account || {};
-      const balance  = primary.balance ?? profile.balance ?? 0;
-
-      document.getElementById('clientName').textContent   = fullName;
-      document.getElementById('accountNumber').textContent= pad8(account || primary.number || 0);
-      document.getElementById('totalBalance').textContent = fmt(balance);
-
-      // Transactions
-      let tx;
-      try {
-        tx = await mfcApi.get(`/api/transactions?clientId=${profile._id}`);
-        tx = tx.transactions || tx || [];
-      } catch {
-        // Optional older route
-        tx = await mfcApi.get(`/api/clients/${profile._id}/transactions`);
-      }
-
-      const tbody = document.querySelector('#txTable tbody');
-      tbody.innerHTML = (tx && tx.length)
-        ? tx.slice(0,25).map(t => `
-            <tr>
-              <td style="padding:8px 10px;">${fdmY(fdate(t.date))}</td>
-              <td style="padding:8px 10px;">${t.description || t.memo || '-'}</td>
-              <td style="padding:8px 10px; text-align:right;">${fmt(t.amount)}</td>
-              <td style="padding:8px 10px; text-align:right;">${fmt(t.balanceAfter ?? t.balance)}</td>
-            </tr>
-          `).join('')
-        : `<tr><td colspan="4" style="padding:12px;">No transactions yet.</td></tr>`;
-    } catch (e) {
-      document.getElementById('txMsg').textContent = 'Unable to load data: ' + e.message;
-    }
-  })();
+    })();
   </script>
 </body>
 </html>
