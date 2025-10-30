@@ -6,36 +6,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>About — Maltese First Capital</title>
 
-  <!-- Use the same global CSS as index -->
+  <!-- Same global CSS as index -->
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Favicon (your path already exists) -->
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-crest.png" />
+  <!-- Favicon already present in your repo -->
+  <link rel="icon" type="image/png" href="assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="assets/logo-crest.png" />
   <meta name="theme-color" content="#0b0f16" />
 
-  <!-- Page-scoped tweaks to match index exactly (safe, no global side-effects) -->
+  <!-- Page-scoped styles only (won’t affect index) -->
   <style>
-    /* Sticky translucent nav over hero (same look as index) */
+    /* Sticky glass nav identical to index */
     .site-header.glass{
       position:sticky; top:0; z-index:1000;
-      background:rgba(10,13,20,.72); backdrop-filter:saturate(150%) blur(10px);
+      background:rgba(10,13,20,.72);
+      backdrop-filter:saturate(150%) blur(10px);
       border-bottom:1px solid rgba(255,255,255,.06);
     }
 
-    /* ABOUT hero – no dark overlay, same sizing as index */
+    /* Hero – NO dark overlay; full image clarity */
     .hero.about-hero{
       background:url('assets/hero-bg.jpg') center/cover no-repeat;
       min-height: 420px;
-      border-bottom-left-radius:18px;border-bottom-right-radius:18px;
+      display:flex; align-items:center; justify-content:center;
+      text-align:center;
+      border-bottom-left-radius:18px; border-bottom-right-radius:18px;
     }
     .hero.about-hero .hero-badge{
       width:96px;height:96px;border-radius:18px;overflow:hidden;
-      box-shadow:0 8px 24px rgba(0,0,0,.28);
       background:#fff; display:flex;align-items:center;justify-content:center;
+      box-shadow:0 8px 24px rgba(0,0,0,.28);
+      margin:0 auto 18px;
     }
-    .hero.about-hero h1{ font-size:48px; line-height:1.06; }
-    .hero .hero-sub{ max-width:860px; }
+    .hero.about-hero h1{ font-size:48px; line-height:1.06; margin:0 0 10px; }
+    .hero .hero-sub{ max-width:860px; margin:0 auto 18px; }
 
     /* Gold button parity with Admin Portal */
     .btn-gold{
@@ -46,27 +50,43 @@
     }
     .btn-pill{ padding:12px 18px; border-radius:14px; font-size:16px; }
 
-    /* Cards – gold outline + glow on hover */
+    /* Cards – gold outline + hover glow */
     .gold-outline{
       border:1px solid rgba(212,175,55,.35);
       box-shadow:0 1px 0 rgba(212,175,55,.25) inset;
+      border-radius:16px; padding:20px;
+      background:rgba(255,255,255,.02);
+      transition:transform .2s ease, box-shadow .2s ease;
     }
     .gold-outline:hover{
-      box-shadow:0 0 0 1px rgba(212,175,55,.45), 0 10px 24px rgba(212,175,55,.16);
       transform:translateY(-2px);
+      box-shadow:0 0 0 1px rgba(212,175,55,.45), 0 10px 24px rgba(212,175,55,.16);
     }
 
-    /* White footer with gold top border */
+    /* Sections */
+    .section{ padding:40px 0; }
+    .section-kicker{ color:#d4af37; letter-spacing:.12em; font-size:12px; margin:0 0 6px; }
+    .section-title{ font-size:28px; margin:0 0 12px; }
+    .section-copy{ opacity:.9; }
+
+    .cards-3{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+    @media (max-width: 960px){ .cards-3{ grid-template-columns:1fr; } }
+
+    /* White footer with gold border to match index */
     .footer-white{ background:#fff; color:#1b1b1b; border-top:4px solid #d4af37; border-radius:16px 16px 0 0; }
     .footer-white .container{ padding:22px 16px; }
 
-    /* Kill any legacy link rows a host might leave behind */
-    .legacy, .legacy * { display:none !important; }
+    /* --- Junk killer: hide any stray top link rows host injects --- */
+    body > a[href],                      /* bare anchors at top        */
+    body > p > a[href],
+    body > nav:not(.nav),
+    body > .legacy-links,
+    body > .page-links { display:none !important; }
   </style>
 </head>
 
 <body>
-  <!-- HEADER (identical structure/classes as index) -->
+  <!-- HEADER (same structure/classes as index) -->
   <header class="site-header glass">
     <div class="container nav">
       <a class="brand" href="index.html" aria-label="Home">
@@ -87,7 +107,7 @@
         <a class="btn btn-gold btn-pill" href="admin-login.html">Admin Portal</a>
       </div>
 
-      <!-- mobile burger (optional if index has it) -->
+      <!-- optional mobile burger to match index -->
       <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -122,7 +142,7 @@
             </article>
             <article class="card gold-outline">
               <h4>Compliance by Design</h4>
-              <p>EU AML/CTF standards with sanctions/PEP/adverse-media screening embedded in onboarding and operations.</p>
+              <p>EU AML/CTF standards with sanctions/PEP/adverse-media screening embedded in onboarding and ops.</p>
             </article>
             <article class="card gold-outline">
               <h4>Security &amp; Access</h4>
@@ -155,17 +175,37 @@
     </div>
   </footer>
 
-  <!-- Optional tiny script: mobile nav parity with index -->
+  <!-- Defensive cleanup: remove any DOM junk before header / between header & hero -->
   <script>
-    const burger = document.querySelector('.nav-burger');
-    const links  = document.querySelector('.nav-links');
-    if (burger && links) {
-      burger.addEventListener('click', () => {
-        const open = burger.getAttribute('aria-expanded') === 'true';
-        burger.setAttribute('aria-expanded', String(!open));
-        links.classList.toggle('open');
-      });
-    }
+    (function () {
+      const header = document.querySelector('.site-header');
+      if (header) {
+        let beforeHeader = true;
+        [...document.body.children].forEach(el => {
+          if (el === header) { beforeHeader = false; return; }
+          if (beforeHeader && !['SCRIPT','STYLE'].includes(el.tagName)) el.remove();
+        });
+      }
+      // Nuke stray link rows immediately after header (purple anchors)
+      const after = header ? header.nextElementSibling : null;
+      let cursor = after;
+      while (cursor && !cursor.classList.contains('hero')) {
+        if (cursor.matches('a, p, nav') || cursor.textContent.trim().match(/^Home.*Admin Portal$/i)) {
+          const toRemove = cursor; cursor = cursor.nextElementSibling; toRemove.remove(); continue;
+        }
+        cursor = cursor.nextElementSibling;
+      }
+      // Mobile burger parity with index
+      const burger = document.querySelector('.nav-burger');
+      const links  = document.querySelector('.nav-links');
+      if (burger && links) {
+        burger.addEventListener('click', () => {
+          const open = burger.getAttribute('aria-expanded') === 'true';
+          burger.setAttribute('aria-expanded', String(!open));
+          links.classList.toggle('open');
+        });
+      }
+    })();
   </script>
 </body>
 </html>
