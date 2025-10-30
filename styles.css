@@ -102,6 +102,11 @@ a:hover{text-decoration:underline}
 .kicker{color:var(--gold); letter-spacing:.18em; font-weight:800; font-size:.78rem}
 .h2{font-size:clamp(1.5rem,2.6vw,2rem); font-weight:800; margin:.4rem 0 1.2rem}
 
+/* Forms */
+.input, .select, .textarea{
+  width:100%;padding:.75rem;border-radius:10px;border:1px solid #2b3a52;background:#0b121c;color:#fff
+}
+
 /* Footer (white with gold top border) */
 .site-footer{
   background:#fff; color:#14202d; margin-top:2.5rem;
