@@ -5,125 +5,62 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Open an Account — Maltese First Capital</title>
 
-  <!-- Favicon: keeps your existing path, adds better fallbacks and pinned color -->
+  <!-- Favicon (keep your existing path) -->
   <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-crest.png">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/logo-crest.png">
   <link rel="apple-touch-icon" href="assets/logo-crest.png">
   <link rel="mask-icon" href="assets/logo-crest.svg" color="#d4af37">
   <meta name="theme-color" content="#0b0f16" />
 
-  <!-- Your global site CSS -->
   <link rel="stylesheet" href="styles.css" />
 
   <style>
-    /* ===== NAV (local, matches index look) ===== */
-    .mfc-nav-wrap {
-      position: sticky; top: 0; z-index: 1000;
-      backdrop-filter: saturate(140%) blur(10px);
-      background: rgba(10, 14, 22, 0.72);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .mfc-nav {
-      max-width: 1200px; margin: 0 auto; padding: 12px 16px;
-      display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center;
-    }
-    .brand { display:flex; align-items:center; gap:10px; color:#fff; text-decoration:none; }
-    .brand-badge {
-      width: 28px; height: 28px; border-radius: 8px;
-      background:#fff; display:grid; place-items:center;
-      box-shadow: 0 3px 10px rgba(0,0,0,.25);
-      overflow:hidden;
-    }
-    .brand-badge img{ width:22px; height:22px; object-fit:contain; }
-    .brand span { font-weight:700; letter-spacing:.2px; }
+    /* ===== NAV (same look as index) ===== */
+    .mfc-nav-wrap{position:sticky;top:0;z-index:1000;backdrop-filter:saturate(140%) blur(10px);background:rgba(10,14,22,.72);border-bottom:1px solid rgba(255,255,255,.08)}
+    .mfc-nav{max-width:1200px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}
+    .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
+    .brand-badge{width:28px;height:28px;border-radius:8px;background:#fff;display:grid;place-items:center;box-shadow:0 3px 10px rgba(0,0,0,.25);overflow:hidden}
+    .brand-badge img{width:22px;height:22px;object-fit:contain}
+    .brand span{font-weight:700;letter-spacing:.2px}
+    .nav-links{display:flex;gap:18px;align-items:center;justify-content:center}
+    .nav-links a{color:#e9eef8;text-decoration:none;padding:8px 12px;border-radius:10px}
+    .nav-links a.active,.nav-links a:hover{background:rgba(255,255,255,.08)}
+    .nav-actions{display:flex;gap:10px}
+    /* Reusable nav-sized buttons (used for camera + submit/draft) */
+    .btn-nav{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:12px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.12);color:#e9eef8;background:rgba(255,255,255,.06)}
+    .btn-nav[disabled]{opacity:.6;cursor:not-allowed}
+    .btn-gold{border-color:rgba(212,175,55,.35)!important;background:linear-gradient(180deg,#d4af37 0%,#b4912b 100%)!important;color:#111!important;box-shadow:0 10px 24px rgba(212,175,55,.25)}
+    .btn-dark{border-color:rgba(255,255,255,.12)!important;background:rgba(255,255,255,.06)!important;color:#e9eef8!important}
+    @media (max-width:880px){.nav-links{display:none}}
 
-    .nav-links { display:flex; gap:18px; align-items:center; justify-content:center; }
-    .nav-links a {
-      color:#e9eef8; text-decoration:none; padding:8px 12px; border-radius:10px;
-    }
-    .nav-links a.active, .nav-links a:hover {
-      background: rgba(255,255,255,.08);
-    }
-
-    .nav-actions { display:flex; gap:10px; }
-    .btn-nav {
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:10px 14px; border-radius:12px; font-weight:700; text-decoration:none;
-      border:1px solid rgba(255,255,255,.12); color:#e9eef8;
-      background: rgba(255,255,255,.06);
-    }
-    .btn-gold {
-      border-color: rgba(212,175,55,.35);
-      background: linear-gradient(180deg,#d4af37 0%,#b4912b 100%);
-      color:#111;
-      box-shadow: 0 10px 24px rgba(212,175,55,.25);
-      font-weight: 800; /* heavier text per your request */
-    }
-
-    /* Mobile */
-    @media (max-width: 880px){
-      .nav-links { display:none; }
-    }
-
-    /* ===== Page layout (scoped) ===== */
-    .page-wrap { max-width:1080px; margin: 24px auto; padding: 0 16px 24px; }
-    .card {
-      background: linear-gradient(180deg,#0e121a 0%, #0b0f16 100%);
-      border: 1px solid rgba(212,175,55,0.18);
-      border-radius: 18px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-      padding: 22px; margin: 18px 0;
-    }
-    .card h2 { margin: 0 0 10px; font-weight: 700; letter-spacing: .2px; }
-    .muted { opacity: .85; font-size: .95rem; }
-
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    @media (max-width: 820px){ .row { grid-template-columns: 1fr; } }
-
-    label { display:block; font-size:.95rem; margin:10px 0 6px; }
-    input[type="text"], input[type="email"], input[type="tel"], input[type="file"],
-    select, textarea {
-      width:100%; padding:12px; background:#0b1017; color:#fff;
-      border:1px solid rgba(255,255,255,.08); border-radius:12px; outline:none;
-    }
-    textarea { min-height: 90px; resize: vertical; }
-
-    .btn {
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:12px 18px; border-radius:12px; border:1px solid rgba(212,175,55,.35);
-      background: linear-gradient(180deg, #d4af37 0%, #b4912b 100%);
-      color:#151515; font-weight:800; /* heavier text for gold actions */
-      box-shadow: 0 10px 22px rgba(212,175,55,.25);
-      cursor:pointer;
-    }
-    .btn[disabled]{ opacity:.6; cursor:not-allowed; }
-    .btn-secondary{
-      background:#111; color:#eee; border-color: rgba(255,255,255,.15); box-shadow:none; font-weight:700;
-    }
-
-    .progress{ height:10px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.08);
-      border-radius:999px; overflow:hidden; margin-top:12px; }
-    .progress > span{ display:block; height:100%; width:0%; background:linear-gradient(90deg,#d4af37,#f6e27a); transition: width .15s; }
-
-    .camera{ border:1px dashed rgba(212,175,55,.35); border-radius:14px; padding:14px; background:#0b1017; }
-    .camera video,.camera img{ width:100%; border-radius:12px; }
-    .camera .controls{ display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
-    .hint{ font-size:.9rem; opacity:.8; }
-
-    .req{ color:#f4d266; margin-left:4px; }
-    .footer-note{ font-size:.9rem; opacity:.85; }
+    /* ===== Page layout ===== */
+    .page-wrap{max-width:1080px;margin:24px auto;padding:0 16px 24px}
+    .card{background:linear-gradient(180deg,#0e121a 0%,#0b0f16 100%);border:1px solid rgba(212,175,55,.18);border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.35);padding:22px;margin:18px 0}
+    .card h2{margin:0 0 10px;font-weight:700;letter-spacing:.2px}
+    .muted{opacity:.85;font-size:.95rem}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:820px){.row{grid-template-columns:1fr}}
+    label{display:block;font-size:.95rem;margin:10px 0 6px}
+    input[type="text"],input[type="email"],input[type="tel"],input[type="file"],select,textarea{width:100%;padding:12px;background:#0b1017;color:#fff;border:1px solid rgba(255,255,255,.08);border-radius:12px;outline:none}
+    textarea{min-height:90px;resize:vertical}
+    .progress{height:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-top:12px}
+    .progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#d4af37,#f6e27a);transition:width .15s}
+    .camera{border:1px dashed rgba(212,175,55,.35);border-radius:14px;padding:14px;background:#0b1017}
+    .camera video,.camera img{width:100%;border-radius:12px}
+    .camera .controls{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+    .hint{font-size:.9rem;opacity:.8}
+    .req{color:#f4d266;margin-left:4px}
+    .footer-note{font-size:.9rem;opacity:.85}
   </style>
 </head>
 <body>
-
-  <!-- Sticky translucent NAV (same layout as index) -->
+  <!-- Sticky translucent NAV -->
   <div class="mfc-nav-wrap">
     <div class="mfc-nav">
       <a class="brand" href="index.html" aria-label="Maltese First Capital — Home">
         <span class="brand-badge"><img src="assets/logo-crest.png" alt=""></span>
         <span>Maltese First Capital</span>
       </a>
-
       <nav class="nav-links" aria-label="Primary">
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
@@ -131,7 +68,6 @@
         <a href="wealth-management.html">Wealth Management</a>
         <a href="contact.html">Contact</a>
       </nav>
-
       <div class="nav-actions">
         <a class="btn-nav" href="client-login.html">Client Login</a>
         <a class="btn-nav btn-gold" href="admin.html">Admin Portal</a>
@@ -145,10 +81,8 @@
       <p class="muted">Provide your details and upload the KYC/AML documents. Our team will review and revert.</p>
     </header>
 
-    <!-- Status / toast -->
     <div id="formStatus" class="card" style="display:none;"></div>
 
-    <!-- FORM -->
     <form id="accountOpenForm" class="card" enctype="multipart/form-data" novalidate>
       <h2>Client Information</h2>
 
@@ -243,9 +177,9 @@
               <video id="selfieVideo" playsinline muted style="display:none;"></video>
               <img id="selfiePreview" alt="Selfie preview" style="display:none;" />
               <div class="controls">
-                <button type="button" class="btn" id="startCamBtn">Start Camera</button>
-                <button type="button" class="btn" id="captureBtn" disabled>Capture Selfie</button>
-                <button type="button" class="btn btn-secondary" id="resetCamBtn" disabled>Reset</button>
+                <button type="button" class="btn-nav btn-gold" id="startCamBtn">Start Camera</button>
+                <button type="button" class="btn-nav btn-gold" id="captureBtn" disabled>Capture Selfie</button>
+                <button type="button" class="btn-nav btn-dark" id="resetCamBtn" disabled>Reset</button>
               </div>
               <p class="hint" style="margin-top:8px;">Tip: good light, head straight, no face coverings.</p>
             </div>
@@ -253,16 +187,17 @@
         </div>
       </div>
 
-      <label style="display:flex; gap:8px; align-items:center; margin-top:14px;">
+      <label style="display:flex;gap:8px;align-items:center;margin-top:14px;">
         <input id="consentBox" type="checkbox" required />
         <span>I confirm the information is accurate and I authorise KYC/AML checks.</span>
       </label>
 
       <div class="progress" aria-hidden="true"><span id="uploadBar"></span></div>
 
-      <div style="display:flex; gap:12px; margin-top:16px; flex-wrap:wrap;">
-        <button id="submitBtn" class="btn" type="submit">Submit Application</button>
-        <button id="saveDraftBtn" class="btn btn-secondary" type="button">Save Draft (local)</button>
+      <!-- Now using nav-sized buttons -->
+      <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+        <button id="submitBtn" class="btn-nav btn-gold" type="submit">Submit Application</button>
+        <button id="saveDraftBtn" class="btn-nav btn-dark" type="button">Save Draft (local)</button>
       </div>
     </form>
 
@@ -272,7 +207,6 @@
     </section>
   </main>
 
-  <!-- Working form logic from the previous step -->
   <script src="scripts/forms.js" defer></script>
 </body>
 </html>
