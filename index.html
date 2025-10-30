@@ -4,244 +4,170 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maltese First Capital — Private & Wealth Banking</title>
-  <meta name="description" content="Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth through tailored financial solutions." />
-  <link rel="icon" type="image/png" href="assets/logo-crest.png" />
-  <link rel="preload" as="image" href="assets/hero-bg.jpg" />
 
-  <!-- Base styles (keep your styles.css). This page carries responsive/nav fixes inline. -->
+  <!-- Keep your global CSS; scoped overrides below win safely -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Favicons already in repo -->
+  <link rel="icon" type="image/png" href="assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="assets/logo-crest.png" />
+  <meta name="theme-color" content="#0b0f16" />
 
   <style>
     :root{
-      --mfc-navy:#0d141f;
-      --mfc-panel:#141c28;
-      --mfc-gold:#caa45d;
-      --mfc-gold-25:rgba(202,164,93,.25);
-      --mfc-text:#eef2f7;
-      --mfc-muted:#b9c2d0;
-      --mfc-white:#ffffff;
+      --bg:#0b0f16; --panel:#0f151e; --ink:#e9eef7; --muted:#b8c2d3;
+      --gold1:#d4af37; --gold2:#b28f2c; --navH:64px; --radius:16px;
     }
-    html,body{margin:0;color:var(--mfc-text);background:var(--mfc-navy);text-rendering:optimizeLegibility}
-    a{color:inherit}
+    html,body{background:var(--bg);color:var(--ink)}
+    .container{max-width:1180px;margin:0 auto;padding:0 16px}
 
-    /* ========== NAV (sticky, aligned, mobile menu) ========== */
-    .site-nav{
-      position:sticky;top:0;z-index:100;
-      background:rgba(10,15,22,.84);
-      backdrop-filter:saturate(140%) blur(10px);
-      border-bottom:1px solid rgba(255,255,255,.08);
+    /* ===== NAV (glass, sticky) ===== */
+    #siteHeader{position:sticky;top:0;z-index:2000;
+      background:rgba(11,15,22,.86) !important;
+      -webkit-backdrop-filter:saturate(160%) blur(12px);
+      backdrop-filter:saturate(160%) blur(12px);
+      border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{height:var(--navH);display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
+    .brand .crest{width:34px;height:34px;border-radius:10px;background:#fff;overflow:hidden;
+      box-shadow:0 6px 16px rgba(0,0,0,.28);display:grid;place-items:center}
+    .brand .crest img{width:100%;height:100%;object-fit:cover}
+    .brand b{font-weight:700}
+    .nav-links{display:flex;gap:22px;align-items:center}
+    .nav-links a{color:#dfe6f2;text-decoration:none;padding:8px 12px;border-radius:10px}
+    .nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.08);color:#fff}
+    .nav-actions{display:flex;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;
+      border-radius:12px;border:1px solid rgba(255,255,255,.12);text-decoration:none;color:#fff;background:rgba(255,255,255,.06)}
+    .btn-gold{border:1px solid rgba(212,175,55,.42);background:linear-gradient(180deg,var(--gold1),var(--gold2));
+      color:#141414;font-weight:700;box-shadow:0 10px 24px rgba(212,175,55,.25)}
+    .btn-lg{padding:14px 22px;border-radius:14px;font-size:17px}
+    .burger{display:none;border:0;background:transparent}
+    .burger span{display:block;width:24px;height:2px;background:#fff;margin:5px;border-radius:2px}
+    @media(max-width:980px){
+      .nav-links{position:fixed;left:0;right:0;top:var(--navH);background:rgba(11,15,22,.96);
+        transform:translateY(-8px);opacity:0;pointer-events:none;transition:.18s ease;padding:14px;flex-direction:column}
+      .nav-links.open{transform:none;opacity:1;pointer-events:auto}
+      .nav-actions{display:none}
+      .burger{display:block}
     }
-    .nav-inner{
-      max-width:1200px;margin:0 auto;
-      padding:.6rem 1rem;display:flex;align-items:center;gap:.75rem;
-    }
-    .brand{
-      display:flex;align-items:center;gap:.65rem;flex:0 0 auto;font-weight:800;white-space:nowrap;
-    }
-    .brand .crest{
-      width:34px;height:34px;border-radius:10px;overflow:hidden;background:#fff;
-      box-shadow:0 4px 14px rgba(0,0,0,.35);display:grid;place-items:center;
-    }
-    .brand .crest img{width:100%;height:100%;object-fit:contain}
-    .brand span{letter-spacing:.2px}
+    /* Kill any stray host-injected link rows */
+    body > a[href], body > nav:not(#mainNav){display:none !important}
 
-    /* Toggle (hidden on desktop) */
-    .nav-toggle{
-      margin-left:auto;display:none;border:1px solid rgba(255,255,255,.18);
-      background:#0f1724;color:#fff;border-radius:10px;padding:.5rem .6rem;cursor:pointer;
-    }
-    .nav-toggle:focus{outline:2px solid var(--mfc-gold)}
+    /* ===== HERO (no overlay; crest matches other pages) ===== */
+    .hero{background:url('assets/hero-bg.jpg') center/cover no-repeat;
+      min-height:520px;display:flex;align-items:center;justify-content:center;text-align:center;
+      border-bottom-left-radius:18px;border-bottom-right-radius:18px}
+    .hero .crest-badge{width:220px;height:220px;border-radius:28px;background:#fff;margin:0 auto 18px;
+      box-shadow:0 8px 24px rgba(0,0,0,.28);overflow:hidden;display:grid;place-items:center}
+    .hero .crest-badge img{width:100%;height:100%;object-fit:cover}
+    .hero h1{font-size:56px;line-height:1.05;margin:0 0 10px}
+    .hero p{max-width:860px;margin:0 auto 18px;color:#f1f5ff}
+    .hero .cta{margin-top:8px}
 
-    /* Links row */
-    .nav-main{
-      margin-left:auto;display:flex;align-items:center;gap:.35rem;flex:1 1 auto;justify-content:flex-end;
-      min-width:0; /* prevents layout blowouts */
-    }
-    .nav-links{
-      display:flex;align-items:center;gap:.2rem;flex:0 1 auto;white-space:nowrap;
-    }
-    .nav-links a{
-      text-decoration:none;color:#dfe6ef;font-weight:700;border-radius:12px;
-      padding:.55rem .8rem;line-height:1;
-    }
-    .nav-links a:hover{background:rgba(255,255,255,.08)}
-    .nav-links a.active{background:#0f1724;border:1px solid rgba(255,255,255,.12)}
+    /* ===== Sections & cards ===== */
+    .section{padding:40px 0}
+    .eyebrow{letter-spacing:.28em;text-transform:uppercase;color:var(--gold1);
+      font-weight:700;margin-bottom:10px;opacity:.95;font-size:18px} /* bigger */
+    .headline{font-size:32px;margin:0 0 6px}
+    .sub{color:var(--muted);margin:0 auto 10px;max-width:880px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    @media(max-width:980px){.grid{grid-template-columns:1fr}}
+    .card{background:rgba(255,255,255,.02);border-radius:var(--radius);
+      border:1px solid rgba(212,175,55,.35);box-shadow:0 1px 0 rgba(212,175,55,.22) inset}
+    .card:hover{box-shadow:0 0 0 1px rgba(212,175,55,.46),0 12px 28px rgba(212,175,55,.16)}
+    .pad{padding:20px}
+    .card h3{margin:0 0 6px}
 
-    .nav-cta{display:flex;align-items:center;gap:.4rem;flex:0 0 auto}
-    .btn{
-      text-decoration:none;line-height:1;font-weight:800;border-radius:12px;
-      padding:.6rem .85rem;border:1px solid rgba(255,255,255,.16);background:#0f1724;color:#e9eff7;
-    }
-    .btn--gold{
-      background:var(--mfc-gold);border:none;color:#121722;box-shadow:0 10px 28px var(--mfc-gold-25);
-    }
-
-    /* Mobile menu (<= 960px): links collapse under brand in a panel */
-    @media (max-width:960px){
-      .nav-toggle{display:inline-block}
-      .nav-main{position:absolute;left:0;right:0;top:100%;
-        background:rgba(10,15,22,.96);border-bottom:1px solid rgba(255,255,255,.08);
-        display:none;flex-direction:column;gap:.35rem;padding:.6rem;
-      }
-      .site-nav.open .nav-main{display:flex}
-      .nav-links{flex-direction:column;align-items:stretch}
-      .nav-links a{padding:.85rem;border-radius:10px}
-      .nav-cta{justify-content:stretch}
-      .btn,.btn--gold{display:block;text-align:center}
-    }
-
-    /* ========== HERO (bright, readable text) ========== */
-    .hero{position:relative;isolation:isolate;overflow:hidden}
-    .hero__bg{
-      position:absolute;inset:0;background:url('assets/hero-bg.jpg') center 38%/cover no-repeat;z-index:0;
-      filter:none;transform:scale(1.02);
-    }
-    .hero__wrap{
-      position:relative;z-index:1;max-width:1200px;margin:0 auto;
-      padding:min(16vh,9rem) 1rem 3rem;text-align:center;
-    }
-    .hero__crest{
-      width:124px;height:124px;margin:0 auto 1rem;background:#fff;border-radius:22px;
-      display:grid;place-items:center;box-shadow:0 18px 42px rgba(0,0,0,.35);padding:.8rem;
-    }
-    .hero__crest img{width:100%;height:auto}
-    .hero__title{
-      margin:.6rem 0 .5rem;
-      font-size: clamp(2.2rem, 5.2vw, 3.6rem); line-height:1.06;font-weight:900;letter-spacing:.3px;color:#fff;
-      text-shadow:0 3px 22px rgba(0,0,0,.35), 0 1px 0 rgba(0,0,0,.35)
-    }
-    .hero__sub{
-      max-width:880px;margin:0 auto 1.1rem;color:#f3f6fa;
-      text-shadow:0 2px 16px rgba(0,0,0,.35);opacity:.96
-    }
-    .hero__cta{
-      display:inline-block;margin-top:.4rem;padding:.95rem 1.25rem;border-radius:14px;
-      background:var(--mfc-gold);color:#121722;text-decoration:none;font-weight:900;
-      box-shadow:0 14px 40px var(--mfc-gold-25)
-    }
-    @media (max-width:640px){
-      .hero__wrap{padding:12vh 1rem 2.2rem}
-      .hero__crest{width:102px;height:102px;border-radius:18px}
-    }
-
-    /* ========== SERVICES STRIP (gap + centered) ========== */
-    .strip{
-      margin:12px auto 0;background:linear-gradient(180deg,#0e1420,#0c131e 40%, #0b111b);
-      border-radius:20px 20px 0 0;box-shadow:0 -8px 24px rgba(0,0,0,.35) inset;
-    }
-    .strip__wrap{max-width:1200px;margin:0 auto;padding:1.2rem 1rem 2.2rem}
-    .eyebrow{color:var(--mfc-gold);letter-spacing:.35em;font-weight:800;font-size:.82rem;text-align:center;margin:.35rem 0 .65rem}
-    .kicker{text-align:center;font-size:clamp(1.4rem,2.6vw,2rem);font-weight:900;margin:0 0 .55rem}
-    .kicker-sub{color:var(--mfc-muted);text-align:center;margin:0 0 1.2rem}
-
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-    @media (max-width:980px){.cards{grid-template-columns:1fr}}
-    .card{
-      background:var(--mfc-panel);border:1px solid var(--mfc-gold);border-radius:18px;padding:1.1rem;
-      box-shadow:0 0 0 rgba(202,164,93,0);transition:box-shadow .25s ease, transform .25s ease;
-    }
-    .card:hover{box-shadow:0 0 36px var(--mfc-gold-25);transform:translateY(-2px)}
-    .card h3{margin:.15rem 0 .35rem}
-    .card p{color:#cfd6e3;margin:.15rem 0 0}
-
-    /* ========== FOOTER (white, gold border) ========== */
-    footer{background:#fff;color:#131a25;border-top:2px solid var(--mfc-gold)}
-    .footer__wrap{max-width:1200px;margin:0 auto;padding:1.2rem 1rem;
-      display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-    footer a{color:#0a4aa4;text-decoration:none}
+    /* White footer with gold top border */
+    .footer{background:#fff;color:#121212;border-top:4px solid var(--gold1);
+      border-radius:16px 16px 0 0}
+    .footer .container{padding:22px 16px}
   </style>
 </head>
 <body>
-
-  <!-- NAV -->
-  <header class="site-nav" id="nav">
-    <div class="nav-inner">
-      <a class="brand" href="index.html" aria-label="Maltese First Capital Home">
-        <span class="crest"><img src="assets/logo-crest.png" alt=""></span>
-        <span>Maltese First Capital</span>
+  <!-- HEADER -->
+  <header id="siteHeader">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Home">
+        <span class="crest"><img src="assets/logo-crest.png" alt="Maltese First crest"></span>
+        <b>Maltese First Capital</b>
       </a>
 
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-main" id="menuBtn">Menu</button>
+      <nav id="mainNav" class="nav-links" aria-label="Primary">
+        <a href="index.html" class="active">Home</a>
+        <a href="about.html">About</a>
+        <a href="private-banking.html">Private Banking</a>
+        <a href="wealth-management.html">Wealth Management</a>
+        <a href="contact.html">Contact</a>
+      </nav>
 
-      <div class="nav-main" id="nav-main">
-        <nav class="nav-links" aria-label="Primary">
-          <a class="active" href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="private-banking.html">Private Banking</a>
-          <a href="wealth-management.html">Wealth Management</a>
-          <a href="contact.html">Contact</a>
-        </nav>
-        <div class="nav-cta">
-          <a class="btn" href="client-login.html">Client Login</a>
-          <a class="btn btn--gold" href="admin-login.html">Admin Portal</a>
-        </div>
+      <div class="nav-actions">
+        <a class="btn" href="client-login.html">Client Login</a>
+        <a class="btn btn-gold btn-lg" href="admin-login.html">Admin Portal</a>
       </div>
+
+      <button class="burger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="hero__bg" aria-hidden="true"></div>
-    <div class="hero__wrap">
-      <div class="hero__crest">
-        <img src="assets/logo.png" alt="Maltese First Capital logo">
+  <section class="hero" role="banner" aria-label="Valletta skyline">
+    <div class="container">
+      <div class="crest-badge"><img src="assets/logo-crest.png" alt="Maltese First crest"></div>
+      <h1>Unlocking Financial Potential</h1>
+      <p>Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.</p>
+      <div class="cta">
+        <a class="btn btn-gold btn-lg" href="account-open.html">Open an Account</a>
       </div>
-      <h1 class="hero__title">Unlocking Financial Potential</h1>
-      <p class="hero__sub">Maltese First Capital is an investment bank focused on unlocking financial potential and fostering
-        growth for clients through tailored financial solutions.</p>
-      <a class="hero__cta" href="account-open.html">Open an Account</a>
     </div>
   </section>
 
-  <!-- CORE SERVICES -->
-  <section class="strip">
-    <div class="strip__wrap">
-      <div class="eyebrow">OUR CORE SERVICES</div>
-      <h2 class="kicker">Trust, Performance, Discretion</h2>
-      <p class="kicker-sub">Relationship-driven banking, disciplined reporting, and secure access.</p>
+  <!-- CORE SERVICES BAND -->
+  <section class="section">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:12px">
+        <div class="eyebrow">Our Core Services</div>
+        <h2 class="headline">Trust, Performance, Discretion</h2>
+        <p class="sub">Relationship-driven banking, disciplined reporting, and secure access.</p>
+      </div>
 
-      <div class="cards">
-        <article class="card">
+      <div class="grid">
+        <article class="card pad">
           <h3>Private Banking</h3>
-          <p>Relationship-driven banking with clear statements and secure access.</p>
+          <p class="sub">Bespoke accounts, dedicated IBANs, standing orders, international wires, scheduled statements.</p>
         </article>
-        <article class="card">
+        <article class="card pad">
           <h3>Wealth Management</h3>
-          <p>Consolidated portfolio reporting, disciplined strategy, and document vault.</p>
+          <p class="sub">Multi-asset portfolios with EU-grade compliance, risk frameworks, and transparent reporting.</p>
         </article>
-        <article class="card">
+        <article class="card pad">
           <h3>Corporate Advisory</h3>
-          <p>Capital structuring, M&amp;A support, and strategic guidance for enterprises.</p>
+          <p class="sub">Capital structuring, credit solutions, and strategic transactions through trusted partners.</p>
         </article>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <div class="footer__wrap">
-      <div>© 2025 Maltese First Capital. All rights reserved.</div>
-      <div>The Exchange Building, Republic Street, Valletta VLT 1117, Malta •
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div>
+  <footer class="footer">
+    <div class="container">
+      © 2025 Maltese First Capital. The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
     </div>
   </footer>
 
   <script>
-    // Simple mobile menu toggle
-    (function(){
-      const header = document.getElementById('nav');
-      const btn    = document.getElementById('menuBtn');
-      btn?.addEventListener('click', () => {
-        const isOpen = header.classList.toggle('open');
-        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      });
-
-      // Close on resize to desktop
-      const mq = window.matchMedia('(min-width: 961px)');
-      mq.addEventListener('change', e=>{
-        if(e.matches){ header.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
-      });
-    })();
+    // Mobile nav toggle
+    const burger = document.querySelector('.burger');
+    const links  = document.querySelector('.nav-links');
+    burger?.addEventListener('click', () => {
+      const open = burger.getAttribute('aria-expanded') === 'true';
+      burger.setAttribute('aria-expanded', String(!open));
+      links.classList.toggle('open');
+    });
   </script>
 </body>
 </html>
