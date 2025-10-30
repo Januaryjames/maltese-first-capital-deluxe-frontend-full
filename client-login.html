@@ -1,65 +1,298 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta charset="utf-8" />
+  <meta http-equiv="Cache-Control" content="no-store, max-age=0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Client Login — Maltese First Capital</title>
-  <meta name="description" content="Maltese First Capital — Private & Wealth Banking in Malta.">
-  <meta name="theme-color" content="#0e1621">
-  <link rel="preload" as="image" href="assets/hero-bg.jpg?v=16">
-  <link rel="icon" href="assets/logo-crest.png">
-  <link rel="stylesheet" href="styles.css?v=16">
-  <script defer src="scripts/nav.js?v=16"></script>
+
+  <!-- Global site styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Favicon (existing path retained) -->
+  <link rel="icon" type="image/png" href="assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="assets/logo-crest.png" />
+  <meta name="theme-color" content="#0b0f16" />
+
+  <style>
+    :root{
+      --nav-h:64px; --gold-1:#d4af37; --gold-2:#b28f2c;
+      --ink:#e8edf6; --ink-2:#c9d1df; --panel:#0e141d;
+    }
+
+    /* --- Glass Nav (matches index/about) --- */
+    .site-header.glass{position:sticky;top:0;z-index:1000;background:rgba(10,13,20,.72);
+      backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .container{max-width:1180px;margin:0 auto;padding:0 16px}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h)}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+    .brand .crest{width:34px;height:34px;border-radius:9px;background:#fff;display:flex;align-items:center;
+      justify-content:center;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+    .brand .crest img{width:100%;height:100%;object-fit:cover}
+    .brand-text{font-weight:700;letter-spacing:.01em}
+
+    .nav-links{display:flex;align-items:center;gap:22px}
+    .nav-links a{color:#d9dee7;text-decoration:none;padding:8px 12px;border-radius:10px}
+    .nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.08);color:#fff}
+    .nav-actions{display:flex;gap:10px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);text-decoration:none;color:#fff;background:rgba(255,255,255,.06)}
+    .btn-gold{border:1px solid rgba(212,175,55,.38);background:linear-gradient(180deg,var(--gold-1),var(--gold-2));
+      color:#121212;font-weight:700;box-shadow:0 10px 24px rgba(212,175,55,.25)}
+    .btn-pill{border-radius:14px;padding:12px 18px;font-size:16px}
+    .btn-lg{padding:14px 22px;font-size:17px;border-radius:14px}
+    .nav-burger{display:none;flex-direction:column;gap:4px;background:transparent;border:0}
+    .nav-burger span{width:24px;height:2px;background:#fff;border-radius:2px;display:block}
+    @media (max-width:980px){
+      .nav-links{position:fixed;inset:var(--nav-h) 0 auto 0;background:rgba(10,13,20,.96);
+        flex-direction:column;gap:14px;padding:16px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:.18s ease}
+      .nav-links.open{transform:none;opacity:1;pointer-events:auto}
+      .nav-actions{display:none}
+      .nav-burger{display:flex}
+    }
+
+    /* --- Hero (kept consistent with index) --- */
+    .hero{background:url('assets/hero-bg.jpg') center/cover no-repeat;min-height:420px;
+      display:flex;align-items:center;justify-content:center;text-align:center;
+      border-bottom-left-radius:18px;border-bottom-right-radius:18px}
+    .hero-inner{width:100%}
+    /* Larger crest to “fill the container” like index */
+    .hero-badge{width:188px;height:188px;border-radius:26px;background:#fff;margin:0 auto 18px;
+      display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.28);overflow:hidden}
+    .hero-badge img{width:100%;height:100%;object-fit:cover;display:block}
+    @media (max-width:560px){ .hero-badge{width:152px;height:152px;border-radius:20px} }
+
+    .hero h1{font-size:48px;line-height:1.06;margin:0 0 10px}
+    .hero .hero-sub{max-width:860px;margin:0 auto 18px}
+
+    /* --- Card form --- */
+    .section{padding:40px 0}
+    .auth-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+    @media (max-width:960px){ .auth-wrap{grid-template-columns:1fr} }
+    .card{border-radius:16px;background:rgba(255,255,255,.02);padding:20px}
+    .gold-outline{border:1px solid rgba(212,175,55,.35);box-shadow:0 1px 0 rgba(212,175,55,.25) inset}
+    .gold-outline:hover{box-shadow:0 0 0 1px rgba(212,175,55,.45),0 10px 24px rgba(212,175,55,.16)}
+    label{display:block;margin:8px 0 6px;font-weight:600}
+    input{width:100%;background:var(--panel);color:var(--ink);border:1px solid rgba(255,255,255,.14);
+      border-radius:12px;padding:12px 12px;outline:none}
+    input:focus{border-color:rgba(212,175,55,.55);box-shadow:0 0 0 3px rgba(212,175,55,.18)}
+    .row{display:grid;grid-template-columns:1fr;gap:12px}
+    .muted{color:var(--ink-2)}
+    .error{color:#ffb4b4}
+    .ok{color:#9adf9a}
+
+    /* White footer with gold border (global look) */
+    .footer-white{background:#fff;color:#1b1b1b;border-top:4px solid var(--gold-1);border-radius:16px 16px 0 0}
+    .footer-white .container{padding:22px 16px}
+
+    /* Nuke stray host-injected links (the culprits under nav) */
+    body > a[href], body > p > a[href], body > nav:not(.nav),
+    body > .legacy-links, body > .page-links {display:none!important}
+  </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="container nav-wrap">
-    <a class="brand" href="index.html">
-      <img class="brand-crest" src="assets/logo-crest.png" alt="Maltese First Capital crest" width="36" height="36">
-      <span class="brand-name">Maltese First Capital</span>
-    </a>
-    <nav class="main-nav" aria-label="Main">
-      <a href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <div class="nav-cta">
-      <a class="btn ghost" href="client-login.html">Client Login</a>
-      <a class="btn gold" href="admin-login.html">Admin Portal</a>
+  <!-- HEADER -->
+  <header class="site-header glass">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Home">
+        <span class="crest"><img src="assets/logo-crest.png" alt="Maltese First crest"></span>
+        <span class="brand-text">Maltese First Capital</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="private-banking.html">Private Banking</a>
+        <a href="wealth-management.html">Wealth Management</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn btn-gold btn-pill" href="admin-login.html">Admin Portal</a>
+      </div>
+
+      <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </div>
-</header>
+  </header>
 
-<section class="hero">
-  <div class="hero-bg" role="img" aria-label="Valletta waterfront backdrop"></div>
-  <div class="hero-inner container">
-    <img class="hero-crest" src="assets/logo-crest.png" alt="Maltese First crest" loading="eager" width="120" height="120">
-    <h1>Client Login</h1>
-    <p class="sub">Secure access with OTP.</p>
-    <div class="hero-actions">
-      <a class="btn gold big" href="account-open.html">Open an Account</a>
+  <!-- HERO -->
+  <section class="hero" role="banner" aria-label="Valletta skyline">
+    <div class="container hero-inner">
+      <div class="hero-badge"><img src="assets/logo-crest.png" alt="Maltese First crest"></div>
+      <h1>Client Login</h1>
+      <p class="hero-sub">Secure access to your portfolio and statements.</p>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="slice">
-  <div class="container">
-    <form class="auth-form" action="client-dashboard.html">
-      <label>Email<input type="email" required></label>
-      <label>Password<input type="password" required></label>
-      <button class="btn gold" type="submit">Sign in</button>
-    </form>
-  </div>
-</section>
+  <!-- MAIN -->
+  <main class="section">
+    <div class="container auth-wrap">
+      <!-- Login card -->
+      <section class="card gold-outline">
+        <h2 style="margin-top:0">Sign in</h2>
+        <form id="loginForm" class="row" method="post" action="/api/auth/login" autocomplete="on" novalidate>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="username" required />
+          </div>
+          <div>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required />
+          </div>
 
-<footer class="site-footer">
-  <div class="container foot-grid">
-    <p>© 2025 Maltese First Capital. All rights reserved.</p>
-    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-  </div>
-</footer>
-<script>document.documentElement.classList.remove('nojs');</script>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:8px;user-select:none">
+              <input id="remember" type="checkbox" /> <span class="muted">Remember me</span>
+            </label>
+            <a class="muted" href="reset-password.html">Forgot password?</a>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap">
+            <!-- Match Admin gold button sizing -->
+            <button type="submit" class="btn btn-gold btn-lg" id="loginBtn">Sign in</button>
+            <a class="btn btn-lg" href="account-open.html">Open an Account</a>
+            <span id="msg" class="muted" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <!-- Help / security notes -->
+      <aside class="card gold-outline">
+        <h3 style="margin-top:0">Security & Support</h3>
+        <ul style="margin:0 0 10px 18px">
+          <li>We use HTTPS, device fingerprinting, and anomaly alerts.</li>
+          <li>After 5 failed attempts, sign-in is temporarily locked.</li>
+          <li>Never share your password. We will never ask for it.</li>
+        </ul>
+        <p class="muted" style="margin:0">Need help? <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+      </aside>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer-white">
+    <div class="container">
+      © 2025 Maltese First Capital. The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // Remove any host-injected junk rows around header (those extra links)
+      const header = document.querySelector('.site-header');
+      if (header) {
+        let n = header.previousSibling;
+        while (n) { const p = n.previousSibling; if (n.nodeType === 1) n.remove(); n = p; }
+      }
+      let s = header ? header.nextElementSibling : null;
+      while (s && !s.classList.contains('hero')) {
+        if (s.matches('a, p, nav') || /Client Login.*Admin Portal/i.test(s.textContent)) { const r = s; s = s.nextElementSibling; r.remove(); continue; }
+        s = s.nextElementSibling;
+      }
+
+      // Mobile nav
+      const burger = document.querySelector('.nav-burger');
+      const links  = document.querySelector('.nav-links');
+      if (burger && links) {
+        burger.addEventListener('click', () => {
+          const open = burger.getAttribute('aria-expanded') === 'true';
+          burger.setAttribute('aria-expanded', String(!open));
+          links.classList.toggle('open');
+        });
+      }
+
+      // Back-end endpoints (edit if your API lives elsewhere)
+      const API_LOGIN = '/api/auth/login';
+      const API_ME    = '/api/auth/me';
+
+      // Smart redirect logic: ?next=/client-dashboard.html, else fallbacks
+      function nextUrl() {
+        const url = new URL(window.location.href);
+        const n = url.searchParams.get('next');
+        if (n) return n;
+        // Try a few common dashboards; first existing wins later server side
+        return 'client-dashboard.html';
+      }
+
+      // Persist token if backend returns one; support cookie-only flows too.
+      function rememberToken(token, remember) {
+        try {
+          if (token) {
+            if (remember) {
+              localStorage.setItem('mfc_token', token);
+              sessionStorage.removeItem('mfc_token');
+            } else {
+              sessionStorage.setItem('mfc_token', token);
+              localStorage.removeItem('mfc_token');
+            }
+          }
+        } catch (_) {}
+      }
+
+      async function login(email, password, remember) {
+        // Prefer JSON; if your backend expects form-encoded, swap the body.
+        const res = await fetch(API_LOGIN, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include', // allow HttpOnly cookie sessions
+          body: JSON.stringify({ email, password })
+        });
+
+        if (res.status === 429) throw new Error('Too many attempts. Please try again shortly.');
+        if (!res.ok) {
+          // Attempt to read server message
+          let msg = 'Invalid credentials.';
+          try { const j = await res.json(); if (j && j.error) msg = j.error; } catch (_){}
+          throw new Error(msg);
+        }
+
+        // If server gives JSON with token/mfa
+        let data = {};
+        try { data = await res.json(); } catch(_){}
+        if (data.mfaRequired) {
+          // If you later add an MFA page, redirect there with context.
+          const url = new URL('mfa.html', location.origin);
+          url.searchParams.set('email', email);
+          return location.assign(url.toString());
+        }
+        if (data.token) rememberToken(data.token, remember);
+
+        // Optionally verify session cookie / token
+        try {
+          await fetch(API_ME, { credentials: 'include', headers: data.token ? { 'Authorization': 'Bearer ' + data.token } : {} });
+        } catch(_){}
+
+        location.assign(nextUrl());
+      }
+
+      const form = document.getElementById('loginForm');
+      const msg  = document.getElementById('msg');
+      const btn  = document.getElementById('loginBtn');
+
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        msg.textContent = '';
+        const email = (document.getElementById('email') || {}).value?.trim();
+        const password = (document.getElementById('password') || {}).value || '';
+        const remember = document.getElementById('remember')?.checked;
+
+        if (!email || !password) {
+          msg.textContent = 'Enter your email and password.'; msg.className = 'error'; return;
+        }
+
+        btn.disabled = true; const old = btn.textContent; btn.textContent = 'Signing in…';
+        try {
+          await login(email, password, remember);
+        } catch (err) {
+          msg.textContent = err.message || 'Sign-in failed.'; msg.className = 'error';
+        } finally {
+          btn.disabled = false; btn.textContent = old;
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
