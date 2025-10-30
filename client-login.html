@@ -1,95 +1,65 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Client Login — Maltese First Capital</title>
-  <link rel="icon" href="/assets/logo-crest.png"/>
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
-  <link rel="stylesheet" href="/styles.css?v=45"/>
-  <script defer src="/scripts/nav.js?v=45"></script>
-  <script defer src="/scripts/api.js"></script>
+  <meta name="description" content="Maltese First Capital — Private & Wealth Banking in Malta.">
+  <meta name="theme-color" content="#0e1621">
+  <link rel="preload" as="image" href="assets/hero-bg.jpg?v=16">
+  <link rel="icon" href="assets/logo-crest.png">
+  <link rel="stylesheet" href="styles.css?v=16">
+  <script defer src="scripts/nav.js?v=16"></script>
 </head>
 <body>
-  <header class="header">
-    <nav class="navbar container">
-      <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
-        <span class="brand-name">Maltese First Capital</span>
-      </a>
-      <button class="nav-toggle" aria-label="Toggle menu">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
-      <ul class="nav-links">
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/private-banking.html">Private Banking</a></li>
-        <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-      </ul>
-      <div class="nav-cta">
-        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
-      </div>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="index.html">
+      <img class="brand-crest" src="assets/logo-crest.png" alt="Maltese First Capital crest" width="36" height="36">
+      <span class="brand-name">Maltese First Capital</span>
+    </a>
+    <nav class="main-nav" aria-label="Main">
+      <a href="private-banking.html">Private Banking</a>
+      <a href="wealth-management.html">Wealth Management</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
     </nav>
-  </header>
-
-  <section class="sub-hero">
-    <div class="container">
-      <img class="page-mark" src="/assets/logo-crest.png" alt=""/>
-      <h1>Client Login</h1>
+    <div class="nav-cta">
+      <a class="btn ghost" href="client-login.html">Client Login</a>
+      <a class="btn gold" href="admin-login.html">Admin Portal</a>
     </div>
-  </section>
+  </div>
+</header>
 
-  <section class="page-section">
-    <div class="container">
-      <div class="panel" style="max-width:520px;margin:0 auto">
-        <form id="loginForm" autocomplete="on">
-          <div class="form-row">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com" required/>
-          </div>
-          <div class="form-row">
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password" placeholder="••••••••" required/>
-          </div>
-          <div class="form-actions">
-            <button class="btn btn-primary block" type="submit">Sign in</button>
-          </div>
-          <p id="loginMsg" class="form-status"></p>
-        </form>
-      </div>
+<section class="hero">
+  <div class="hero-bg" role="img" aria-label="Valletta waterfront backdrop"></div>
+  <div class="hero-inner container">
+    <img class="hero-crest" src="assets/logo-crest.png" alt="Maltese First crest" loading="eager" width="120" height="120">
+    <h1>Client Login</h1>
+    <p class="sub">Secure access with OTP.</p>
+    <div class="hero-actions">
+      <a class="btn gold big" href="account-open.html">Open an Account</a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </p>
-    </div>
-  </footer>
+<section class="slice">
+  <div class="container">
+    <form class="auth-form" action="client-dashboard.html">
+      <label>Email<input type="email" required></label>
+      <label>Password<input type="password" required></label>
+      <button class="btn gold" type="submit">Sign in</button>
+    </form>
+  </div>
+</section>
 
-  <script>
-    (function(){
-      const form = document.getElementById('loginForm');
-      const msg  = document.getElementById('loginMsg');
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        msg.textContent = 'Signing in…';
-        try {
-          const email = form.email.value.trim();
-          const password = form.password.value;
-          const data = await mfcApi.post('/api/auth/login', { email, password }, { auth:false });
-          localStorage.setItem(mfcApi.keys.token, data.token);
-          if (data.client?._id) localStorage.setItem(mfcApi.keys.client, data.client._id);
-          location.href = '/client-dashboard.html';
-        } catch (err) {
-          msg.textContent = 'Login failed: ' + (err.message || 'Unable to sign in');
-        }
-      });
-    })();
-  </script>
+<footer class="site-footer">
+  <div class="container foot-grid">
+    <p>© 2025 Maltese First Capital. All rights reserved.</p>
+    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+  </div>
+</footer>
+<script>document.documentElement.classList.remove('nojs');</script>
 </body>
 </html>

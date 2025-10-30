@@ -1,175 +1,64 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Admin Dashboard — Maltese First Capital</title>
-  <link rel="icon" href="/assets/logo-crest.png"/>
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
-  <link rel="stylesheet" href="/styles.css?v=45"/>
-  <script defer src="/scripts/nav.js?v=45"></script>
-  <script defer src="/scripts/api.js"></script>
+  <meta name="description" content="Maltese First Capital — Private & Wealth Banking in Malta.">
+  <meta name="theme-color" content="#0e1621">
+  <link rel="preload" as="image" href="assets/hero-bg.jpg?v=16">
+  <link rel="icon" href="assets/logo-crest.png">
+  <link rel="stylesheet" href="styles.css?v=16">
+  <script defer src="scripts/nav.js?v=16"></script>
 </head>
 <body>
-  <header class="header">
-    <nav class="navbar container">
-      <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
-        <span class="brand-name">Maltese First Capital</span>
-      </a>
-      <button class="nav-toggle" aria-label="Toggle menu">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
-      <ul class="nav-links">
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/private-banking.html">Private Banking</a></li>
-        <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-      </ul>
-      <div class="nav-cta">
-        <button id="adminSignOut" class="btn outline">Sign out</button>
-      </div>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="index.html">
+      <img class="brand-crest" src="assets/logo-crest.png" alt="Maltese First Capital crest" width="36" height="36">
+      <span class="brand-name">Maltese First Capital</span>
+    </a>
+    <nav class="main-nav" aria-label="Main">
+      <a href="private-banking.html">Private Banking</a>
+      <a href="wealth-management.html">Wealth Management</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
     </nav>
-  </header>
-
-  <section class="sub-hero">
-    <div class="container">
-      <img class="page-mark" src="/assets/logo-crest.png" alt=""/>
-      <h1>Admin Dashboard</h1>
+    <div class="nav-cta">
+      <a class="btn ghost" href="client-login.html">Client Login</a>
+      <a class="btn gold" href="admin-login.html">Admin Portal</a>
     </div>
-  </section>
+  </div>
+</header>
 
-  <section class="page-section">
-    <div class="container grid-2">
-      <div class="panel">
-        <p class="eyebrow">Clients</p>
-        <div class="form-row">
-          <label for="qEmail">Find by email</label>
-          <input id="qEmail" type="email" placeholder="client@email.com"/>
-        </div>
-        <button id="btnFind" class="btn btn-primary">Search</button>
-        <p id="findMsg" class="form-status"></p>
-
-        <div id="clientBox" style="margin-top:14px;display:none;">
-          <h3 id="cName">Client</h3>
-          <p id="cInfo" class="form-status"></p>
-          <div class="form-row">
-            <label for="cKyc">KYC Status</label>
-            <select id="cKyc">
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
-            </select>
-          </div>
-          <button id="btnSaveKyc" class="btn gold">Save KYC</button>
-        </div>
-      </div>
-
-      <div class="panel">
-        <p class="eyebrow">Accounts & Transactions</p>
-        <div id="acctBox" style="display:none;">
-          <div class="form-row">
-            <label for="cBalance">Set Balance (USD)</label>
-            <input id="cBalance" type="number" step="0.01"/>
-          </div>
-          <button id="btnSaveBal" class="btn btn-primary">Update Balance</button>
-
-          <hr class="menu-divider"/>
-
-          <h4>Add Transaction</h4>
-          <div class="form-row">
-            <label for="tDesc">Description</label>
-            <input id="tDesc" type="text" placeholder="Transfer in"/>
-          </div>
-          <div class="form-row">
-            <label for="tAmt">Amount (USD)</label>
-            <input id="tAmt" type="number" step="0.01"/>
-          </div>
-          <button id="btnAddTx" class="btn gold">Post Transaction</button>
-        </div>
-        <p id="acctMsg" class="form-status"></p>
-      </div>
+<section class="hero">
+  <div class="hero-bg" role="img" aria-label="Valletta waterfront backdrop"></div>
+  <div class="hero-inner container">
+    <img class="hero-crest" src="assets/logo-crest.png" alt="Maltese First crest" loading="eager" width="120" height="120">
+    <h1>Admin Dashboard</h1>
+    <p class="sub">Create accounts, assign balances, manage KYC.</p>
+    <div class="hero-actions">
+      <a class="btn gold big" href="account-open.html">Open an Account</a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </p>
+<section class="slice">
+  <div class="container">
+    <div class="card">
+      <h4>Next step</h4>
+      <p>Connect this frontend to your backend API to enable real admin actions.</p>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    (function(){
-      const msg  = s => document.getElementById('findMsg').textContent = s;
-      const amsg = s => document.getElementById('acctMsg').textContent = s;
-
-      document.getElementById('adminSignOut').onclick = () => {
-        localStorage.removeItem(mfcApi.keys.token);
-        localStorage.removeItem(mfcApi.keys.admin);
-        location.href = '/admin-login.html';
-      };
-
-      let current = null;
-
-      document.getElementById('btnFind').onclick = async () => {
-        msg('Searching…'); amsg('');
-        try{
-          const email = document.getElementById('qEmail').value.trim();
-          const data  = await mfcApi.get('/api/admin/clients?email='+encodeURIComponent(email));
-          const c     = (data.clients && data.clients[0]) || data.client || data;
-          if (!c || !c._id) { msg('No client found'); return; }
-
-          current = c;
-          document.getElementById('clientBox').style.display = '';
-          document.getElementById('acctBox').style.display   = '';
-
-          document.getElementById('cName').textContent = c.fullName || c.name || '(no name)';
-          document.getElementById('cInfo').textContent = `Account ${String(c.accountNumber||0).padStart(8,'0')} — ${c.email || email}`;
-          document.getElementById('cKyc').value        = c.kycStatus || 'pending';
-
-          try {
-            const accts = c.accounts || (await mfcApi.get('/api/accounts?clientId='+c._id)).accounts || [];
-            const a0    = accts[0] || {};
-            document.getElementById('cBalance').value = a0.balance ?? 0;
-          } catch {}
-          msg('Loaded.');
-        }catch(err){ msg('Error: '+err.message); }
-      };
-
-      document.getElementById('btnSaveKyc').onclick = async () => {
-        if (!current) return;
-        try{
-          const v = document.getElementById('cKyc').value;
-          await mfcApi.patch(`/api/admin/clients/${current._id}/kyc`, { status:v });
-          msg('KYC updated.');
-        }catch(err){ msg('Failed: '+err.message); }
-      };
-
-      document.getElementById('btnSaveBal').onclick = async () => {
-        if (!current) return;
-        try{
-          const amt = +document.getElementById('cBalance').value;
-          await mfcApi.patch(`/api/admin/clients/${current._id}/balance`, { amount: amt });
-          amsg('Balance updated.');
-        }catch(err){ amsg('Failed: '+err.message); }
-      };
-
-      document.getElementById('btnAddTx').onclick = async () => {
-        if (!current) return;
-        try{
-          const description = document.getElementById('tDesc').value.trim();
-          const amount      = +document.getElementById('tAmt').value;
-          await mfcApi.post(`/api/admin/transactions`, {
-            clientId: current._id, description, amount, currency:'USD'
-          });
-          amsg('Transaction posted.');
-        }catch(err){ amsg('Failed: '+err.message); }
-      };
-    })();
-  </script>
+<footer class="site-footer">
+  <div class="container foot-grid">
+    <p>© 2025 Maltese First Capital. All rights reserved.</p>
+    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+  </div>
+</footer>
+<script>document.documentElement.classList.remove('nojs');</script>
 </body>
 </html>
