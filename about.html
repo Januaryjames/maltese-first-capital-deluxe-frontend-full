@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" href="assets/logo-crest.png" />
   <meta name="theme-color" content="#0b0f16" />
 
-  <!-- Page-scoped (nav + hero parity with index; BIGGER hero crest) -->
+  <!-- Page-scoped tweaks (bigger hero crest; logo fills container) -->
   <style>
     :root { --nav-h: 64px; --gold-1:#d4af37; --gold-2:#b28f2c; }
 
@@ -26,7 +26,6 @@
       backdrop-filter:saturate(150%) blur(10px);
       border-bottom:1px solid rgba(255,255,255,.06);
     }
-
     .nav{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);}
     .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;}
     .brand .crest{
@@ -34,7 +33,7 @@
       display:flex;align-items:center;justify-content:center;overflow:hidden;
       box-shadow:0 4px 12px rgba(0,0,0,.25);
     }
-    .brand .crest img{width:24px;height:24px;object-fit:contain;}
+    .brand .crest img{width:100%;height:100%;object-fit:cover;}
     .brand-text{font-weight:700;letter-spacing:.01em;}
 
     .nav-links{display:flex;align-items:center;gap:22px;}
@@ -64,22 +63,23 @@
       .nav-burger{display:flex;}
     }
 
-    /* HERO (no dark overlay) — BIGGER CREST */
+    /* HERO — no dark overlay */
     .hero.about-hero{
       background:url('assets/hero-bg.jpg') center/cover no-repeat;
       min-height:420px;display:flex;align-items:center;justify-content:center;text-align:center;
       border-bottom-left-radius:18px;border-bottom-right-radius:18px;
     }
+    /* BIGGER crest + logo fills container */
     .hero .hero-badge{
-      width:128px;height:128px;border-radius:22px;background:#fff;
+      width:172px;height:172px;border-radius:26px;background:#fff;
       display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
       box-shadow:0 8px 24px rgba(0,0,0,.28);overflow:hidden;
     }
-    .hero .hero-badge img{width:86px;height:86px;object-fit:contain;}
+    .hero .hero-badge img{width:100%;height:100%;object-fit:cover;display:block;}
     @media (max-width:560px){
-      .hero .hero-badge{width:108px;height:108px;border-radius:18px;}
-      .hero .hero-badge img{width:72px;height:72px;}
+      .hero .hero-badge{width:136px;height:136px;border-radius:20px;}
     }
+
     .hero h1{font-size:48px;line-height:1.06;margin:0 0 10px;}
     .hero .hero-sub{max-width:860px;margin:0 auto 18px;}
 
@@ -99,7 +99,7 @@
     .footer-white{background:#fff;color:#1b1b1b;border-top:4px solid var(--gold-1);border-radius:16px 16px 0 0;}
     .footer-white .container{padding:22px 16px;}
 
-    /* Kill any host-injected junk rows */
+    /* Nuke any host-injected junk rows */
     body > a[href], body > p > a[href], body > nav:not(.nav), body > .legacy-links, body > .page-links{display:none!important;}
   </style>
 </head>
@@ -134,7 +134,9 @@
   <!-- HERO -->
   <section class="hero about-hero" role="banner" aria-label="Valletta skyline">
     <div class="container hero-inner">
-      <div class="hero-badge"><img src="assets/logo-crest.png" alt="Maltese First crest"></div>
+      <div class="hero-badge">
+        <img src="assets/logo-crest.png" alt="Maltese First crest">
+      </div>
       <h1>Our Story &amp; Standards</h1>
       <p class="hero-sub">Discreet private banking, disciplined wealth management, and EU-grade compliance — delivered with relationship coverage, clear reporting, and secure access.</p>
       <a class="btn btn-gold btn-pill" href="account-open.html">Open an Account</a>
@@ -181,7 +183,7 @@
     </div>
   </footer>
 
-  <!-- Cleanup + mobile menu -->
+  <!-- Cleanup + mobile nav -->
   <script>
     (function () {
       // Remove any stray nodes before header (host-injected junk)
