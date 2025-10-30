@@ -1,182 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Meta -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maltese First Capital — Private & Wealth Banking</title>
-  <meta name="description" content="Trust, performance, discretion. Private banking and wealth management with EU-grade compliance." />
-  <link rel="canonical" href="https://maltesefirst.com/index.html" />
+  <meta name="description" content="Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth through tailored financial solutions." />
+  <link rel="icon" type="image/png" href="assets/logo-crest.png" />
 
-  <!-- Perf -->
+  <!-- Preload hero for snappy paint -->
   <link rel="preload" as="image" href="assets/hero-bg.jpg" />
 
-  <!-- Icons -->
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=3" />
-  <link rel="apple-touch-icon" href="assets/logo-crest.png" />
-  <meta name="theme-color" content="#0b111b" media="(prefers-color-scheme: dark)" />
-  <meta name="theme-color" content="#ffffff"  media="(prefers-color-scheme: light)" />
+  <!-- Your base stylesheet (kept) -->
+  <link rel="stylesheet" href="styles.css" />
 
-  <!-- Base CSS kept -->
-  <link rel="stylesheet" href="styles.css?v=5" />
-
-  <!-- Page overrides (ensures it looks like the good version) -->
+  <!-- Page-level fixes/overrides (safe to keep all here) -->
   <style>
     :root{
-      --nav-bg: rgba(12,18,28,.60);
-      --ink:#0b111b; --gold:#c9ab63; --gold-2:#b99144;
-      --card:#0f1724; --white:#fff; --dim:#cbd5e1;
+      --mfc-navy:#0d141f;
+      --mfc-panel:#141c28;
+      --mfc-gold:#caa45d;
+      --mfc-gold-25:rgba(202,164,93,.25);
+      --mfc-text:#eef2f7;
+      --mfc-muted:#b9c2d0;
     }
-    .container{max-width:1180px;margin:0 auto;padding:0 20px;}
+    html,body{margin:0;background:var(--mfc-navy);color:var(--mfc-text);font-synthesis-weight:none;text-rendering:optimizeLegibility}
 
-    /* NAV — translucent, blur, always visible */
+    /* ===== NAV (always visible above hero) ===== */
     .site-nav{
-      position:sticky; top:0; z-index:1000;
-      background:var(--nav-bg);
-      backdrop-filter:saturate(130%) blur(10px);
-      -webkit-backdrop-filter:saturate(130%) blur(10px);
-      border-bottom:1px solid rgba(255,255,255,.06);
-      box-shadow:0 2px 14px rgba(0,0,0,.18);
+      position:sticky;top:0;z-index:50;
+      background:rgba(10,15,22,.82);
+      backdrop-filter:saturate(140%) blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .site-nav .bar{height:66px; display:flex; align-items:center; justify-content:space-between;}
-    .brand{display:flex; align-items:center; gap:12px; color:#fff; text-decoration:none; font-weight:800;}
-    .brand img{width:40px;height:40px;border-radius:12px;background:#fff;padding:6px;box-shadow:0 6px 14px rgba(0,0,0,.18)}
-    .nav-links{display:flex;align-items:center;gap:18px}
-    .nav-links a{color:#eff4ff;text-decoration:none;font-weight:700;padding:10px 14px;border-radius:12px}
-    .nav-links a.active{background:rgba(255,255,255,.10)}
-    .nav-cta{display:flex;gap:12px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;font-weight:800;text-decoration:none}
-    .btn.ghost{padding:10px 14px;background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.16)}
-    .btn.gold{padding:10px 16px;background:linear-gradient(180deg,#e3cd8a,#b99144);color:#181d28;border:none;box-shadow:0 10px 30px rgba(185,145,68,.25)}
-    .btn.gold:hover{filter:brightness(1.04)}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:.65rem 1rem;display:flex;align-items:center;gap:1rem}
+    .brand{display:flex;align-items:center;gap:.65rem;font-weight:800}
+    .brand .crest{
+      width:34px;height:34px;border-radius:10px;overflow:hidden;
+      background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.35)
+    }
+    .brand .crest img{width:100%;height:100%;object-fit:contain}
+    .brand span{letter-spacing:.2px}
+    .nav-links{display:flex;align-items:center;gap:.6rem;margin-left:auto}
+    .nav-links a{
+      color:#dfe6ef;text-decoration:none;font-weight:700;
+      padding:.55rem .85rem;border-radius:12px
+    }
+    .nav-links a:hover{background:rgba(255,255,255,.08)}
+    .nav-links a.active{background:#0f1724;border:1px solid rgba(255,255,255,.12)}
+    .btn{border:1px solid rgba(255,255,255,.16);background:#0f1724}
+    .btn--gold{background:var(--mfc-gold);border:none;color:#121722;box-shadow:0 10px 28px var(--mfc-gold-25);font-weight:800}
 
-    /* HERO — NO dark overlay, full image visible */
+    /* ===== HERO (no dark overlay; readable text via soft shadows) ===== */
     .hero{
-      background-image:url('assets/hero-bg.jpg');
-      background-size:cover;background-position:center;
-      color:#fff;
+      position:relative;overflow:hidden;isolation:isolate
     }
-    .hero::before{content:"";position:absolute;inset:0}
-    .hero-inner{position:relative;z-index:1;text-align:center;padding:88px 0 48px}
-    /* Bigger crest */
-    .hero-crest{
-      width:128px;height:128px;object-fit:contain;background:#fff;border-radius:22px;padding:18px;
-      box-shadow:0 18px 44px rgba(0,0,0,.3);margin:0 auto 18px auto;display:block;
+    .hero__bg{
+      position:absolute;inset:0;
+      background:url('assets/hero-bg.jpg') center 38%/cover no-repeat;
+      filter:none; /* keep it bright, per your request */
+      transform:scale(1.02);
+      z-index:0
     }
-    /* Heavier, larger headline */
-    .hero h1{
-      font-size:clamp(2.4rem,5.4vw,4rem);
-      line-height:1.06;font-weight:900;letter-spacing:.2px;
-      text-shadow:0 2px 20px rgba(0,0,0,.35); margin:0 0 14px 0;
+    .hero__wrap{
+      position:relative;z-index:1;
+      max-width:1200px;margin:0 auto;
+      padding: min(16vh,9rem) 1rem 3.2rem;
+      text-align:center
     }
-    .hero .subtitle{
-      max-width:860px;margin:0 auto 18px auto;
-      color:#f5f8ff;opacity:.98;font-size:clamp(1rem,1.35vw,1.1rem);font-weight:600;
-      text-shadow:0 1px 10px rgba(0,0,0,.25);
+    .hero__crest{
+      width:124px;height:124px;margin:0 auto 1rem;border-radius:22px;background:#fff;
+      display:grid;place-items:center;box-shadow:0 18px 42px rgba(0,0,0,.35);padding:.8rem
     }
-    .btn.primary{
-      background:linear-gradient(180deg,#e0c680,#b99144);color:#121624;
-      padding:14px 22px;border-radius:14px;font-weight:900;box-shadow:0 14px 36px rgba(185,145,68,.30)
+    .hero__crest img{width:100%;height:auto}
+    .hero__title{
+      margin:.6rem 0 .5rem;
+      font-size: clamp(2.2rem, 5.2vw, 3.6rem);
+      line-height:1.06;font-weight:900;letter-spacing:.3px;color:#fff;
+      text-shadow:0 3px 22px rgba(0,0,0,.35), 0 1px 0 rgba(0,0,0,.35)
     }
-    .btn.primary:hover{filter:brightness(1.05)}
+    .hero__sub{
+      max-width:880px;margin:0 auto 1.1rem;color:#f3f6fa;
+      text-shadow:0 2px 16px rgba(0,0,0,.35);opacity:.96
+    }
+    .hero__cta{
+      display:inline-block;margin-top:.4rem;padding:.95rem 1.25rem;border-radius:14px;
+      background:var(--mfc-gold);color:#121722;text-decoration:none;font-weight:900;
+      box-shadow:0 14px 40px var(--mfc-gold-25)
+    }
 
-    /* gap before services */
-    .spacer{height:22px}
-
-    /* CORE SERVICES block */
-    .core{background:linear-gradient(180deg,#0f1624,#0c1320);color:#fff;border-radius:24px}
-    .core .wrap{padding:26px 0 54px}
-    .eyebrow{letter-spacing:.28em;color:#e9d7a6;font-weight:800;text-align:center;margin-bottom:10px}
-    .core h2{text-align:center;margin:0 0 8px 0;font-size:clamp(1.5rem,2.6vw,2.1rem)}
-    .core .sub{text-align:center;color:#cfd7ea;margin:0 0 22px 0}
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .service-card{
-      background:var(--card);
-      border:1px solid rgba(201,171,99,.35);
-      border-radius:18px;padding:22px;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
-      transition:box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+    /* ===== SERVICES STRIP (gap + centred) ===== */
+    .strip{
+      margin: 12px auto 0;
+      border-radius:20px 20px 0 0;
+      background:linear-gradient(180deg,#0e1420,#0c131e 40%, #0b111b);
+      box-shadow: 0 -8px 24px rgba(0,0,0,.35) inset;
     }
-    .service-card:hover{
-      border-color:rgba(201,171,99,.65);
-      box-shadow:0 0 0 2px rgba(201,171,99,.45), 0 14px 44px rgba(0,0,0,.35);
-      transform:translateY(-2px);
+    .strip__wrap{max-width:1200px;margin:0 auto;padding:1.2rem 1rem 2.2rem}
+    .eyebrow{
+      color:var(--mfc-gold);letter-spacing:.35em;font-weight:800;
+      font-size:.82rem;text-align:center;margin:.35rem 0 .65rem
     }
-    .service-card h3{margin:0 0 8px 0}
-    .service-card p{margin:0;color:#cbd6ea}
-
-    /* White footer, gold top border */
-    .site-footer{background:#fff;color:#273146;border-top:3px solid var(--gold);margin-top:34px}
-    .site-footer .wrap{padding:22px 0}
-    .site-footer a{color:#1b2a55;font-weight:800;text-decoration:none}
-    .site-footer a:hover{text-decoration:underline}
-
-    @media (max-width: 980px){
-      .cards{grid-template-columns:1fr}
-      .nav-cta{display:none}
+    .kicker{
+      text-align:center;font-size: clamp(1.4rem,2.6vw,2rem);font-weight:900;margin:0 0 .55rem
     }
+    .kicker-sub{color:var(--mfc-muted);text-align:center;margin:0 0 1.2rem}
+
+    /* Cards with gold outline + glow on hover */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    @media (max-width: 980px){ .cards{grid-template-columns:1fr} }
+    .card{
+      background:var(--mfc-panel);
+      border:1px solid var(--mfc-gold);
+      border-radius:18px;padding:1.1rem 1.1rem 1.15rem;
+      box-shadow:0 0 0 rgba(202,164,93,0);
+      transition: box-shadow .25s ease, transform .25s ease;
+    }
+    .card:hover{ box-shadow:0 0 36px var(--mfc-gold-25); transform:translateY(-2px) }
+    .card h3{margin:.15rem 0 .35rem}
+    .card p{color:#cfd6e3;margin:.15rem 0 0}
+
+    /* ===== FOOTER (white with gold border) ===== */
+    footer{
+      background:#fff;color:#131a25;border-top:2px solid var(--mfc-gold);
+    }
+    .footer__wrap{max-width:1200px;margin:0 auto;padding:1.2rem 1rem;
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+    footer a{color:#0a4aa4;text-decoration:none}
   </style>
-
-  <script defer src="scripts/nav.js?v=5"></script>
 </head>
 <body>
 
   <!-- NAV -->
   <header class="site-nav">
-    <div class="bar container">
-      <a class="brand" href="index.html">
-        <img src="assets/logo-crest.png" alt="Maltese First Capital crest" />
+    <div class="nav-inner">
+      <div class="brand">
+        <span class="crest"><img src="assets/logo-crest.png" alt="Maltese First crest"></span>
         <span>Maltese First Capital</span>
-      </a>
-
-      <nav class="nav-links" aria-label="Primary">
+      </div>
+      <nav class="nav-links">
         <a class="active" href="index.html">Home</a>
         <a href="about.html">About</a>
         <a href="private-banking.html">Private Banking</a>
         <a href="wealth-management.html">Wealth Management</a>
         <a href="contact.html">Contact</a>
+        <a class="btn" href="client-login.html">Client Login</a>
+        <a class="btn btn--gold" href="admin-login.html">Admin Portal</a>
       </nav>
-
-      <div class="nav-cta">
-        <a class="btn ghost" href="client-login.html">Client Login</a>
-        <a class="btn gold"  href="admin-login.html">Admin Portal</a>
-      </div>
     </div>
   </header>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-inner container">
-      <img class="hero-crest" src="assets/logo-crest.png" alt="Maltese First Capital" />
-      <h1>Unlocking Financial Potential</h1>
-      <p class="subtitle">
-        Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth for clients through tailored financial solutions.
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="hero__wrap">
+      <div class="hero__crest">
+        <img src="assets/logo.png" alt="Maltese First Capital" />
+      </div>
+      <h1 class="hero__title">Unlocking Financial Potential</h1>
+      <p class="hero__sub">
+        Maltese First Capital is an investment bank focused on unlocking financial potential and fostering growth
+        for clients through tailored financial solutions.
       </p>
-      <a class="btn primary" href="account-open.html">Open an Account</a>
+      <a class="hero__cta" href="account-open.html">Open an Account</a>
     </div>
   </section>
 
-  <div class="spacer"></div>
-
-  <!-- CORE SERVICES -->
-  <section class="core">
-    <div class="wrap container">
-      <p class="eyebrow">OUR CORE SERVICES</p>
-      <h2>Trust, Performance, Discretion</h2>
-      <p class="sub">Relationship-driven banking, disciplined reporting, and secure access.</p>
+  <!-- CORE SERVICES STRIP -->
+  <section class="strip">
+    <div class="strip__wrap">
+      <div class="eyebrow">OUR CORE SERVICES</div>
+      <h2 class="kicker">Trust, Performance, Discretion</h2>
+      <p class="kicker-sub">Relationship-driven banking, disciplined reporting, and secure access.</p>
 
       <div class="cards">
-        <article class="service-card">
+        <article class="card">
           <h3>Private Banking</h3>
-          <p>Relationship-driven banking for individuals and families with clear statements and secure access.</p>
+          <p>Relationship-driven banking with clear statements and secure access.</p>
         </article>
-
-        <article class="service-card">
+        <article class="card">
           <h3>Wealth Management</h3>
-          <p>Consolidated portfolio reporting, disciplined strategy, and a secure document vault.</p>
+          <p>Consolidated portfolio reporting, disciplined strategy, and document vault.</p>
         </article>
-
-        <article class="service-card">
+        <article class="card">
           <h3>Corporate Advisory</h3>
           <p>Capital structuring, M&amp;A support, and strategic guidance for enterprises.</p>
         </article>
@@ -185,11 +190,10 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="wrap container" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
-      <small>© 2025 Maltese First Capital. All rights reserved.</small>
-      <small>The Exchange Building, Republic Street, Valletta VLT 1117, Malta •
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></small>
+  <footer>
+    <div class="footer__wrap">
+      <div>© 2025 Maltese First Capital. All rights reserved.</div>
+      <div>The Exchange Building, Republic Street, Valletta VLT 1117, Malta • <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div>
     </div>
   </footer>
 
