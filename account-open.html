@@ -4,125 +4,147 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Open an Account — Maltese First Capital</title>
-  <link rel="icon" href="/assets/logo-crest.png"/>
-  <link rel="apple-touch-icon" href="/assets/logo-crest.png"/>
-  <link rel="stylesheet" href="/styles.css?v=45"/>
-  <script defer src="/scripts/nav.js?v=45"></script>
-  <script defer src="/scripts/api.js"></script>
+  <link rel="icon" href="./assets/logo-crest.png">
+  <link rel="preload" href="./assets/hero-bg.jpg" as="image">
+  <link rel="stylesheet" href="./styles.css?v=24">
 </head>
 <body>
-  <header class="header">
-    <nav class="navbar container">
-      <a class="brand" href="/index.html">
-        <img class="brand-crest" src="/assets/logo-crest.png" alt=""/>
-        <span class="brand-name">Maltese First Capital</span>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="inner container">
+      <a class="brand" href="./index.html">
+        <img src="./assets/logo-crest.png" alt="MFC">
+        <span class="title">Maltese First Capital</span>
       </a>
-      <button class="nav-toggle" aria-label="Toggle menu">
-        <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-      </button>
-      <ul class="nav-links">
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/private-banking.html">Private Banking</a></li>
-        <li><a href="/wealth-management.html">Wealth Management</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-      </ul>
-      <div class="nav-cta">
-        <a class="btn outline" href="/client-login.html">Client Login</a>
-        <a class="btn gold" href="/admin-login.html">Admin Portal</a>
+      <div class="navlinks">
+        <a data-nav href="./private-banking.html">Private Banking</a>
+        <a data-nav href="./wealth-management.html">Wealth Management</a>
+        <a data-nav href="./about.html">About</a>
+        <a data-nav href="./contact.html">Contact</a>
+        <a class="btn soft" href="./client-login.html">Client Login</a>
+        <a class="btn primary" href="./admin-login.html">Admin Portal</a>
       </div>
-    </nav>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" style="min-height:360px">
+    <div class="container" style="text-align:center">
+      <div class="crest"><img src="./assets/logo.png" alt="MFC"></div>
+      <h1>Open an Account</h1>
+      <p>Provide your details and upload the KYC/AML documents. Our team will review and revert.</p>
+    </div>
   </header>
 
-  <section class="sub-hero">
-    <div class="container">
-      <img class="page-mark" src="/assets/logo-crest.png" alt=""/>
-      <h1>Open an Account</h1>
-    </div>
-  </section>
+  <!-- FORM -->
+  <main class="container section">
+    <h2 class="h2">Client Information</h2>
 
-  <section class="page-section">
-    <div class="container">
-      <div class="panel" style="max-width:720px;margin:0 auto">
-        <form id="kycForm" onsubmit="return false;">
-          <div class="form-row">
-            <label for="fullName">Full name</label>
-            <input id="fullName" required placeholder="Your legal name"/>
-          </div>
-          <div class="form-row">
-            <label for="email">Email</label>
-            <input id="email" type="email" required placeholder="you@example.com"/>
-          </div>
-          <div class="form-row">
-            <label for="phone">Phone</label>
-            <input id="phone" required placeholder="+356…"/>
-          </div>
-          <div class="form-row">
-            <label for="nationality">Nationality</label>
-            <input id="nationality" required placeholder="e.g., MT"/>
-          </div>
-          <div class="form-row">
-            <label for="address">Residential address</label>
-            <input id="address" required placeholder="Street, City, Country"/>
-          </div>
-          <div class="form-row">
-            <label for="pep">Politically Exposed Person (PEP)?</label>
-            <select id="pep" required>
-              <option value="false" selected>No</option>
-              <option value="true">Yes</option>
-            </select>
-          </div>
-          <div class="form-actions">
-            <button class="btn btn-primary">Submit application</button>
-          </div>
-          <p id="kycStatus" class="form-status"></p>
-        </form>
+    <div id="accountOpenStatus" style="display:none"></div>
+
+    <form id="accountOpenForm" enctype="multipart/form-data">
+      <div class="field-row">
+        <div>
+          <label for="companyName">Company / Account Name *</label>
+          <input class="input" id="companyName" name="companyName" required placeholder="Al-Matsader Al-Fadhi Co.">
+        </div>
+        <div>
+          <label for="authorisedPerson">Authorised Person *</label>
+          <input class="input" id="authorisedPerson" name="authorisedPerson" required placeholder="Mr. Abdulaziz Abdullah S. Alzughaibi">
+        </div>
       </div>
-    </div>
-  </section>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© 2025 Maltese First Capital. All rights reserved.</p>
-      <p class="footer-address">The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-        <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </p>
+      <div class="field-row">
+        <div>
+          <label for="email">Email *</label>
+          <input class="input" id="email" type="email" name="email" required placeholder="name@company.com">
+        </div>
+        <div>
+          <label for="phone">Phone</label>
+          <input class="input" id="phone" name="phone" placeholder="+966 …">
+        </div>
+      </div>
+
+      <div>
+        <label for="companyAddress">Company Address *</label>
+        <input class="input" id="companyAddress" name="companyAddress" required placeholder="ABU BAKER ROAD 3-4, Riyadh 13312, KSA">
+      </div>
+
+      <div class="field-row">
+        <div>
+          <label for="country">Country *</label>
+          <input class="input" id="country" name="country" required placeholder="Saudi Arabia">
+        </div>
+        <div>
+          <label for="crNumber">Commercial Registration</label>
+          <input class="input" id="crNumber" name="crNumber" placeholder="1009001093">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div>
+          <label for="accountType">Account Type *</label>
+          <select class="select" id="accountType" name="accountType" required>
+            <option value="Corporate – Private Client (Onboarding)" selected>Corporate – Private Client (Onboarding)</option>
+            <option value="Individual – Private Client">Individual – Private Client</option>
+          </select>
+        </div>
+        <div>
+          <label for="currency">Primary Currency *</label>
+          <select class="select" id="currency" name="currency" required>
+            <option value="USD" selected>USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="AED">AED</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes" rows="3" placeholder="Brief context for source of funds / purpose of account"></textarea>
+      </div>
+
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,.08);margin:6px 0 16px">
+
+      <h2 class="h2">KYC / AML Documents</h2>
+      <p class="help">Upload clear scans/photos. You can attach multiple files per section.</p>
+
+      <div>
+        <label>Corporate Documents (CR, M&A, Board Resolution) *</label>
+        <input class="input" type="file" name="corporateDocs" accept=".pdf,.jpg,.jpeg,.png" multiple required>
+      </div>
+      <div>
+        <label>Authorised Person ID/Passport *</label>
+        <input class="input" type="file" name="idDocs" accept=".pdf,.jpg,.jpeg,.png" multiple required>
+      </div>
+      <div>
+        <label>Proof of Address (company / authorised person) *</label>
+        <input class="input" type="file" name="proofOfAddress" accept=".pdf,.jpg,.jpeg,.png" multiple required>
+      </div>
+      <div>
+        <label>Source of Funds / Wealth Evidence</label>
+        <input class="input" type="file" name="sourceDocs" accept=".pdf,.jpg,.jpeg,.png" multiple>
+      </div>
+
+      <div>
+        <label><input type="checkbox" required> I confirm the information is accurate and I authorise KYC/AML checks.</label>
+      </div>
+
+      <button id="accountOpenBtn" class="btn primary" type="submit">Submit Application</button>
+      <div class="help">Having trouble? Email <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <div class="container row">
+      <div>© 2025 Maltese First Capital. All rights reserved.</div>
+      <div>The Exchange Building, Republic Street, Valletta VLT 1117, Malta • <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div>
     </div>
   </footer>
 
-  <script>
-    (function(){
-      const form = document.getElementById('kycForm');
-      const status = document.getElementById('kycStatus');
-      form.addEventListener('submit', async () => {
-        status.textContent = 'Submitting…';
-        try {
-          const base = window.API_BASE || localStorage.getItem('API_BASE');
-          if (!base) { status.textContent = 'Backend not configured.'; return; }
-
-          const payload = {
-            fullName:    document.getElementById('fullName').value.trim(),
-            email:       document.getElementById('email').value.trim(),
-            phone:       document.getElementById('phone').value.trim(),
-            nationality: document.getElementById('nationality').value.trim(),
-            address:     document.getElementById('address').value.trim(),
-            pepStatus:   document.getElementById('pep').value === 'true'
-          };
-
-          const res = await fetch(`${base}/api/kyc/submit`, {
-            method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
-          });
-          if (!res.ok) {
-            const e = await res.json().catch(()=>({message:'Failed'}));
-            throw new Error(e.message || 'Failed');
-          }
-          status.textContent = 'Application received. We will contact you.';
-          form.reset();
-        } catch (err) {
-          status.textContent = 'Could not submit. Please try again.';
-        }
-      });
-    })();
-  </script>
+  <!-- Scripts -->
+  <script src="./scripts/nav.js?v=24"></script>
+  <script src="./scripts/forms.js?v=24"></script>
 </body>
 </html>
