@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>About — Maltese First Capital</title>
 
-  <!-- Use your existing site stylesheet -->
+  <!-- Site CSS (same file the index uses) -->
   <link rel="stylesheet" href="styles.css" />
 
   <!-- Favicon (your path already exists) -->
@@ -14,13 +14,9 @@
   <link rel="apple-touch-icon" href="assets/logo-crest.png" />
   <meta name="theme-color" content="#0b0f16" />
 
-  <!-- Page-local tweaks to ensure parity with index (won’t affect other pages) -->
+  <!-- Page-local parity tweaks with index -->
   <style>
-    /* match index: white footer with gold border */
-    .footer-white { background:#fff; color:#1b1b1b; border-top:4px solid #d4af37; border-radius:16px 16px 0 0; }
-    .footer-white .container { padding:22px 16px; }
-
-    /* hero copies index: no dark overlay, bigger crest */
+    /* --- HERO — match index (no dark overlay) --- */
     .hero.about-hero{
       background:url('assets/hero-bg.jpg') center/cover no-repeat;
       min-height:420px; border-bottom-left-radius:18px; border-bottom-right-radius:18px;
@@ -28,7 +24,7 @@
     .hero.about-hero .hero-badge{ width:96px; height:96px; border-radius:18px; }
     .hero.about-hero h1{ font-size:48px; line-height:1.06; }
 
-    /* ensure gold buttons look identical to Admin Portal */
+    /* --- Buttons — match Admin Portal look --- */
     .btn-gold{
       border-color:rgba(212,175,55,.35)!important;
       background:linear-gradient(180deg,#d4af37 0%,#b5912b 100%)!important;
@@ -37,14 +33,20 @@
     }
     .btn-pill{ padding:12px 18px; border-radius:14px; font-size:16px; }
 
-    /* kill any legacy inline link blocks some old about.htmls had */
-    body > a[href*=".html"] { display:none !important; }
-    body > a[href*=".html"] + a { display:none !important; }
+    /* --- Footer — white with gold top border --- */
+    .footer-white { background:#fff; color:#1b1b1b; border-top:4px solid #d4af37; border-radius:16px 16px 0 0; }
+    .footer-white .container { padding:22px 16px; }
+
+    /* SAFETY: hide any legacy link strips accidentally left in old files */
+    .legacy, .legacy * { display:none !important; }
+    /* If a host injects a plain link row above header, hide it */
+    body > :not(header):not(script):not(style):not(link):not(meta):not(title):first-child
+    > a[href*=".html"] { display:none !important; }
   </style>
 </head>
 
 <body>
-  <!-- Header (identical to index) -->
+  <!-- HEADER: identical structure/classes as index -->
   <header class="site-header glass">
     <div class="container nav">
       <a class="brand" href="index.html" aria-label="Home">
@@ -67,7 +69,7 @@
     </div>
   </header>
 
-  <!-- Hero (matches index layout) -->
+  <!-- HERO -->
   <section class="hero about-hero" role="banner" aria-label="Valletta skyline">
     <div class="container hero-inner">
       <div class="hero-badge"><img src="assets/logo-crest.png" alt="Maltese First crest" /></div>
@@ -80,7 +82,7 @@
     </div>
   </section>
 
-  <!-- Content -->
+  <!-- CONTENT -->
   <main>
     <section class="section">
       <div class="container">
@@ -120,7 +122,7 @@
     </section>
   </main>
 
-  <!-- Footer (white w/ gold border) -->
+  <!-- FOOTER -->
   <footer class="footer-white">
     <div class="container">
       © 2025 Maltese First Capital. The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
