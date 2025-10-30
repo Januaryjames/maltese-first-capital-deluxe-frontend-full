@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>About — Maltese First Capital</title>
 
-  <!-- Site CSS (same file the index uses) -->
+  <!-- Use the same global CSS as index -->
   <link rel="stylesheet" href="styles.css" />
 
   <!-- Favicon (your path already exists) -->
@@ -14,39 +14,59 @@
   <link rel="apple-touch-icon" href="assets/logo-crest.png" />
   <meta name="theme-color" content="#0b0f16" />
 
-  <!-- Page-local parity tweaks with index -->
+  <!-- Page-scoped tweaks to match index exactly (safe, no global side-effects) -->
   <style>
-    /* --- HERO — match index (no dark overlay) --- */
+    /* Sticky translucent nav over hero (same look as index) */
+    .site-header.glass{
+      position:sticky; top:0; z-index:1000;
+      background:rgba(10,13,20,.72); backdrop-filter:saturate(150%) blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    /* ABOUT hero – no dark overlay, same sizing as index */
     .hero.about-hero{
       background:url('assets/hero-bg.jpg') center/cover no-repeat;
-      min-height:420px; border-bottom-left-radius:18px; border-bottom-right-radius:18px;
+      min-height: 420px;
+      border-bottom-left-radius:18px;border-bottom-right-radius:18px;
     }
-    .hero.about-hero .hero-badge{ width:96px; height:96px; border-radius:18px; }
+    .hero.about-hero .hero-badge{
+      width:96px;height:96px;border-radius:18px;overflow:hidden;
+      box-shadow:0 8px 24px rgba(0,0,0,.28);
+      background:#fff; display:flex;align-items:center;justify-content:center;
+    }
     .hero.about-hero h1{ font-size:48px; line-height:1.06; }
+    .hero .hero-sub{ max-width:860px; }
 
-    /* --- Buttons — match Admin Portal look --- */
+    /* Gold button parity with Admin Portal */
     .btn-gold{
-      border-color:rgba(212,175,55,.35)!important;
-      background:linear-gradient(180deg,#d4af37 0%,#b5912b 100%)!important;
-      color:#111!important; font-weight:700;
+      border:1px solid rgba(212,175,55,.35);
+      background:linear-gradient(180deg,#d4af37 0%,#b5912b 100%);
+      color:#111; font-weight:700;
       box-shadow:0 10px 24px rgba(212,175,55,.25);
     }
     .btn-pill{ padding:12px 18px; border-radius:14px; font-size:16px; }
 
-    /* --- Footer — white with gold top border --- */
-    .footer-white { background:#fff; color:#1b1b1b; border-top:4px solid #d4af37; border-radius:16px 16px 0 0; }
-    .footer-white .container { padding:22px 16px; }
+    /* Cards – gold outline + glow on hover */
+    .gold-outline{
+      border:1px solid rgba(212,175,55,.35);
+      box-shadow:0 1px 0 rgba(212,175,55,.25) inset;
+    }
+    .gold-outline:hover{
+      box-shadow:0 0 0 1px rgba(212,175,55,.45), 0 10px 24px rgba(212,175,55,.16);
+      transform:translateY(-2px);
+    }
 
-    /* SAFETY: hide any legacy link strips accidentally left in old files */
+    /* White footer with gold top border */
+    .footer-white{ background:#fff; color:#1b1b1b; border-top:4px solid #d4af37; border-radius:16px 16px 0 0; }
+    .footer-white .container{ padding:22px 16px; }
+
+    /* Kill any legacy link rows a host might leave behind */
     .legacy, .legacy * { display:none !important; }
-    /* If a host injects a plain link row above header, hide it */
-    body > :not(header):not(script):not(style):not(link):not(meta):not(title):first-child
-    > a[href*=".html"] { display:none !important; }
   </style>
 </head>
 
 <body>
-  <!-- HEADER: identical structure/classes as index -->
+  <!-- HEADER (identical structure/classes as index) -->
   <header class="site-header glass">
     <div class="container nav">
       <a class="brand" href="index.html" aria-label="Home">
@@ -66,6 +86,11 @@
         <a class="btn" href="client-login.html">Client Login</a>
         <a class="btn btn-gold btn-pill" href="admin-login.html">Admin Portal</a>
       </div>
+
+      <!-- mobile burger (optional if index has it) -->
+      <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -82,7 +107,7 @@
     </div>
   </section>
 
-  <!-- CONTENT -->
+  <!-- MAIN -->
   <main>
     <section class="section">
       <div class="container">
@@ -129,5 +154,18 @@
       <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
     </div>
   </footer>
+
+  <!-- Optional tiny script: mobile nav parity with index -->
+  <script>
+    const burger = document.querySelector('.nav-burger');
+    const links  = document.querySelector('.nav-links');
+    if (burger && links) {
+      burger.addEventListener('click', () => {
+        const open = burger.getAttribute('aria-expanded') === 'true';
+        burger.setAttribute('aria-expanded', String(!open));
+        links.classList.toggle('open');
+      });
+    }
+  </script>
 </body>
 </html>
