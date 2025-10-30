@@ -1,40 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta http-equiv="Cache-Control" content="no-store, max-age=0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact — Maltese First Capital</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-crest.png"><link rel="apple-touch-icon" href="assets/logo-crest.png">
-  <meta name="theme-color" content="#0b0f16"><link rel="stylesheet" href="styles.css">
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Favicon (existing path) -->
+  <link rel="icon" type="image/png" href="assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="assets/logo-crest.png" />
+  <meta name="theme-color" content="#0b0f16" />
+
+  <!-- Page-scoped tweaks kept consistent with index/about/private/wealth -->
+  <style>
+    :root { --nav-h: 64px; --gold-1:#d4af37; --gold-2:#b28f2c; }
+    .container{max-width:1180px;margin:0 auto;padding:0 16px;}
+
+    /* Glass nav */
+    .site-header.glass{
+      position:sticky;top:0;z-index:1000;
+      background:rgba(10,13,20,.72);
+      backdrop-filter:saturate(150%) blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;}
+    .brand .crest{
+      width:34px;height:34px;border-radius:9px;background:#fff;
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+      box-shadow:0 4px 12px rgba(0,0,0,.25);
+    }
+    .brand .crest img{width:100%;height:100%;object-fit:cover;}
+    .brand-text{font-weight:700;letter-spacing:.01em;}
+
+    .nav-links{display:flex;align-items:center;gap:22px;}
+    .nav-links a{color:#d9dee7;text-decoration:none;padding:8px 12px;border-radius:10px;}
+    .nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.08);color:#fff;}
+
+    .nav-actions{display:flex;gap:10px;align-items:center;}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+      text-decoration:none;color:#fff;background:rgba(255,255,255,.06);
+    }
+    .btn-gold{
+      border:1px solid rgba(212,175,55,.38);
+      background:linear-gradient(180deg,var(--gold-1) 0%,var(--gold-2) 100%);
+      color:#121212;font-weight:700;box-shadow:0 10px 24px rgba(212,175,55,.25);
+    }
+    .btn-pill{border-radius:14px;padding:12px 18px;font-size:16px;}
+    .btn-lg{padding:14px 22px;font-size:17px;border-radius:14px;}
+
+    .nav-burger{display:none;flex-direction:column;gap:4px;background:transparent;border:0;}
+    .nav-burger span{width:24px;height:2px;background:#fff;border-radius:2px;display:block;}
+    @media (max-width:980px){
+      .nav-links{position:fixed;inset:var(--nav-h) 0 auto 0;background:rgba(10,13,20,.96);
+        flex-direction:column;gap:14px;padding:16px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:.18s ease;}
+      .nav-links.open{transform:none;opacity:1;pointer-events:auto;}
+      .nav-actions{display:none;}
+      .nav-burger{display:flex;}
+    }
+
+    /* Hero (no overlay, big crest) */
+    .hero.contact-hero{
+      background:url('assets/hero-bg.jpg') center/cover no-repeat;
+      min-height:420px;display:flex;align-items:center;justify-content:center;text-align:center;
+      border-bottom-left-radius:18px;border-bottom-right-radius:18px;
+    }
+    .hero .hero-badge{
+      width:172px;height:172px;border-radius:26px;background:#fff;
+      display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+      box-shadow:0 8px 24px rgba(0,0,0,.28);overflow:hidden;
+    }
+    .hero .hero-badge img{width:100%;height:100%;object-fit:cover;display:block;}
+    @media (max-width:560px){
+      .hero .hero-badge{width:136px;height:136px;border-radius:20px;}
+    }
+    .hero h1{font-size:48px;line-height:1.06;margin:0 0 10px;}
+    .hero .hero-sub{max-width:860px;margin:0 auto 18px;}
+
+    /* Sections / cards */
+    .section{padding:40px 0;}
+    .section-kicker{color:var(--gold-1);letter-spacing:.12em;font-size:12px;margin:0 0 6px;}
+
+    .grid{
+      display:grid;grid-template-columns:2fr 1fr;gap:18px;
+    }
+    @media (max-width:960px){ .grid{grid-template-columns:1fr; } }
+
+    .card{border-radius:16px;background:rgba(255,255,255,.02);padding:20px;}
+    .gold-outline{border:1px solid rgba(212,175,55,.35);box-shadow:0 1px 0 rgba(212,175,55,.25) inset;}
+    .gold-outline:hover{box-shadow:0 0 0 1px rgba(212,175,55,.45),0 10px 24px rgba(212,175,55,.16);}
+
+    /* Form */
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media (max-width:720px){ .form-row{grid-template-columns:1fr;} }
+    label{display:block;margin:8px 0 6px;font-weight:600;}
+    input, select, textarea{
+      width:100%;background:#0e141d;color:#e8edf6;border:1px solid rgba(255,255,255,.14);
+      border-radius:12px;padding:12px 12px;outline:none;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color:rgba(212,175,55,.55);box-shadow:0 0 0 3px rgba(212,175,55,.18);
+    }
+    textarea{min-height:140px;resize:vertical;}
+
+    .muted{opacity:.85;}
+    .list{margin:0;padding-left:18px;}
+    .list li{margin:6px 0;}
+
+    /* White footer with gold border */
+    .footer-white{background:#fff;color:#1b1b1b;border-top:4px solid var(--gold-1);border-radius:16px 16px 0 0;}
+    .footer-white .container{padding:22px 16px;}
+
+    /* Kill any host-injected link rows */
+    body > a[href], body > p > a[href], body > nav:not(.nav), body > .legacy-links, body > .page-links{display:none!important;}
+  </style>
 </head>
 <body>
-  <div class="nav-wrap"><div class="nav container">
-    <a class="brand" href="index.html"><span class="crest"><img src="assets/logo-crest.png" alt=""></span><span>Maltese First Capital</span></a>
-    <nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a class="active" href="contact.html">Contact</a></nav>
-    <div class="nav-actions"><button id="navToggle" class="nav-toggle" aria-label="Menu">☰</button><a class="btn" href="client-login.html">Client Login</a><a class="btn btn-gold btn-lg" href="admin-login.html">Admin Portal</a></div>
-  </div><div id="mobilePanel" class="mobile-panel container" role="dialog" aria-modal="true"><a href="index.html">Home</a><a href="about.html">About</a><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a class="active" href="contact.html">Contact</a><a href="client-login.html">Client Login</a><a href="admin-login.html">Admin Portal</a></div></div>
+  <!-- HEADER -->
+  <header class="site-header glass">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Home">
+        <span class="crest"><img src="assets/logo-crest.png" alt="Maltese First crest"></span>
+        <span class="brand-text">Maltese First Capital</span>
+      </a>
 
-  <header class="hero"><div><div class="hero-badge"><img src="assets/logo-crest.png" alt=""></div><h1>Contact</h1><p>Start a confidential conversation with the team.</p><div class="cta"><a class="btn btn-gold btn-lg" href="account-open.html">Open an Account</a></div></div></header>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="private-banking.html">Private Banking</a>
+        <a href="wealth-management.html">Wealth Management</a>
+        <a href="contact.html" class="active">Contact</a>
+      </nav>
 
-  <main class="container section">
-    <section class="band">
-      <div class="row">
-        <form class="card" action="https://formspree.io/f/yourid" method="POST">
-          <h3>Send us a message</h3>
-          <div class="field"><label>Full name</label><input class="input" name="name" required></div>
-          <div class="field"><label>Email</label><input class="input" type="email" name="email" required></div>
-          <div class="field"><label>Message</label><textarea class="input" name="message" rows="5" required></textarea></div>
-          <button class="btn btn-gold btn-lg" type="submit">Send</button>
-        </form>
-        <div class="card">
-          <h3>Valletta office</h3>
-          <p>The Exchange Building<br>Republic Street<br>Valletta VLT 1117<br>Malta</p>
-          <p><strong>Email</strong><br><a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-        </div>
+      <div class="nav-actions">
+        <a class="btn" href="client-login.html">Client Login</a>
+        <a class="btn btn-gold btn-pill" href="admin-login.html">Admin Portal</a>
       </div>
-    </section>
+
+      <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero contact-hero" role="banner" aria-label="Valletta skyline">
+    <div class="container hero-inner">
+      <div class="hero-badge">
+        <img src="assets/logo-crest.png" alt="Maltese First crest">
+      </div>
+      <h1>Contact</h1>
+      <p class="hero-sub">Start a confidential conversation with the team.</p>
+      <a class="btn btn-gold btn-pill" href="account-open.html">Open an Account</a>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="section">
+    <div class="container grid">
+      <!-- CONTACT FORM -->
+      <section class="card gold-outline">
+        <h2 class="section-kicker">MESSAGE</h2>
+        <h3>Send us a message</h3>
+
+        <form id="contactForm" method="post" action="/api/contact" novalidate>
+          <div class="form-row">
+            <div>
+              <label for="fullName">Full name *</label>
+              <input id="fullName" name="fullName" type="text" required autocomplete="name" />
+            </div>
+            <div>
+              <label for="email">Email *</label>
+              <input id="email" name="email" type="email" required autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="+356 …" />
+            </div>
+            <div>
+              <label for="topic">Topic</label>
+              <select id="topic" name="topic">
+                <option value="">General</option>
+                <option value="private">Private Banking</option>
+                <option value="wealth">Wealth Management</option>
+                <option value="onboarding">Onboarding</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:center;margin-top:14px;">
+            <button class="btn btn-gold btn-lg" type="submit">Send Message</button>
+            <button class="btn btn-lg" type="reset">Reset</button>
+          </div>
+
+          <p id="formNote" class="muted" style="margin-top:10px;"></p>
+        </form>
+      </section>
+
+      <!-- OFFICE / DETAILS -->
+      <aside class="card gold-outline">
+        <h2 class="section-kicker">VALLETTA</h2>
+        <h3>Office</h3>
+        <p>
+          The Exchange Building<br/>
+          Republic Street<br/>
+          Valletta VLT 1117<br/>
+          Malta
+        </p>
+
+        <h3 style="margin-top:14px;">Reach us</h3>
+        <ul class="list">
+          <li>Email: <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></li>
+          <li>Client login: <a href="client-login.html">portal</a></li>
+          <li>Onboarding: <a href="account-open.html">open an account</a></li>
+        </ul>
+      </aside>
+    </div>
   </main>
 
-  <footer class="footer"><div class="container">© 2025 Maltese First Capital · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div></footer>
-  <script src="nav.js"></script>
+  <!-- FOOTER -->
+  <footer class="footer-white">
+    <div class="container">
+      © 2025 Maltese First Capital. The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+    </div>
+  </footer>
+
+  <!-- Cleanup + mobile nav + form submit with graceful fallback -->
+  <script>
+    (function () {
+      // Remove stray nodes before header
+      const header = document.querySelector('.site-header');
+      if (header) {
+        let n = header.previousSibling;
+        while (n) { const prev = n.previousSibling; if (n.nodeType === 1) n.remove(); n = prev; }
+      }
+      // Remove any leftover “extra links” between header and hero
+      let s = header ? header.nextElementSibling : null;
+      while (s && !s.classList.contains('hero')) {
+        if (s.matches('a, p, nav') || /Client Login.*Admin Portal/i.test(s.textContent)) { const r = s; s = s.nextElementSibling; r.remove(); continue; }
+        s = s.nextElementSibling;
+      }
+      // Mobile burger toggle
+      const burger = document.querySelector('.nav-burger');
+      const links  = document.querySelector('.nav-links');
+      if (burger && links) {
+        burger.addEventListener('click', () => {
+          const open = burger.getAttribute('aria-expanded') === 'true';
+          burger.setAttribute('aria-expanded', String(!open));
+          links.classList.toggle('open');
+        });
+      }
+
+      // Contact form submit with backend + fallback
+      const form = document.getElementById('contactForm');
+      const note = document.getElementById('formNote');
+      if (form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          note.textContent = 'Sending…';
+          const data = Object.fromEntries(new FormData(form).entries());
+          try {
+            const res = await fetch(form.action || '/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data)
+            });
+            if (res.ok) {
+              note.textContent = 'Thank you — we will reply shortly.';
+              form.reset();
+            } else {
+              throw new Error('Server error');
+            }
+          } catch (err) {
+            // graceful fallback to mailto
+            const subject = encodeURIComponent('Website contact — ' + (data.topic || 'General'));
+            const body = encodeURIComponent(
+              `Name: ${data.fullName || ''}\nEmail: ${data.email || ''}\nPhone: ${data.phone || ''}\nTopic: ${data.topic || 'General'}\n\nMessage:\n${data.message || ''}`
+            );
+            window.location.href = `mailto:hello@maltesefirst.com?subject=${subject}&body=${body}`;
+            note.textContent = 'Opening your email client…';
+          }
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
