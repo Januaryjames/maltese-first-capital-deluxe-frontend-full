@@ -1,86 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Contact — Maltese First Capital</title>
-  <meta name="description" content="Maltese First Capital — Private & Wealth Banking in Malta.">
-  <meta name="theme-color" content="#0e1621">
-  <link rel="preload" as="image" href="assets/hero-bg.jpg?v=16">
-  <link rel="icon" href="assets/logo-crest.png">
-  <link rel="stylesheet" href="styles.css?v=16">
-  <script defer src="scripts/nav.js?v=16"></script>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-crest.png"><link rel="apple-touch-icon" href="assets/logo-crest.png">
+  <meta name="theme-color" content="#0b0f16"><link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="site-header">
-  <div class="container nav-wrap">
-    <a class="brand" href="index.html">
-      <img class="brand-crest" src="assets/logo-crest.png" alt="Maltese First Capital crest" width="36" height="36">
-      <span class="brand-name">Maltese First Capital</span>
-    </a>
-    <nav class="main-nav" aria-label="Main">
-      <a href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <div class="nav-cta">
-      <a class="btn ghost" href="client-login.html">Client Login</a>
-      <a class="btn gold" href="admin-login.html">Admin Portal</a>
-    </div>
-  </div>
-</header>
+  <div class="nav-wrap"><div class="nav container">
+    <a class="brand" href="index.html"><span class="crest"><img src="assets/logo-crest.png" alt=""></span><span>Maltese First Capital</span></a>
+    <nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a class="active" href="contact.html">Contact</a></nav>
+    <div class="nav-actions"><button id="navToggle" class="nav-toggle" aria-label="Menu">☰</button><a class="btn" href="client-login.html">Client Login</a><a class="btn btn-gold btn-lg" href="admin-login.html">Admin Portal</a></div>
+  </div><div id="mobilePanel" class="mobile-panel container" role="dialog" aria-modal="true"><a href="index.html">Home</a><a href="about.html">About</a><a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a class="active" href="contact.html">Contact</a><a href="client-login.html">Client Login</a><a href="admin-login.html">Admin Portal</a></div></div>
 
-<section class="hero">
-  <div class="hero-bg" role="img" aria-label="Valletta waterfront backdrop"></div>
-  <div class="hero-inner container">
-    <img class="hero-crest" src="assets/logo-crest.png" alt="Maltese First crest" loading="eager" width="120" height="120">
-    <h1>Contact</h1>
-    <p class="sub">Start a confidential conversation with the team.</p>
-    <div class="hero-actions">
-      <a class="btn gold big" href="account-open.html">Open an Account</a>
-    </div>
-  </div>
-</section>
+  <header class="hero"><div><div class="hero-badge"><img src="assets/logo-crest.png" alt=""></div><h1>Contact</h1><p>Start a confidential conversation with the team.</p><div class="cta"><a class="btn btn-gold btn-lg" href="account-open.html">Open an Account</a></div></div></header>
 
-<section class="slice">
-  <div class="container contact-grid">
-    <form class="contact-form" id="contactForm" autocomplete="on" novalidate>
-      <h3>Send us a message</h3>
-      <label>Full name<input type="text" name="name" required></label>
-      <label>Email<input type="email" name="email" required></label>
-      <label>Phone (optional)<input type="tel" name="phone" pattern="[0-9+\-()\s]{7,}"></label>
-      <label>Message<textarea name="message" required rows="5"></textarea></label>
-      <button class="btn gold" type="submit">Send message</button>
-      <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
-    </form>
-    <aside class="contact-card">
-      <h3>Valletta office</h3>
-      <p>The Exchange Building<br>Republic Street<br>Valletta VLT 1117<br>Malta</p>
-      <h4>Reach us</h4>
-      <p><a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-      <p>Global coverage via partner network.</p>
-    </aside>
-  </div>
-</section>
-<script>
-const form = document.getElementById('contactForm');
-const note = document.getElementById('formNote');
-form?.addEventListener('submit', async (e) => {{ 
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(form).entries());
-  note.textContent = 'Opening your email client…';
-  window.location.href = `mailto:hello@maltesefirst.com?subject=Website%20Inquiry&body=${{encodeURIComponent(JSON.stringify(data, null, 2))}}`;
-}});
-</script>
+  <main class="container section">
+    <section class="band">
+      <div class="row">
+        <form class="card" action="https://formspree.io/f/yourid" method="POST">
+          <h3>Send us a message</h3>
+          <div class="field"><label>Full name</label><input class="input" name="name" required></div>
+          <div class="field"><label>Email</label><input class="input" type="email" name="email" required></div>
+          <div class="field"><label>Message</label><textarea class="input" name="message" rows="5" required></textarea></div>
+          <button class="btn btn-gold btn-lg" type="submit">Send</button>
+        </form>
+        <div class="card">
+          <h3>Valletta office</h3>
+          <p>The Exchange Building<br>Republic Street<br>Valletta VLT 1117<br>Malta</p>
+          <p><strong>Email</strong><br><a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<footer class="site-footer">
-  <div class="container foot-grid">
-    <p>© 2025 Maltese First Capital. All rights reserved.</p>
-    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-  </div>
-</footer>
-<script>document.documentElement.classList.remove('nojs');</script>
+  <footer class="footer"><div class="container">© 2025 Maltese First Capital · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div></footer>
+  <script src="nav.js"></script>
 </body>
 </html>
