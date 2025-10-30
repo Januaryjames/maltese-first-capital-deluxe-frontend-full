@@ -11,19 +11,118 @@
   <meta name="theme-color" content="#0b0f16" />
 
   <style>
-    /* Page-scoped tweaks: center the "WHAT WE DO" block only */
-    .wm-head { text-align: center; margin-bottom: 12px; }
-    .wm-head .eyebrow { display:inline-block; }
-    /* Ensure hero crest matches index size */
-    .hero .crest-badge{width:220px;height:220px;border-radius:28px;background:#fff;
-      box-shadow:0 8px 24px rgba(0,0,0,.28);overflow:hidden;margin:0 auto 18px;display:grid;place-items:center}
+    /* ---------- Page-scoped safety styles so the nav can't break ---------- */
+    :root{
+      --glass: rgba(9,13,20,.72);
+      --ink: #eaf0fb;
+      --ink-2: #cbd6e7;
+      --gold: #d6b46b;
+      --gold-2:#b8934f;
+      --edge: rgba(214,180,107,.22);
+      --panel: #0d121b;
+    }
+    body{background:#0b1018;color:var(--ink);}
+
+    /* nuke any stray host-injected link rows */
+    body > a[href]:not([class]), body > nav:not(#mainNav){display:none !important;}
+
+    /* header */
+    #siteHeader{
+      position:sticky; top:0; z-index:1000;
+      background:linear-gradient(180deg, rgba(11,16,24,.9), rgba(11,16,24,.7));
+      backdrop-filter:saturate(1.4) blur(10px);
+      border-bottom:1px solid var(--edge);
+    }
+    #siteHeader .container{
+      max-width:1200px; margin:0 auto; padding:12px 20px;
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink);}
+    .brand .crest{width:32px;height:32px;border-radius:9px; overflow:hidden; background:#fff; display:grid; place-items:center}
+    .brand .crest img{width:100%;height:100%;object-fit:cover}
+    .brand b{font-weight:700}
+
+    .nav-links{display:flex; gap:22px; align-items:center}
+    .nav-links a{
+      color:var(--ink); text-decoration:none; padding:8px 14px; border-radius:12px;
+    }
+    .nav-links a:hover, .nav-links a.active{
+      background:#111827; outline:1px solid var(--edge);
+    }
+
+    .nav-actions{display:flex; gap:10px}
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:10px 14px; border-radius:12px; text-decoration:none; color:var(--ink);
+      background:#0f1624; outline:1px solid rgba(255,255,255,.06);
+    }
+    .btn-gold{background:var(--gold); color:#111; font-weight:700; outline:1px solid rgba(0,0,0,.18)}
+    .btn-lg{padding:11px 16px; border-radius:12px}
+
+    /* burger for mobile */
+    .burger{display:none; width:40px;height:40px; border:0; background:transparent}
+    .burger span{display:block;height:2px;background:#fff;margin:7px 8px;border-radius:2px}
+
+    @media (max-width:920px){
+      .nav-links{
+        position:fixed; left:0; right:0; top:64px; background:#0b1018;
+        padding:12px 16px; gap:8px; flex-direction:column; transform:translateY(-120%);
+        transition:transform .2s ease; border-bottom:1px solid var(--edge);
+      }
+      .nav-links.open{transform:none}
+      .burger{display:block}
+    }
+
+    /* container + grid */
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    .section{padding:54px 0}
+    .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    @media (max-width:960px){ .grid{grid-template-columns:1fr} }
+
+    /* hero */
+    .hero{
+      background:url('assets/hero-bg.jpg') center/cover no-repeat;
+      min-height:520px; display:flex; align-items:center; justify-content:center;
+      text-align:center; border-bottom-left-radius:18px; border-bottom-right-radius:18px
+    }
+    .hero .crest-badge{
+      width:220px;height:220px;border-radius:28px;background:#fff;
+      box-shadow:0 10px 28px rgba(0,0,0,.28); overflow:hidden; display:grid; place-items:center;
+      margin:0 auto 18px;
+    }
     .hero .crest-badge img{width:100%;height:100%;object-fit:cover}
-    /* Kill any stray host-injected link rows */
-    body > a[href], body > nav:not(#mainNav){display:none !important}
+    .hero h1{
+      font-size: clamp(36px, 5vw, 54px);
+      line-height:1.05; margin:0 0 10px; font-weight:800;
+      text-shadow:0 2px 14px rgba(0,0,0,.45), 0 1px 0 rgba(0,0,0,.35);
+    }
+    .hero p{
+      max-width:860px;margin:0 auto 18px; color:var(--ink-2);
+      font-weight:600; text-shadow:0 1px 8px rgba(0,0,0,.35);
+    }
+
+    /* cards */
+    .card{
+      background:linear-gradient(180deg,#0f1622,#0c131d);
+      border-radius:18px; border:1px solid var(--edge); color:var(--ink);
+      box-shadow:0 6px 24px rgba(0,0,0,.25);
+      outline:1px solid rgba(214,180,107,.08);
+    }
+    .card.pad{padding:22px}
+    .card h3{margin:0 0 6px}
+    .card .sub{color:var(--ink-2)}
+
+    /* centered “What We Do” head */
+    .wm-head{text-align:center; margin-bottom:12px}
+    .eyebrow{letter-spacing:.22em; text-transform:uppercase; color:var(--gold); font-weight:700; font-size:12px}
+    .headline{font-size: clamp(22px, 3.4vw, 32px); margin:6px 0 6px}
+    .sub{color:var(--ink-2)}
+    /* footer */
+    .footer{background:#fff;color:#111;border-top:3px solid var(--gold); padding:28px 0; margin-top:28px}
+    .footer a{color:#111}
   </style>
 </head>
 <body>
-  <!-- HEADER (glass, sticky, same as index) -->
+  <!-- HEADER -->
   <header id="siteHeader">
     <div class="container nav">
       <a class="brand" href="index.html" aria-label="Home">
@@ -50,15 +149,12 @@
     </div>
   </header>
 
-  <!-- HERO (no overlay) -->
-  <section class="hero" role="banner" aria-label="Valletta skyline"
-           style="background:url('assets/hero-bg.jpg') center/cover no-repeat; min-height:520px;
-                  display:flex;align-items:center;justify-content:center;text-align:center;
-                  border-bottom-left-radius:18px;border-bottom-right-radius:18px">
+  <!-- HERO -->
+  <section class="hero" role="banner" aria-label="Valletta skyline">
     <div class="container">
       <div class="crest-badge"><img src="assets/logo-crest.png" alt="Maltese First crest"></div>
       <h1>Wealth Management</h1>
-      <p style="max-width:860px;margin:0 auto 18px">
+      <p>
         Generational planning with disciplined investment strategies and clear reporting — aligned with your
         banking and custody needs.
       </p>
@@ -66,7 +162,7 @@
     </div>
   </section>
 
-  <!-- WHAT WE DO (centered) -->
+  <!-- WHAT WE DO -->
   <section class="section">
     <div class="container">
       <div class="wm-head">
@@ -96,7 +192,7 @@
     </div>
   </section>
 
-  <!-- FOOTER (white with gold top border) -->
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
       © 2025 Maltese First Capital. The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
@@ -105,7 +201,7 @@
   </footer>
 
   <script>
-    // Mobile nav toggle (same as index)
+    // Mobile nav toggle
     const burger = document.querySelector('.burger');
     const links  = document.querySelector('.nav-links');
     burger?.addEventListener('click', () => {
