@@ -6,91 +6,120 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>About — Maltese First Capital</title>
 
-  <!-- Same global CSS as index -->
+  <!-- Global styles -->
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Favicon already present in your repo -->
+  <!-- Favicon already in repo -->
   <link rel="icon" type="image/png" href="assets/logo-crest.png" />
   <link rel="apple-touch-icon" href="assets/logo-crest.png" />
   <meta name="theme-color" content="#0b0f16" />
 
-  <!-- Page-scoped styles only (won’t affect index) -->
+  <!-- Page-scoped fixes (nav + hero parity with index, no overlay) -->
   <style>
-    /* Sticky glass nav identical to index */
+    :root {
+      --nav-h: 64px;
+      --gold-1: #d4af37; /* light */
+      --gold-2: #b28f2c; /* dark */
+    }
+
+    /* Container */
+    .container{max-width:1180px;margin:0 auto;padding:0 16px;}
+
+    /* Glass header like index */
     .site-header.glass{
-      position:sticky; top:0; z-index:1000;
+      position:sticky;top:0;z-index:1000;
       background:rgba(10,13,20,.72);
       backdrop-filter:saturate(150%) blur(10px);
       border-bottom:1px solid rgba(255,255,255,.06);
     }
 
-    /* Hero – NO dark overlay; full image clarity */
-    .hero.about-hero{
-      background:url('assets/hero-bg.jpg') center/cover no-repeat;
-      min-height: 420px;
-      display:flex; align-items:center; justify-content:center;
-      text-align:center;
-      border-bottom-left-radius:18px; border-bottom-right-radius:18px;
+    /* NAV layout */
+    .nav{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;}
+    .brand .crest{
+      width:34px;height:34px;border-radius:9px;background:#fff;
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+      box-shadow:0 4px 12px rgba(0,0,0,.25);
     }
-    .hero.about-hero .hero-badge{
-      width:96px;height:96px;border-radius:18px;overflow:hidden;
-      background:#fff; display:flex;align-items:center;justify-content:center;
-      box-shadow:0 8px 24px rgba(0,0,0,.28);
-      margin:0 auto 18px;
-    }
-    .hero.about-hero h1{ font-size:48px; line-height:1.06; margin:0 0 10px; }
-    .hero .hero-sub{ max-width:860px; margin:0 auto 18px; }
+    .brand .crest img{width:24px;height:24px;object-fit:contain;}
+    .brand-text{font-weight:700;letter-spacing:.01em;}
 
-    /* Gold button parity with Admin Portal */
+    .nav-links{display:flex;align-items:center;gap:22px;}
+    .nav-links a{
+      color:#d9dee7;text-decoration:none;padding:8px 12px;border-radius:10px;
+    }
+    .nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.08);color:#fff;}
+
+    .nav-actions{display:flex;gap:10px;align-items:center;}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+      text-decoration:none;color:#fff;background:rgba(255,255,255,.06);
+    }
     .btn-gold{
-      border:1px solid rgba(212,175,55,.35);
-      background:linear-gradient(180deg,#d4af37 0%,#b5912b 100%);
-      color:#111; font-weight:700;
+      border:1px solid rgba(212,175,55,.38);
+      background:linear-gradient(180deg,var(--gold-1) 0%,var(--gold-2) 100%);
+      color:#121212;font-weight:700;
       box-shadow:0 10px 24px rgba(212,175,55,.25);
     }
-    .btn-pill{ padding:12px 18px; border-radius:14px; font-size:16px; }
+    .btn-pill{border-radius:14px;padding:12px 18px;font-size:16px;}
 
-    /* Cards – gold outline + hover glow */
+    /* Mobile nav */
+    .nav-burger{display:none;flex-direction:column;gap:4px;background:transparent;border:0;}
+    .nav-burger span{width:24px;height:2px;background:#fff;border-radius:2px;display:block;}
+    @media (max-width: 980px){
+      .nav-links{position:fixed;inset:var(--nav-h) 0 auto 0;background:rgba(10,13,20,.96);
+        flex-direction:column;gap:14px;padding:16px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:.18s ease;}
+      .nav-links.open{transform:none;opacity:1;pointer-events:auto;}
+      .nav-actions{display:none;}
+      .nav-burger{display:flex;}
+    }
+
+    /* Hero — visible background, no dark overlay */
+    .hero.about-hero{
+      background:url('assets/hero-bg.jpg') center/cover no-repeat;
+      min-height:420px;display:flex;align-items:center;justify-content:center;text-align:center;
+      border-bottom-left-radius:18px;border-bottom-right-radius:18px;
+    }
+    .hero .hero-badge{
+      width:96px;height:96px;border-radius:18px;background:#fff;
+      display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+      box-shadow:0 8px 24px rgba(0,0,0,.28);overflow:hidden;
+    }
+    .hero .hero-badge img{width:66px;height:66px;object-fit:contain;}
+    .hero h1{font-size:48px;line-height:1.06;margin:0 0 10px;}
+    .hero .hero-sub{max-width:860px;margin:0 auto 18px;}
+
+    /* Cards */
     .gold-outline{
       border:1px solid rgba(212,175,55,.35);
       box-shadow:0 1px 0 rgba(212,175,55,.25) inset;
-      border-radius:16px; padding:20px;
-      background:rgba(255,255,255,.02);
+      border-radius:16px;padding:20px;background:rgba(255,255,255,.02);
       transition:transform .2s ease, box-shadow .2s ease;
     }
-    .gold-outline:hover{
-      transform:translateY(-2px);
-      box-shadow:0 0 0 1px rgba(212,175,55,.45), 0 10px 24px rgba(212,175,55,.16);
-    }
+    .gold-outline:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(212,175,55,.45),0 10px 24px rgba(212,175,55,.16);}
+    .cards-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+    @media (max-width:960px){.cards-3{grid-template-columns:1fr;}}
 
-    /* Sections */
-    .section{ padding:40px 0; }
-    .section-kicker{ color:#d4af37; letter-spacing:.12em; font-size:12px; margin:0 0 6px; }
-    .section-title{ font-size:28px; margin:0 0 12px; }
-    .section-copy{ opacity:.9; }
+    .section{padding:40px 0;}
+    .section-kicker{color:var(--gold-1);letter-spacing:.12em;font-size:12px;margin:0 0 6px;}
+    .section-title{font-size:28px;margin:0 0 12px;}
+    .section-copy{opacity:.92;}
 
-    .cards-3{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
-    @media (max-width: 960px){ .cards-3{ grid-template-columns:1fr; } }
+    /* White footer with gold top border */
+    .footer-white{background:#fff;color:#1b1b1b;border-top:4px solid var(--gold-1);border-radius:16px 16px 0 0;}
+    .footer-white .container{padding:22px 16px;}
 
-    /* White footer with gold border to match index */
-    .footer-white{ background:#fff; color:#1b1b1b; border-top:4px solid #d4af37; border-radius:16px 16px 0 0; }
-    .footer-white .container{ padding:22px 16px; }
-
-    /* --- Junk killer: hide any stray top link rows host injects --- */
-    body > a[href],                      /* bare anchors at top        */
-    body > p > a[href],
-    body > nav:not(.nav),
-    body > .legacy-links,
-    body > .page-links { display:none !important; }
+    /* Hide any host-injected junk link rows */
+    body > a[href], body > p > a[href], body > nav:not(.nav), body > .legacy-links, body > .page-links{display:none!important;}
   </style>
 </head>
-
 <body>
-  <!-- HEADER (same structure/classes as index) -->
+  <!-- HEADER -->
   <header class="site-header glass">
     <div class="container nav">
       <a class="brand" href="index.html" aria-label="Home">
-        <span class="crest"><img src="assets/logo-crest.png" alt="Maltese First crest" /></span>
+        <span class="crest"><img src="assets/logo-crest.png" alt="Maltese First crest"></span>
         <span class="brand-text">Maltese First Capital</span>
       </a>
 
@@ -107,7 +136,6 @@
         <a class="btn btn-gold btn-pill" href="admin-login.html">Admin Portal</a>
       </div>
 
-      <!-- optional mobile burger to match index -->
       <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -117,12 +145,9 @@
   <!-- HERO -->
   <section class="hero about-hero" role="banner" aria-label="Valletta skyline">
     <div class="container hero-inner">
-      <div class="hero-badge"><img src="assets/logo-crest.png" alt="Maltese First crest" /></div>
+      <div class="hero-badge"><img src="assets/logo-crest.png" alt="Maltese First crest"></div>
       <h1>Our Story &amp; Standards</h1>
-      <p class="hero-sub">
-        Discreet private banking, disciplined wealth management, and EU-grade compliance —
-        delivered with relationship coverage, clear reporting, and secure access.
-      </p>
+      <p class="hero-sub">Discreet private banking, disciplined wealth management, and EU-grade compliance — delivered with relationship coverage, clear reporting, and secure access.</p>
       <a class="btn btn-gold btn-pill" href="account-open.html">Open an Account</a>
     </div>
   </section>
@@ -131,38 +156,30 @@
   <main>
     <section class="section">
       <div class="container">
-        <div class="service-band">
-          <h2 class="section-kicker">PRINCIPLES</h2>
-          <h3 class="section-title">Principles that actually show up in the work</h3>
-
-          <div class="cards-3">
-            <article class="card gold-outline">
-              <h4>Relationship-First</h4>
-              <p>Focused coverage for clarity and speed. You always know who to call — and they already know your mandate.</p>
-            </article>
-            <article class="card gold-outline">
-              <h4>Compliance by Design</h4>
-              <p>EU AML/CTF standards with sanctions/PEP/adverse-media screening embedded in onboarding and ops.</p>
-            </article>
-            <article class="card gold-outline">
-              <h4>Security &amp; Access</h4>
-              <p>Device fingerprinting, OTP login, anomaly alerts, and a secure document vault underpin every service.</p>
-            </article>
-          </div>
+        <h2 class="section-kicker">PRINCIPLES</h2>
+        <h3 class="section-title">Principles that actually show up in the work</h3>
+        <div class="cards-3">
+          <article class="gold-outline">
+            <h4>Relationship-First</h4>
+            <p>Focused coverage for clarity and speed. You always know who to call — and they already know your mandate.</p>
+          </article>
+          <article class="gold-outline">
+            <h4>Compliance by Design</h4>
+            <p>Sanctions/PEP/adverse-media screening embedded into onboarding and ops. EU AML/CTF standards as default.</p>
+          </article>
+          <article class="gold-outline">
+            <h4>Security &amp; Access</h4>
+            <p>Device fingerprinting, OTP login, anomaly alerts, and a secure document vault underpin every service.</p>
+          </article>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="service-band">
-          <h2 class="section-kicker">MALTA</h2>
-          <h3 class="section-title">Why Malta</h3>
-          <p class="section-copy">
-            Stable EU jurisdiction, pragmatic regulation, and sophisticated cross-border access — the right base to pair
-            private-banking discretion with institutional standards.
-          </p>
-        </div>
+        <h2 class="section-kicker">MALTA</h2>
+        <h3 class="section-title">Why Malta</h3>
+        <p class="section-copy">Stable EU jurisdiction, pragmatic regulation, and sophisticated cross-border access — the right base to pair private-banking discretion with institutional standards.</p>
       </div>
     </section>
   </main>
@@ -175,27 +192,22 @@
     </div>
   </footer>
 
-  <!-- Defensive cleanup: remove any DOM junk before header / between header & hero -->
+  <!-- Cleanup + mobile menu -->
   <script>
     (function () {
+      // Remove any stray nodes before header (host-injected junk)
       const header = document.querySelector('.site-header');
       if (header) {
-        let beforeHeader = true;
-        [...document.body.children].forEach(el => {
-          if (el === header) { beforeHeader = false; return; }
-          if (beforeHeader && !['SCRIPT','STYLE'].includes(el.tagName)) el.remove();
-        });
+        let n = header.previousSibling;
+        while (n) { const prev = n.previousSibling; if (n.nodeType === 1) n.remove(); n = prev; }
       }
-      // Nuke stray link rows immediately after header (purple anchors)
-      const after = header ? header.nextElementSibling : null;
-      let cursor = after;
-      while (cursor && !cursor.classList.contains('hero')) {
-        if (cursor.matches('a, p, nav') || cursor.textContent.trim().match(/^Home.*Admin Portal$/i)) {
-          const toRemove = cursor; cursor = cursor.nextElementSibling; toRemove.remove(); continue;
-        }
-        cursor = cursor.nextElementSibling;
+      // Remove any stray anchor rows directly after header
+      let s = header ? header.nextElementSibling : null;
+      while (s && !s.classList.contains('hero')) {
+        if (s.matches('a, p, nav') || /Client Login.*Admin Portal/i.test(s.textContent)) { const r = s; s = s.nextElementSibling; r.remove(); continue; }
+        s = s.nextElementSibling;
       }
-      // Mobile burger parity with index
+      // Mobile burger
       const burger = document.querySelector('.nav-burger');
       const links  = document.querySelector('.nav-links');
       if (burger && links) {
