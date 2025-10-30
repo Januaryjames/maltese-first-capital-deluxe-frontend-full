@@ -1,63 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>About — Maltese First Capital</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-crest.png">
-  <link rel="apple-touch-icon" href="assets/logo-crest.png"><meta name="theme-color" content="#0b0f16">
-  <link rel="stylesheet" href="styles.css">
+
+  <!-- keep your existing site stylesheet if you like -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- favicon already exists in assets -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="assets/logo-crest.png" />
+  <meta name="theme-color" content="#0b0f16" />
+
+  <!-- ===== Scoped CSS so this page doesn't affect index ===== -->
+  <style>
+    /* Prefix everything on this page with #about-page to avoid conflicts */
+    :root{
+      --bg:#0b0f16; --ink:#f4f7fb; --muted:rgba(230,236,247,.9);
+      --line:rgba(255,255,255,.12); --line2:rgba(255,255,255,.18);
+      --panel1:#0e141d; --panel2:#0c1119;
+      --gold:#d4af37; --gold2:#b5912b;
+    }
+    #about-page{color:var(--ink); background:var(--bg)}
+    #about-page .container{max-width:1200px;margin:0 auto;padding:0 16px}
+
+    /* Nav */
+    #about-page .a-nav-wrap{
+      position:sticky; top:0; z-index:1000;
+      background:rgba(10,14,22,.72); backdrop-filter:saturate(140%) blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+    #about-page .a-nav{
+      display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center;
+      padding:12px 16px;
+    }
+    #about-page .a-brand{display:flex; gap:10px; align-items:center; text-decoration:none; color:#fff}
+    #about-page .a-crest{width:28px;height:28px;border-radius:8px;background:#fff;display:grid;place-items:center;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+    #about-page .a-crest img{width:22px;height:22px;object-fit:contain}
+    #about-page .a-brand span{font-weight:700;letter-spacing:.2px}
+
+    #about-page .a-links{display:flex; gap:18px; justify-content:center; align-items:center}
+    #about-page .a-links a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:10px;opacity:.95}
+    #about-page .a-links a:hover,
+    #about-page .a-links a.active{background:rgba(255,255,255,.08)}
+    #about-page .a-actions{display:flex; gap:10px}
+
+    #about-page .a-btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 14px;border-radius:12px;font-weight:700;text-decoration:none;
+      border:1px solid var(--line2);color:#fff;background:rgba(255,255,255,.06);
+    }
+    #about-page .a-btn:hover{background:rgba(255,255,255,.10)}
+    #about-page .a-btn-gold{
+      border-color:rgba(212,175,55,.35)!important;
+      background:linear-gradient(180deg,var(--gold) 0%,var(--gold2) 100%)!important;
+      color:#111!important; box-shadow:0 10px 24px rgba(212,175,55,.25)
+    }
+    #about-page .a-btn-lg{padding:12px 18px;border-radius:14px;font-size:16px}
+
+    #about-page .a-toggle{display:none;appearance:none;background:transparent;border:0;color:#fff;font-size:22px;padding:8px;border-radius:10px}
+    #about-page .a-mobile{display:none;position:fixed;inset:60px 12px auto 12px;background:rgba(10,14,22,.96);border:1px solid var(--line2);border-radius:14px;padding:10px;z-index:1001}
+    #about-page .a-mobile a{display:block;color:#fff;text-decoration:none;padding:10px 12px;border-radius:10px}
+    #about-page .a-mobile a:hover{background:rgba(255,255,255,.08)}
+
+    @media (max-width:900px){
+      #about-page .a-links{display:none}
+      #about-page .a-toggle{display:inline-flex}
+    }
+
+    /* Hero matches index (no dark overlay) */
+    #about-page .a-hero{
+      position:relative; min-height:420px; display:grid; place-items:center; text-align:center;
+      background:url('assets/hero-bg.jpg') center/cover no-repeat;
+      border-bottom-left-radius:18px; border-bottom-right-radius:18px; overflow:hidden;
+    }
+    #about-page .a-badge{width:96px;height:96px;border-radius:18px;background:#fff;display:grid;place-items:center;margin:10px auto 18px;box-shadow:0 18px 60px rgba(0,0,0,.35)}
+    #about-page .a-badge img{width:72px;height:72px;object-fit:contain}
+    #about-page .a-hero h1{font-size:48px;line-height:1.06;margin:0 16px 10px;font-weight:800;text-shadow:0 2px 24px rgba(0,0,0,.45),0 1px 0 rgba(0,0,0,.35)}
+    #about-page .a-hero p{max-width:860px;margin:0 auto 16px;color:var(--muted);text-shadow:0 1px 12px rgba(0,0,0,.45)}
+    #about-page .a-hero .cta{margin-top:10px}
+
+    /* Content */
+    #about-page .a-section{padding:28px 0}
+    #about-page .a-band{background:linear-gradient(180deg,var(--panel1) 0%,var(--panel2) 100%);border:1px solid rgba(255,255,255,.12);border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.38);padding:26px;margin-top:22px}
+    #about-page .a-hint{letter-spacing:.2em;color:var(--gold);opacity:.9;margin-bottom:10px}
+    #about-page .a-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    #about-page .a-card{background:linear-gradient(180deg,#0f141c 0%,#0b0f16 100%);border:1px solid rgba(212,175,55,.22);border-radius:18px;padding:22px;transition:box-shadow .2s,transform .2s}
+    #about-page .a-card:hover{box-shadow:0 16px 42px rgba(212,175,55,.12);transform:translateY(-1px)}
+    @media (max-width:900px){#about-page .a-grid{grid-template-columns:1fr}}
+
+    /* Footer: white with gold top border to match index */
+    #about-page .a-footer{margin-top:26px;background:#fff;color:#1b1b1b;border-top:4px solid var(--gold);border-radius:16px 16px 0 0}
+    #about-page .a-footer .container{padding:22px 16px}
+  </style>
 </head>
-<body>
-  <!-- Header -->
-  <div class="nav-wrap">
-    <div class="nav container">
-      <a class="brand" href="index.html"><span class="crest"><img src="assets/logo-crest.png" alt=""></span><span>Maltese First Capital</span></a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a><a class="active" href="about.html">About</a>
-        <a href="private-banking.html">Private Banking</a><a href="wealth-management.html">Wealth Management</a><a href="contact.html">Contact</a>
+
+<body id="about-page">
+  <!-- Header (self-contained) -->
+  <div class="a-nav-wrap">
+    <div class="a-nav container">
+      <a class="a-brand" href="index.html" aria-label="Home">
+        <span class="a-crest"><img src="assets/logo-crest.png" alt=""></span>
+        <span>Maltese First Capital</span>
+      </a>
+
+      <nav class="a-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="about.html" class="active">About</a>
+        <a href="private-banking.html">Private Banking</a>
+        <a href="wealth-management.html">Wealth Management</a>
+        <a href="contact.html">Contact</a>
       </nav>
-      <div class="nav-actions">
-        <button id="navToggle" class="nav-toggle" aria-label="Menu">☰</button>
-        <a class="btn" href="client-login.html">Client Login</a><a class="btn btn-gold btn-lg" href="admin-login.html">Admin Portal</a>
+
+      <div class="a-actions">
+        <button id="aToggle" class="a-toggle" aria-label="Menu">☰</button>
+        <a class="a-btn" href="client-login.html">Client Login</a>
+        <a class="a-btn a-btn-gold a-btn-lg" href="admin-login.html">Admin Portal</a>
       </div>
     </div>
-    <div id="mobilePanel" class="mobile-panel container" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
-      <a href="index.html">Home</a><a class="active" href="about.html">About</a><a href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a><a href="contact.html">Contact</a><a href="client-login.html">Client Login</a><a href="admin-login.html">Admin Portal</a>
+
+    <!-- Mobile menu -->
+    <div id="aMobile" class="a-mobile container" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="private-banking.html">Private Banking</a>
+      <a href="wealth-management.html">Wealth Management</a>
+      <a href="contact.html">Contact</a>
+      <a href="client-login.html">Client Login</a>
+      <a href="admin-login.html">Admin Portal</a>
     </div>
   </div>
 
   <!-- Hero -->
-  <header class="hero" role="banner" aria-label="Valletta skyline">
+  <header class="a-hero" role="banner" aria-label="Valletta skyline">
     <div>
-      <div class="hero-badge"><img src="assets/logo-crest.png" alt="Maltese First crest"></div>
-      <h1>Our Story & Standards</h1>
+      <div class="a-badge"><img src="assets/logo-crest.png" alt="Maltese First crest"></div>
+      <h1>Our Story &amp; Standards</h1>
       <p>Discreet private banking, disciplined wealth management, and EU-grade compliance — delivered with relationship coverage, clear reporting, and secure access.</p>
-      <div class="cta"><a class="btn btn-gold btn-lg" href="account-open.html">Open an Account</a></div>
+      <div class="cta"><a class="a-btn a-btn-gold a-btn-lg" href="account-open.html">Open an Account</a></div>
     </div>
   </header>
 
   <!-- Content -->
-  <main class="container section">
-    <section class="band">
-      <h2 class="hint">PRINCIPLES</h2>
+  <main class="container a-section">
+    <section class="a-band">
+      <h2 class="a-hint">PRINCIPLES</h2>
       <h3>Principles that actually show up in the work</h3>
-      <div class="grid-3 mt-6">
-        <div class="card"><h4>Relationship-First</h4><p>Focused coverage for clarity and speed. You always know who to call — and they already know your mandate.</p></div>
-        <div class="card"><h4>Compliance by Design</h4><p>EU AML/CTF standards, sanctions/PEP/adverse-media screening baked into onboarding and ops.</p></div>
-        <div class="card"><h4>Security & Access</h4><p>Device fingerprinting, OTP login, anomaly alerts, and a secure document vault underpin every service.</p></div>
+      <div class="a-grid" style="margin-top:16px">
+        <div class="a-card">
+          <h4>Relationship-First</h4>
+          <p>Focused coverage for clarity and speed. You always know who to call — and they already know your mandate.</p>
+        </div>
+        <div class="a-card">
+          <h4>Compliance by Design</h4>
+          <p>EU AML/CTF standards, sanctions/PEP/adverse-media screening baked into onboarding and ops.</p>
+        </div>
+        <div class="a-card">
+          <h4>Security &amp; Access</h4>
+          <p>Device fingerprinting, OTP login, anomaly alerts, and a secure document vault underpin every service.</p>
+        </div>
       </div>
     </section>
 
-    <section class="band">
-      <h2 class="hint">MALTA</h2>
+    <section class="a-band">
+      <h2 class="a-hint">MALTA</h2>
       <h3>Why Malta</h3>
-      <p class="mt-6">Stable EU jurisdiction, pragmatic regulation, and sophisticated cross-border access — the right base to pair private-banking discretion with institutional standards.</p>
+      <p style="margin-top:12px">Stable EU jurisdiction, pragmatic regulation, and sophisticated cross-border access — the right base to pair private-banking discretion with institutional standards.</p>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="footer"><div class="container">© 2025 Maltese First Capital. The Exchange Building, Republic Street, Valletta VLT 1117, Malta · <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></div></footer>
-  <script src="nav.js"></script>
+  <footer class="a-footer">
+    <div class="container">
+      © 2025 Maltese First Capital. The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+    </div>
+  </footer>
+
+  <!-- Tiny JS for mobile toggle (scoped) -->
+  <script>
+    (function(){
+      const btn = document.getElementById('aToggle');
+      const panel = document.getElementById('aMobile');
+      if(!btn || !panel) return;
+      btn.addEventListener('click', ()=>{
+        panel.style.display = panel.style.display==='block' ? 'none' : 'block';
+        btn.setAttribute('aria-expanded', String(panel.style.display==='block'));
+      });
+      document.addEventListener('click', (e)=>{
+        if(panel.style.display==='block' && !panel.contains(e.target) && e.target!==btn){
+          panel.style.display='none';
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
