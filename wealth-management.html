@@ -1,63 +1,221 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta charset="utf-8" />
+  <meta http-equiv="Cache-Control" content="no-store, max-age=0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Wealth Management — Maltese First Capital</title>
-  <meta name="description" content="Maltese First Capital — Private & Wealth Banking in Malta.">
-  <meta name="theme-color" content="#0e1621">
-  <link rel="preload" as="image" href="assets/hero-bg.jpg?v=16">
-  <link rel="icon" href="assets/logo-crest.png">
-  <link rel="stylesheet" href="styles.css?v=16">
-  <script defer src="scripts/nav.js?v=16"></script>
+
+  <!-- Global site styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Favicon (existing path) -->
+  <link rel="icon" type="image/png" href="assets/logo-crest.png" />
+  <link rel="apple-touch-icon" href="assets/logo-crest.png" />
+  <meta name="theme-color" content="#0b0f16" />
+
+  <!-- Page-scoped tweaks to keep this file self-contained and consistent -->
+  <style>
+    :root { --nav-h: 64px; --gold-1:#d4af37; --gold-2:#b28f2c; }
+    .container{max-width:1180px;margin:0 auto;padding:0 16px;}
+
+    /* Glass nav */
+    .site-header.glass{
+      position:sticky;top:0;z-index:1000;
+      background:rgba(10,13,20,.72);
+      backdrop-filter:saturate(150%) blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;}
+    .brand .crest{
+      width:34px;height:34px;border-radius:9px;background:#fff;
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+      box-shadow:0 4px 12px rgba(0,0,0,.25);
+    }
+    .brand .crest img{width:100%;height:100%;object-fit:cover;}
+    .brand-text{font-weight:700;letter-spacing:.01em;}
+
+    .nav-links{display:flex;align-items:center;gap:22px;}
+    .nav-links a{color:#d9dee7;text-decoration:none;padding:8px 12px;border-radius:10px;}
+    .nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.08);color:#fff;}
+
+    .nav-actions{display:flex;gap:10px;align-items:center;}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+      text-decoration:none;color:#fff;background:rgba(255,255,255,.06);
+    }
+    .btn-gold{
+      border:1px solid rgba(212,175,55,.38);
+      background:linear-gradient(180deg,var(--gold-1) 0%,var(--gold-2) 100%);
+      color:#121212;font-weight:700;box-shadow:0 10px 24px rgba(212,175,55,.25);
+    }
+    .btn-pill{border-radius:14px;padding:12px 18px;font-size:16px;}
+
+    .nav-burger{display:none;flex-direction:column;gap:4px;background:transparent;border:0;}
+    .nav-burger span{width:24px;height:2px;background:#fff;border-radius:2px;display:block;}
+    @media (max-width:980px){
+      .nav-links{position:fixed;inset:var(--nav-h) 0 auto 0;background:rgba(10,13,20,.96);
+        flex-direction:column;gap:14px;padding:16px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:.18s ease;}
+      .nav-links.open{transform:none;opacity:1;pointer-events:auto;}
+      .nav-actions{display:none;}
+      .nav-burger{display:flex;}
+    }
+
+    /* Hero (no overlay, big crest) */
+    .hero.wm-hero{
+      background:url('assets/hero-bg.jpg') center/cover no-repeat;
+      min-height:420px;display:flex;align-items:center;justify-content:center;text-align:center;
+      border-bottom-left-radius:18px;border-bottom-right-radius:18px;
+    }
+    .hero .hero-badge{
+      width:172px;height:172px;border-radius:26px;background:#fff;
+      display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+      box-shadow:0 8px 24px rgba(0,0,0,.28);overflow:hidden;
+    }
+    .hero .hero-badge img{width:100%;height:100%;object-fit:cover;display:block;}
+    @media (max-width:560px){
+      .hero .hero-badge{width:136px;height:136px;border-radius:20px;}
+    }
+    .hero h1{font-size:48px;line-height:1.06;margin:0 0 10px;}
+    .hero .hero-sub{max-width:860px;margin:0 auto 18px;}
+
+    /* Sections / cards */
+    .section{padding:40px 0;}
+    .section-kicker{color:var(--gold-1);letter-spacing:.12em;font-size:12px;margin:0 0 6px;}
+    .section-title{font-size:28px;margin:0 0 12px;}
+    .section-copy{opacity:.92;}
+
+    .gold-outline{border:1px solid rgba(212,175,55,.35);box-shadow:0 1px 0 rgba(212,175,55,.25) inset;
+      border-radius:16px;padding:20px;background:rgba(255,255,255,.02);transition:transform .2s ease, box-shadow .2s ease;}
+    .gold-outline:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(212,175,55,.45),0 10px 24px rgba(212,175,55,.16);}
+    .cards-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+    @media (max-width:960px){.cards-3{grid-template-columns:1fr;}}
+
+    /* White footer with gold border */
+    .footer-white{background:#fff;color:#1b1b1b;border-top:4px solid var(--gold-1);border-radius:16px 16px 0 0;}
+    .footer-white .container{padding:22px 16px;}
+
+    /* Nuke any host-injected link rows */
+    body > a[href], body > p > a[href], body > nav:not(.nav), body > .legacy-links, body > .page-links{display:none!important;}
+  </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="container nav-wrap">
-    <a class="brand" href="index.html">
-      <img class="brand-crest" src="assets/logo-crest.png" alt="Maltese First Capital crest" width="36" height="36">
-      <span class="brand-name">Maltese First Capital</span>
-    </a>
-    <nav class="main-nav" aria-label="Main">
-      <a href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <div class="nav-cta">
-      <a class="btn ghost" href="client-login.html">Client Login</a>
-      <a class="btn gold" href="admin-login.html">Admin Portal</a>
+  <!-- HEADER -->
+  <header class="site-header glass">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Home">
+        <span class="crest"><img src="assets/logo-crest.png" alt="Maltese First crest"></span>
+        <span class="brand-text">Maltese First Capital</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="private-banking.html">Private Banking</a>
+        <a href="wealth-management.html" class="active">Wealth Management</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn" href="client-login.html">Client Login</a>
+        <a class="btn btn-gold btn-pill" href="admin-login.html">Admin Portal</a>
+      </div>
+
+      <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </div>
-</header>
+  </header>
 
-<section class="hero">
-  <div class="hero-bg" role="img" aria-label="Valletta waterfront backdrop"></div>
-  <div class="hero-inner container">
-    <img class="hero-crest" src="assets/logo-crest.png" alt="Maltese First crest" loading="eager" width="120" height="120">
-    <h1>Wealth Management</h1>
-    <p class="sub">Generational planning with disciplined investment strategies and clear reporting.</p>
-    <div class="hero-actions">
-      <a class="btn gold big" href="account-open.html">Open an Account</a>
+  <!-- HERO -->
+  <section class="hero wm-hero" role="banner" aria-label="Valletta skyline">
+    <div class="container hero-inner">
+      <div class="hero-badge">
+        <img src="assets/logo-crest.png" alt="Maltese First crest">
+      </div>
+      <h1>Wealth Management</h1>
+      <p class="hero-sub">
+        Generational planning with disciplined investment strategies and clear reporting —
+        aligned with your banking and custody needs.
+      </p>
+      <a class="btn btn-gold btn-pill" href="account-open.html">Open an Account</a>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="slice">
-  <div class="container cards3">
-    <div class="card"><h4>Global Markets Access</h4><p>Equities, bonds, and alternatives via trusted partners.</p></div>
-    <div class="card"><h4>Risk & Analytics</h4><p>Portfolio diagnostics, performance reporting, scenario analysis.</p></div>
-    <div class="card"><h4>Legacy & Estate</h4><p>Structured, tax‑efficient planning with counsel coordination.</p></div>
-  </div>
-</section>
+  <!-- MAIN -->
+  <main>
+    <section class="section">
+      <div class="container">
+        <h2 class="section-kicker">WHAT WE DO</h2>
+        <h3 class="section-title">Discipline, visibility, and real-world access</h3>
 
-<footer class="site-footer">
-  <div class="container foot-grid">
-    <p>© 2025 Maltese First Capital. All rights reserved.</p>
-    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-  </div>
-</footer>
-<script>document.documentElement.classList.remove('nojs');</script>
+        <div class="cards-3">
+          <article class="gold-outline">
+            <h4>Global Markets Access</h4>
+            <p>Equities, bonds, and alternatives via trusted partners.</p>
+          </article>
+
+          <article class="gold-outline">
+            <h4>Risk &amp; Analytics</h4>
+            <p>Portfolio diagnostics, performance reporting, scenario analysis, and drawdown control.</p>
+          </article>
+
+          <article class="gold-outline">
+            <h4>Legacy &amp; Estate</h4>
+            <p>Structured, tax-aware planning with counsel coordination and clear executorship hand-offs.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-kicker">REPORTING</h2>
+        <h3 class="section-title">One view that actually reconciles</h3>
+        <p class="section-copy">
+          Consolidated statements, CSV/PDF exports, and reconciled positions that match custodian data.
+          You see what we see.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer-white">
+    <div class="container">
+      © 2025 Maltese First Capital. The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
+      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+    </div>
+  </footer>
+
+  <!-- Cleanup + mobile nav -->
+  <script>
+    (function () {
+      // Remove stray nodes before header
+      const header = document.querySelector('.site-header');
+      if (header) {
+        let n = header.previousSibling;
+        while (n) { const prev = n.previousSibling; if (n.nodeType === 1) n.remove(); n = prev; }
+      }
+      // Remove any leftover “extra links” between header and hero
+      let s = header ? header.nextElementSibling : null;
+      while (s && !s.classList.contains('hero')) {
+        if (s.matches('a, p, nav') || /Client Login.*Admin Portal/i.test(s.textContent)) { const r = s; s = s.nextElementSibling; r.remove(); continue; }
+        s = s.nextElementSibling;
+      }
+      // Mobile burger toggle
+      const burger = document.querySelector('.nav-burger');
+      const links  = document.querySelector('.nav-links');
+      if (burger && links) {
+        burger.addEventListener('click', () => {
+          const open = burger.getAttribute('aria-expanded') === 'true';
+          burger.setAttribute('aria-expanded', String(!open));
+          links.classList.toggle('open');
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
