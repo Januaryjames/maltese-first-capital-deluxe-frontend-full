@@ -1,17 +1,10 @@
 :root{
-  --ink:#0a1018;
-  --ink-2:#111826;
-  --ink-3:#161f2e;
-  --text:#eaf0f7;
-  --muted:#c8d1dc;
-  --gold:#D5B26E;           /* primary accent */
-  --gold-2:#C7A25A;
-  --card:#0f1622;
-  --card-2:#0c1320;
-  --white:#ffffff;
+  --ink:#0a1018; --ink-2:#111826; --ink-3:#161f2e;
+  --text:#eaf0f7; --muted:#c8d1dc;
+  --gold:#D5B26E; --gold-2:#C7A25A;
+  --card:#0f1622; --card-2:#0c1320; --white:#ffffff;
 }
 
-/* --- Base --- */
 *{box-sizing:border-box}
 html,body{height:100%}
 html{scroll-behavior:smooth}
@@ -23,10 +16,10 @@ body{
 }
 
 /* Links & buttons */
-a{color:#bcd6ff;text-decoration:none}
+a{color:#cfe3ff;text-decoration:none}
 a:hover{text-decoration:underline}
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;
+  display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
   padding:.9rem 1.15rem;border-radius:14px;font-weight:700;
   border:1px solid rgba(255,255,255,.08);
   background:linear-gradient(180deg,var(--gold) 0%, var(--gold-2) 100%);
@@ -34,7 +27,7 @@ a:hover{text-decoration:underline}
 }
 .btn:hover{filter:brightness(1.04); text-decoration:none}
 
-/* --- Header / Nav (always visible) --- */
+/* Header / Nav (sticky, translucent, blurred) */
 .site-header{
   position:sticky; top:0; z-index:1000;
   background:rgba(10,16,24,.72);
@@ -50,17 +43,15 @@ a:hover{text-decoration:underline}
 .brand img{width:38px;height:38px;border-radius:10px;display:block}
 .brand span{color:#fff}
 
-.nav{
-  display:flex;gap:1.2rem;margin-left:1rem;flex:1;align-items:center;flex-wrap:wrap
-}
+.nav{display:flex;gap:1.2rem;margin-left:1rem;flex:1;align-items:center;flex-wrap:wrap}
 .nav a{
-  color:#eaf0f7; padding:.55rem .4rem; border-radius:10px; font-weight:600;
+  color:#eaf0f7; padding:.55rem .7rem; border-radius:10px; font-weight:700;
   border:1px solid transparent
 }
-.nav a.active{border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.03)}
+.nav a.active{border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.06)}
 .nav-cta{display:flex; gap:.6rem}
 
-/* --- Hero (bright photo, no overlay) --- */
+/* Hero (photo visible, NO overlay) */
 .hero{
   position:relative; min-height:68vh;
   background:url("./assets/hero-bg.jpg") center/cover no-repeat fixed;
@@ -70,7 +61,7 @@ a:hover{text-decoration:underline}
 .crest-badge{
   width:112px;height:112px;margin:0 auto 1.2rem;
   border-radius:24px; display:grid; place-items:center;
-  background:rgba(255,255,255,.92);
+  background:rgba(255,255,255,.94);
   box-shadow:0 12px 40px rgba(0,0,0,.18);
 }
 .crest-badge img{width:70%; height:auto; display:block}
@@ -84,13 +75,11 @@ a:hover{text-decoration:underline}
   text-shadow:0 1px 12px rgba(0,0,0,.30);
 }
 
-/* --- Content shells --- */
-.section{
-  max-width:1200px; margin:0 auto; padding:2.25rem 1rem;
-}
-.section.headroom{margin-top:-40px} /* snug into hero curve */
+/* Content shells */
+.section{max-width:1200px; margin:0 auto; padding:2.25rem 1rem}
+.section.headroom{margin-top:-40px}
 
-/* --- Cards with gold outline + glow on hover --- */
+/* Cards with gold outline + glow on hover */
 .grid{display:grid; gap:1.2rem}
 .grid.cols-3{grid-template-columns:repeat(3,1fr)}
 @media (max-width:980px){ .grid.cols-3{grid-template-columns:1fr} }
@@ -109,11 +98,11 @@ a:hover{text-decoration:underline}
 }
 .service-card h3{margin:.25rem 0 .35rem; font-size:1.05rem}
 
-/* --- Section heading --- */
+/* Section heading */
 .kicker{color:var(--gold); letter-spacing:.18em; font-weight:800; font-size:.78rem}
 .h2{font-size:clamp(1.5rem,2.6vw,2rem); font-weight:800; margin:.4rem 0 1.2rem}
 
-/* --- Footer (white with gold top border) --- */
+/* Footer (white with gold top border) */
 .site-footer{
   background:#fff; color:#14202d; margin-top:2.5rem;
   border-top:3px solid var(--gold);
