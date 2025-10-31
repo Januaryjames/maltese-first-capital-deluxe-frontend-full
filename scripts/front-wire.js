@@ -56,16 +56,15 @@
     };
   }
 
-  // ---- Account Open binding (robust mapping; no HTML changes) ----
+  // ---- Account Open binding (maps fields/files; no HTML/CSS edits) ----
   (async function bindAccountOpen(){
-    // Heuristic: pick the first form on /account-open.html (the page title shows "Open an Account")
+    // Use the first form on the page, but only if the page content matches
     const form = document.querySelector('form');
-    const pageLooksRight = /Open an Account|KYC|AML/i.test(document.body.innerText || "");
+    const pageLooksRight = /Open an Account|KYC|AML|Corporate Documents|Passport|Proof of Address/i.test(document.body.innerText || "");
     if (!form || !pageLooksRight) return;
 
     const ts = await attachInvisibleTurnstile(form);
 
-    // helpers to find fields without changing markup
     const findTextLike = (keywords) => {
       const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea, input:not([type])');
       const rx = new RegExp(keywords.join('|'), 'i');
@@ -80,7 +79,6 @@
     };
 
     const findCountry = () => {
-      // prefer a <select> with country options
       const selects = Array.from(form.querySelectorAll('select'));
       return selects.find(s => /country/i.test((s.name||"") + " " + (s.id||"") + " " + (s.closest('label')?.textContent||""))) || selects[0] || null;
     };
@@ -93,13 +91,10 @@
         const token = await ts.exec();
         if (!token) throw new Error('Captcha verification failed — please retry.');
 
-        // Build FormData explicitly -> map to backend keys
         const fd = new FormData();
-
-        // Turnstile token
         fd.append('cf_turnstile_response', token);
 
-        // Map text fields (best-effort; no HTML changes)
+        // Text fields (best-effort mapping; leaves DOM untouched)
         const companyNameEl = findTextLike(['company','account name']);
         const authorisedEl  = findTextLike(['authorised person','authorized person','full name','name']);
         const emailEl       = findTextLike(['email']);
@@ -112,15 +107,14 @@
         if (phoneEl)       fd.append('phone', phoneEl.value || '');
         if (countryEl)     fd.append('country', (countryEl.value||'').trim());
 
-        // Map files -> backend expects: companyDocs[], passport[], proofOfAddress[], selfie[] (optional)
-        // Try to detect by nearby label text; fall back to index order shown on the page.
+        // Files -> backend expects: companyDocs[], passport[], proofOfAddress[], selfie[] (optional)
         const bucketByLabel = (input) => {
           const lbl = input.id ? (form.querySelector(`label[for="${input.id}"]`)?.textContent||'') : (input.closest('label')?.textContent||'');
           const text = (lbl||'').toLowerCase();
           if (text.includes('passport') || text.includes('id')) return 'passport';
           if (text.includes('proof of address')) return 'proofOfAddress';
           if (text.includes('corporate') || text.includes('company')) return 'companyDocs';
-          if (text.includes('source of funds') || text.includes('wealth')) return 'companyDocs'; // treat as docs
+          if (text.includes('source of funds') || text.includes('wealth')) return 'companyDocs';
           return null;
         };
 
@@ -134,10 +128,8 @@
         for (const f of buckets.companyDocs)   fd.append('companyDocs', f, f.name);
         for (const f of buckets.passport)      fd.append('passport', f, f.name);
         for (const f of buckets.proofOfAddress)fd.append('proofOfAddress', f, f.name);
-        // 'selfie' optional; only append if present
-        for (const f of buckets.selfie)        fd.append('selfie', f, f.name);
+        for (const f of buckets.selfie)        fd.append('selfie', f, f.name); // optional
 
-        // POST to backend
         const data = await apiFetch('/api/onboarding/submit', { method:'POST', body: fd });
 
         alert(`Application received.\nID: ${data.applicationId}`);
