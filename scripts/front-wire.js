@@ -51,21 +51,7 @@
     };
   }
 
-  // ---- Finders (no DOM edits) ----
-  function findClientLoginForm() {
-    const byId = $('#client-login-form'); if (byId) return byId;
-    const f = $('form'); if (!f) return null;
-    const e = f.querySelector('input[type="email"], input[name*="email" i]');
-    const p = f.querySelector('input[type="password"], input[name*="password" i]');
-    return (e && p && /client|login/i.test(document.body.innerText)) ? f : null;
-  }
-  function findAdminLoginForm() {
-    const byId = $('#admin-login-form'); if (byId) return byId;
-    const f = $('form'); if (!f) return null;
-    const e = f.querySelector('input[type="email"], input[name*="email" i]');
-    const p = f.querySelector('input[type="password"], input[name*="password" i]');
-    return (e && p && /admin/i.test(document.body.innerText)) ? f : null;
-  }
+  // ---- Helpers for Account Open ----
   function findOnboardingForm() {
     const byId = $('#onboarding-form'); if (byId) return byId;
     const forms = Array.from(document.querySelectorAll('form'));
@@ -76,17 +62,28 @@
     const forms = Array.from(document.querySelectorAll('form'));
     return forms.find(ff => ff.querySelector('textarea')) || null;
   }
+  function findClientLoginForm() {
+    const byId = $('#client-login-form'); if (byId) return byId;
+    const f = $('form'); if (!f) return null;
+    const e = f.querySelector('input[type="email"]'); const p = f.querySelector('input[type="password"]');
+    return (e && p && /client|login/i.test(document.body.innerText)) ? f : null;
+  }
+  function findAdminLoginForm() {
+    const byId = $('#admin-login-form'); if (byId) return byId;
+    const f = $('form'); if (!f) return null;
+    const e = f.querySelector('input[type="email"]'); const p = f.querySelector('input[type="password"]');
+    return (e && p && /admin/i.test(document.body.innerText)) ? f : null;
+  }
 
   // ---- Client Login ----
   (async () => {
     const form = findClientLoginForm(); if (!form) return;
-    const emailEl = form.querySelector('input[type="email"], input[name*="email" i]');
-    const passEl  = form.querySelector('input[type="password"], input[name*="password" i]');
-    const ts = await attachInvisibleTurnstile(form); // keep optional
+    const emailEl = form.querySelector('input[type="email"]');
+    const passEl  = form.querySelector('input[type="password"]');
+    const ts = await attachInvisibleTurnstile(form); // optional
     form.addEventListener('submit', async (e)=>{
       e.preventDefault();
       try{
-        // await ts.exec();
         const email = (emailEl && emailEl.value || '').trim();
         const password = passEl && passEl.value || '';
         const data = await apiFetch('/api/auth/login', {
@@ -95,21 +92,19 @@
         });
         localStorage.setItem('jwt', data.token);
         location.href = '/client-dashboard.html';
-      }catch(err){ alert(err.message); }
-      finally { ts.reset && ts.reset(); }
+      }catch(err){ alert(err.message); } finally { ts.reset && ts.reset(); }
     });
   })();
 
   // ---- Admin Login ----
   (async () => {
     const form = findAdminLoginForm(); if (!form) return;
-    const emailEl = form.querySelector('input[type="email"], input[name*="email" i]');
-    const passEl  = form.querySelector('input[type="password"], input[name*="password" i]');
+    const emailEl = form.querySelector('input[type="email"]');
+    const passEl  = form.querySelector('input[type="password"]');
     const ts = await attachInvisibleTurnstile(form);
     form.addEventListener('submit', async (e)=>{
       e.preventDefault();
       try{
-        // await ts.exec();
         const email = (emailEl && emailEl.value || '').trim();
         const password = passEl && passEl.value || '';
         const data = await apiFetch('/api/admin/login', {
@@ -118,8 +113,30 @@
         });
         localStorage.setItem('jwt', data.token);
         location.href = '/admin-dashboard.html';
-      }catch(err){ alert(err.message); }
-      finally { ts.reset && ts.reset(); }
+      }catch(err){ alert(err.message); } finally { ts.reset && ts.reset(); }
+    });
+  })();
+
+  // ---- Client Register (client-register.html) ----
+  (async () => {
+    if (!/\/client-register\.html$/i.test(location.pathname)) return;
+    const form = document.querySelector('form'); if (!form) return;
+    const ts = await attachInvisibleTurnstile(form);
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      try{
+        const fd = new FormData(form);
+        const name = (fd.get('name')||fd.get('fullName')||'').toString();
+        const email = (fd.get('email')||'').toString().trim();
+        const password = (fd.get('password')||'').toString();
+        const confirm  = (fd.get('confirmPassword')||'').toString();
+        if (!email || !password) throw new Error('Email and password are required');
+        if (confirm && confirm !== password) throw new Error('Passwords do not match');
+        const token = await ts.exec(); fd.set('cf_turnstile_response', token||'');
+        await apiFetch('/api/auth/register', { method:'POST', body: fd });
+        alert('Account created. You can sign in now.');
+        location.href = '/client-login.html';
+      }catch(err){ alert(err.message); } finally { ts.reset && ts.reset(); }
     });
   })();
 
@@ -198,7 +215,7 @@
     });
   })();
 
-  // ---- Contact (posts to /api/contact) ----
+  // ---- Contact ----
   (async () => {
     const form = findContactForm(); if (!form) return;
     const ts = await attachInvisibleTurnstile(form);
@@ -216,7 +233,7 @@
     });
   })();
 
-  // ---- Client Dashboard hydrate (no CSS changes; optional) ----
+  // ---- Client Dashboard hydrate (optional) ----
   (() => {
     if (!/client-dashboard\.html/i.test(location.pathname)) return;
     const pre = document.querySelector('#accounts, pre#accounts');
@@ -227,11 +244,10 @@
     );
   })();
 
-  // ---- Reset Password page wiring ----
+  // ---- Reset Password wiring (supports both filenames) ----
   (function resetPasswordWiring(){
-    if (!pathIs(/\/reset-password\.html$/i)) return;
+    if (!/\/(reset-password|password-reset)\.html$/i.test(location.pathname)) return;
 
-    // 1) Request reset code
     const reqForm = $('#request-reset-form');
     if (reqForm) {
       reqForm.addEventListener('submit', async (e)=>{
@@ -244,13 +260,12 @@
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({ email })
           });
-          alert('If that email exists, a reset code has been generated.\nCheck your inbox (or ask ops to provide the code).');
+          alert('If that email exists, a reset code has been generated.');
           reqForm.reset();
         }catch(err){ alert(err.message); }
       });
     }
 
-    // 2) Confirm reset with code
     const confForm = $('#confirm-reset-form');
     if (confForm) {
       confForm.addEventListener('submit', async (e)=>{
@@ -263,7 +278,6 @@
           if (!token) throw new Error('Reset code is required');
           if (newPassword.length < 8) throw new Error('Password must be at least 8 characters');
           if (newPassword !== confirmPassword) throw new Error('Passwords do not match');
-
           await apiFetch('/api/auth/reset', {
             method:'POST',
             headers:{'Content-Type':'application/json'},
