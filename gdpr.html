@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GDPR Requests — Maltese First Capital</title>
+  <meta name="description" content="Submit a data subject request (GDPR) to Maltese First Capital.">
+</head>
+<body>
+  <nav>
+    <a href="/index.html">Home</a> · <a href="/privacy.html">Privacy</a> · <a href="/gdpr.html">GDPR Requests</a>
+  </nav>
+
+  <main>
+    <h1>GDPR Data Subject Request</h1>
+    <p>Please complete the form below. We will verify your identity before responding.</p>
+
+    <form id="gdpr-form" enctype="multipart/form-data">
+      <label>Full name<br><input type="text" name="name" required></label><br>
+      <label>Email<br><input type="email" name="email" required></label><br>
+      <label>Country/Region<br><input type="text" name="country"></label><br>
+      <label>Request type<br>
+        <select name="type" required>
+          <option value="">Select…</option>
+          <option value="access">Access</option>
+          <option value="rectification">Rectification</option>
+          <option value="erasure">Erasure</option>
+          <option value="restriction">Restriction</option>
+          <option value="portability">Portability</option>
+          <option value="objection">Objection</option>
+        </select>
+      </label><br>
+      <label>Description<br><textarea name="details" rows="6" placeholder="Tell us what you need" required></textarea></label><br>
+      <label>Attach ID (optional, PDF/JPG/PNG/WEBP, ≤5 MB)<br><input type="file" name="idDoc" accept=".pdf,.jpg,.jpeg,.png,.webp"></label><br>
+      <button type="submit">Submit request</button>
+    </form>
+
+    <p id="gdpr-status" aria-live="polite"></p>
+  </main>
+
+  <footer>
+    © 2025 Maltese First Capital.
+  </footer>
+
+  <script src="/scripts/config.js"></script>
+  <script src="/scripts/gdpr-wire.js" defer></script>
+</body>
+</html>
