@@ -1,0 +1,54 @@
+// scripts/cookie-consent.js
+(function(){
+  const KEY = 'mfc_cookie_pref';
+  const el = document.getElementById('cookie-pref-form');
+  const status = document.getElementById('cookie-pref-status');
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; }
+  }
+  function save(v) {
+    localStorage.setItem(KEY, JSON.stringify(v || {}));
+  }
+
+  // Banner (only if no pref set)
+  function banner(){
+    if (document.body.dataset.cookieBanner) return;
+    if (localStorage.getItem(KEY)) return; // already set
+
+    const bar = document.createElement('div');
+    bar.style.cssText = "position:fixed;bottom:0;left:0;right:0;padding:12px;border-top:1px solid #e2e2e2;background:#fff;z-index:9999;font-size:14px";
+    bar.innerHTML = '<div style="max-width:960px;margin:0 auto;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;">'
+      + '<div>This site uses essential cookies for security and functionality. Optional analytics are off by default.</div>'
+      + '<div style="display:flex;gap:8px;">'
+      + '<button id="mfc-accept-essential">Allow essentials</button>'
+      + '<a href="/cookies.html" style="line-height:32px;">Manage preferences</a>'
+      + '</div></div>';
+    document.body.appendChild(bar);
+    document.body.dataset.cookieBanner = "1";
+
+    bar.querySelector('#mfc-accept-essential').addEventListener('click', function(){
+      save({ essentials:true, analytics:false, setAt: new Date().toISOString() });
+      bar.remove();
+    });
+  }
+
+  // Preferences page wiring
+  if (el) {
+    const pref = load();
+    el.analytics.checked = !!pref.analytics;
+    el.addEventListener('submit', function(e){
+      e.preventDefault();
+      save({ essentials:true, analytics: !!el.analytics.checked, setAt: new Date().toISOString() });
+      if (status) status.textContent = "Preferences saved.";
+      alert("Preferences saved.");
+    });
+  }
+
+  // Show banner on all pages (non-intrusive)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', banner);
+  } else {
+    banner();
+  }
+})();
