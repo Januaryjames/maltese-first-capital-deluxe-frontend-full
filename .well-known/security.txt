@@ -1,0 +1,3 @@
+Contact: mailto:security@maltesefirst.com
+Policy: https://maltesefirst.com/security
+Preferred-Languages: en
