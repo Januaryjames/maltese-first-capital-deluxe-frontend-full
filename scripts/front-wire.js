@@ -5,6 +5,7 @@
   const SITE_KEY = CFG.TURNSTILE_SITE_KEY || "";
 
   function $(sel, root=document){ return root.querySelector(sel); }
+  function pathIs(rx){ return rx.test(location.pathname); }
 
   async function apiFetch(path, opts = {}) {
     const token = localStorage.getItem('jwt');
@@ -50,7 +51,7 @@
     };
   }
 
-  // ---- Finders (no DOM changes required) ----
+  // ---- Finders (no DOM edits) ----
   function findClientLoginForm() {
     const byId = $('#client-login-form'); if (byId) return byId;
     const f = $('form'); if (!f) return null;
@@ -81,11 +82,11 @@
     const form = findClientLoginForm(); if (!form) return;
     const emailEl = form.querySelector('input[type="email"], input[name*="email" i]');
     const passEl  = form.querySelector('input[type="password"], input[name*="password" i]');
-    const ts = await attachInvisibleTurnstile(form); // optional
+    const ts = await attachInvisibleTurnstile(form); // keep optional
     form.addEventListener('submit', async (e)=>{
       e.preventDefault();
       try{
-        // await ts.exec(); // enable if you want captcha on login
+        // await ts.exec();
         const email = (emailEl && emailEl.value || '').trim();
         const password = passEl && passEl.value || '';
         const data = await apiFetch('/api/auth/login', {
@@ -93,7 +94,7 @@
           body: JSON.stringify({ email, password })
         });
         localStorage.setItem('jwt', data.token);
-        window.location.href = '/client-dashboard.html';
+        location.href = '/client-dashboard.html';
       }catch(err){ alert(err.message); }
       finally { ts.reset && ts.reset(); }
     });
@@ -104,7 +105,7 @@
     const form = findAdminLoginForm(); if (!form) return;
     const emailEl = form.querySelector('input[type="email"], input[name*="email" i]');
     const passEl  = form.querySelector('input[type="password"], input[name*="password" i]');
-    const ts = await attachInvisibleTurnstile(form); // optional
+    const ts = await attachInvisibleTurnstile(form);
     form.addEventListener('submit', async (e)=>{
       e.preventDefault();
       try{
@@ -116,7 +117,7 @@
           body: JSON.stringify({ email, password })
         });
         localStorage.setItem('jwt', data.token);
-        window.location.href = '/admin-dashboard.html';
+        location.href = '/admin-dashboard.html';
       }catch(err){ alert(err.message); }
       finally { ts.reset && ts.reset(); }
     });
@@ -197,7 +198,7 @@
     });
   })();
 
-  // ---- Contact (posts to /api/contact, no visual change) ----
+  // ---- Contact (posts to /api/contact) ----
   (async () => {
     const form = findContactForm(); if (!form) return;
     const ts = await attachInvisibleTurnstile(form);
@@ -215,14 +216,64 @@
     });
   })();
 
-  // ---- Optional: client dashboard hydrate (only if a container exists) ----
+  // ---- Client Dashboard hydrate (no CSS changes; optional) ----
   (() => {
     if (!/client-dashboard\.html/i.test(location.pathname)) return;
     const pre = document.querySelector('#accounts, pre#accounts');
     if (!pre) return;
     apiFetch('/api/client/overview').then(
-      d => { try { pre.textContent = JSON.stringify(d.accounts, null, 2); } catch {} },
-      e => alert(e.message)
+      d => { try { pre.textContent = JSON.stringify(d.accounts || [], null, 2); } catch {} },
+      e => console.error(e.message)
     );
+  })();
+
+  // ---- Reset Password page wiring ----
+  (function resetPasswordWiring(){
+    if (!pathIs(/\/reset-password\.html$/i)) return;
+
+    // 1) Request reset code
+    const reqForm = $('#request-reset-form');
+    if (reqForm) {
+      reqForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        try{
+          const email = (new FormData(reqForm).get('email') || '').toString().trim();
+          if (!email) throw new Error('Email is required');
+          await apiFetch('/api/auth/request-reset', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ email })
+          });
+          alert('If that email exists, a reset code has been generated.\nCheck your inbox (or ask ops to provide the code).');
+          reqForm.reset();
+        }catch(err){ alert(err.message); }
+      });
+    }
+
+    // 2) Confirm reset with code
+    const confForm = $('#confirm-reset-form');
+    if (confForm) {
+      confForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        try{
+          const fd = new FormData(confForm);
+          const token = (fd.get('token') || '').toString().trim();
+          const newPassword = (fd.get('newPassword') || '').toString();
+          const confirmPassword = (fd.get('confirmPassword') || '').toString();
+          if (!token) throw new Error('Reset code is required');
+          if (newPassword.length < 8) throw new Error('Password must be at least 8 characters');
+          if (newPassword !== confirmPassword) throw new Error('Passwords do not match');
+
+          await apiFetch('/api/auth/reset', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ token, newPassword })
+          });
+          alert('Password updated. You can sign in now.');
+          confForm.reset();
+          location.href = '/client-login.html';
+        }catch(err){ alert(err.message); }
+      });
+    }
   })();
 })();
