@@ -1,45 +1,50 @@
-<script>
-// Frontend wiring: invisible Turnstile + login + onboarding + contact
-(function(){
-  const CFG = (window.MFC||{});
+// scripts/front-wire.js
+// Frontend wiring for Maltese First Capital
+// - Invisible Turnstile (no UI)
+// - Client/Admin login -> JWT + redirect
+// - Account Open (KYC multipart -> /api/onboarding/submit)
+// - Contact (stubbed alert until /api/contact exists)
+
+(() => {
+  const CFG = (window.MFC || {});
   const API = CFG.API_BASE_URL || "";
   const SITE_KEY = CFG.TURNSTILE_SITE_KEY || "";
 
-  // ---------- helpers ----------
+  // ---------- tiny helpers ----------
+  function $(sel, root = document) { return root.querySelector(sel); }
+
   async function apiFetch(path, opts = {}) {
     const token = localStorage.getItem('jwt');
     const headers = Object.assign(
-      {'Accept':'application/json'},
-      opts.headers||{},
-      token ? {'Authorization':`Bearer ${token}`} : {}
+      { Accept: 'application/json' },
+      opts.headers || {},
+      token ? { Authorization: `Bearer ${token}` } : {}
     );
     const res = await fetch(`${API}${path}`, { ...opts, headers });
     const text = await res.text();
-    let data; try{ data = text ? JSON.parse(text) : null; } catch { data = { raw:text }; }
+    let data; try { data = text ? JSON.parse(text) : null; } catch { data = { raw: text }; }
     if (!res.ok) throw new Error(data?.error || `Request failed (${res.status})`);
     return data;
   }
 
-  function $(sel, root=document){ return root.querySelector(sel); }
-
   // ---------- Turnstile (invisible) ----------
-  function loadTurnstile(){
+  function loadTurnstile() {
     if (!SITE_KEY) return Promise.resolve(null);
     if (window.turnstile) return Promise.resolve(window.turnstile);
-    return new Promise(resolve=>{
-      const s=document.createElement('script');
-      s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';
-      s.async=true; s.defer=true; s.onload=()=>resolve(window.turnstile||null);
+    return new Promise(resolve => {
+      const s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      s.async = true; s.defer = true;
+      s.onload = () => resolve(window.turnstile || null);
       document.head.appendChild(s);
     });
   }
 
-  // Returns a promise that resolves to a token when you call exec()
-  async function attachInvisibleTurnstile(form){
-    if (!SITE_KEY) return { exec: async()=>"" }; // no-op
+  async function attachInvisibleTurnstile(form) {
+    if (!SITE_KEY) return { exec: async () => "", reset: () => {} };
     await loadTurnstile();
 
-    // hidden holder (no visual changes)
+    // hidden holder (no layout impact)
     const holder = document.createElement('div');
     holder.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;';
     form.appendChild(holder);
@@ -55,7 +60,7 @@
     const wid = window.turnstile.render(holder, {
       sitekey: SITE_KEY,
       size: 'invisible',
-      callback: function(token){
+      callback: function (token) {
         hidden.value = token;
         pendingResolve && pendingResolve(token);
         pendingResolve = null;
@@ -64,112 +69,127 @@
 
     let pendingResolve = null;
     return {
-      exec: () => {
-        return new Promise((resolve)=>{
-          pendingResolve = resolve;
-          try { window.turnstile.execute(wid); }
-          catch { resolve(""); } // graceful fallback
-        });
-      },
-      reset: () => { try { window.turnstile.reset(wid); } catch {} hidden.value=""; }
+      exec: () => new Promise(resolve => {
+        pendingResolve = resolve;
+        try { window.turnstile.execute(wid); } catch { resolve(""); }
+      }),
+      reset: () => { try { window.turnstile.reset(wid); } catch {} hidden.value = ""; }
     };
   }
 
-  // ---------- Bind: Client Login ----------
-  (async function bindClientLogin(){
-    const form = document.querySelector('#client-login-form') || null;
-    if (!form) return;
+  // ---------- form finders (robust, no ID changes needed) ----------
+  function findClientLoginForm() {
+    const byId = $('#client-login-form'); if (byId) return byId;
+    const f = $('form'); if (!f) return null;
+    const e = f.querySelector('input[type="email"], input[name*="email" i]');
+    const p = f.querySelector('input[type="password"], input[name*="password" i]');
+    return (e && p && /client|login/i.test(document.body.innerText)) ? f : null;
+  }
+  function findAdminLoginForm() {
+    const byId = $('#admin-login-form'); if (byId) return byId;
+    const f = $('form'); if (!f) return null;
+    const e = f.querySelector('input[type="email"], input[name*="email" i]');
+    const p = f.querySelector('input[type="password"], input[name*="password" i]');
+    return (e && p && /admin/i.test(document.body.innerText)) ? f : null;
+  }
+  function findOnboardingForm() {
+    const byId = $('#onboarding-form'); if (byId) return byId;
+    const forms = Array.from(document.querySelectorAll('form'));
+    // pick a form with file inputs (KYC) or multiple sections
+    return forms.find(ff => ff.querySelector('input[type="file"]')) || null;
+  }
+  function findContactForm() {
+    const byId = $('#contact-form'); if (byId) return byId;
+    const forms = Array.from(document.querySelectorAll('form'));
+    return forms.find(ff => ff.querySelector('textarea')) || null;
+  }
 
+  // ---------- bind: Client Login ----------
+  (async () => {
+    const form = findClientLoginForm(); if (!form) return;
     const emailEl = form.querySelector('input[type="email"], input[name*="email" i]');
     const passEl  = form.querySelector('input[type="password"], input[name*="password" i]');
     const ts = await attachInvisibleTurnstile(form); // optional on login
 
-    form.addEventListener('submit', async (e)=>{
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      try{
-        // If you want Turnstile on login too, uncomment:
-        // await ts.exec();
+      try {
+        // await ts.exec(); // enable if you decide to protect login too
         const email = (emailEl && emailEl.value || '').trim();
         const password = passEl && passEl.value || '';
         const data = await apiFetch('/api/auth/login', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
         });
         localStorage.setItem('jwt', data.token);
         window.location.href = '/client-dashboard.html';
-      }catch(err){ alert(err.message); }
+      } catch (err) { alert(err.message); }
       finally { ts.reset && ts.reset(); }
     });
   })();
 
-  // ---------- Bind: Admin Login ----------
-  (async function bindAdminLogin(){
-    const form = document.querySelector('#admin-login-form') || null;
-    if (!form) return;
-
+  // ---------- bind: Admin Login ----------
+  (async () => {
+    const form = findAdminLoginForm(); if (!form) return;
     const emailEl = form.querySelector('input[type="email"], input[name*="email" i]');
     const passEl  = form.querySelector('input[type="password"], input[name*="password" i]');
     const ts = await attachInvisibleTurnstile(form); // optional on login
 
-    form.addEventListener('submit', async (e)=>{
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      try{
-        // await ts.exec(); // enable if you want captcha on admin login
+      try {
+        // await ts.exec();
         const email = (emailEl && emailEl.value || '').trim();
         const password = passEl && passEl.value || '';
         const data = await apiFetch('/api/admin/login', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
         });
         localStorage.setItem('jwt', data.token);
         window.location.href = '/admin-dashboard.html';
-      }catch(err){ alert(err.message); }
+      } catch (err) { alert(err.message); }
       finally { ts.reset && ts.reset(); }
     });
   })();
 
-  // ---------- Bind: Account Open (KYC) ----------
-  (async function bindOnboarding(){
-    const form = document.querySelector('#onboarding-form') || null;
-    if (!form) return;
-
+  // ---------- bind: Account Open (KYC) ----------
+  (async () => {
+    const form = findOnboardingForm(); if (!form) return;
     const ts = await attachInvisibleTurnstile(form);
 
-    form.addEventListener('submit', async (e)=>{
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      try{
-        const token = await ts.exec(); // REQUIRED on KYC
+      try {
+        const token = await ts.exec();
         if (!token) throw new Error('Captcha verification failed — please retry.');
         const fd = new FormData(form); // includes cf_turnstile_response
-        const data = await apiFetch('/api/onboarding/submit', { method:'POST', body: fd });
+        const data = await apiFetch('/api/onboarding/submit', { method: 'POST', body: fd });
         alert(`Application received. ID: ${data.applicationId}`);
         form.reset(); ts.reset();
-      }catch(err){ alert(err.message); }
+      } catch (err) { alert(err.message); }
     });
   })();
 
-  // ---------- Bind: Contact (stub until /api/contact exists) ----------
-  (async function bindContact(){
-    const form = document.querySelector('#contact-form') || null;
-    if (!form) return;
-
+  // ---------- bind: Contact (stub) ----------
+  (async () => {
+    const form = findContactForm(); if (!form) return;
     const ts = await attachInvisibleTurnstile(form);
 
-    form.addEventListener('submit', async (e)=>{
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      try{
-        await ts.exec(); // we check a token even if we don't send it anywhere yet
+      try {
+        await ts.exec();
         alert('Thanks—your message has been noted.');
         form.reset(); ts.reset();
-        // If/when you add /api/contact, post here with FormData like the KYC flow.
-      }catch(err){ alert(err.message); }
+        // When you add /api/contact: post FormData here with apiFetch('/api/contact', { method:'POST', body: fd })
+      } catch (err) { alert(err.message); }
     });
   })();
 
-  // ---------- Optional: client dashboard data ----------
-  (function hydrateClientDashboard(){
+  // ---------- optional: hydrate client dashboard ----------
+  (() => {
     if (!/client-dashboard\.html/i.test(location.pathname)) return;
     const pre = document.querySelector('#accounts, pre#accounts');
     if (!pre) return;
@@ -180,4 +200,3 @@
   })();
 
 })();
-</script>
