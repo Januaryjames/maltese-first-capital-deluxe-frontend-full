@@ -1,8 +1,7 @@
 // scripts/config.js
-// Fill these two values and commit.
 window.MFC = {
-  // Your Render API base, e.g. "https://mfc-backend-xxxx.onrender.com"
-  API_BASE_URL: "https://<YOUR-RENDER-API-BASE>",
-  // Your Cloudflare Turnstile site key (starts with 0x…)
-  TURNSTILE_SITE_KEY: "0x_your_site_key"
+  // ← paste your Render API base (the backend you just got working)
+  API_BASE_URL: "https://<YOUR-RENDER-API>.onrender.com",
+  // Cloudflare Turnstile site key (public)
+  TURNSTILE_SITE_KEY: "0x4AAAAAAB94rdqCX5koZxG-"
 };
