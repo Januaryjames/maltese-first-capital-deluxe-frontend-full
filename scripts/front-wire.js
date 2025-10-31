@@ -31,24 +31,18 @@
       document.head.appendChild(s);
     });
   }
-
   async function attachInvisibleTurnstile(form){
     if (!SITE_KEY) return { exec: async()=>"", reset: ()=>{} };
     await loadTurnstile();
-
     const holder = document.createElement('div');
     holder.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;';
     form.appendChild(holder);
-
     let hidden = form.querySelector('input[name="cf_turnstile_response"]');
     if (!hidden) { hidden = document.createElement('input'); hidden.type='hidden'; hidden.name='cf_turnstile_response'; form.appendChild(hidden); }
-
     const wid = window.turnstile.render(holder, {
-      sitekey: SITE_KEY,
-      size: 'invisible',
+      sitekey: SITE_KEY, size: 'invisible',
       callback: (token)=>{ hidden.value = token; pending && pending(token); pending=null; }
     });
-
     let pending = null;
     return {
       exec: () => new Promise(resolve => { pending = resolve; try { window.turnstile.execute(wid); } catch { resolve(""); } }),
@@ -56,13 +50,81 @@
     };
   }
 
-  // ---- Account Open binding (maps fields/files; no HTML/CSS edits) ----
-  (async function bindAccountOpen(){
-    // Use the first form on the page, but only if the page content matches
-    const form = document.querySelector('form');
-    const pageLooksRight = /Open an Account|KYC|AML|Corporate Documents|Passport|Proof of Address/i.test(document.body.innerText || "");
-    if (!form || !pageLooksRight) return;
+  // ---- Finders (no DOM changes required) ----
+  function findClientLoginForm() {
+    const byId = $('#client-login-form'); if (byId) return byId;
+    const f = $('form'); if (!f) return null;
+    const e = f.querySelector('input[type="email"], input[name*="email" i]');
+    const p = f.querySelector('input[type="password"], input[name*="password" i]');
+    return (e && p && /client|login/i.test(document.body.innerText)) ? f : null;
+  }
+  function findAdminLoginForm() {
+    const byId = $('#admin-login-form'); if (byId) return byId;
+    const f = $('form'); if (!f) return null;
+    const e = f.querySelector('input[type="email"], input[name*="email" i]');
+    const p = f.querySelector('input[type="password"], input[name*="password" i]');
+    return (e && p && /admin/i.test(document.body.innerText)) ? f : null;
+  }
+  function findOnboardingForm() {
+    const byId = $('#onboarding-form'); if (byId) return byId;
+    const forms = Array.from(document.querySelectorAll('form'));
+    return forms.find(ff => ff.querySelector('input[type="file"]')) || null;
+  }
+  function findContactForm() {
+    const byId = $('#contact-form'); if (byId) return byId;
+    const forms = Array.from(document.querySelectorAll('form'));
+    return forms.find(ff => ff.querySelector('textarea')) || null;
+  }
 
+  // ---- Client Login ----
+  (async () => {
+    const form = findClientLoginForm(); if (!form) return;
+    const emailEl = form.querySelector('input[type="email"], input[name*="email" i]');
+    const passEl  = form.querySelector('input[type="password"], input[name*="password" i]');
+    const ts = await attachInvisibleTurnstile(form); // optional
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      try{
+        // await ts.exec(); // enable if you want captcha on login
+        const email = (emailEl && emailEl.value || '').trim();
+        const password = passEl && passEl.value || '';
+        const data = await apiFetch('/api/auth/login', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ email, password })
+        });
+        localStorage.setItem('jwt', data.token);
+        window.location.href = '/client-dashboard.html';
+      }catch(err){ alert(err.message); }
+      finally { ts.reset && ts.reset(); }
+    });
+  })();
+
+  // ---- Admin Login ----
+  (async () => {
+    const form = findAdminLoginForm(); if (!form) return;
+    const emailEl = form.querySelector('input[type="email"], input[name*="email" i]');
+    const passEl  = form.querySelector('input[type="password"], input[name*="password" i]');
+    const ts = await attachInvisibleTurnstile(form); // optional
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      try{
+        // await ts.exec();
+        const email = (emailEl && emailEl.value || '').trim();
+        const password = passEl && passEl.value || '';
+        const data = await apiFetch('/api/admin/login', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ email, password })
+        });
+        localStorage.setItem('jwt', data.token);
+        window.location.href = '/admin-dashboard.html';
+      }catch(err){ alert(err.message); }
+      finally { ts.reset && ts.reset(); }
+    });
+  })();
+
+  // ---- Account Open (KYC) ----
+  (async () => {
+    const form = findOnboardingForm(); if (!form) return;
     const ts = await attachInvisibleTurnstile(form);
 
     const findTextLike = (keywords) => {
@@ -77,7 +139,6 @@
       }
       return null;
     };
-
     const findCountry = () => {
       const selects = Array.from(form.querySelectorAll('select'));
       return selects.find(s => /country/i.test((s.name||"") + " " + (s.id||"") + " " + (s.closest('label')?.textContent||""))) || selects[0] || null;
@@ -94,7 +155,6 @@
         const fd = new FormData();
         fd.append('cf_turnstile_response', token);
 
-        // Text fields (best-effort mapping; leaves DOM untouched)
         const companyNameEl = findTextLike(['company','account name']);
         const authorisedEl  = findTextLike(['authorised person','authorized person','full name','name']);
         const emailEl       = findTextLike(['email']);
@@ -107,31 +167,26 @@
         if (phoneEl)       fd.append('phone', phoneEl.value || '');
         if (countryEl)     fd.append('country', (countryEl.value||'').trim());
 
-        // Files -> backend expects: companyDocs[], passport[], proofOfAddress[], selfie[] (optional)
         const bucketByLabel = (input) => {
           const lbl = input.id ? (form.querySelector(`label[for="${input.id}"]`)?.textContent||'') : (input.closest('label')?.textContent||'');
           const text = (lbl||'').toLowerCase();
           if (text.includes('passport') || text.includes('id')) return 'passport';
           if (text.includes('proof of address')) return 'proofOfAddress';
-          if (text.includes('corporate') || text.includes('company')) return 'companyDocs';
-          if (text.includes('source of funds') || text.includes('wealth')) return 'companyDocs';
+          if (text.includes('corporate') || text.includes('company') || text.includes('source of')) return 'companyDocs';
           return null;
         };
-
         const buckets = { passport: [], proofOfAddress: [], companyDocs: [], selfie: [] };
         fileInputs.forEach((inp, idx)=>{
           const target = bucketByLabel(inp) || (idx===0 ? 'companyDocs' : idx===1 ? 'passport' : idx===2 ? 'proofOfAddress' : 'companyDocs');
           const files = Array.from(inp.files||[]);
           files.forEach(f => buckets[target].push(f));
         });
-
         for (const f of buckets.companyDocs)   fd.append('companyDocs', f, f.name);
         for (const f of buckets.passport)      fd.append('passport', f, f.name);
         for (const f of buckets.proofOfAddress)fd.append('proofOfAddress', f, f.name);
-        for (const f of buckets.selfie)        fd.append('selfie', f, f.name); // optional
+        for (const f of buckets.selfie)        fd.append('selfie', f, f.name);
 
         const data = await apiFetch('/api/onboarding/submit', { method:'POST', body: fd });
-
         alert(`Application received.\nID: ${data.applicationId}`);
         try { form.reset(); } catch {}
         ts.reset && ts.reset();
@@ -140,5 +195,34 @@
         ts.reset && ts.reset();
       }
     });
+  })();
+
+  // ---- Contact (posts to /api/contact, no visual change) ----
+  (async () => {
+    const form = findContactForm(); if (!form) return;
+    const ts = await attachInvisibleTurnstile(form);
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      try{
+        const token = await ts.exec();
+        if (!token) throw new Error('Captcha verification failed — please retry.');
+        const fd = new FormData(form);
+        fd.append('cf_turnstile_response', token);
+        await apiFetch('/api/contact', { method:'POST', body: fd });
+        alert('Thanks — your message has been received.');
+        form.reset(); ts.reset();
+      }catch(err){ alert(err.message); ts.reset && ts.reset(); }
+    });
+  })();
+
+  // ---- Optional: client dashboard hydrate (only if a container exists) ----
+  (() => {
+    if (!/client-dashboard\.html/i.test(location.pathname)) return;
+    const pre = document.querySelector('#accounts, pre#accounts');
+    if (!pre) return;
+    apiFetch('/api/client/overview').then(
+      d => { try { pre.textContent = JSON.stringify(d.accounts, null, 2); } catch {} },
+      e => alert(e.message)
+    );
   })();
 })();
