@@ -1,104 +1,135 @@
-// scripts/account-open-wire.js  — v3
+// /scripts/account-open-wire.js  — v3
 (() => {
-  const cfg = (window.__MFC_CONFIG__ || {});
-  const BASE = String(cfg.API_BASE_URL || '').replace(/\/+$/,'');   // harden
-  const ENDPOINT = '/api/onboarding/submit';                        // <-- correct path
+  // ---- config
+  const CFG = (window.__MFC_CONFIG || {});
+  const API  = (CFG.API_BASE_URL || '').replace(/\/+$/,'');   // no trailing slash
+  if (!API) console.warn('[MFC] API_BASE_URL missing from config.js');
 
-  const form = document.getElementById('accountOpenForm');
-  const bar  = document.getElementById('uploadBar');
-  const box  = document.getElementById('formStatus');
-  const btn  = document.getElementById('submitBtn');
-  const save = document.getElementById('saveDraftBtn');
+  // ---- helpers
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
 
-  if (!form || !btn) return;
-
-  // Helper: status banner
-  function showStatus(html, cls='') {
+  function setStatus(msg, kind='error') {
+    const box = $('#formStatus');
     if (!box) return;
     box.style.display = 'block';
-    box.className = 'card ' + cls;
-    box.innerHTML = html;
+    box.className = 'card';           // keep your visual style
+    box.textContent = msg || '';
   }
 
-  // Local draft
-  if (save) {
-    save.addEventListener('click', () => {
-      const data = new FormData(form);
-      const obj = {};
-      for (const [k,v] of data.entries()) if (typeof v === 'string') obj[k] = v;
-      localStorage.setItem('mfc_open_draft', JSON.stringify(obj));
-      showStatus('<b>Saved locally.</b> You can close and return later.', '');
+  function getTurnstileToken() {
+    try {
+      // Works if you included Turnstile; otherwise returns ""
+      return (window.turnstile && window.turnstile.getResponse)
+        ? window.turnstile.getResponse() || ''
+        : '';
+    } catch { return ''; }
+  }
+
+  // ---- bind once DOM is ready
+  on(document, 'DOMContentLoaded', () => {
+    const form = $('#accountOpenForm');
+    const bar  = $('#uploadBar');
+    const submitBtn = $('#submitBtn');
+    const draftBtn  = $('#saveDraftBtn');
+
+    if (!form) {
+      console.warn('[MFC] accountOpenForm not found');
+      return;
+    }
+
+    // Safety: kill native nav submit
+    form.setAttribute('action', ''); // ensure no server nav
+    form.setAttribute('method', 'post');
+    form.setAttribute('enctype', 'multipart/form-data');
+
+    // Save Draft (local only, no visuals changed)
+    on(draftBtn, 'click', () => {
+      try {
+        const data = new FormData(form);
+        const obj = {};
+        for (const [k,v] of data.entries()) {
+          if (v instanceof File) continue; // do not persist files
+          obj[k] = v;
+        }
+        localStorage.setItem('mfc_account_open_draft', JSON.stringify(obj));
+        alert('Draft saved locally.');
+      } catch (e) {
+        console.warn('Draft save failed:', e);
+      }
     });
-  }
 
-  // Submit handler
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (!BASE) { alert('Network error submitting. Check API_BASE_URL in scripts/config.js.'); return; }
+    // Submit handler
+    on(form, 'submit', async (e) => {
+      e.preventDefault();
 
-    btn.disabled = true; if (save) save.disabled = true;
-    showStatus('Submitting… please wait.', '');
+      // basic required checks (browser will also enforce)
+      const consent = $('#consentBox');
+      if (consent && !consent.checked) {
+        setStatus('Please confirm consent checkbox.', 'error');
+        return;
+      }
 
-    // Build payload
-    const fd = new FormData(form);
+      // Build payload
+      const fd = new FormData(form);
 
-    // Turnstile (support both field names)
-    let ts = '';
-    try { ts = window.turnstile?.getResponse?.() || ''; } catch {}
-    if (ts) fd.set('cf_turnstile_response', ts);
+      // Field mapping to backend canonical names (keeps UX untouched)
+      // (Backend also accepts both names, this is just belt & braces.)
+      if (!fd.get('fullName')) {
+        const n = fd.get('authorized_person') || fd.get('authorised_person') || '';
+        if (n) fd.set('fullName', n);
+      }
+      if (!fd.get('companyName')) {
+        const c = fd.get('company_name') || '';
+        if (c) fd.set('companyName', c);
+      }
 
-    // Use XHR so we can show progress
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', BASE + ENDPOINT, true);
-    xhr.withCredentials = true;
+      // Turnstile token if present
+      const ts = getTurnstileToken();
+      if (ts) fd.set('cf_turnstile_response', ts);
 
-    xhr.upload.onprogress = (evt) => {
-      if (!bar || !evt.lengthComputable) return;
-      const pct = Math.round((evt.loaded / evt.total) * 100);
-      bar.style.width = pct + '%';
-    };
+      // UI: lock
+      submitBtn && (submitBtn.disabled = true);
+      setStatus('Submitting…', 'info');
 
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState !== 4) return;
+      // Progress (fires for fetch body read; not perfect but gives motion)
+      if (bar) bar.style.width = '40%';
 
-      btn.disabled = false; if (save) save.disabled = false;
+      try {
+        const res = await fetch(API + '/api/onboarding/submit', {
+          method: 'POST',
+          body: fd,
+          // No custom headers, browser sets multipart boundary
+          // credentials not required for this route
+        });
 
-      // Reset progress bar after a moment
-      setTimeout(() => { if (bar) bar.style.width = '0%'; }, 600);
+        if (bar) bar.style.width = '70%';
 
-      // Handle response
-      if (xhr.status === 202 || xhr.status === 200 || xhr.status === 201) {
+        let text = await res.text();
         let data = {};
-        try { data = JSON.parse(xhr.responseText || '{}'); } catch {}
-        const id = data.applicationId || '(pending id)';
-        showStatus(`<b>Submitted.</b> Reference: <code>${id}</code>`, '');
-        // redirect to client login with query for UX
-        window.location.href = '/client-login.html?submitted=' + encodeURIComponent(id);
-        return;
+        try { data = text ? JSON.parse(text) : {}; } catch { /* plain text */ }
+
+        if (!res.ok) {
+          const msg = (data && (data.error || data.message)) || (`HTTP ${res.status}.`);
+          setStatus('Could not submit: ' + msg, 'error');
+          submitBtn && (submitBtn.disabled = false);
+          if (bar) bar.style.width = '0%';
+          return;
+        }
+
+        // Success (backend returns 202 + applicationId)
+        if (bar) bar.style.width = '100%';
+        const appId = (data && data.applicationId) ? data.applicationId : '';
+        setStatus('Application received' + (appId ? ` · Reference: ${appId}` : ''), 'success');
+
+        // optional redirect (keeps your visuals)
+        window.location.href = '/client-login.html?submitted=' + encodeURIComponent(appId || '');
+      } catch (err) {
+        console.error(err);
+        setStatus('Network error submitting. Check API_BASE_URL in scripts/config.js.', 'error');
+        submitBtn && (submitBtn.disabled = false);
+        if (bar) bar.style.width = '0%';
       }
-
-      if (xhr.status === 0) {
-        showStatus('Network blocked by browser/Cloudflare. Check domain rules/CORS.', 'error');
-        return;
-      }
-
-      // 404 → wrong path or proxy. Tell user plainly.
-      if (xhr.status === 404) {
-        showStatus('Could not submit: HTTP 404. Front-end is not pointing to `/api/onboarding/submit` on the backend.', 'error');
-        return;
-      }
-
-      // Body message if present
-      let msg = '';
-      try { msg = (JSON.parse(xhr.responseText||'{}').error) || ''; } catch {}
-      showStatus(`Server error${msg ? ': ' + msg : ''}`, 'error');
-    };
-
-    xhr.send(fd);
+    });
   });
-
-  // Optional health ping to prove wiring
-  fetch(BASE + '/api/health').then(r => r.json()).then(h => {
-    console.log('MFC backend health:', h);
-  }).catch(()=>{});
 })();
