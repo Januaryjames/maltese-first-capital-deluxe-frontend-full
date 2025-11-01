@@ -212,14 +212,15 @@
   </main>
 
   <script src="scripts/forms.js" defer></script>
-<script>
-  window.__MFC_CONFIG = {
-    API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com'
-  };
-  window.__MFC_CONFIG__ = window.__MFC_CONFIG;
-</script>
-<script src="/scripts/account-open-wire.js?v=6" defer></script>
-<script src="/scripts/legal-footer.js?v=1" defer></script>
-<script src="/scripts/account-open-placeholders.js?v=1" defer></script>
+<!-- load config first so account-open-wire.js can read it -->
+<script src="scripts/config.js?v=8"></script>
+
+<!-- your core wiring/submit handler -->
+<script src="scripts/account-open-wire.js?v=8" defer></script>
+
+<!-- (optional) the others can remain; keep paths relative, not starting with / -->
+<script src="scripts/forms.js" defer></script>
+<script src="scripts/legal-footer.js?v=1" defer></script>
+<script src="scripts/account-open-placeholders.js" defer></script>
 </body>
 </html>
