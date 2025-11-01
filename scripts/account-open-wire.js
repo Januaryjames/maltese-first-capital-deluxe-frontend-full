@@ -1,11 +1,7 @@
-// scripts/account-open-wire.js (v6)
-// Wires the Account Open form to your live backend.
-// - Works whether the button is type="button" or "submit"
-// - Uses native validation prompts
-// - Adds invisible Turnstile token
-// - Falls back from /account-open -> /submit if first route 404/405
-// - Normalizes file/text field names to match backend expectations
-//   Backend expects: passport, proofOfAddress, companyDocs, selfie
+// scripts/account-open-wire.js (v7)
+// Robust submit: uses AJAX; on network error falls back to native form.submit().
+// No visual changes.
+
 (() => {
   const CFG = window.__MF_CONFIG || {};
   const BASE = (CFG.API_BASE_URL || "").replace(/\/+$/,"");
@@ -13,9 +9,6 @@
   const MAX = 16 * 1024 * 1024;
   const OK = new Set(['application/pdf','image/jpeg','image/png','image/webp']);
 
-  function log(...a){ try{console.log("[MFC]",...a);}catch{} }
-
-  // --- Turnstile (invisible)
   function loadTurnstile(){
     return new Promise((resolve) => {
       if (window.turnstile) return resolve(window.turnstile);
@@ -40,15 +33,13 @@
     });
   }
 
-  // --- Helpers
-  function getForm(){
+  function formEl(){
     return document.getElementById('accountOpenForm') || document.querySelector('form');
   }
-  function candidatesAround(form){
+  function candidateButtons(form){
     const sel = [
       'button[type="submit"]','input[type="submit"]','#submitBtn',
-      'button[id*="submit" i]','button[name*="submit" i]',
-      '[role="button"][id*="submit" i]','a.button','a.btn','.btn-primary','.button-primary'
+      'button[id*="submit" i]','button[name*="submit" i]','[role="button"][id*="submit" i]'
     ].join(',');
     const set = new Set();
     form.querySelectorAll(sel).forEach(b => set.add(b));
@@ -56,7 +47,7 @@
     return Array.from(set);
   }
   function setBusy(form, on){
-    candidatesAround(form).forEach(b => { b.disabled = !!on; b.setAttribute('aria-busy', on?'true':'false'); });
+    candidateButtons(form).forEach(b => { b.disabled = !!on; b.setAttribute('aria-busy', on?'true':'false'); });
   }
   function invalidFilesMsg(form){
     const inputs = form.querySelectorAll('input[type="file"]');
@@ -67,39 +58,29 @@
     return "";
   }
 
-  // Map whatever your inputs are called to the canonical keys the backend accepts
-  function pickFiles(form, names){
-    const files = [];
-    names.forEach(n => form.querySelectorAll(`input[type="file"][name="${n}"]`))
-      .forEach(list => list.forEach(inp => (inp.files && files.push(...inp.files))));
-    return files;
-  }
+  // Map your input names to backend keys
   function normalizeInto(fd, form){
-    // --- TEXT FIELDS (canonical: fullName, email, phone, companyName, country)
-    const textMap = [
-      { to:'fullName',      from:['fullName','authorisedPerson','authorizedPerson','name','contactName'] },
-      { to:'email',         from:['email','contactEmail'] },
-      { to:'phone',         from:['phone','mobile','tel'] },
-      { to:'companyName',   from:['companyName','company','accountName','corporateName'] },
-      { to:'country',       from:['country','nation'] }
+    const tmap = [
+      { to:'fullName',    from:['fullName','authorized_person','authorised_person','name'] },
+      { to:'email',       from:['email'] },
+      { to:'phone',       from:['phone'] },
+      { to:'companyName', from:['company_name','company','account_name'] },
+      { to:'country',     from:['country'] }
     ];
-    for (const m of textMap){
-      if (!fd.get(m.to)) {
-        for (const k of m.from){ const v = fd.get(k); if (v){ fd.set(m.to, v); break; } }
-      }
+    for (const m of tmap){
+      if (!fd.get(m.to)) for (const k of m.from){ const v = fd.get(k); if (v){ fd.set(m.to, v); break; } }
     }
-
-    // --- FILE FIELDS
-    const addFiles = (key, names) => {
-      const chosen = pickFiles(form, names);
-      chosen.forEach(f => fd.append(key, f));
+    // Files
+    const appendAll = (to, names) => {
+      names.forEach(n => {
+        const input = form.querySelector(`input[type="file"][name="${n}"]`);
+        if (input && input.files) for (const f of input.files) fd.append(to, f);
+      });
     };
-    // backend keys
-    addFiles('companyDocs',     ['companyDocs','corporateDocs','corporateDocuments','companyDocuments','sourceFunds','sourceOfFunds','wealthEvidence']);
-    addFiles('passport',        ['passport','idDocument','authorizedPersonId','authorisedPersonId','authorisedId','id','identity']);
-    addFiles('proofOfAddress',  ['proofOfAddress','proofAddress','addressProof','utilityBill']);
-    addFiles('selfie',          ['selfie','selfieImage','face','faceImage']);
-
+    appendAll('companyDocs',    ['docs_corporate','companyDocs','corporateDocs','docs_sof']);
+    appendAll('passport',       ['docs_id','passport']);
+    appendAll('proofOfAddress', ['docs_poa','proofOfAddress']);
+    appendAll('selfie',         ['selfie_file','selfie']);
     return fd;
   }
 
@@ -107,44 +88,41 @@
     const urls = [
       `${BASE}/api/onboarding/account-open`,
       `${BASE}/api/onboarding/submit`
-    ];
-    const clean = (u) => u.replace(/([^:]\/)\/+/g,'$1');
-    const tryPost = async (u) => {
-      const res = await fetch(clean(u), { method: 'POST', body: fd });
-      const txt = await res.text(); let data=null; try{ data = txt ? JSON.parse(txt) : null; } catch { data={raw:txt}; }
+    ].map(u => u.replace(/([^:]\/)\/+/g,'$1'));
+
+    const send = async url => {
+      const res = await fetch(url, { method: 'POST', body: fd });
+      const txt = await res.text(); let data = null; try { data = txt ? JSON.parse(txt) : null; } catch { data = { raw: txt }; }
       return { res, data };
     };
-    const a = await tryPost(urls[0]);
-    if (a.res.status !== 404 && a.res.status !== 405) return a;
-    return await tryPost(urls[1]);
+
+    let r = await send(urls[0]);
+    if (r.res.status === 404 || r.res.status === 405) r = await send(urls[1]);
+    return r;
   }
 
   function bind(){
-    const form = getForm();
-    if (!form || form.dataset.mfcWired === '1') return;
+    const form = formEl(); if (!form || form.dataset.mfcWired === '1') return;
     form.dataset.mfcWired = '1';
-    log("Account Open wired →", BASE || "(missing API_BASE_URL)");
 
     const handle = async (e) => {
       if (e) { e.preventDefault(); e.stopPropagation(); }
 
+      // Native validation prompts
       if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
-        form.reportValidity?.();
-        return;
+        form.reportValidity?.(); return;
       }
-      if (!BASE) return alert('Setup: API host not set. Publish scripts/config.js');
 
-      const bad = invalidFilesMsg(form);
-      if (bad) return alert(bad);
+      const bad = invalidFilesMsg(form); if (bad) return alert(bad);
+
+      // If BASE missing, fall back instantly to native submit (uses form action)
+      if (!BASE) { form.submit(); return; }
 
       try {
         setBusy(form, true);
-
-        // Build FormData and normalize names the backend expects
         let fd = new FormData(form);
         fd = normalizeInto(fd, form);
 
-        // Turnstile token (both field names, backend accepts either)
         const token = await getToken(form);
         if (token) {
           fd.set('cf_turnstile_response', token);
@@ -155,28 +133,27 @@
 
         if (!res.ok) {
           const msg = (data && (data.error || data.message)) || `Submit failed (${res.status})`;
-          if (res.status === 404) return alert('Submit failed (404). Check API_BASE_URL or backend route.');
-          if (res.status === 400 && /captcha/i.test(msg)) return alert('Captcha failed. Set TURNSTILE_SECRET on backend.');
-          if (res.status === 413) return alert('One or more files exceed 16MB. Reduce size.');
+          if (res.status === 400 && /captcha/i.test(msg)) return alert('Captcha failed. Backend TURNSTILE_SECRET missing/invalid.');
+          if (res.status === 413) return alert('One or more files exceed 16MB.');
           if (res.status === 415) return alert('Unsupported file type. Use PDF/JPG/PNG/WEBP.');
+          if (res.status === 404)  return alert('Route 404. Check backend deploy/URL.');
           return alert(msg);
         }
 
         alert(`Application received. Reference: ${data?.applicationId || 'OK'}`);
         form.reset?.();
       } catch (err) {
-        console.error('[MFC] submit error', err);
-        alert('Network error submitting. Check API_BASE_URL in scripts/config.js.');
+        // Hard fallback: native POST to the form action so it still submits
+        console.error('[MFC] network error, falling back to native submit', err);
+        form.submit();
       } finally {
         setBusy(form, false);
       }
     };
 
-    // Bind submit + common clicks (covers type="button" and anchor-buttons)
     form.addEventListener('submit', handle, { capture: true });
-    candidatesAround(form).forEach(btn => {
-      btn.addEventListener('click', (e) => { e.preventDefault(); handle(e); }, { capture: true });
-    });
+    const btn = document.getElementById('submitBtn');
+    if (btn) btn.addEventListener('click', (e)=>{ e.preventDefault(); handle(e); }, { capture:true });
   }
 
   (document.readyState === 'loading')
