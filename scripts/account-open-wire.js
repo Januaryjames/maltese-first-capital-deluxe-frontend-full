@@ -1,17 +1,15 @@
-// /scripts/account-open-wire.js — v3.2 (drop-in, no visual changes)
+// /scripts/account-open-wire.js — v3.3 stable final
 (() => {
   'use strict';
 
   // ---------- Config ----------
   const CFG = (window.__MFC_CONFIG || {});
-  // Fallback to same-origin if config.js is missing (useful for staging/local).
-  const API_BASE = (CFG.API_BASE_URL || (location.origin || '')).replace(/\/+$/, '');
-  if (!CFG.API_BASE_URL) console.warn('[MFC] API_BASE_URL missing from config.js — using same-origin:', API_BASE);
+  const raw = CFG.API_BASE_URL;
+  const base = (typeof raw === 'function' ? raw() : raw) || '';
+  const API = base.replace(/\/+$/, '');
+  if (!API) console.warn('[MFC] API_BASE_URL missing from scripts/config.js');
 
-  // Use the explicit alias your backend exposes
-  const ENDPOINT = '/api/onboarding/account-open';
-
-  // ---------- Utils ----------
+  // ---------- Helpers ----------
   const $  = (sel, root = document) => root.querySelector(sel);
   const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
   const lock = (el, yes) => { if (el) el.disabled = !!yes; };
@@ -20,33 +18,36 @@
     const box = $('#formStatus');
     if (!box) return;
     box.style.display = 'block';
-    box.className = 'card';      // keep site styling
+    box.className = 'card';
     box.textContent = msg || '';
   }
 
   function getTurnstileToken() {
     try {
-      return (window.turnstile && window.turnstile.getResponse)
-        ? (window.turnstile.getResponse() || '')
-        : '';
-    } catch { return ''; }
+      return (window.turnstile?.getResponse?.() || '');
+    } catch {
+      return '';
+    }
   }
 
-  // ---------- Main ----------
+  // ---------- DOM Ready ----------
   on(document, 'DOMContentLoaded', () => {
-    const form      = $('#accountOpenForm');
-    const bar       = $('#uploadBar');
+    const form = $('#accountOpenForm');
+    const bar  = $('#uploadBar');
     const submitBtn = $('#submitBtn');
     const draftBtn  = $('#saveDraftBtn');
 
-    if (!form) { console.warn('[MFC] #accountOpenForm not found'); return; }
+    if (!form) {
+      console.warn('[MFC] #accountOpenForm not found');
+      return;
+    }
 
-    // Ensure browser doesn't navigate away
+    // Disable browser-native navigation submit
     form.setAttribute('action', '');
     form.setAttribute('method', 'post');
     form.setAttribute('enctype', 'multipart/form-data');
 
-    // Save draft locally (no files, no visuals changed)
+    // Save draft locally (no files)
     on(draftBtn, 'click', () => {
       try {
         const data = new FormData(form);
@@ -55,15 +56,14 @@
         localStorage.setItem('mfc_account_open_draft', JSON.stringify(obj));
         alert('Draft saved locally.');
       } catch (e) {
-        console.warn('[MFC] Draft save failed:', e);
+        console.warn('Draft save failed:', e);
       }
     });
 
-    // Submit handler
+    // ---------- Submit ----------
     on(form, 'submit', async (e) => {
       e.preventDefault();
 
-      // Minimal client-side check (browser will enforce required too)
       const consent = $('#consentBox');
       if (consent && !consent.checked) {
         setStatus('Please confirm consent checkbox.', 'error');
@@ -72,7 +72,7 @@
 
       const fd = new FormData(form);
 
-      // Map alternate names → canonical (backend also handles both; this is extra-safe)
+      // Map alt field names → canonical
       if (!fd.get('fullName')) {
         const n = fd.get('authorized_person') || fd.get('authorised_person') || '';
         if (n) fd.set('fullName', n);
@@ -82,44 +82,44 @@
         if (c) fd.set('companyName', c);
       }
 
-      // Turnstile token if widget present
+      // Add Turnstile token if present
       const ts = getTurnstileToken();
       if (ts) fd.set('cf_turnstile_response', ts);
 
-      // UI feedback
       lock(submitBtn, true);
       setStatus('Submitting…', 'info');
       if (bar) bar.style.width = '40%';
 
       try {
-        const res = await fetch(API_BASE + ENDPOINT, { method: 'POST', body: fd });
-        if (bar) bar.style.width = '70%';
+        const res = await fetch(API + '/api/onboarding/account-open', {
+          method: 'POST',
+          body: fd
+        });
 
-        // Prefer JSON; fall back to text
-        let data = null, raw = '';
-        try { data = await res.json(); }
-        catch { raw = await res.text(); }
+        if (bar) bar.style.width = '70%';
+        const text = await res.text();
+        let data = {};
+        try { data = text ? JSON.parse(text) : {}; } catch { /* ignore */ }
 
         if (!res.ok) {
-          const msg = (data && (data.error || data.message)) || raw || `HTTP ${res.status}.`;
+          const msg = data.error || data.message || `HTTP ${res.status}`;
           setStatus('Could not submit: ' + msg, 'error');
-          if (bar) bar.style.width = '0%';
           lock(submitBtn, false);
+          if (bar) bar.style.width = '0%';
           return;
         }
 
-        // Expected: 202 Accepted with applicationId
-        const appId = (data && data.applicationId) ? data.applicationId : '';
+        // Success: backend returns 202 Accepted + applicationId
         if (bar) bar.style.width = '100%';
+        const appId = data.applicationId || '';
         setStatus('✅ Application received' + (appId ? ` · Reference: ${appId}` : ''), 'success');
 
-        // Redirect (keeps your current visuals/flow)
-        window.location.href = '/client-login.html?submitted=' + encodeURIComponent(appId || '');
+        window.location.href = '/client-login.html?submitted=' + encodeURIComponent(appId);
       } catch (err) {
         console.error('[MFC] submit error:', err);
-        setStatus('Network error submitting. Check API_BASE_URL in scripts/config.js.', 'error');
-        if (bar) bar.style.width = '0%';
+        setStatus('Network or server error. Check API_BASE_URL and backend health.', 'error');
         lock(submitBtn, false);
+        if (bar) bar.style.width = '0%';
       }
     });
   });
