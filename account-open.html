@@ -212,8 +212,12 @@
   </main>
 
   <script src="scripts/forms.js" defer></script>
- <!-- put these near the bottom, before your wire script runs -->
-<script src="/scripts/config.js?v=6"></script>
+<script>
+  window.__MFC_CONFIG = {
+    API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com'
+  };
+  window.__MFC_CONFIG__ = window.__MFC_CONFIG;
+</script>
 <script src="/scripts/account-open-wire.js?v=6" defer></script>
 <script src="/scripts/legal-footer.js?v=1" defer></script>
 <script src="/scripts/account-open-placeholders.js?v=1" defer></script>
