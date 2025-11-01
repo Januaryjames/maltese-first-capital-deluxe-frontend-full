@@ -1,17 +1,21 @@
-// scripts/account-open-wire.js  (v3)
-// - Works whether the button is type="button" or type="submit"
-// - Posts multipart FormData with Turnstile token
-// - Falls back from /account-open -> /submit when 404/405
-// - No visual changes
-
+// scripts/account-open-wire.js (v6)
+// Wires the Account Open form to your live backend.
+// - Works whether the button is type="button" or "submit"
+// - Uses native validation prompts
+// - Adds invisible Turnstile token
+// - Falls back from /account-open -> /submit if first route 404/405
+// - Normalizes file/text field names to match backend expectations
+//   Backend expects: passport, proofOfAddress, companyDocs, selfie
 (() => {
-  const CFG = (window.__MF_CONFIG || {});
+  const CFG = window.__MF_CONFIG || {};
   const BASE = (CFG.API_BASE_URL || "").replace(/\/+$/,"");
   const SITE_KEY = CFG.TURNSTILE_SITE_KEY || "";
+  const MAX = 16 * 1024 * 1024;
+  const OK = new Set(['application/pdf','image/jpeg','image/png','image/webp']);
 
   function log(...a){ try{console.log("[MFC]",...a);}catch{} }
 
-  // Load Turnstile only if needed
+  // --- Turnstile (invisible)
   function loadTurnstile(){
     return new Promise((resolve) => {
       if (window.turnstile) return resolve(window.turnstile);
@@ -22,7 +26,6 @@
       document.head.appendChild(s);
     });
   }
-
   async function getToken(hostEl){
     if (!SITE_KEY) return "";
     await loadTurnstile();
@@ -37,18 +40,67 @@
     });
   }
 
-  function pickForm(){
-    // Prefer explicit id if present, otherwise button.form, otherwise first form
-    const f1 = document.getElementById('accountOpenForm');
-    const btn = document.getElementById('submitBtn');
-    const f2 = btn && btn.form;
-    const f3 = document.querySelector('form');
-    return f1 || f2 || f3 || null;
+  // --- Helpers
+  function getForm(){
+    return document.getElementById('accountOpenForm') || document.querySelector('form');
+  }
+  function candidatesAround(form){
+    const sel = [
+      'button[type="submit"]','input[type="submit"]','#submitBtn',
+      'button[id*="submit" i]','button[name*="submit" i]',
+      '[role="button"][id*="submit" i]','a.button','a.btn','.btn-primary','.button-primary'
+    ].join(',');
+    const set = new Set();
+    form.querySelectorAll(sel).forEach(b => set.add(b));
+    form.parentElement?.querySelectorAll(sel).forEach(b => set.add(b));
+    return Array.from(set);
+  }
+  function setBusy(form, on){
+    candidatesAround(form).forEach(b => { b.disabled = !!on; b.setAttribute('aria-busy', on?'true':'false'); });
+  }
+  function invalidFilesMsg(form){
+    const inputs = form.querySelectorAll('input[type="file"]');
+    for (const inp of inputs) for (const f of (inp.files || [])) {
+      if (!OK.has(f.type)) return `Unsupported file: ${f.name || ''}. Use PDF/JPG/PNG/WEBP.`;
+      if (f.size > MAX) return `${f.name || 'A file'} exceeds 16MB.`;
+    }
+    return "";
   }
 
-  function setBusy(form, on){
-    const buttons = form.querySelectorAll('button, [type="submit"], [type="button"]');
-    buttons.forEach(b => { b.disabled = !!on; b.setAttribute('aria-busy', on?'true':'false'); });
+  // Map whatever your inputs are called to the canonical keys the backend accepts
+  function pickFiles(form, names){
+    const files = [];
+    names.forEach(n => form.querySelectorAll(`input[type="file"][name="${n}"]`))
+      .forEach(list => list.forEach(inp => (inp.files && files.push(...inp.files))));
+    return files;
+  }
+  function normalizeInto(fd, form){
+    // --- TEXT FIELDS (canonical: fullName, email, phone, companyName, country)
+    const textMap = [
+      { to:'fullName',      from:['fullName','authorisedPerson','authorizedPerson','name','contactName'] },
+      { to:'email',         from:['email','contactEmail'] },
+      { to:'phone',         from:['phone','mobile','tel'] },
+      { to:'companyName',   from:['companyName','company','accountName','corporateName'] },
+      { to:'country',       from:['country','nation'] }
+    ];
+    for (const m of textMap){
+      if (!fd.get(m.to)) {
+        for (const k of m.from){ const v = fd.get(k); if (v){ fd.set(m.to, v); break; } }
+      }
+    }
+
+    // --- FILE FIELDS
+    const addFiles = (key, names) => {
+      const chosen = pickFiles(form, names);
+      chosen.forEach(f => fd.append(key, f));
+    };
+    // backend keys
+    addFiles('companyDocs',     ['companyDocs','corporateDocs','corporateDocuments','companyDocuments','sourceFunds','sourceOfFunds','wealthEvidence']);
+    addFiles('passport',        ['passport','idDocument','authorizedPersonId','authorisedPersonId','authorisedId','id','identity']);
+    addFiles('proofOfAddress',  ['proofOfAddress','proofAddress','addressProof','utilityBill']);
+    addFiles('selfie',          ['selfie','selfieImage','face','faceImage']);
+
+    return fd;
   }
 
   async function postWithFallback(fd){
@@ -56,10 +108,10 @@
       `${BASE}/api/onboarding/account-open`,
       `${BASE}/api/onboarding/submit`
     ];
-    const tryPost = async (url) => {
-      const res = await fetch(url.replace(/([^:]\/)\/+/g,'$1'), { method: 'POST', body: fd });
-      const txt = await res.text();
-      let data = null; try { data = txt ? JSON.parse(txt) : null; } catch { data = { raw: txt }; }
+    const clean = (u) => u.replace(/([^:]\/)\/+/g,'$1');
+    const tryPost = async (u) => {
+      const res = await fetch(clean(u), { method: 'POST', body: fd });
+      const txt = await res.text(); let data=null; try{ data = txt ? JSON.parse(txt) : null; } catch { data={raw:txt}; }
       return { res, data };
     };
     const a = await tryPost(urls[0]);
@@ -67,36 +119,32 @@
     return await tryPost(urls[1]);
   }
 
-  function wire(){
-    const form = pickForm();
+  function bind(){
+    const form = getForm();
     if (!form || form.dataset.mfcWired === '1') return;
     form.dataset.mfcWired = '1';
-    log("account-open wired to", BASE || "(missing API_BASE_URL!)");
+    log("Account Open wired →", BASE || "(missing API_BASE_URL)");
 
-    const submitBtn = document.getElementById('submitBtn');
-
-    const MAX = 16 * 1024 * 1024;
-    const OK = new Set(['application/pdf','image/jpeg','image/png','image/webp']);
-    const invalidFiles = () => {
-      const inputs = form.querySelectorAll('input[type="file"]');
-      for (const inp of inputs) for (const f of (inp.files || [])) {
-        if (!OK.has(f.type) || f.size > MAX) return `${f.name || 'file'} must be PDF/JPG/PNG/WEBP ≤ 16MB`;
-      }
-      return "";
-    };
-
-    const handleSubmit = async (e) => {
+    const handle = async (e) => {
       if (e) { e.preventDefault(); e.stopPropagation(); }
-      if (!BASE) return alert('Setup issue: API host not set. Please publish scripts/config.js');
 
-      const bad = invalidFiles();
+      if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
+        form.reportValidity?.();
+        return;
+      }
+      if (!BASE) return alert('Setup: API host not set. Publish scripts/config.js');
+
+      const bad = invalidFilesMsg(form);
       if (bad) return alert(bad);
 
       try {
         setBusy(form, true);
-        const fd = new FormData(form);
 
-        // Add Turnstile token using both field names (backend accepts either)
+        // Build FormData and normalize names the backend expects
+        let fd = new FormData(form);
+        fd = normalizeInto(fd, form);
+
+        // Turnstile token (both field names, backend accepts either)
         const token = await getToken(form);
         if (token) {
           fd.set('cf_turnstile_response', token);
@@ -107,37 +155,31 @@
 
         if (!res.ok) {
           const msg = (data && (data.error || data.message)) || `Submit failed (${res.status})`;
-          if (res.status === 404) return alert('Submit failed (404). Check API_BASE_URL or redeploy backend.');
-          if (res.status === 400 && /captcha/i.test(msg)) return alert('Captcha verification failed. Set TURNSTILE_SECRET on backend.');
-          if (res.status === 413) return alert('One or more files exceed 16MB. Reduce size and try again.');
+          if (res.status === 404) return alert('Submit failed (404). Check API_BASE_URL or backend route.');
+          if (res.status === 400 && /captcha/i.test(msg)) return alert('Captcha failed. Set TURNSTILE_SECRET on backend.');
+          if (res.status === 413) return alert('One or more files exceed 16MB. Reduce size.');
           if (res.status === 415) return alert('Unsupported file type. Use PDF/JPG/PNG/WEBP.');
           return alert(msg);
         }
 
-        alert(`Application received. Reference: ${data?.applicationId || data?.id || 'OK'}`);
-        try { form.reset(); } catch {}
+        alert(`Application received. Reference: ${data?.applicationId || 'OK'}`);
+        form.reset?.();
       } catch (err) {
         console.error('[MFC] submit error', err);
-        alert('Network error submitting form. Check API_BASE_URL in scripts/config.js and try again.');
+        alert('Network error submitting. Check API_BASE_URL in scripts/config.js.');
       } finally {
         setBusy(form, false);
       }
     };
 
-    // 1) Intercept form submits (works for <button type="submit"> and Enter key)
-    form.addEventListener('submit', handleSubmit, { capture: true });
-
-    // 2) ALSO catch explicit button clicks if the button is type="button"
-    if (submitBtn) {
-      submitBtn.addEventListener('click', (e) => {
-        // Some designs use anchors styled as buttons; prevent stray navigation
-        e.preventDefault();
-        handleSubmit(e);
-      }, { capture: true });
-    }
+    // Bind submit + common clicks (covers type="button" and anchor-buttons)
+    form.addEventListener('submit', handle, { capture: true });
+    candidatesAround(form).forEach(btn => {
+      btn.addEventListener('click', (e) => { e.preventDefault(); handle(e); }, { capture: true });
+    });
   }
 
   (document.readyState === 'loading')
-    ? document.addEventListener('DOMContentLoaded', wire)
-    : wire();
+    ? document.addEventListener('DOMContentLoaded', bind)
+    : bind();
 })();
