@@ -83,7 +83,13 @@
 
     <div id="formStatus" class="card" style="display:none;"></div>
 
-    <form id="accountOpenForm" class="card" enctype="multipart/form-data" novalidate>
+    <!-- #3 applied: action + method added; no visual changes -->
+    <form id="accountOpenForm"
+          class="card"
+          action="https://maltese-first-capital-deluxe-backend.onrender.com/api/onboarding/account-open"
+          method="post"
+          enctype="multipart/form-data"
+          novalidate>
       <h2>Client Information</h2>
 
       <div class="row">
@@ -209,9 +215,9 @@
 
   <script src="scripts/forms.js" defer></script>
   <script src="/scripts/config.js?v=2"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-<script src="/scripts/account-open-wire.js?v=2" defer></script>
-<script src="/scripts/legal-footer.js?v=1" defer></script>
-<script src="/scripts/account-open-placeholders.js" defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="/scripts/account-open-wire.js?v=2" defer></script>
+  <script src="/scripts/legal-footer.js?v=1" defer></script>
+  <script src="/scripts/account-open-placeholders.js" defer></script>
 </body>
 </html>
