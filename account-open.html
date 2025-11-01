@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Open an Account — Maltese First Capital</title>
 
+  <!-- Allow Turnstile + backend (fixes the red CSP errors) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' https://challenges.cloudflare.com;
+                 frame-src  'self' https://challenges.cloudflare.com;
+                 connect-src 'self' https://maltese-first-capital-deluxe-backend.onrender.com;
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline'">
+
   <!-- Favicon (keep your existing path) -->
   <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-crest.png">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/logo-crest.png">
@@ -26,7 +35,6 @@
     .nav-links a{color:#e9eef8;text-decoration:none;padding:8px 12px;border-radius:10px}
     .nav-links a.active,.nav-links a:hover{background:rgba(255,255,255,.08)}
     .nav-actions{display:flex;gap:10px}
-    /* Reusable nav-sized buttons (used for camera + submit/draft) */
     .btn-nav{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:12px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.12);color:#e9eef8;background:rgba(255,255,255,.06)}
     .btn-nav[disabled]{opacity:.6;cursor:not-allowed}
     .btn-gold{border-color:rgba(212,175,55,.35)!important;background:linear-gradient(180deg,#d4af37 0%,#b4912b 100%)!important;color:#111!important;box-shadow:0 10px 24px rgba(212,175,55,.25)}
@@ -83,7 +91,7 @@
 
     <div id="formStatus" class="card" style="display:none;"></div>
 
-    <!-- #3 applied: action + method added; no visual changes -->
+    <!-- wired to live API; no visual change -->
     <form id="accountOpenForm"
           class="card"
           action="https://maltese-first-capital-deluxe-backend.onrender.com/api/onboarding/account-open"
@@ -200,7 +208,6 @@
 
       <div class="progress" aria-hidden="true"><span id="uploadBar"></span></div>
 
-      <!-- Now using nav-sized buttons -->
       <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
         <button id="submitBtn" class="btn-nav btn-gold" type="submit">Submit Application</button>
         <button id="saveDraftBtn" class="btn-nav btn-dark" type="button">Save Draft (local)</button>
@@ -215,8 +222,8 @@
 
   <script src="scripts/forms.js" defer></script>
   <script src="/scripts/config.js?v=8"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-<script src="/scripts/account-open-wire.js?v=8" defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="/scripts/account-open-wire.js?v=8" defer></script>
   <script src="/scripts/legal-footer.js?v=1" defer></script>
   <script src="/scripts/account-open-placeholders.js" defer></script>
 </body>
