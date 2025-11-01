@@ -1,4 +1,7 @@
-// scripts/config.js — the ONLY thing this file needs to export
+// scripts/config.js — Maltese First Capital Global Config
+// Define global config BEFORE any wire scripts.
+
 window.__MFC_CONFIG = {
-  API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com' // no trailing slash
+  // 🔗 Backend API base URL — no trailing slash
+  API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com'
 };
