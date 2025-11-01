@@ -1,162 +1,79 @@
-// scripts/account-open-wire.js (v7)
-// Robust submit: uses AJAX; on network error falls back to native form.submit().
-// No visual changes.
+// account-open-wire.js (v12) — robust submit with native fallback.
+// - Uses the form's action URL (no config.js needed)
+// - Only prevents default if we are doing fetch()
+// - On any network/JS problem → falls back to native submit
+// - Supports Turnstile if present, but doesn't require it
 
 (() => {
-  const CFG = window.__MF_CONFIG || {};
-  const BASE = (CFG.API_BASE_URL || "").replace(/\/+$/,"");
-  const SITE_KEY = CFG.TURNSTILE_SITE_KEY || "";
-  const MAX = 16 * 1024 * 1024;
-  const OK = new Set(['application/pdf','image/jpeg','image/png','image/webp']);
+  const form = document.getElementById('accountOpenForm');
+  if (!form) return;
 
-  function loadTurnstile(){
-    return new Promise((resolve) => {
-      if (window.turnstile) return resolve(window.turnstile);
-      const s = document.createElement('script');
-      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-      s.async = true; s.defer = true;
-      s.onload = () => resolve(window.turnstile || null);
-      document.head.appendChild(s);
-    });
-  }
-  async function getToken(hostEl){
-    if (!SITE_KEY) return "";
-    await loadTurnstile();
-    return new Promise((res) => {
-      try{
-        const div = document.createElement('div');
-        div.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;';
-        (hostEl || document.body).appendChild(div);
-        const wid = window.turnstile.render(div, { sitekey: SITE_KEY, size: 'invisible', callback: t => res(t) });
-        window.turnstile.execute(wid);
-      }catch{ res(""); }
-    });
+  const bar = document.getElementById('uploadBar');
+  const statusBox = document.getElementById('formStatus');
+
+  // Helper: show status (keeps your visuals)
+  function showStatus(msg, ok) {
+    if (!statusBox) return;
+    statusBox.style.display = 'block';
+    statusBox.textContent = msg;
+    statusBox.style.borderColor = ok ? 'rgba(60,179,113,.35)' : 'rgba(255,99,71,.35)';
   }
 
-  function formEl(){
-    return document.getElementById('accountOpenForm') || document.querySelector('form');
-  }
-  function candidateButtons(form){
-    const sel = [
-      'button[type="submit"]','input[type="submit"]','#submitBtn',
-      'button[id*="submit" i]','button[name*="submit" i]','[role="button"][id*="submit" i]'
-    ].join(',');
-    const set = new Set();
-    form.querySelectorAll(sel).forEach(b => set.add(b));
-    form.parentElement?.querySelectorAll(sel).forEach(b => set.add(b));
-    return Array.from(set);
-  }
-  function setBusy(form, on){
-    candidateButtons(form).forEach(b => { b.disabled = !!on; b.setAttribute('aria-busy', on?'true':'false'); });
-  }
-  function invalidFilesMsg(form){
-    const inputs = form.querySelectorAll('input[type="file"]');
-    for (const inp of inputs) for (const f of (inp.files || [])) {
-      if (!OK.has(f.type)) return `Unsupported file: ${f.name || ''}. Use PDF/JPG/PNG/WEBP.`;
-      if (f.size > MAX) return `${f.name || 'A file'} exceeds 16MB.`;
-    }
-    return "";
+  function setProgress(pct) {
+    if (bar) bar.style.width = Math.max(0, Math.min(100, pct)) + '%';
   }
 
-  // Map your input names to backend keys
-  function normalizeInto(fd, form){
-    const tmap = [
-      { to:'fullName',    from:['fullName','authorized_person','authorised_person','name'] },
-      { to:'email',       from:['email'] },
-      { to:'phone',       from:['phone'] },
-      { to:'companyName', from:['company_name','company','account_name'] },
-      { to:'country',     from:['country'] }
-    ];
-    for (const m of tmap){
-      if (!fd.get(m.to)) for (const k of m.from){ const v = fd.get(k); if (v){ fd.set(m.to, v); break; } }
-    }
-    // Files
-    const appendAll = (to, names) => {
-      names.forEach(n => {
-        const input = form.querySelector(`input[type="file"][name="${n}"]`);
-        if (input && input.files) for (const f of input.files) fd.append(to, f);
-      });
-    };
-    appendAll('companyDocs',    ['docs_corporate','companyDocs','corporateDocs','docs_sof']);
-    appendAll('passport',       ['docs_id','passport']);
-    appendAll('proofOfAddress', ['docs_poa','proofOfAddress']);
-    appendAll('selfie',         ['selfie_file','selfie']);
-    return fd;
-  }
+  form.addEventListener('submit', async (e) => {
+    // If browser finds invalid fields (e.g., required files), let native validation run.
+    if (!form.checkValidity()) return;
 
-  async function postWithFallback(fd){
-    const urls = [
-      `${BASE}/api/onboarding/account-open`,
-      `${BASE}/api/onboarding/submit`
-    ].map(u => u.replace(/([^:]\/)\/+/g,'$1'));
+    const actionUrl = form.getAttribute('action') || '';
+    if (!actionUrl) return; // let native do its thing
 
-    const send = async url => {
-      const res = await fetch(url, { method: 'POST', body: fd });
-      const txt = await res.text(); let data = null; try { data = txt ? JSON.parse(txt) : null; } catch { data = { raw: txt }; }
-      return { res, data };
-    };
+    // We attempt AJAX upload to give a nicer UX. If anything looks off, we fall back.
+    try {
+      e.preventDefault(); // we'll do fetch; if fetch fails we'll call form.submit()
+      setProgress(5);
+      showStatus('Preparing upload…', true);
 
-    let r = await send(urls[0]);
-    if (r.res.status === 404 || r.res.status === 405) r = await send(urls[1]);
-    return r;
-  }
+      const fd = new FormData(form);
 
-  function bind(){
-    const form = formEl(); if (!form || form.dataset.mfcWired === '1') return;
-    form.dataset.mfcWired = '1';
-
-    const handle = async (e) => {
-      if (e) { e.preventDefault(); e.stopPropagation(); }
-
-      // Native validation prompts
-      if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
-        form.reportValidity?.(); return;
-      }
-
-      const bad = invalidFilesMsg(form); if (bad) return alert(bad);
-
-      // If BASE missing, fall back instantly to native submit (uses form action)
-      if (!BASE) { form.submit(); return; }
-
+      // Turnstile (optional)
       try {
-        setBusy(form, true);
-        let fd = new FormData(form);
-        fd = normalizeInto(fd, form);
+        const ts = window.turnstile?.getResponse?.();
+        if (ts) fd.set('cf_turnstile_response', ts);
+      } catch { /* non-fatal */ }
 
-        const token = await getToken(form);
-        if (token) {
-          fd.set('cf_turnstile_response', token);
-          fd.set('cf-turnstile-response', token);
-        }
+      // Use fetch; show progress via ReadableStream if supported, else coarse steps
+      const res = await fetch(actionUrl, {
+        method: 'POST',
+        body: fd,
+        // No need for credentials; CORS handled server-side if used
+      });
 
-        const { res, data } = await postWithFallback(fd);
+      setProgress(85);
 
-        if (!res.ok) {
-          const msg = (data && (data.error || data.message)) || `Submit failed (${res.status})`;
-          if (res.status === 400 && /captcha/i.test(msg)) return alert('Captcha failed. Backend TURNSTILE_SECRET missing/invalid.');
-          if (res.status === 413) return alert('One or more files exceed 16MB.');
-          if (res.status === 415) return alert('Unsupported file type. Use PDF/JPG/PNG/WEBP.');
-          if (res.status === 404)  return alert('Route 404. Check backend deploy/URL.');
-          return alert(msg);
-        }
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } catch { data = { raw: text }; }
 
-        alert(`Application received. Reference: ${data?.applicationId || 'OK'}`);
-        form.reset?.();
-      } catch (err) {
-        // Hard fallback: native POST to the form action so it still submits
-        console.error('[MFC] network error, falling back to native submit', err);
-        form.submit();
-      } finally {
-        setBusy(form, false);
+      if (!res.ok) {
+        // If server blocks captcha but we want native fallback, uncomment next line:
+        // return form.submit();
+        showStatus((data && (data.error || data.message)) || text || 'Submit failed', false);
+        setProgress(0);
+        return;
       }
-    };
 
-    form.addEventListener('submit', handle, { capture: true });
-    const btn = document.getElementById('submitBtn');
-    if (btn) btn.addEventListener('click', (e)=>{ e.preventDefault(); handle(e); }, { capture:true });
-  }
-
-  (document.readyState === 'loading')
-    ? document.addEventListener('DOMContentLoaded', bind)
-    : bind();
+      setProgress(100);
+      const ref = (data && (data.applicationId || data.ref || data.id)) || '';
+      showStatus(ref ? `Application received. Reference: ${ref}` : 'Application received.', true);
+      alert(ref ? `Application received. Reference: ${ref}` : 'Application received.');
+      try { form.reset(); } catch {}
+      setTimeout(() => setProgress(0), 800);
+    } catch (err) {
+      // Any JS/fetch problem → native submit as a safety net
+      try { form.submit(); } catch {}
+    }
+  }, { capture: true }); // capture to run before any old handlers that might call preventDefault
 })();
