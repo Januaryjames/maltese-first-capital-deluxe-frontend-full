@@ -7,150 +7,88 @@
   <link rel="icon" href="/assets/logo-crest.png">
   <link rel="stylesheet" href="/styles.css" />
   <style>
-    :root{
-      --bg:#0b0f16; --ink:#0b1020; --text:#e9eef8; --muted:#99a8bf;
-      --card:#0f1622; --line:#e6e8ec; --brand:#d4af37;
-    }
-    html,body{margin:0;background:var(--bg);color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
-
-    .nav{position:sticky;top:0;z-index:1000;background:#fff;color:#0b1020;border-bottom:1px solid var(--line);box-shadow:0 4px 16px rgba(12,16,24,.06)}
-    .nav-inner{max-width:1160px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px}
-    .brand{display:flex;align-items:center;gap:12px;color:#0b1020;text-decoration:none;font-weight:800}
-    .brand img{width:44px;height:44px;border-radius:10px;object-fit:contain}
-    .brand span{font-size:18px;letter-spacing:.2px}
-    @media (max-width:520px){ .brand img{width:36px;height:36px} .brand span{font-size:16px} }
-    .nav-spacer{flex:1}
-
-    .wrap{max-width:1160px;margin:0 auto;padding:22px}
-    .center{max-width:640px;margin:32px auto}
-    .card{background:radial-gradient(1000px 50px at 50% -20px,rgba(212,175,55,.12),transparent 60%), #0f1622;
-      border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    h1{margin:0 0 8px;font-size:22px}
-    .k{color:var(--muted)}
-
-    label{display:block;margin:12px 0 6px;color:#cfd9ea;font-size:14px}
-    .input-wrap{position:relative}
-    input{
-      width:100%;padding:14px 12px;border-radius:12px;border:1px solid #263246;background:#0e1521;color:var(--text);outline:none}
-    input:focus{border-color:#35507a;box-shadow:0 0 0 3px rgba(53,80,122,.25)}
-    .eye{
-      position:absolute;right:8px;top:50%;transform:translateY(-50%);
-      background:transparent;border:0;color:#cfd9ea;cursor:pointer;padding:6px;border-radius:8px
-    }
-    .btn{width:100%;margin-top:14px;padding:12px 14px;border-radius:12px;border:1px solid #7f6720;
-      color:#141820;cursor:pointer;font-weight:800;background:linear-gradient(180deg,#f0d470,#cdaa2f)}
-    .btn[disabled]{opacity:.6;cursor:not-allowed}
-    .msg{margin-top:12px;font-size:14px}
-    .msg.error{color:#ff9d9d}.msg.ok{color:#9bf3b3}
-
-    .row{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:10px}
-    .link{color:#e3e9f6;text-decoration:none;opacity:.9}
-    .link:hover{opacity:1;text-decoration:underline}
+    :root { --bg:#0b0f16; --text:#0b0f16; --card:#ffffff; --muted:#6b7280; --gold:#d4af37; }
+    html,body{background:#0b0f16;margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
+    .wrap{max-width:420px;margin:0 auto;padding:24px}
+    .nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb}
+    .nav-inner{max-width:1160px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:10px}
+    .brand{display:flex;align-items:center;gap:10px;color:#0b0f16;text-decoration:none}
+    .brand img{width:44px;height:44px;border-radius:10px;object-fit:contain;background:#0d131b}
+    .brand b{letter-spacing:.3px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px;margin-top:24px;color:#0b0f16}
+    label{display:block;font-size:.95rem;margin:10px 0 6px;color:#111827}
+    input[type="email"],input[type="password"]{width:100%;padding:12px;border:1px solid #e5e7eb;border-radius:12px;outline:none}
+    .row{display:flex;align-items:center;gap:8px;margin-top:8px}
+    .btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;width:100%;padding:12px;border-radius:12px;border:1px solid #b38f2e;background:linear-gradient(180deg,#d4af37,#b4912b);color:#111;font-weight:700;margin-top:12px;cursor:pointer}
+    .muted{color:#6b7280;font-size:.9rem}
+    .link{color:#0b66ff;text-decoration:none}
+    .err{background:#fff1f2;border:1px solid #fecdd3;color:#7f1d1d;padding:10px;border-radius:12px;margin-bottom:12px;display:none}
   </style>
 </head>
 <body>
-  <nav class="nav">
+  <div class="nav">
     <div class="nav-inner">
-      <a class="brand" href="/index.html">
-        <img src="/assets/logo-crest.png" alt="">
-        <span>Maltese First Capital</span>
-      </a>
-      <div class="nav-spacer"></div>
-    </div>
-  </nav>
-
-  <div class="wrap">
-    <div class="center">
-      <div class="card">
-        <h1>Client Login</h1>
-        <div class="k">Sign in to view your accounts and recent transactions.</div>
-
-        <form id="loginForm" novalidate>
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" autocomplete="username" required placeholder="you@company.com" />
-
-          <label for="password">Password</label>
-          <div class="input-wrap">
-            <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
-            <button class="eye" type="button" id="togglePw" aria-label="Show password">👁</button>
-          </div>
-
-          <button id="submitBtn" class="btn" type="submit">Sign in</button>
-          <div id="formMsg" class="msg" role="status" aria-live="polite"></div>
-
-          <div class="row">
-            <a class="link" href="/client-password.html">Change password</a>
-            <a class="link" href="/client-dashboard.html">Go to dashboard</a>
-          </div>
-        </form>
-      </div>
+      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
     </div>
   </div>
 
-  <!-- Mock auth (same store as dashboard) -->
+  <div class="wrap">
+    <section class="card">
+      <h2 style="margin:0 0 8px">Client Login</h2>
+      <p class="muted" style="margin:0 0 12px">Enter your email and password to access your account.</p>
+
+      <div id="errBox" class="err"></div>
+
+      <label>Email</label>
+      <input id="email" type="email" placeholder="you@company.com" autocomplete="username" required>
+
+      <label>Password</label>
+      <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+
+      <div class="row">
+        <input id="showPwd" type="checkbox" aria-label="Show password">
+        <span class="muted">Show password</span>
+      </div>
+
+      <button id="loginBtn" class="btn" type="button">Sign in</button>
+
+      <p class="muted" style="margin-top:12px">
+        Forgot or want to change it? <a class="link" href="/client-password.html">Change password</a>
+      </p>
+    </section>
+  </div>
+
+  <!-- Shared client store -->
+  <script src="/scripts/mock-store.js?v=1"></script>
+
+  <!-- Page logic -->
   <script>
-  (function(){
-    window.MFC_MOCK = window.MFC_MOCK || {
-      ALLOW_ANY_PASSWORD:false,
-      SESSION_HOURS:24,
-      USERS:{
-        "bejadbn1122@gmail.com":{
-          password:"MFC#Bejad2025!",
-          name:"Bejad Bandoor A. Alharbi",
-          authorisedPerson:"Bejadbn1122",
-          holder:"Nab’ al-Khayrat For Trading",
-          account:{ accountNo:"91550872", status:"active", currency:"USD", balance:0, lines:[] }
-        }
-      }
-    };
-    const CFG=window.MFC_MOCK, now=()=>Date.now(), b64=s=>btoa(s);
-    function save(email){const exp=now()+(CFG.SESSION_HOURS||24)*3600*1000;const t=b64(JSON.stringify({email,exp}));localStorage.setItem("mfc_token",t);return t;}
-    function get(email){return (CFG.USERS||{})[String(email||"").toLowerCase()];}
+    (()=>{
+      const $ = s => document.querySelector(s);
+      const err = msg => { const b=$('#errBox'); if(!b) return; b.textContent=msg||''; b.style.display=msg?'block':'none'; };
 
-    window.MFC_AUTH = window.MFC_AUTH || {};
-    window.MFC_AUTH.login = async function(email, password){
-      const u = get(email);
-      if(!u) return {ok:false,error:"Invalid credentials"};
-      if(CFG.ALLOW_ANY_PASSWORD || String(password)===String(u.password)){
-        const token = save(email);
-        return {ok:true, token};
-      }
-      return {ok:false,error:"Invalid credentials"};
-    };
-    window.MFC_AUTH.logout = function(){ localStorage.removeItem("mfc_token"); };
-  })();
-  </script>
+      $('#showPwd').addEventListener('change', (e)=>{
+        const f = $('#password'); if(!f) return;
+        f.type = e.target.checked ? 'text' : 'password';
+      });
 
-  <!-- Wire -->
-  <script>
-  (function(){
-    const $=(s)=>document.querySelector(s);
-    const qs=new URLSearchParams(location.search);
-    const next=qs.get("next")||"/client-dashboard.html";
+      $('#loginBtn').addEventListener('click', ()=>{
+        err('');
+        const email = ($('#email').value || '').trim().toLowerCase();
+        const pass  = $('#password').value || '';
 
-    const emailEl=$("#email"), passEl=$("#password"), btn=$("#submitBtn"), msg=$("#formMsg");
-    const toggle=$("#togglePw");
-    if(!emailEl.value) emailEl.value="bejadbn1122@gmail.com";
+        const store = window.MFC_MOCK || {};
+        const user  = store.USERS?.[email];
 
-    toggle.addEventListener("click",()=>{
-      const t = passEl.getAttribute("type")==="password" ? "text" : "password";
-      passEl.setAttribute("type", t);
-      toggle.textContent = t==="password" ? "👁" : "🙈";
-      toggle.setAttribute("aria-label", t==="password"?"Show password":"Hide password");
-    });
+        if (!user) return err('No account found for that email.');
+        if (!store.ALLOW_ANY_PASSWORD && user.password !== pass) return err('Incorrect password.');
 
-    function say(text, ok=false){ msg.textContent=text||""; msg.className="msg "+(ok?"ok":"error"); }
+        const exp = Date.now() + ((store.SESSION_HOURS||24) * 3600 * 1000);
+        localStorage.mfc_token = JSON.stringify({ email, exp });
 
-    document.getElementById("loginForm").addEventListener("submit", async (e)=>{
-      e.preventDefault(); say(""); btn.disabled=true; btn.textContent="Signing in…";
-      try{
-        const r = await window.MFC_AUTH.login(emailEl.value.trim(), passEl.value);
-        if(!r.ok){ say("Login failed — "+(r.error||"check your details")); btn.disabled=false; btn.textContent="Sign in"; return; }
-        location.href = next;
-      }catch(err){ console.error(err); say("Something went wrong. Please try again."); btn.disabled=false; btn.textContent="Sign in"; }
-    });
-  })();
+        location.href = '/client-dashboard.html';
+      });
+    })();
   </script>
 </body>
 </html>
