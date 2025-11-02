@@ -1,64 +1,55 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Client Dashboard — Maltese First Capital</title>
-  <meta name="description" content="Maltese First Capital — Private & Wealth Banking in Malta.">
-  <meta name="theme-color" content="#0e1621">
-  <link rel="preload" as="image" href="assets/hero-bg.jpg?v=16">
-  <link rel="icon" href="assets/logo-crest.png">
-  <link rel="stylesheet" href="styles.css?v=16">
-  <script defer src="scripts/nav.js?v=16"></script>
+  <!-- keep your existing CSS includes here (no visual changes) -->
 </head>
 <body>
-<header class="site-header">
-  <div class="container nav-wrap">
-    <a class="brand" href="index.html">
-      <img class="brand-crest" src="assets/logo-crest.png" alt="Maltese First Capital crest" width="36" height="36">
-      <span class="brand-name">Maltese First Capital</span>
-    </a>
-    <nav class="main-nav" aria-label="Main">
-      <a href="private-banking.html">Private Banking</a>
-      <a href="wealth-management.html">Wealth Management</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <div class="nav-cta">
-      <a class="btn ghost" href="client-login.html">Client Login</a>
-      <a class="btn gold" href="admin-login.html">Admin Portal</a>
+  <!-- If you already have a site header/nav, keep it. -->
+  <main style="max-width:1000px;margin:32px auto;padding:0 16px;">
+    <!-- Success banner (shown after account-open redirect with ?submitted=ID) -->
+    <div id="submittedBanner" class="card" style="display:none;margin-bottom:16px;padding:12px;border-left:4px solid #4caf50;">
+      <strong>Application received.</strong>
+      <span id="submittedRef" class="muted" style="margin-left:6px;"></span>
     </div>
-  </div>
-</header>
 
-<section class="hero">
-  <div class="hero-bg" role="img" aria-label="Valletta waterfront backdrop"></div>
-  <div class="hero-inner container">
-    <img class="hero-crest" src="assets/logo-crest.png" alt="Maltese First crest" loading="eager" width="120" height="120">
-    <h1>Welcome</h1>
-    <p class="sub">Your accounts will appear below once assigned.</p>
-    <div class="hero-actions">
-      <a class="btn gold big" href="account-open.html">Open an Account</a>
-    </div>
-  </div>
-</section>
+    <section class="card" style="padding:18px;border-radius:14px;">
+      <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <h2 style="margin:0;">Accounts
+          <small id="clientName" class="muted" style="font-weight:400;opacity:.75;margin-left:6px;"></small>
+        </h2>
+        <button type="button" onclick="MFC.logout()">Log out</button>
+      </header>
 
-<section class="slice">
-  <div class="container">
-    <div class="card">
-      <h4>Accounts</h4>
-      <p>Your accounts will appear here once assigned.</p>
-    </div>
-  </div>
-</section>
+      <div id="accountsList">
+        <div class="muted">Loading…</div>
+      </div>
+    </section>
+  </main>
 
-<footer class="site-footer">
-  <div class="container foot-grid">
-    <p>© 2025 Maltese First Capital. All rights reserved.</p>
-    <p>The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-  </div>
-</footer>
-<script>document.documentElement.classList.remove('nojs');</script>
+  <!-- Config + wiring (order matters) -->
+  <script src="/scripts/config.js"></script>
+  <script src="/scripts/auth-wire.js" defer></script>
+  <script src="/scripts/client-dashboard-wire.js" defer></script>
+
+  <!-- Tiny helper to show the post-submission banner if present -->
+  <script>
+    (function(){
+      const id = new URLSearchParams(location.search).get('submitted');
+      if (!id) return;
+      const banner = document.getElementById('submittedBanner');
+      const ref    = document.getElementById('submittedRef');
+      if (banner) {
+        banner.style.display = 'block';
+        if (ref) ref.textContent = 'Reference: ' + id;
+        // clean URL after showing
+        const u = new URL(location.href);
+        u.searchParams.delete('submitted');
+        history.replaceState({}, '', u.toString());
+      }
+    })();
+  </script>
 </body>
 </html>
