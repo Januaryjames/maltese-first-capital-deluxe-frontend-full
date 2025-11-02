@@ -4,47 +4,63 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Client Dashboard — Maltese First Capital</title>
-  <link rel="icon" href="/assets/logo-crest.png">
+  <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="stylesheet" href="/styles.css" />
+
+  <!-- Client-only header + page styles (scoped) -->
   <style>
     :root { --bg:#0b0f16; --card:#101722; --text:#e9eef8; --muted:#9eb0c7; --gold:#d4af37; --ok:#1db954; }
-    html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
-    .nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb}
-    .nav-inner{max-width:1160px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:10px}
-    .brand{display:flex;align-items:center;gap:10px;color:#0b0f16;text-decoration:none}
-    .brand img{width:44px;height:44px;border-radius:10px;object-fit:contain;background:#0d131b}
-    .brand b{letter-spacing:.3px}
-    .logout{margin-left:auto;color:#0b0f16;text-decoration:none}
-    .wrap{max-width:1160px;margin:0 auto;padding:20px}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
-    @media (min-width:980px){ .grid{grid-template-columns:1.1fr .9fr} }
-    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:18px}
-    .k{color:var(--muted);font-size:13px}
-    .v{font-weight:600}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;background:#0d131b}
-    .pill.ok{border-color:#224b36}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left}
-    th{color:var(--muted);font-weight:600}
-    .amt{white-space:nowrap}
-    .pos{color:#9bf3b3} .neg{color:#ff9d9d}
+    html,body{ background:var(--bg); color:var(--text); margin:0; font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif; }
+    .cl-wrap{ max-width:1160px; margin:0 auto; padding:16px 20px 48px; }
+
+    /* White header — only on client pages */
+    .client-header{
+      background:#fff; color:#111;
+      border-bottom:1px solid #e8edf3;
+      padding:14px 20px;
+    }
+    .client-header .brand{ display:inline-flex; align-items:center; gap:10px; text-decoration:none; }
+    .client-header .brand b{ color:#111; font-weight:600; letter-spacing:.2px; }
+    .client-header .brand-logo{
+      width:44px; height:44px; object-fit:contain; display:inline-block;
+      background:transparent; filter:none !important; -webkit-filter:none !important; mix-blend-mode:normal !important;
+    }
+    .client-header .logout{ float:right; color:#334155; font-size:14px; text-decoration:none; margin-top:10px; }
+
+    .cl-grid{ display:grid; grid-template-columns:1fr; gap:16px; margin-top:18px; }
+    @media (min-width:980px){ .cl-grid{ grid-template-columns:1.1fr .9fr; } }
+
+    .cl-card{ background:var(--card); border:1px solid rgba(212,175,55,.18); border-radius:16px; padding:18px; }
+    .k{ color:var(--muted); font-size:13px; }
+    .v{ font-weight:600; }
+    .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+    .pill{ display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(255,255,255,.12); padding:6px 10px; border-radius:999px; background:#0d131b; }
+    .pill.ok{ border-color:#224b36; color:#bff0c8; }
+
+    table{ width:100%; border-collapse:collapse; }
+    th,td{ padding:10px; border-bottom:1px solid rgba(255,255,255,.06); text-align:left; }
+    th{ color:var(--muted); font-weight:600; }
+    .amt{ white-space:nowrap; }
+    .pos{ color:#9bf3b3 } .neg{ color:#ff9d9d }
   </style>
 </head>
 <body>
-  <div class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
+  <header class="client-header">
+    <div class="cl-wrap" style="padding-bottom:0">
+      <a class="brand" href="/index.html">
+        <img class="brand-logo" src="/assets/logo-crest.png" alt="Maltese First Capital" />
+        <b>Maltese First Capital</b>
+      </a>
       <a class="logout" href="#" id="logoutLink">Logout</a>
     </div>
-  </div>
+  </header>
 
-  <div class="wrap">
-    <div class="grid">
-      <!-- Left: Account overview -->
-      <section class="card">
+  <main class="cl-wrap">
+    <div class="cl-grid">
+      <!-- Overview -->
+      <section class="cl-card">
         <h2 style="margin:0 0 10px">Account Overview</h2>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px">
           <div>
             <div class="k">Account Holder</div>
             <div class="v" id="holderName">—</div>
@@ -59,7 +75,7 @@
           </div>
           <div>
             <div class="k">Status</div>
-            <div class="pill ok" id="acctStatus">Active</div>
+            <div class="pill ok" id="acctStatus">active</div>
           </div>
           <div>
             <div class="k">Currency</div>
@@ -72,32 +88,21 @@
         </div>
       </section>
 
-      <!-- Right: Transactions -->
-      <section class="card">
+      <!-- Transactions -->
+      <section class="cl-card">
         <h2 style="margin:0 0 10px">Recent Transactions</h2>
-        <div id="txBox">
-          <div class="k">Loading…</div>
-        </div>
+        <div id="txBox"><div class="k">Loading…</div></div>
       </section>
     </div>
-  </div>
+  </main>
 
-  <!-- Shared client store -->
+  <!-- Your local mock data (do not rename path) -->
   <script src="/scripts/mock-store.js?v=1"></script>
 
-  <!-- Page logic -->
   <script>
     (()=>{
       const $ = (s,r=document)=>r.querySelector(s);
       const fmtMoney = (n,c='USD') => (typeof n==='number' ? n.toLocaleString(undefined,{style:'currency',currency:c}) : '—');
-
-      function getSession(){
-        try{ const raw = localStorage.mfc_token; if(!raw) return null; const t = JSON.parse(raw);
-          if (!t.email || !t.exp) return null;
-          if (Date.now() > t.exp) { localStorage.removeItem('mfc_token'); return null; }
-          return t;
-        }catch{ return null; }
-      }
 
       function renderTx(lines, ccy){
         if (!Array.isArray(lines) || !lines.length) return '<div class="k">No transactions yet.</div>';
@@ -110,34 +115,49 @@
             const cls  = sign < 0 ? 'neg' : 'pos';
             const amt  = fmtMoney(sign * Number(l.amount||0), l.currency || ccy || 'USD');
             const when = l.ts ? new Date(l.ts).toLocaleString() : '—';
-            return `<tr><td>${when}</td><td>${l.description || l.type || '-'}</td><td class="amt ${cls}">${amt}</td></tr>`;
+            return `<tr>
+              <td>${when}</td>
+              <td>${l.description || l.type || '-'}</td>
+              <td class="amt ${cls}">${amt}</td>
+            </tr>`;
           }).join('');
         return `<table><thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table>`;
       }
 
-      function boot(){
-        const token = getSession();
-        if(!token){ location.href='/client-login.html'; return; }
-
-        const store = window.MFC_MOCK || {};
-        const user  = store.USERS?.[token.email.toLowerCase()];
-        if(!user){ localStorage.removeItem('mfc_token'); location.href='/client-login.html'; return; }
-
-        $('#holderName').textContent = user.holder || '—';
-        $('#authPerson').textContent = user.authorisedPerson || (user.name || '—');
-        if (user.account){
-          $('#acctNo').textContent    = user.account.accountNo || '—';
-          $('#acctStatus').textContent= user.account.status || 'active';
-          $('#acctCcy').textContent   = user.account.currency || 'USD';
-          $('#acctBal').textContent   = fmtMoney(Number(user.account.balance||0), user.account.currency || 'USD');
-          $('#txBox').innerHTML       = renderTx(user.account.lines || [], user.account.currency);
-        } else {
-          $('#txBox').innerHTML = '<div class="k">No account found.</div>';
-        }
+      function kickToLogin(){
+        const next = encodeURIComponent(location.pathname);
+        location.href = '/client-login.html?next=' + next;
       }
 
-      document.addEventListener('DOMContentLoaded', boot);
-      document.getElementById('logoutLink').addEventListener('click',(e)=>{e.preventDefault(); localStorage.removeItem('mfc_token'); location.href='/client-login.html';});
+      document.getElementById('logoutLink').addEventListener('click',(e)=>{
+        e.preventDefault();
+        localStorage.removeItem('mfc_mock_email');
+        localStorage.removeItem('mfc_mock_token');
+        kickToLogin();
+      });
+
+      // Boot
+      const email = (localStorage.getItem('mfc_mock_email')||'').toLowerCase();
+      const token = localStorage.getItem('mfc_mock_token');
+      if (!email || !token) { kickToLogin(); return; }
+
+      if (!window.MFC_MOCK || !MFC_MOCK.USERS || !MFC_MOCK.ACCOUNTS) { kickToLogin(); return; }
+
+      const user = MFC_MOCK.USERS[email];
+      const acct = MFC_MOCK.ACCOUNTS[email];
+
+      if (!user || !acct) { kickToLogin(); return; }
+
+      // Fill overview (holder = company; authorised person = user.name)
+      $('#holderName').textContent = acct.holder || user.companyName || '—';
+      $('#authPerson').textContent = user.name || (email.split('@')[0]);
+      $('#acctNo').textContent     = acct.accountNo || '—';
+      $('#acctStatus').textContent = acct.status || 'active';
+      $('#acctCcy').textContent    = acct.currency || 'USD';
+      $('#acctBal').textContent    = fmtMoney(Number(acct.balance||0), acct.currency || 'USD');
+
+      // Transactions
+      $('#txBox').innerHTML = renderTx(acct.lines || [], acct.currency);
     })();
   </script>
 </body>
