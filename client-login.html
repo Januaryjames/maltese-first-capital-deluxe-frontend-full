@@ -4,89 +4,151 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Client Login — Maltese First Capital</title>
-  <link rel="icon" href="/assets/logo-crest.png">
+  <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="stylesheet" href="/styles.css" />
+
+  <!-- Client-only header + page styles (scoped) -->
   <style>
-    :root { --bg:#0b0f16; --text:#0b0f16; --card:#ffffff; --muted:#6b7280; --gold:#d4af37; }
-    html,body{background:#0b0f16;margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
-    .wrap{max-width:420px;margin:0 auto;padding:24px}
-    .nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb}
-    .nav-inner{max-width:1160px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:10px}
-    .brand{display:flex;align-items:center;gap:10px;color:#0b0f16;text-decoration:none}
-    .brand img{width:44px;height:44px;border-radius:10px;object-fit:contain;background:#0d131b}
-    .brand b{letter-spacing:.3px}
-    .card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px;margin-top:24px;color:#0b0f16}
-    label{display:block;font-size:.95rem;margin:10px 0 6px;color:#111827}
-    input[type="email"],input[type="password"]{width:100%;padding:12px;border:1px solid #e5e7eb;border-radius:12px;outline:none}
-    .row{display:flex;align-items:center;gap:8px;margin-top:8px}
-    .btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;width:100%;padding:12px;border-radius:12px;border:1px solid #b38f2e;background:linear-gradient(180deg,#d4af37,#b4912b);color:#111;font-weight:700;margin-top:12px;cursor:pointer}
-    .muted{color:#6b7280;font-size:.9rem}
-    .link{color:#0b66ff;text-decoration:none}
-    .err{background:#fff1f2;border:1px solid #fecdd3;color:#7f1d1d;padding:10px;border-radius:12px;margin-bottom:12px;display:none}
+    :root { --bg:#0b0f16; --panel:#0f1621; --text:#e9eef8; --muted:#9eb0c7; --gold:#d4af37; }
+    html,body{ background:var(--bg); color:var(--text); margin:0; font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif; }
+    .cl-wrap{ max-width:1060px; margin:0 auto; padding:16px 20px 48px; }
+
+    /* White header — only on client pages */
+    .client-header{
+      background:#fff; color:#111;
+      border-bottom:1px solid #e8edf3;
+      padding:14px 20px;
+    }
+    .client-header .brand{
+      display:inline-flex; align-items:center; gap:10px; text-decoration:none;
+    }
+    .client-header .brand b{ color:#111; font-weight:600; letter-spacing:.2px; }
+    .client-header .brand-logo{
+      width:44px; height:44px; object-fit:contain; display:inline-block;
+      background:transparent; filter:none !important; -webkit-filter:none !important; mix-blend-mode:normal !important;
+    }
+
+    .cl-card{
+      max-width:560px; margin:56px auto 0;
+      background:#fff; color:#111;
+      border:1px solid #e8edf3; border-radius:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      padding:20px 22px 24px;
+    }
+    .cl-title{ font-size:26px; font-weight:800; margin:4px 0 4px; }
+    .cl-sub{ color:#4d5a6b; margin:0 0 14px; line-height:1.45; }
+
+    .cl-msg{ display:none; margin:0 0 12px; padding:10px 12px; border-radius:10px; font-size:14px; }
+    .cl-msg.err{ display:block; background:#ffe9ea; color:#8a1820; border:1px solid #ffd0d4; }
+    .cl-msg.ok{ display:block; background:#e7f7ee; color:#0c5132; border:1px solid #bfe4d0; }
+
+    .cl-field{ margin:12px 0; }
+    .cl-label{ display:block; font-size:13px; color:#334155; margin:0 0 6px; }
+    .cl-input{
+      width:100%; height:44px; border-radius:12px; border:1px solid #e5e7eb; padding:0 12px;
+      font-size:15px; background:#fff; color:#111; outline:none;
+    }
+    .cl-input:focus{ border-color:#c5a741; box-shadow:0 0 0 3px rgba(212,175,55,.25); }
+
+    .cl-inline{ display:flex; align-items:center; gap:10px; margin:4px 0 12px; color:#475569; }
+    .cl-btn{
+      width:100%; height:44px; border-radius:12px; border:0; cursor:pointer;
+      background:linear-gradient(180deg, #e4c96b, #b98f28); color:#111; font-weight:700;
+    }
+    .cl-btn[disabled]{ opacity:.6; cursor:not-allowed; }
+    .cl-foot{ margin-top:10px; font-size:14px; color:#4d5a6b; }
+    .cl-foot a{ color:#1d4ed8; text-decoration:none; }
   </style>
 </head>
 <body>
-  <div class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
+  <header class="client-header">
+    <div class="cl-wrap" style="padding-bottom:0">
+      <a class="brand" href="/index.html">
+        <img class="brand-logo" src="/assets/logo-crest.png" alt="Maltese First Capital" />
+        <b>Maltese First Capital</b>
+      </a>
+      <span style="float:right; color:#475569; font-size:14px; margin-top:10px;">Client Area</span>
     </div>
-  </div>
+  </header>
 
-  <div class="wrap">
-    <section class="card">
-      <h2 style="margin:0 0 8px">Client Login</h2>
-      <p class="muted" style="margin:0 0 12px">Enter your email and password to access your account.</p>
+  <main class="cl-wrap">
+    <section class="cl-card">
+      <h1 class="cl-title">Client Login</h1>
+      <p class="cl-sub">Enter your email and password to access your account.</p>
 
-      <div id="errBox" class="err"></div>
+      <div id="msg" class="cl-msg"></div>
 
-      <label>Email</label>
-      <input id="email" type="email" placeholder="you@company.com" autocomplete="username" required>
+      <form id="loginForm" novalidate>
+        <div class="cl-field">
+          <label class="cl-label" for="email">Email</label>
+          <input id="email" class="cl-input" type="email" autocomplete="username" required />
+        </div>
 
-      <label>Password</label>
-      <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+        <div class="cl-field">
+          <label class="cl-label" for="password">Password</label>
+          <input id="password" class="cl-input" type="password" autocomplete="current-password" required />
+        </div>
 
-      <div class="row">
-        <input id="showPwd" type="checkbox" aria-label="Show password">
-        <span class="muted">Show password</span>
-      </div>
+        <div class="cl-inline">
+          <input id="togglePass" type="checkbox" />
+          <label for="togglePass">Show password</label>
+        </div>
 
-      <button id="loginBtn" class="btn" type="button">Sign in</button>
+        <button id="submitBtn" class="cl-btn" type="submit">Sign in</button>
 
-      <p class="muted" style="margin-top:12px">
-        Forgot or want to change it? <a class="link" href="/client-password.html">Change password</a>
-      </p>
+        <div class="cl-foot">
+          Forgot or want to change it? <a href="/client-login.html#change-password">Change password</a>
+        </div>
+      </form>
     </section>
-  </div>
+  </main>
 
-  <!-- Shared client store -->
+  <!-- Your local mock data (do not rename path) -->
   <script src="/scripts/mock-store.js?v=1"></script>
 
-  <!-- Page logic -->
   <script>
     (()=>{
-      const $ = s => document.querySelector(s);
-      const err = msg => { const b=$('#errBox'); if(!b) return; b.textContent=msg||''; b.style.display=msg?'block':'none'; };
+      const $ = (s,r=document)=>r.querySelector(s);
+      const msg = $('#msg');
+      const form = $('#loginForm');
+      const toggle = $('#togglePass');
+      const emailEl = $('#email');
+      const passEl  = $('#password');
+      const submit  = $('#submitBtn');
 
-      $('#showPwd').addEventListener('change', (e)=>{
-        const f = $('#password'); if(!f) return;
-        f.type = e.target.checked ? 'text' : 'password';
-      });
+      // default for your current client (safe if not present)
+      emailEl.value = emailEl.value || 'bejadbn1122@gmail.com';
 
-      $('#loginBtn').addEventListener('click', ()=>{
-        err('');
-        const email = ($('#email').value || '').trim().toLowerCase();
-        const pass  = $('#password').value || '';
+      toggle.addEventListener('change', ()=>{ passEl.type = toggle.checked ? 'text' : 'password'; });
 
-        const store = window.MFC_MOCK || {};
-        const user  = store.USERS?.[email];
+      form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        if (!window.MFC_MOCK || !MFC_MOCK.USERS) {
+          msg.className='cl-msg err';
+          msg.textContent='Configuration error. mock-store.js not loaded.';
+          return;
+        }
+        submit.disabled = true; msg.className='cl-msg'; msg.textContent='';
 
-        if (!user) return err('No account found for that email.');
-        if (!store.ALLOW_ANY_PASSWORD && user.password !== pass) return err('Incorrect password.');
+        const email = emailEl.value.trim().toLowerCase();
+        const pass  = passEl.value;
 
-        const exp = Date.now() + ((store.SESSION_HOURS||24) * 3600 * 1000);
-        localStorage.mfc_token = JSON.stringify({ email, exp });
+        const user = MFC_MOCK.USERS[email];
+        if (!user) {
+          msg.className='cl-msg err'; msg.textContent='No account found for that email.'; submit.disabled=false; return;
+        }
+        if (user.password !== pass) {
+          msg.className='cl-msg err'; msg.textContent='Incorrect password.'; submit.disabled=false; return;
+        }
 
-        location.href = '/client-dashboard.html';
+        // Store session for dashboard
+        localStorage.setItem('mfc_mock_email', email);
+        localStorage.setItem('mfc_mock_token', Math.random().toString(36).slice(2));
+
+        // Redirect (honor ?next=)
+        const params = new URLSearchParams(location.search);
+        const next = params.get('next') || '/client-dashboard.html';
+        location.href = next;
       });
     })();
   </script>
