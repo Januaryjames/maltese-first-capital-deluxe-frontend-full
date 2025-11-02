@@ -4,179 +4,147 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Client Dashboard — Maltese First Capital</title>
-
-  <!-- If you have a global stylesheet, keep this: -->
-  <link rel="stylesheet" href="/assets/styles.css" />
-
+  <link rel="icon" href="/assets/logo-crest.png">
+  <link rel="stylesheet" href="/styles.css" />
   <style>
-    /* Minimal safety styling if global CSS is not loaded */
-    :root { --bg:#0a0f14; --card:#121820; --text:#e5eef7; --muted:#93a3b5; --gold:#caa663; --ok:#1db954; --warn:#ffb020; }
-    html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;}
-    .wrap{max-width:1100px;margin:0 auto;padding:20px;}
-    .nav{display:flex;align-items:center;gap:24px;padding:14px 0;border-bottom:1px solid #1c2430;}
-    .nav a{color:var(--text);text-decoration:none;opacity:.9}
-    .brand{display:flex;align-items:center;gap:12px;}
-    .brand img{width:42px;height:42px;border-radius:8px;object-fit:contain;background:#0e141a}
-    .brand .t1{font-weight:700;letter-spacing:.3px}
-    .hero{border-radius:18px;overflow:hidden;background:url('/assets/valletta.jpg') center/cover no-repeat;min-height:180px;display:flex;align-items:end}
-    .hero .overlay{background:linear-gradient(180deg,rgba(0,0,0,.0),rgba(0,0,0,.55));width:100%}
-    .hero h1{margin:0;padding:24px;font-size:28px}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
-    .card{background:var(--card);border:1px solid #1d2631;border-radius:16px;padding:18px}
-    .row{display:flex;flex-wrap:wrap;gap:16px}
+    :root { --bg:#0b0f16; --card:#101722; --text:#e9eef8; --muted:#9eb0c7; --gold:#d4af37; --ok:#1db954; }
+    html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
+    .wrap{max-width:1160px;margin:0 auto;padding:20px}
+    .nav{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none}
+    .brand img{width:36px;height:36px;border-radius:8px;object-fit:contain;background:#0d131b}
+    .brand b{letter-spacing:.3px}
+    .logout{margin-left:auto}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
+    @media (min-width:980px){ .grid{grid-template-columns:1.1fr .9fr} }
+    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:18px}
     .k{color:var(--muted);font-size:13px}
     .v{font-weight:600}
-    .badge{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 10px;font-size:12px;border:1px solid #273240;background:#0e141a}
-    .badge.ok{border-color:#224b36}
-    .muted{color:var(--muted)}
-    .cta{display:inline-block;background:var(--gold);color:#1a1206;padding:10px 14px;border-radius:10px;font-weight:700;text-decoration:none}
-    .accounts .card{border-left:3px solid var(--gold)}
-    .logout{margin-left:auto}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;background:#0d131b}
+    .pill.ok{border-color:#224b36}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left}
+    th{color:var(--muted);font-weight:600}
+    .amt{white-space:nowrap}
+    .pos{color:#9bf3b3} .neg{color:#ff9d9d}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="nav">
-      <a class="brand" href="/index.html" aria-label="Maltese First Capital">
-        <img src="/assets/mfc-logo.svg" alt="" />
-        <span class="t1">Maltese First Capital</span>
-      </a>
-      <a href="/private-banking.html">Private Banking</a>
-      <a href="/wealth-management.html">Wealth Management</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
+      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
       <a class="logout" href="#" id="logoutLink">Logout</a>
     </div>
 
-    <div class="hero">
-      <div class="overlay">
-        <h1 id="heroTitle">Welcome</h1>
-      </div>
-    </div>
-
     <div class="grid">
-      <div class="card">
-        <div class="row" style="align-items:center;justify-content:space-between">
+      <!-- Left: Account overview -->
+      <section class="card">
+        <h2 style="margin:0 0 10px">Account Overview</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
           <div>
             <div class="k">Account Holder</div>
             <div class="v" id="holderName">—</div>
           </div>
           <div>
-            <span class="badge ok" id="holderStatus"><span>Active</span></span>
-          </div>
-        </div>
-        <div class="row" style="margin-top:10px">
-          <div>
             <div class="k">Authorised Person</div>
             <div class="v" id="authPerson">—</div>
           </div>
           <div>
-            <div class="k">Primary Currency</div>
-            <div class="v" id="primaryCcy">USD</div>
+            <div class="k">Account Number</div>
+            <div class="v mono" id="acctNo">—</div>
+          </div>
+          <div>
+            <div class="k">Status</div>
+            <div class="pill ok" id="acctStatus">Active</div>
+          </div>
+          <div>
+            <div class="k">Currency</div>
+            <div class="v" id="acctCcy">USD</div>
+          </div>
+          <div>
+            <div class="k">Current Balance</div>
+            <div class="v" id="acctBal">—</div>
           </div>
         </div>
-        <div style="margin-top:16px">
-          <a class="cta" href="/contact.html">Request Statement</a>
-        </div>
-      </div>
+      </section>
 
-      <div class="accounts">
-        <div class="card">
-          <div class="row" style="justify-content:space-between;align-items:center">
-            <div class="v">Accounts</div>
-            <div class="muted" id="lastUpdated">—</div>
-          </div>
-          <div id="accountsBox" style="margin-top:10px">
-            <div class="muted">Loading your accounts…</div>
-          </div>
+      <!-- Right: Transactions -->
+      <section class="card">
+        <h2 style="margin:0 0 10px">Recent Transactions</h2>
+        <div id="txBox">
+          <div class="k">Loading…</div>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 
   <!-- Config FIRST -->
   <script>
-    window.__MFC_CONFIG = {
-      API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com'
-    };
+    window.__MFC_CONFIG = { API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com' };
   </script>
 
-  <!-- Page wire-up -->
+  <!-- Wire -->
   <script>
-  (() => {
-    const API = (window.__MFC_CONFIG?.API_BASE_URL || '').replace(/\/+$/,'');
-    const $ = (s,r=document)=>r.querySelector(s);
-    const fmt = (n,c='USD') => (typeof n==='number' ? n.toLocaleString(undefined,{style:'currency',currency:c}) : '—');
+    (()=>{
+      const API = (window.__MFC_CONFIG?.API_BASE_URL||'').replace(/\/+$/,'');
+      const $  = (s,r=document)=>r.querySelector(s);
+      const fmtMoney = (n,c='USD') => (typeof n==='number' ? n.toLocaleString(undefined,{style:'currency',currency:c}) : '—');
 
-    async function getMe() {
-      const t = localStorage.mfc_token; if(!t) return null;
-      const r = await fetch(API + '/api/auth/me', { headers:{ Authorization:'Bearer '+t }});
-      if(!r.ok) return null; const j = await r.json().catch(()=>null);
-      return j?.user || null;
-    }
+      async function fetchJSON(url, opt){ const r = await fetch(url,opt); const t = await r.text(); try{return {ok:r.ok, data: t?JSON.parse(t):{}}}catch{return {ok:r.ok, data:{}, raw:t}} }
 
-    async function getOverview() {
-      const t = localStorage.mfc_token; if(!t) return { accounts:[] };
-      const r = await fetch(API + '/api/client/overview', { headers:{ Authorization:'Bearer '+t }});
-      return r.ok ? (await r.json().catch(()=>({accounts:[]}))) : { accounts:[] };
-    }
-
-    function accountCard(a){
-      const badge = `<span class="badge ${a.status==='active'?'ok':''}">${a.status}</span>`;
-      return `
-        <div class="card" style="margin-top:12px">
-          <div class="row" style="justify-content:space-between;align-items:center">
-            <div>
-              <div class="k">Account Number</div>
-              <div class="v mono">${a.accountNo || '—'}</div>
-            </div>
-            <div>${badge}</div>
-          </div>
-          <div class="row" style="margin-top:10px">
-            <div>
-              <div class="k">Balance</div>
-              <div class="v">${fmt(a.balance, a.currency)}</div>
-            </div>
-            <div>
-              <div class="k">Currency</div>
-              <div class="v">${a.currency || 'USD'}</div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    async function boot(){
-      const me = await getMe();
-      const ov = await getOverview();
-
-      // Prefer company name if server sends it (meta.holder or holder)
-      const holder = ov.holder || ov.meta?.holder || me?.name || '—';
-      $('#holderName').textContent = holder;
-      $('#heroTitle').textContent = holder;
-      $('#primaryCcy').textContent = (ov.accounts?.[0]?.currency) || 'USD';
-
-      // If the server included authorised person in meta, use it; else fallback to email local part
-      $('#authPerson').textContent = (ov.authorisedPerson || ov.meta?.authorisedPerson || me?.name?.split(',')[1] || '—');
-
-      const box = $('#accountsBox');
-      const arr = Array.isArray(ov.accounts) ? ov.accounts : [];
-      if (!arr.length){
-        box.innerHTML = `<div class="muted">No accounts yet.</div>`;
-      } else {
-        box.innerHTML = arr.map(accountCard).join('');
+      function renderTx(lines, ccy){
+        if (!Array.isArray(lines) || !lines.length) return '<div class="k">No transactions yet.</div>';
+        const rows = lines
+          .slice() // copy
+          .sort((a,b)=>new Date(b.ts)-new Date(a.ts))
+          .slice(0,20)
+          .map(l=>{
+            const sign = l.type === 'debit' ? -1 : 1;
+            const cls  = sign < 0 ? 'neg' : 'pos';
+            const amt  = fmtMoney(sign * Number(l.amount||0), l.currency || ccy || 'USD');
+            const when = l.ts ? new Date(l.ts).toLocaleString() : '—';
+            return `<tr>
+              <td>${when}</td>
+              <td>${l.description || l.type || '-'}</td>
+              <td class="amt ${cls}">${amt}</td>
+            </tr>`;
+          }).join('');
+        return `<table><thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table>`;
       }
-      $('#lastUpdated').textContent = 'Updated ' + new Date().toLocaleString();
-    }
 
-    document.addEventListener('DOMContentLoaded', boot);
+      async function boot(){
+        const token = localStorage.mfc_token;
+        if(!API || !token){ location.href='/client-login.html'; return; }
 
-    // Logout
-    document.getElementById('logoutLink').addEventListener('click', (e)=>{
-      e.preventDefault(); localStorage.removeItem('mfc_token'); window.location.href='/client-login.html';
-    });
-  })();
+        // Who am I (for fallback display)
+        const meReq = await fetchJSON(API + '/api/auth/me', { headers:{ Authorization:'Bearer '+token }});
+        const me = meReq.ok ? meReq.data.user : null;
+
+        // Overview (holder + authorisedPerson + accounts)
+        const ovReq = await fetchJSON(API + '/api/client/overview', { headers:{ Authorization:'Bearer '+token }});
+        if(!ovReq.ok){ localStorage.removeItem('mfc_token'); location.href='/client-login.html'; return; }
+        const ov = ovReq.data || {};
+        const acct = (ov.accounts && ov.accounts[0]) || null;
+
+        $('#holderName').textContent = ov.holder || me?.name || '—';
+        $('#authPerson').textContent = ov.authorisedPerson || (me?.email?.split('@')[0] || '—').replace(/[._-]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+
+        if (acct){
+          $('#acctNo').textContent  = acct.accountNo || '—';
+          $('#acctStatus').textContent = (acct.status || 'active');
+          $('#acctCcy').textContent = acct.currency || 'USD';
+          $('#acctBal').textContent = fmtMoney(Number(acct.balance||0), acct.currency || 'USD');
+
+          $('#txBox').innerHTML = renderTx(acct.lines || [], acct.currency);
+        } else {
+          $('#txBox').innerHTML = '<div class="k">No account found.</div>';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', boot);
+      document.getElementById('logoutLink').addEventListener('click',(e)=>{e.preventDefault(); localStorage.removeItem('mfc_token'); location.href='/client-login.html';});
+    })();
   </script>
 </body>
 </html>
