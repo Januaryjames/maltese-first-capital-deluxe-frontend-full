@@ -7,130 +7,44 @@
   <link rel="icon" href="/assets/logo-crest.png">
   <link rel="stylesheet" href="/styles.css" />
   <style>
-    /* ---------- Theme ---------- */
-    :root{
-      --bg:#0b0f16; --card:#0f1622; --ink:#0b1020;
-      --text:#e9eef8; --muted:#99a8bf; --line:#1b2636;
-      --brand:#d4af37; --brand-2:#b08d2b; --ok:#67e2a0;
-      --danger:#ff9d9d; --shadow:0 10px 30px rgba(0,0,0,.25);
-    }
-    html,body{margin:0;background:var(--bg);color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
-
-    /* ---------- White, sticky nav ---------- */
-    .nav{
-      position:sticky; top:0; z-index:1000;
-      background:#ffffff; color:var(--ink);
-      border-bottom:1px solid #e6e8ec;
-      box-shadow:0 4px 16px rgba(12,16,24,.06);
-    }
-    .nav-inner{max-width:1160px;margin:0 auto;padding:10px 20px;
-      display:flex;align-items:center;gap:14px}
-    .brand{display:flex;align-items:center;gap:12px;
-      color:var(--ink);text-decoration:none;font-weight:800}
-    /* 🔧 Bigger logo to match the rest of the site */
-    .brand img{width:44px;height:44px;border-radius:10px;object-fit:contain}
-    .brand span{font-size:18px;letter-spacing:.2px}
-    @media (max-width:520px){
-      .brand img{width:36px;height:36px}
-      .brand span{font-size:16px}
-    }
-    .nav-spacer{flex:1}
-    .logout{
-      appearance:none; border:1px solid #d6dae1; background:#fff; color:var(--ink);
-      padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600;
-    }
-    .logout:hover{background:#f6f7f9}
-
-    /* ---------- Layout ---------- */
-    .wrap{max-width:1160px;margin:0 auto;padding:22px}
-    .top{display:flex;align-items:center;gap:16px;margin:6px 0 18px}
-    .avatar{
-      width:44px;height:44px;border-radius:50%;
-      background:linear-gradient(180deg,#2a3850,#172233);
-      display:grid;place-items:center;font-weight:800;color:#fff;border:1px solid #2b3950;
-    }
-    .hello b{display:block;font-size:18px}
-    .hello small{color:var(--muted)}
-
-    /* ---------- Cards ---------- */
-    .grid{display:grid;gap:18px;grid-template-columns:1fr;}
+    :root { --bg:#0b0f16; --card:#101722; --text:#e9eef8; --muted:#9eb0c7; --gold:#d4af37; --ok:#1db954; }
+    html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
+    .nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb}
+    .nav-inner{max-width:1160px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:10px}
+    .brand{display:flex;align-items:center;gap:10px;color:#0b0f16;text-decoration:none}
+    .brand img{width:44px;height:44px;border-radius:10px;object-fit:contain;background:#0d131b}
+    .brand b{letter-spacing:.3px}
+    .logout{margin-left:auto;color:#0b0f16;text-decoration:none}
+    .wrap{max-width:1160px;margin:0 auto;padding:20px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
     @media (min-width:980px){ .grid{grid-template-columns:1.1fr .9fr} }
-    .card{
-      background:radial-gradient(1200px 60px at 50% -20px,rgba(212,175,55,.12),transparent 60%),
-                 var(--card);
-      border:1px solid rgba(212,175,55,.18);
-      border-radius:16px;padding:18px;box-shadow:var(--shadow)
-    }
-    h2{margin:0 0 12px;font-size:18px}
-
-    .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-    .kpi{background:rgba(255,255,255,.02);border:1px solid var(--line);
-      border-radius:14px;padding:12px}
-    .k{color:var(--muted);font-size:12px}
-    .v{font-weight:700;font-size:18px;margin-top:2px}
+    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:18px}
+    .k{color:var(--muted);font-size:13px}
+    .v{font-weight:600}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-
-    .ov{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;
-      border:1px solid #244d32;background:#102017;color:#9bf3b3;font-weight:700;font-size:12px}
-
+    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;background:#0d131b}
+    .pill.ok{border-color:#224b36}
     table{width:100%;border-collapse:collapse}
-    th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left}
-    th{color:var(--muted);font-weight:600;position:sticky;top:0;background:var(--card)}
-    tbody tr:nth-child(odd){background:rgba(255,255,255,.02)}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left}
+    th{color:var(--muted);font-weight:600}
     .amt{white-space:nowrap}
-    .pos{color:#9bf3b3}.neg{color:#ff9d9d}
-
-    /* ---------- Optional bottom dock ---------- */
-    .dock{
-      position:sticky; bottom:0; z-index:900;
-      background:#0f1521;border-top:1px solid #1c2a3f;
-      box-shadow:0 -8px 24px rgba(0,0,0,.3);
-    }
-    .dock-inner{max-width:1160px;margin:0 auto;padding:10px 20px;display:flex;gap:10px}
-    .dock a,.dock button{
-      flex:1; text-align:center; color:#e6ecf7; text-decoration:none;
-      background:#111a2a;border:1px solid #25344b;border-radius:12px;padding:12px;font-weight:700
-    }
-    .dock a:hover,.dock button:hover{background:#0e1726}
-    body:not(.with-dock) .dock{display:none}
+    .pos{color:#9bf3b3} .neg{color:#ff9d9d}
   </style>
 </head>
-
 <body>
-  <!-- White top nav -->
-  <nav class="nav">
+  <div class="nav">
     <div class="nav-inner">
-      <a class="brand" href="/index.html">
-        <img src="/assets/logo-crest.png" alt="">
-        <span>Maltese First Capital</span>
-      </a>
-      <div class="nav-spacer"></div>
-      <button class="logout" id="logoutLink">Logout</button>
+      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
+      <a class="logout" href="#" id="logoutLink">Logout</a>
     </div>
-  </nav>
+  </div>
 
   <div class="wrap">
-    <div class="top">
-      <div class="avatar" id="avatar">MF</div>
-      <div class="hello">
-        <b id="helloName">Client</b>
-        <small id="helloSub">Welcome back — your account summary is below.</small>
-      </div>
-    </div>
-
     <div class="grid">
+      <!-- Left: Account overview -->
       <section class="card">
-        <h2>Account Overview</h2>
-        <div class="kpis">
-          <div class="kpi"><div class="k">Current Balance</div><div class="v" id="kpiBal">—</div></div>
-          <div class="kpi"><div class="k">Status</div><div class="v"><span class="pill" id="kpiStatus">active</span></div></div>
-          <div class="kpi"><div class="k">Currency</div><div class="v" id="kpiCcy">USD</div></div>
-          <div class="kpi"><div class="k">Account No.</div><div class="v mono" id="kpiNo">—</div></div>
-        </div>
-
-        <div class="ov">
+        <h2 style="margin:0 0 10px">Account Overview</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
           <div>
             <div class="k">Account Holder</div>
             <div class="v" id="holderName">—</div>
@@ -139,114 +53,92 @@
             <div class="k">Authorised Person</div>
             <div class="v" id="authPerson">—</div>
           </div>
+          <div>
+            <div class="k">Account Number</div>
+            <div class="v mono" id="acctNo">—</div>
+          </div>
+          <div>
+            <div class="k">Status</div>
+            <div class="pill ok" id="acctStatus">Active</div>
+          </div>
+          <div>
+            <div class="k">Currency</div>
+            <div class="v" id="acctCcy">USD</div>
+          </div>
+          <div>
+            <div class="k">Current Balance</div>
+            <div class="v" id="acctBal">—</div>
+          </div>
         </div>
       </section>
 
+      <!-- Right: Transactions -->
       <section class="card">
-        <h2>Recent Transactions</h2>
-        <div id="txBox"><div class="k">No transactions yet.</div></div>
+        <h2 style="margin:0 0 10px">Recent Transactions</h2>
+        <div id="txBox">
+          <div class="k">Loading…</div>
+        </div>
       </section>
     </div>
   </div>
 
-  <div class="dock">
-    <div class="dock-inner">
-      <a href="/client-dashboard.html">Accounts</a>
-      <a href="#" onclick="alert('Statements coming soon');return false;">Statements</a>
-      <a href="mailto:hello@maltesefirst.com?subject=Client%20Support">Support</a>
-      <button id="dockLogout">Logout</button>
-    </div>
-  </div>
+  <!-- Shared client store -->
+  <script src="/scripts/mock-store.js?v=1"></script>
 
-  <!-- Mock auth + data (unchanged) -->
+  <!-- Page logic -->
   <script>
-  (function(){
-    window.MFC_MOCK = window.MFC_MOCK || {
-      ALLOW_ANY_PASSWORD:false,
-      SESSION_HOURS:24,
-      USERS:{
-        "bejadbn1122@gmail.com":{
-          password:"MFC#Bejad2025!",
-          name:"Bejad Bandoor A. Alharbi",
-          authorisedPerson:"Bejadbn1122",
-          holder:"Nab’ al-Khayrat For Trading",
-          account:{ accountNo:"91550872", status:"active", currency:"USD", balance:0, lines:[] }
-        }
+    (()=>{
+      const $ = (s,r=document)=>r.querySelector(s);
+      const fmtMoney = (n,c='USD') => (typeof n==='number' ? n.toLocaleString(undefined,{style:'currency',currency:c}) : '—');
+
+      function getSession(){
+        try{ const raw = localStorage.mfc_token; if(!raw) return null; const t = JSON.parse(raw);
+          if (!t.email || !t.exp) return null;
+          if (Date.now() > t.exp) { localStorage.removeItem('mfc_token'); return null; }
+          return t;
+        }catch{ return null; }
       }
-    };
-    const CFG=window.MFC_MOCK, now=()=>Date.now(), b64=s=>btoa(s), ub64=s=>atob(s);
-    function save(email){const exp=now()+(CFG.SESSION_HOURS||24)*3600*1000;const t=b64(JSON.stringify({email,exp}));localStorage.setItem("mfc_token",t);return t;}
-    function read(){const t=localStorage.getItem("mfc_token"); if(!t) return null; try{const j=JSON.parse(ub64(t)); if(!j.email||now()>j.exp){localStorage.removeItem("mfc_token");return null;} return {token:t,email:j.email};}catch{return null}}
-    const get=(e)=> (CFG.USERS||{})[String(e||"").toLowerCase()];
-    window.MFC_AUTH={
-      async me(t){const s=read(); if(!s||(t&&t!==s.token)) return {ok:false,error:"Unauthenticated"}; const u=get(s.email); return {ok:true,user:{email:s.email,name:u?.name}}},
-      async overview(t){const s=read(); if(!s||(t&&t!==s.token)) return {ok:false,error:"Unauthenticated"}; const u=get(s.email),a=u?.account; return {ok:true,data:{holder:u?.holder||u?.name,authorisedPerson:u?.authorisedPerson,accounts:a?[a]:[]}};},
-      logout(){localStorage.removeItem("mfc_token");}
-    };
-  })();
-  </script>
 
-  <!-- Wire-up -->
-  <script>
-  (function(){
-    const $ = (s)=>document.querySelector(s);
-    const money = (n,c='USD') => Number(n||0).toLocaleString(undefined,{style:'currency',currency:c});
-    const initials = (name="") => name.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]?.toUpperCase()||"").join("") || "MF";
-
-    async function boot(){
-      const token = localStorage.getItem("mfc_token");
-      if(!token){ location.href="/client-login.html?next=%2Fclient-dashboard.html"; return; }
-
-      const A=window.MFC_AUTH;
-      const me = await A.me(token);
-      if(!me.ok){ A.logout(); location.href="/client-login.html?next=%2Fclient-dashboard.html"; return; }
-
-      const ov = await A.overview(token);
-      if(!ov.ok){ A.logout(); location.href="/client-login.html?next=%2Fclient-dashboard.html"; return; }
-
-      const d = ov.data || {};
-      const acct = d.accounts?.[0] || null;
-
-      $("#helloName").textContent = d.holder || me.user.name || "Client";
-      $("#avatar").textContent   = initials(d.holder || me.user.name);
-      $("#holderName").textContent = d.holder || "—";
-      $("#authPerson").textContent = d.authorisedPerson || (me.user.email.split("@")[0]);
-
-      if (acct){
-        $("#kpiNo").textContent   = acct.accountNo || "—";
-        $("#kpiStatus").textContent = acct.status || "active";
-        $("#kpiCcy").textContent  = acct.currency || "USD";
-        $("#kpiBal").textContent  = money(acct.balance, acct.currency||"USD");
-
-        const lines = (acct.lines||[]).slice().sort((a,b)=>new Date(b.ts)-new Date(a.ts)).slice(0,20);
-        if(!lines.length){
-          document.getElementById("txBox").innerHTML = '<div class="k">No transactions yet.</div>';
-        }else{
-          const rows = lines.map(l=>{
-            const sign = l.type==='debit' ? -1 : 1;
-            const cls = sign<0 ? 'neg' : 'pos';
+      function renderTx(lines, ccy){
+        if (!Array.isArray(lines) || !lines.length) return '<div class="k">No transactions yet.</div>';
+        const rows = lines
+          .slice()
+          .sort((a,b)=>new Date(b.ts)-new Date(a.ts))
+          .slice(0,20)
+          .map(l=>{
+            const sign = l.type === 'debit' ? -1 : 1;
+            const cls  = sign < 0 ? 'neg' : 'pos';
+            const amt  = fmtMoney(sign * Number(l.amount||0), l.currency || ccy || 'USD');
             const when = l.ts ? new Date(l.ts).toLocaleString() : '—';
-            const amt = money(sign*Number(l.amount||0), l.currency||acct.currency||'USD');
-            return `<tr><td>${when}</td><td>${l.description||l.type||'-'}</td><td class="amt ${cls}">${amt}</td></tr>`;
+            return `<tr><td>${when}</td><td>${l.description || l.type || '-'}</td><td class="amt ${cls}">${amt}</td></tr>`;
           }).join('');
-          document.getElementById("txBox").innerHTML =
-            `<div style="max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:12px">
-               <table>
-                 <thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead>
-                 <tbody>${rows}</tbody>
-               </table>
-             </div>`;
-        }
-      } else {
-        document.getElementById("txBox").innerHTML = '<div class="k">No account found.</div>';
+        return `<table><thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table>`;
       }
-    }
 
-    document.addEventListener("DOMContentLoaded", boot);
-    const goLogout = (e)=>{e.preventDefault(); window.MFC_AUTH.logout(); location.href="/client-login.html";};
-    document.getElementById("logoutLink")?.addEventListener("click", goLogout);
-    document.getElementById("dockLogout")?.addEventListener("click", goLogout);
-  })();
+      function boot(){
+        const token = getSession();
+        if(!token){ location.href='/client-login.html'; return; }
+
+        const store = window.MFC_MOCK || {};
+        const user  = store.USERS?.[token.email.toLowerCase()];
+        if(!user){ localStorage.removeItem('mfc_token'); location.href='/client-login.html'; return; }
+
+        $('#holderName').textContent = user.holder || '—';
+        $('#authPerson').textContent = user.authorisedPerson || (user.name || '—');
+        if (user.account){
+          $('#acctNo').textContent    = user.account.accountNo || '—';
+          $('#acctStatus').textContent= user.account.status || 'active';
+          $('#acctCcy').textContent   = user.account.currency || 'USD';
+          $('#acctBal').textContent   = fmtMoney(Number(user.account.balance||0), user.account.currency || 'USD');
+          $('#txBox').innerHTML       = renderTx(user.account.lines || [], user.account.currency);
+        } else {
+          $('#txBox').innerHTML = '<div class="k">No account found.</div>';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', boot);
+      document.getElementById('logoutLink').addEventListener('click',(e)=>{e.preventDefault(); localStorage.removeItem('mfc_token'); location.href='/client-login.html';});
+    })();
   </script>
 </body>
 </html>
