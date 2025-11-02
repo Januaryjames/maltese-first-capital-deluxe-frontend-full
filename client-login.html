@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Client Login — Maltese First Capital</title>
   <link rel="icon" href="/assets/logo-crest.png">
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/styles.css"/>
   <style>
-    :root { --bg:#0b0f16; --card:#101722; --text:#e9eef8; --muted:#9eb0c7; --gold:#d4af37; }
+    :root { --bg:#0b0f16; --card:#101722; --text:#e9eef8; --muted:#9eb0c7; --gold:#d4af37; --err:#ffb3b3; --ok:#aaf1c7; }
     html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
-    .wrap{max-width:760px;margin:0 auto;padding:28px}
-    .nav{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+    .wrap{max-width:1160px;margin:0 auto;padding:20px}
+    .nav{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
     .brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none}
-    .brand img{width:36px;height:36px;border-radius:8px;background:#0d131b;object-fit:contain}
-    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:22px}
-    label{display:block;font-size:13px;color:var(--muted);margin:8px 0 6px}
+    .brand img{width:36px;height:36px;border-radius:8px;object-fit:contain;background:#0d131b}
+    .brand b{letter-spacing:.3px}
+    .area{display:flex;justify-content:center;margin-top:40px}
+    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:22px;max-width:480px;width:100%}
+    h1{margin:0 0 6px}
+    .muted{color:var(--muted)}
+    label{display:block;margin:14px 0 6px}
     input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0d131b;color:var(--text)}
-    button{width:100%;padding:12px 16px;margin-top:16px;border-radius:12px;border:1px solid rgba(212,175,55,.35);background:linear-gradient(180deg,#d4af37,#8b6f1e);color:#0b0f16;font-weight:700;cursor:pointer}
-    .muted{color:var(--muted);font-size:13px}
-    .status{display:none;margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0d131b}
-    .status.error{display:block;color:#ffb3b3;border-color:#553}
+    button{width:100%;margin-top:16px;padding:12px 14px;border-radius:12px;border:1px solid rgba(212,175,55,.4);background:linear-gradient(180deg,#c9a647,#9a7d2b);color:#1a1307;font-weight:700;cursor:pointer}
+    .status{margin-top:12px;padding:10px 12px;border-radius:12px;background:#1a1010;border:1px solid #3c2222;color:var(--err);display:none;white-space:pre-wrap}
+    .status.ok{background:#0f1a12;border-color:#1f3a2a;color:var(--ok)}
+    .hint{margin-top:10px;color:#8394aa;font-size:12px}
+    .tiny{font-size:11px;color:#6f8096;margin-top:8px}
   </style>
 </head>
 <body>
@@ -28,107 +33,147 @@
       <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
     </div>
 
-    <div class="card">
-      <h2 style="margin:0 0 6px">Client Login</h2>
-      <p class="muted" style="margin:0 0 14px">Sign in to view your accounts and recent transactions.</p>
+    <div class="area">
+      <form class="card" id="loginForm" autocomplete="on">
+        <h1>Client Login</h1>
+        <div class="muted">Sign in to view your accounts and recent transactions.</div>
 
-      <form id="loginForm" novalidate>
         <label for="email">Email</label>
-        <input id="email" name="email" type="email" autocomplete="username" required placeholder="you@company.com" />
+        <input id="email" type="email" placeholder="you@company.com" required autocomplete="username"/>
 
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
+        <input id="password" type="password" placeholder="••••••••" required autocomplete="current-password"/>
 
-        <button id="loginBtn" type="submit">Sign in</button>
+        <button id="loginBtn" type="submit">Sign In</button>
 
-        <div id="statusBox" class="status"></div>
+        <div id="status" class="status"></div>
+        <div class="tiny" id="debug"></div>
       </form>
     </div>
   </div>
 
-  <!-- Config FIRST -->
+  <!-- Config: override here or via /scripts/config.js -->
   <script>
-    window.__MFC_CONFIG = window.__MFC_CONFIG || {
-      API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com'
-    };
+    window.__MFC_CONFIG = Object.assign({
+      API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com',
+      // optional explicit path if your server uses a custom one:
+      // AUTH_LOGIN_PATH: '/api/auth/login'
+    }, window.__MFC_CONFIG||{});
   </script>
 
-  <!-- Logic -->
   <script>
-    (() => {
-      const API       = (window.__MFC_CONFIG?.API_BASE_URL || '').replace(/\/+$/,'');
-      const TOKEN_KEY = 'mfc_client_jwt';      // single source of truth
-      const LEGACY    = 'mfc_token';           // kept for older pages
+  (() => {
+    const CFG  = window.__MFC_CONFIG || {};
+    const API  = (CFG.API_BASE_URL || '').replace(/\/+$/,'');
+    const JWT_KEY = 'mfc_client_jwt';
 
-      const $ = s => document.querySelector(s);
-      const statusBox = $('#statusBox');
-      const btn = $('#loginBtn');
+    const $ = (s,r=document)=>r.querySelector(s);
+    const form   = $('#loginForm');
+    const btn    = $('#loginBtn');
+    const box    = $('#status');
+    const dbg    = $('#debug');
 
-      function setStatus(msg, kind='error') {
-        statusBox.textContent = msg || '';
-        statusBox.className = 'status ' + (kind==='error' ? 'error' : '');
-        statusBox.style.display = msg ? 'block' : 'none';
-      }
+    const NEXT = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
 
-      function pickToken(data) {
-        // Be liberal in what we accept
-        return data?.token || data?.jwt || data?.accessToken || data?.data?.token || null;
-      }
+    function show(msg, ok=false){
+      box.textContent = msg || '';
+      box.className = 'status' + (ok ? ' ok' : '');
+      box.style.display = msg ? 'block' : 'none';
+    }
 
-      async function handleLogin(e){
-        e.preventDefault();
-        setStatus('');
-        btn.disabled = true;
+    function debug(msg){
+      dbg.textContent = msg || '';
+    }
 
-        // Always start clean to avoid “login then logout”
-        localStorage.removeItem(TOKEN_KEY);
-        localStorage.removeItem(LEGACY);
+    async function tryLoginPath(path, email, password){
+      const url = API + path;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const text = await res.text();
+      let data = {};
+      try { data = text ? JSON.parse(text) : {}; } catch {}
+      return {ok: res.ok, status: res.status, data, raw: text, url};
+    }
 
-        const email = $('#email').value.trim();
-        const password = $('#password').value;
+    async function doLogin(email, password){
+      if (!API) throw new Error('API_BASE_URL missing');
 
+      // Try explicit override first, then common patterns
+      const candidates = [
+        CFG.AUTH_LOGIN_PATH || '',
+        '/api/auth/login',
+        '/api/client/login',
+        '/auth/login',
+        '/api/login'
+      ].filter(Boolean);
+
+      debug(`API: ${API}\nTrying: ${candidates.join(', ')}`);
+
+      for (const path of candidates){
         try {
-          const res = await fetch(API + '/api/auth/client-login', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ email, password })
-          });
-
-          const text = await res.text();
-          let data; try { data = text ? JSON.parse(text) : {}; } catch { data = {}; }
-
-          if (!res.ok) {
-            const msg = data?.message || data?.error || ('Login failed (HTTP ' + res.status + ').');
-            setStatus(msg, 'error');
-            btn.disabled = false;
-            return;
+          const out = await tryLoginPath(path, email, password);
+          if (out.status === 404){
+            // endpoint not found: try the next path
+            continue;
+          }
+          if (!out.ok){
+            // any other error (401, 400, 500) — bubble up
+            const msg = out.data?.error || out.data?.message || `HTTP ${out.status}`;
+            throw new Error(`${msg} via ${path}`);
           }
 
-          const token = pickToken(data);
-          if (!token || typeof token !== 'string') {
-            setStatus('Login succeeded but no token returned by server.', 'error');
-            btn.disabled = false;
-            return;
-          }
-
-          // Store both keys for safety; dashboard reads TOKEN_KEY.
-          localStorage.setItem(TOKEN_KEY, token);
-          localStorage.setItem(LEGACY, token);
-
-          // Small cookie marker (not for auth) to help same-site redirects
-          document.cookie = 'mfc_session=1; Path=/; SameSite=Lax';
-
-          const next = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
-          location.replace(next);
-        } catch (err) {
-          console.error(err);
-          setStatus('Network error. Please try again.', 'error');
-          btn.disabled = false;
+          // Success — accept several token shapes
+          const tok = out.data?.token || out.data?.jwt || out.data?.accessToken || out.data?.data?.token;
+          if (!tok) throw new Error(`No token in response via ${path}`);
+          localStorage.setItem(JWT_KEY, tok);
+          return { path, token: tok };
+        } catch (e) {
+          // keep trying next candidate unless it was the last
+          if (path === candidates[candidates.length-1]) throw e;
         }
       }
+      throw new Error('No working auth route found');
+    }
 
-      document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      show('');
+      debug('');
+
+      const email = $('#email').value.trim();
+      const pass  = $('#password').value;
+
+      if (!email || !pass){ show('Enter email and password.'); return; }
+
+      btn.disabled = true;
+
+      try {
+        const { path } = await doLogin(email, pass);
+        show('Login successful.', true);
+        debug(`Signed in via ${path}`);
+        // hard redirect to avoid any history weirdness
+        location.replace(NEXT);
+      } catch (err){
+        const hint = [
+          '• 404 → wrong route. Set window.__MFC_CONFIG.AUTH_LOGIN_PATH or fix server route.',
+          '• 401 → bad credentials.',
+          '• CORS error → add your domain to CORS on the backend.'
+        ].join('\n');
+        show(`Login failed: ${err.message}\n\n${hint}`);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // If already signed in, go straight to dashboard
+    (function autoForward(){
+      const tok = localStorage.getItem(JWT_KEY) || localStorage.getItem('mfc_token');
+      if (tok) location.replace(NEXT);
     })();
+  })();
   </script>
 </body>
 </html>
