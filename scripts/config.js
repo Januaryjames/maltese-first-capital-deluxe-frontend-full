@@ -1,7 +1,5 @@
-// scripts/config.js — Maltese First Capital Global Config
-// Define global config BEFORE any wire scripts.
-
+// Global config – load this BEFORE any other scripts.
 window.__MFC_CONFIG = {
-  // 🔗 Backend API base URL — no trailing slash
+  // ✅ your live backend (no trailing slash)
   API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com'
 };
