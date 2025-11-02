@@ -43,7 +43,7 @@
         <label for="password">Password</label>
         <input id="password" type="password" placeholder="••••••••" required autocomplete="current-password"/>
 
-        <button id="loginBtn" type="submit">Sign In</button>
+        <button id="loginBtn" type="submit">Sign in</button>
 
         <div id="status" class="status"></div>
         <div class="tiny" id="debug"></div>
@@ -51,73 +51,60 @@
     </div>
   </div>
 
-  <!-- Load config FIRST -->
-  <script src="/scripts/config.js?v=3"></script>
+  <!-- CONFIG MUST LOAD FIRST -->
+  <script src="/scripts/config.js?v=4"></script>
 
   <script>
   (() => {
-    const CFG  = window.__MFC_CONFIG || {};
-    const API  = (CFG.API_BASE_URL || '').replace(/\/+$/,'');
-    const PATH = CFG.AUTH_LOGIN_PATH || '/api/auth/login';   // server has this
-    const JWT_KEY = 'mfc_client_jwt';
-    const NEXT = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
-
+    const API  = (window.__MFC_CONFIG?.API_BASE_URL || '').replace(/\/+$/,'');
+    const ENDPOINT = '/api/auth/login';       // hard-locked to the real route
+    const JWT_KEY  = 'mfc_client_jwt';
     const $ = (s,r=document)=>r.querySelector(s);
-    const form   = $('#loginForm');
-    const btn    = $('#loginBtn');
-    const box    = $('#status');
-    const dbg    = $('#debug');
+    const next = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
 
-    function show(msg, ok=false){
-      box.textContent = msg || '';
-      box.className = 'status' + (ok ? ' ok' : '');
-      box.style.display = msg ? 'block' : 'none';
-    }
-    function debug(msg){ dbg.textContent = msg || ''; }
+    const form = $('#loginForm'), btn = $('#loginBtn'), box = $('#status'), dbg = $('#debug');
+
+    function show(msg, ok=false){ box.textContent = msg || ''; box.className = 'status' + (ok?' ok':''); box.style.display = msg ? 'block' : 'none'; }
+    function debug(m){ dbg.textContent = m || ''; }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      show('');
-      debug('');
-      if (!API) { show('API_BASE_URL missing in /scripts/config.js'); return; }
+      show(''); debug('');
+      if(!API){ show('API_BASE_URL missing in /scripts/config.js'); return; }
 
       const email = $('#email').value.trim();
-      const pass  = $('#password').value;
-      if (!email || !pass){ show('Enter email and password.'); return; }
+      const password = $('#password').value;
+      if(!email || !password){ show('Enter email and password.'); return; }
 
       btn.disabled = true;
-
-      try {
-        const res = await fetch(API + PATH, {
+      try{
+        const res = await fetch(API + ENDPOINT, {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ email, password: pass })
+          body: JSON.stringify({ email, password })
         });
-        const text = await res.text();
-        let data = {};
-        try { data = text ? JSON.parse(text) : {}; } catch {}
+        const txt = await res.text();
+        let data = {}; try{ data = txt ? JSON.parse(txt) : {}; }catch{}
 
-        if (!res.ok){
-          const msg = data?.error || data?.message || `HTTP ${res.status}`;
-          throw new Error(msg);
-        }
+        if(!res.ok) throw new Error(data?.error || data?.message || `HTTP ${res.status}`);
+
         const token = data?.token || data?.jwt || data?.accessToken;
-        if (!token) throw new Error('No token in response');
+        if(!token) throw new Error('No token returned.');
 
         localStorage.setItem(JWT_KEY, token);
         show('Login successful.', true);
-        location.replace(NEXT);
-      } catch (err){
-        show('Login failed: ' + err.message + '\n\nCheck: API_BASE_URL, CORS, and credentials.');
-      } finally {
+        location.replace(next);
+      }catch(err){
+        show('Login failed: ' + err.message);
+      }finally{
         btn.disabled = false;
       }
     });
 
-    // Already signed in? Go straight to dashboard.
-    (function autoForward(){
-      const tok = localStorage.getItem(JWT_KEY) || localStorage.getItem('mfc_token');
-      if (tok) location.replace(NEXT);
+    // If already authenticated, go straight to dashboard
+    (function autoGo(){
+      const t = localStorage.getItem(JWT_KEY) || localStorage.getItem('mfc_token');
+      if (t) location.replace(next);
     })();
   })();
   </script>
