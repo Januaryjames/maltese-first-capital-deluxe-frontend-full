@@ -1,43 +1,27 @@
-// /scripts/mock-store.js — v3 (no <script> tags)
-(function (w) {
-  // Add clients here
-  const USERS = {
+/* /scripts/mock-store.js — static, file-based “DB” for client pages.
+   Add more USERS/ACCOUNTS entries to support more clients. */
+
+window.MFC_MOCK = {
+  USERS: {
+    // Email must be lower-case:
     "bejadbn1122@gmail.com": {
-      email: "bejadbn1122@gmail.com",
+      password: "MFC#Bejad2025!",
       name: "Bejad Bandoor A. Alharbi",
-      password: "MFC#Bejad2025!",                 // fixed login
-      holder: "Nab' al-Khayrat For Trading",      // company account holder
-      authorisedPerson: "Bejadbn1122",            // shown on dashboard
-      account: {
-        accountNo: "91550872",
-        currency: "USD",
-        status: "active",
-        balance: 0,
-        lines: [
-          // example row:
-          // { ts: "2025-11-01T12:00:00Z", type: "credit", amount: 0, description: "Account opened", currency: "USD" }
-        ]
-      }
+      companyName: "Nab’ al-Khayrat For Trading"
     }
-  };
+  },
 
-  const store = {
-    VERSION: "2025-11-02T15:45Z",
-    USERS,
-    ALLOW_ANY_PASSWORD: false, // flip to true if you ever want password ignored
-    upsertUser(u) {
-      const e = (u.email || "").toLowerCase();
-      if (!e) throw new Error("email required");
-      USERS[e] = { ...(USERS[e] || {}), ...u, email: e };
-      return USERS[e];
-    },
-    updatePassword(email, next) {
-      const e = (email || "").toLowerCase();
-      if (!USERS[e]) throw new Error("user not found");
-      USERS[e].password = next;
-      return true;
+  ACCOUNTS: {
+    "bejadbn1122@gmail.com": {
+      holder: "Nab’ al-Khayrat For Trading",
+      accountNo: "91550872",
+      currency: "USD",
+      status: "active",
+      balance: 0,
+      lines: [
+        // sample (add more if needed):
+        // { ts: "2025-10-30T12:00:00Z", type: "credit", amount: 5000000, currency: "USD", description: "Loan Credit (Pending Activation)" }
+      ]
     }
-  };
-
-  w.MFC_MOCK = store;
-})(window);
+  }
+};
