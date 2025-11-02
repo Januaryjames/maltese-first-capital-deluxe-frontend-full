@@ -19,8 +19,7 @@
     input{width:100%;background:#0d131b;color:var(--text);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 14px;font-size:15px}
     button{width:100%;margin-top:18px;background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#1a1405;border:0;border-radius:12px;padding:12px 14px;font-weight:700;cursor:pointer}
     .msg{margin-top:12px;font-size:14px}
-    .err{color:#ff9d9d}
-    .ok{color:#9bf3b3}
+    .err{color:#ff9d9d}.ok{color:#9bf3b3}
     .navtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
     .crumb{color:var(--muted);font-size:14px}
   </style>
@@ -38,7 +37,7 @@
 
       <form id="loginForm" autocomplete="on">
         <label for="email">Email</label>
-        <input id="email" type="email" required placeholder="you@company.com" />
+        <input id="email" type="email" required placeholder="you@company.com" value="bejadbn1122@gmail.com"/>
 
         <label for="password">Password</label>
         <input id="password" type="password" required placeholder="••••••••" />
@@ -70,10 +69,9 @@
           btn.disabled = false; btn.textContent = 'Sign in';
           return;
         }
-        msg.textContent = 'Signed in.';
-        msg.className = 'msg ok';
-        const p = new URLSearchParams(window.location.search).get('next') || '/client-dashboard.html';
-        window.location.href = p;
+        msg.textContent = 'Signed in.'; msg.className = 'msg ok';
+        const next = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
+        location.href = next;
       });
     })();
   </script>
