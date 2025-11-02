@@ -23,7 +23,6 @@
     button{width:100%;margin-top:16px;padding:12px 14px;border-radius:12px;border:1px solid rgba(212,175,55,.4);background:linear-gradient(180deg,#c9a647,#9a7d2b);color:#1a1307;font-weight:700;cursor:pointer}
     .status{margin-top:12px;padding:10px 12px;border-radius:12px;background:#1a1010;border:1px solid #3c2222;color:var(--err);display:none;white-space:pre-wrap}
     .status.ok{background:#0f1a12;border-color:#1f3a2a;color:var(--ok)}
-    .hint{margin-top:10px;color:#8394aa;font-size:12px}
     .tiny{font-size:11px;color:#6f8096;margin-top:8px}
   </style>
 </head>
@@ -52,20 +51,16 @@
     </div>
   </div>
 
-  <!-- Config: override here or via /scripts/config.js -->
-  <script>
-    window.__MFC_CONFIG = Object.assign({
-      API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com',
-      // optional explicit path if your server uses a custom one:
-      // AUTH_LOGIN_PATH: '/api/auth/login'
-    }, window.__MFC_CONFIG||{});
-  </script>
+  <!-- Load config FIRST -->
+  <script src="/scripts/config.js?v=3"></script>
 
   <script>
   (() => {
     const CFG  = window.__MFC_CONFIG || {};
     const API  = (CFG.API_BASE_URL || '').replace(/\/+$/,'');
+    const PATH = CFG.AUTH_LOGIN_PATH || '/api/auth/login';   // server has this
     const JWT_KEY = 'mfc_client_jwt';
+    const NEXT = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
 
     const $ = (s,r=document)=>r.querySelector(s);
     const form   = $('#loginForm');
@@ -73,102 +68,53 @@
     const box    = $('#status');
     const dbg    = $('#debug');
 
-    const NEXT = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
-
     function show(msg, ok=false){
       box.textContent = msg || '';
       box.className = 'status' + (ok ? ' ok' : '');
       box.style.display = msg ? 'block' : 'none';
     }
-
-    function debug(msg){
-      dbg.textContent = msg || '';
-    }
-
-    async function tryLoginPath(path, email, password){
-      const url = API + path;
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const text = await res.text();
-      let data = {};
-      try { data = text ? JSON.parse(text) : {}; } catch {}
-      return {ok: res.ok, status: res.status, data, raw: text, url};
-    }
-
-    async function doLogin(email, password){
-      if (!API) throw new Error('API_BASE_URL missing');
-
-      // Try explicit override first, then common patterns
-      const candidates = [
-        CFG.AUTH_LOGIN_PATH || '',
-        '/api/auth/login',
-        '/api/client/login',
-        '/auth/login',
-        '/api/login'
-      ].filter(Boolean);
-
-      debug(`API: ${API}\nTrying: ${candidates.join(', ')}`);
-
-      for (const path of candidates){
-        try {
-          const out = await tryLoginPath(path, email, password);
-          if (out.status === 404){
-            // endpoint not found: try the next path
-            continue;
-          }
-          if (!out.ok){
-            // any other error (401, 400, 500) — bubble up
-            const msg = out.data?.error || out.data?.message || `HTTP ${out.status}`;
-            throw new Error(`${msg} via ${path}`);
-          }
-
-          // Success — accept several token shapes
-          const tok = out.data?.token || out.data?.jwt || out.data?.accessToken || out.data?.data?.token;
-          if (!tok) throw new Error(`No token in response via ${path}`);
-          localStorage.setItem(JWT_KEY, tok);
-          return { path, token: tok };
-        } catch (e) {
-          // keep trying next candidate unless it was the last
-          if (path === candidates[candidates.length-1]) throw e;
-        }
-      }
-      throw new Error('No working auth route found');
-    }
+    function debug(msg){ dbg.textContent = msg || ''; }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       show('');
       debug('');
+      if (!API) { show('API_BASE_URL missing in /scripts/config.js'); return; }
 
       const email = $('#email').value.trim();
       const pass  = $('#password').value;
-
       if (!email || !pass){ show('Enter email and password.'); return; }
 
       btn.disabled = true;
 
       try {
-        const { path } = await doLogin(email, pass);
+        const res = await fetch(API + PATH, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ email, password: pass })
+        });
+        const text = await res.text();
+        let data = {};
+        try { data = text ? JSON.parse(text) : {}; } catch {}
+
+        if (!res.ok){
+          const msg = data?.error || data?.message || `HTTP ${res.status}`;
+          throw new Error(msg);
+        }
+        const token = data?.token || data?.jwt || data?.accessToken;
+        if (!token) throw new Error('No token in response');
+
+        localStorage.setItem(JWT_KEY, token);
         show('Login successful.', true);
-        debug(`Signed in via ${path}`);
-        // hard redirect to avoid any history weirdness
         location.replace(NEXT);
       } catch (err){
-        const hint = [
-          '• 404 → wrong route. Set window.__MFC_CONFIG.AUTH_LOGIN_PATH or fix server route.',
-          '• 401 → bad credentials.',
-          '• CORS error → add your domain to CORS on the backend.'
-        ].join('\n');
-        show(`Login failed: ${err.message}\n\n${hint}`);
+        show('Login failed: ' + err.message + '\n\nCheck: API_BASE_URL, CORS, and credentials.');
       } finally {
         btn.disabled = false;
       }
     });
 
-    // If already signed in, go straight to dashboard
+    // Already signed in? Go straight to dashboard.
     (function autoForward(){
       const tok = localStorage.getItem(JWT_KEY) || localStorage.getItem('mfc_token');
       if (tok) location.replace(NEXT);
