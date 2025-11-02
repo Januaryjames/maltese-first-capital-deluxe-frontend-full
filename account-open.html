@@ -82,6 +82,22 @@
 
     <div id="formStatus" class="card" style="display:none;"></div>
 
+    <!-- Success panel (hidden by default) -->
+    <div id="submitDone" class="card" style="display:none; border-color: rgba(87,204,153,.35);">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#57CC99" d="M9.0 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"></path>
+        </svg>
+        <div>
+          <h3 style="margin:0;">Application submitted</h3>
+          <p class="muted" style="margin:4px 0 0;">
+            Thank you—our onboarding team will email you shortly.
+            You can continue browsing; no further action needed.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- ===========================================================
          FORM posts directly to backend email route, stays on page
          =========================================================== -->
@@ -218,12 +234,57 @@
     <iframe name="submitBridge" style="display:none;width:0;height:0;border:0;"></iframe>
   </main>
 
-  <!-- Keep your existing lightweight scripts (no submit hijack) -->
+  <!-- Keep your existing lightweight scripts (no submit hijack on this page) -->
   <script src="scripts/forms.js" defer></script>
   <script src="/scripts/config.js?v=2"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <!-- IMPORTANT: do NOT include account-open-wire.js on this page -->
   <script src="/scripts/legal-footer.js?v=1" defer></script>
   <script src="/scripts/account-open-placeholders.js" defer></script>
+
+  <!-- Tiny enhancer: shows success card after iframe load (no layout change) -->
+  <script>
+  (function () {
+    const form   = document.getElementById('accountOpenForm');
+    const frame  = document.querySelector('iframe[name="submitBridge"]');
+    const status = document.getElementById('formStatus');
+    const done   = document.getElementById('submitDone');
+    const bar    = document.getElementById('uploadBar');
+    const btn    = document.getElementById('submitBtn');
+    const draft  = document.getElementById('saveDraftBtn');
+
+    if (!form || !frame) return;
+
+    // Optional: local draft save (text fields only)
+    if (draft) {
+      draft.addEventListener('click', function () {
+        try {
+          const data = new FormData(form);
+          const obj = {};
+          for (const [k,v] of data.entries()) {
+            if (v instanceof File) continue;
+            obj[k] = v;
+          }
+          localStorage.setItem('mfc_account_open_draft', JSON.stringify(obj));
+          alert('Draft saved locally.');
+        } catch (e) { console.warn('Draft save failed:', e); }
+      });
+    }
+
+    form.addEventListener('submit', function () {
+      if (status) { status.style.display = 'block'; status.textContent = 'Uploading…'; }
+      if (btn) btn.disabled = true;
+      if (bar) bar.style.width = '45%';
+    });
+
+    // Cross-origin safe: react to iframe load only
+    frame.addEventListener('load', function () {
+      if (bar) bar.style.width = '100%';
+      if (btn) btn.disabled = false;
+      if (status) status.style.display = 'none';
+      if (done) { done.style.display = 'block'; try { done.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch {} }
+    });
+  })();
+  </script>
 </body>
 </html>
