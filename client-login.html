@@ -1,112 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Client Login — Maltese First Capital</title>
-  <link rel="icon" href="/assets/logo-crest.png">
-  <link rel="stylesheet" href="/styles.css"/>
+  <link rel="icon" href="/assets/logo-crest.png" />
   <style>
-    :root { --bg:#0b0f16; --card:#101722; --text:#e9eef8; --muted:#9eb0c7; --gold:#d4af37; --err:#ffb3b3; --ok:#aaf1c7; }
+    :root{--bg:#0b0f16;--card:#101722;--text:#e9eef8;--muted:#9eb0c7;--gold:#d4af37;--gold-2:#b99623}
     html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
-    .wrap{max-width:1160px;margin:0 auto;padding:20px}
-    .nav{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
-    .brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none}
-    .brand img{width:36px;height:36px;border-radius:8px;object-fit:contain;background:#0d131b}
-    .brand b{letter-spacing:.3px}
-    .area{display:flex;justify-content:center;margin-top:40px}
-    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:22px;max-width:480px;width:100%}
-    h1{margin:0 0 6px}
-    .muted{color:var(--muted)}
-    label{display:block;margin:14px 0 6px}
-    input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0d131b;color:var(--text)}
-    button{width:100%;margin-top:16px;padding:12px 14px;border-radius:12px;border:1px solid rgba(212,175,55,.4);background:linear-gradient(180deg,#c9a647,#9a7d2b);color:#1a1307;font-weight:700;cursor:pointer}
-    .status{margin-top:12px;padding:10px 12px;border-radius:12px;background:#1a1010;border:1px solid #3c2222;color:var(--err);display:none;white-space:pre-wrap}
-    .status.ok{background:#0f1a12;border-color:#1f3a2a;color:var(--ok)}
-    .tiny{font-size:11px;color:#6f8096;margin-top:8px}
+    .wrap{max-width:920px;margin:0 auto;padding:28px 18px}
+    .brand{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+    .brand img{width:36px;height:36px;border-radius:8px;background:#0d131b;object-fit:contain}
+    .brand b{font-weight:700;letter-spacing:.3px}
+    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:24px;max-width:520px}
+    h1{margin:0 0 6px 0;font-size:24px}
+    .muted{color:var(--muted);font-size:14px;margin-bottom:16px}
+    label{display:block;font-size:13px;margin:14px 0 6px;color:var(--muted)}
+    input{width:100%;background:#0d131b;color:var(--text);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 14px;font-size:15px}
+    button{width:100%;margin-top:18px;background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#1a1405;border:0;border-radius:12px;padding:12px 14px;font-weight:700;cursor:pointer}
+    .msg{margin-top:12px;font-size:14px}
+    .err{color:#ff9d9d}
+    .ok{color:#9bf3b3}
+    .navtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .crumb{color:var(--muted);font-size:14px}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="nav">
-      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
+    <div class="navtop">
+      <div class="brand"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></div>
+      <div class="crumb">Client Area</div>
     </div>
 
-    <div class="area">
-      <form class="card" id="loginForm" autocomplete="on">
-        <h1>Client Login</h1>
-        <div class="muted">Sign in to view your accounts and recent transactions.</div>
+    <div class="card">
+      <h1>Client Login</h1>
+      <div class="muted">Sign in to view your accounts and recent transactions.</div>
 
+      <form id="loginForm" autocomplete="on">
         <label for="email">Email</label>
-        <input id="email" type="email" placeholder="you@company.com" required autocomplete="username"/>
+        <input id="email" type="email" required placeholder="you@company.com" />
 
         <label for="password">Password</label>
-        <input id="password" type="password" placeholder="••••••••" required autocomplete="current-password"/>
+        <input id="password" type="password" required placeholder="••••••••" />
 
-        <button id="loginBtn" type="submit">Sign in</button>
-
-        <div id="status" class="status"></div>
-        <div class="tiny" id="debug"></div>
+        <button type="submit" id="loginBtn">Sign in</button>
+        <div class="msg" id="msg"></div>
       </form>
     </div>
   </div>
 
-  <!-- CONFIG MUST LOAD FIRST -->
-  <script src="/scripts/config.js?v=4"></script>
-
+  <script src="/scripts/config.mock.js"></script>
+  <script src="/scripts/mock-auth.js"></script>
   <script>
-  (() => {
-    const API  = (window.__MFC_CONFIG?.API_BASE_URL || '').replace(/\/+$/,'');
-    const ENDPOINT = '/api/auth/login';       // hard-locked to the real route
-    const JWT_KEY  = 'mfc_client_jwt';
-    const $ = (s,r=document)=>r.querySelector(s);
-    const next = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
+    (()=>{
+      const $ = s => document.querySelector(s);
+      const form = $('#loginForm'), btn = $('#loginBtn'), msg = $('#msg');
 
-    const form = $('#loginForm'), btn = $('#loginBtn'), box = $('#status'), dbg = $('#debug');
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        msg.textContent = ''; msg.className = 'msg';
+        btn.disabled = true; btn.textContent = 'Signing in…';
+        const email = $('#email').value.trim();
+        const pass  = $('#password').value;
 
-    function show(msg, ok=false){ box.textContent = msg || ''; box.className = 'status' + (ok?' ok':''); box.style.display = msg ? 'block' : 'none'; }
-    function debug(m){ dbg.textContent = m || ''; }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      show(''); debug('');
-      if(!API){ show('API_BASE_URL missing in /scripts/config.js'); return; }
-
-      const email = $('#email').value.trim();
-      const password = $('#password').value;
-      if(!email || !password){ show('Enter email and password.'); return; }
-
-      btn.disabled = true;
-      try{
-        const res = await fetch(API + ENDPOINT, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-        const txt = await res.text();
-        let data = {}; try{ data = txt ? JSON.parse(txt) : {}; }catch{}
-
-        if(!res.ok) throw new Error(data?.error || data?.message || `HTTP ${res.status}`);
-
-        const token = data?.token || data?.jwt || data?.accessToken;
-        if(!token) throw new Error('No token returned.');
-
-        localStorage.setItem(JWT_KEY, token);
-        show('Login successful.', true);
-        location.replace(next);
-      }catch(err){
-        show('Login failed: ' + err.message);
-      }finally{
-        btn.disabled = false;
-      }
-    });
-
-    // If already authenticated, go straight to dashboard
-    (function autoGo(){
-      const t = localStorage.getItem(JWT_KEY) || localStorage.getItem('mfc_token');
-      if (t) location.replace(next);
+        const r = await window.MFC_AUTH.login(email, pass);
+        if (!r.ok) {
+          msg.textContent = r.error || 'Login failed';
+          msg.className = 'msg err';
+          btn.disabled = false; btn.textContent = 'Sign in';
+          return;
+        }
+        msg.textContent = 'Signed in.';
+        msg.className = 'msg ok';
+        const p = new URLSearchParams(window.location.search).get('next') || '/client-dashboard.html';
+        window.location.href = p;
+      });
     })();
-  })();
   </script>
 </body>
 </html>
