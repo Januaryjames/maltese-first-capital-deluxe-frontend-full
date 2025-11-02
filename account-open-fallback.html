@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>MFC — Fallback Application Uploader</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; padding: 24px; max-width: 800px; margin: auto; }
+    fieldset { margin: 16px 0; padding: 16px; }
+    label { display:block; margin: 8px 0 4px; font-weight:600; }
+    input, select, textarea { width:100%; padding:8px; }
+    small { color:#666; }
+    button { padding:10px 16px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <h1>Maltese First Capital — Fallback Application Uploader</h1>
+  <p><small>Submits directly to the backend. On success you’ll see JSON like <code>{"applicationId":"...","status":"received"}</code>.</small></p>
+
+  <form action="https://maltese-first-capital-deluxe-backend.onrender.com/api/onboarding/submit"
+        method="post" enctype="multipart/form-data">
+    <fieldset>
+      <legend>Client Information</legend>
+      <label>Full name *</label>
+      <input name="fullName" required />
+
+      <label>Email *</label>
+      <input type="email" name="email" required />
+
+      <label>Phone</label>
+      <input name="phone" />
+
+      <label>Company / Account Name *</label>
+      <input name="companyName" required />
+
+      <label>Country</label>
+      <input name="country" />
+
+      <label>Address</label>
+      <input name="address" />
+
+      <label>Primary currency</label>
+      <input name="currency" placeholder="USD / EUR" />
+
+      <label>Account type</label>
+      <input name="accountType" placeholder="Corporate – Private Client (Onboarding)" />
+
+      <label>Commercial registration</label>
+      <input name="commercialRegistration" />
+
+      <label>Source of funds / purpose</label>
+      <input name="sourceOfFunds" />
+
+      <label>Notes</label>
+      <textarea name="notes" rows="3"></textarea>
+
+      <!-- if your backend has BYPASS_CAPTCHA=1, you don't need a Turnstile token -->
+      <input type="hidden" name="cf_turnstile_response" value="">
+    </fieldset>
+
+    <fieldset>
+      <legend>Documents</legend>
+      <label>Passport (PDF/JPG/PNG/WEBP, max 16MB) *</label>
+      <input type="file" name="passport" accept=".pdf,image/*" required />
+
+      <label>Proof of Address *</label>
+      <input type="file" name="proofOfAddress" accept=".pdf,image/*" required />
+
+      <label>Company docs (multiple allowed)</label>
+      <input type="file" name="companyDocs" accept=".pdf,image/*" multiple />
+
+      <label>Selfie (Face verification)</label>
+      <input type="file" name="selfie" accept="image/*" />
+    </fieldset>
+
+    <p><label><input type="checkbox" name="consent" required> I confirm the information is accurate and authorise KYC/AML checks.</label></p>
+
+    <button type="submit">Submit application</button>
+  </form>
+</body>
+</html>
