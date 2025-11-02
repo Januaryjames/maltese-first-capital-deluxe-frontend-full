@@ -7,22 +7,19 @@
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="stylesheet" href="/styles.css" />
 
-  <!-- Client-only header + page styles (scoped) -->
+  <!-- White header + page styles (scoped) -->
   <style>
     :root { --bg:#0b0f16; --card:#101722; --text:#e9eef8; --muted:#9eb0c7; --gold:#d4af37; --ok:#1db954; }
     html,body{ background:var(--bg); color:var(--text); margin:0; font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif; }
     .cl-wrap{ max-width:1160px; margin:0 auto; padding:16px 20px 48px; }
 
-    /* White header — only on client pages */
     .client-header{
-      background:#fff; color:#111;
-      border-bottom:1px solid #e8edf3;
-      padding:14px 20px;
+      background:#fff; color:#111; border-bottom:1px solid #e8edf3; padding:14px 20px;
     }
     .client-header .brand{ display:inline-flex; align-items:center; gap:10px; text-decoration:none; }
     .client-header .brand b{ color:#111; font-weight:600; letter-spacing:.2px; }
     .client-header .brand-logo{
-      width:44px; height:44px; object-fit:contain; display:inline-block;
+      width:48px; height:48px; object-fit:contain; display:inline-block;
       background:transparent; filter:none !important; -webkit-filter:none !important; mix-blend-mode:normal !important;
     }
     .client-header .logout{ float:right; color:#334155; font-size:14px; text-decoration:none; margin-top:10px; }
@@ -43,6 +40,44 @@
     .amt{ white-space:nowrap; }
     .pos{ color:#9bf3b3 } .neg{ color:#ff9d9d }
   </style>
+
+  <!-- Same robust mock-store loader with fallback -->
+  <script>
+    (function(){
+      window.__MFC_STORE_READY = new Promise(function(resolve){
+        var done = false;
+        function complete(){ if(!done){ done=true; resolve(); } }
+        var s = document.createElement('script');
+        s.src = '/scripts/mock-store.js?v=1';
+        s.async = false;
+        s.onload = complete;
+        s.onerror = function(){
+          console.warn('[MFC] mock-store.js failed to load; using inline fallback.');
+          window.MFC_MOCK = {
+            USERS: {
+              "bejadbn1122@gmail.com": {
+                password: "MFC#Bejad2025!",
+                name: "Bejad Bandoor A. Alharbi",
+                companyName: "Nab’ al-Khayrat For Trading"
+              }
+            },
+            ACCOUNTS: {
+              "bejadbn1122@gmail.com": {
+                holder: "Nab’ al-Khayrat For Trading",
+                accountNo: "91550872",
+                currency: "USD",
+                status: "active",
+                balance: 0,
+                lines: []
+              }
+            }
+          };
+          complete();
+        };
+        document.head.appendChild(s);
+      });
+    })();
+  </script>
 </head>
 <body>
   <header class="client-header">
@@ -57,7 +92,6 @@
 
   <main class="cl-wrap">
     <div class="cl-grid">
-      <!-- Overview -->
       <section class="cl-card">
         <h2 style="margin:0 0 10px">Account Overview</h2>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px">
@@ -88,7 +122,6 @@
         </div>
       </section>
 
-      <!-- Transactions -->
       <section class="cl-card">
         <h2 style="margin:0 0 10px">Recent Transactions</h2>
         <div id="txBox"><div class="k">Loading…</div></div>
@@ -96,68 +129,54 @@
     </div>
   </main>
 
-  <!-- Your local mock data (do not rename path) -->
-  <script src="/scripts/mock-store.js?v=1"></script>
-
   <script>
-    (()=>{
-      const $ = (s,r=document)=>r.querySelector(s);
-      const fmtMoney = (n,c='USD') => (typeof n==='number' ? n.toLocaleString(undefined,{style:'currency',currency:c}) : '—');
-
-      function renderTx(lines, ccy){
-        if (!Array.isArray(lines) || !lines.length) return '<div class="k">No transactions yet.</div>';
-        const rows = lines
-          .slice()
-          .sort((a,b)=>new Date(b.ts)-new Date(a.ts))
-          .slice(0,20)
-          .map(l=>{
-            const sign = l.type === 'debit' ? -1 : 1;
-            const cls  = sign < 0 ? 'neg' : 'pos';
-            const amt  = fmtMoney(sign * Number(l.amount||0), l.currency || ccy || 'USD');
-            const when = l.ts ? new Date(l.ts).toLocaleString() : '—';
-            return `<tr>
-              <td>${when}</td>
-              <td>${l.description || l.type || '-'}</td>
-              <td class="amt ${cls}">${amt}</td>
-            </tr>`;
-          }).join('');
-        return `<table><thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table>`;
-      }
-
+    (function(){
+      function $(s,r){return (r||document).querySelector(s)}
       function kickToLogin(){
-        const next = encodeURIComponent(location.pathname);
+        var next = encodeURIComponent(location.pathname);
         location.href = '/client-login.html?next=' + next;
       }
+      function fmtMoney(n,c){ return (typeof n==='number') ? n.toLocaleString(undefined,{style:'currency',currency:c||'USD'}) : '—'; }
 
-      document.getElementById('logoutLink').addEventListener('click',(e)=>{
+      document.getElementById('logoutLink').addEventListener('click', function(e){
         e.preventDefault();
         localStorage.removeItem('mfc_mock_email');
         localStorage.removeItem('mfc_mock_token');
         kickToLogin();
       });
 
-      // Boot
-      const email = (localStorage.getItem('mfc_mock_email')||'').toLowerCase();
-      const token = localStorage.getItem('mfc_mock_token');
-      if (!email || !token) { kickToLogin(); return; }
+      window.__MFC_STORE_READY.then(function(){
+        var email = (localStorage.getItem('mfc_mock_email')||'').toLowerCase();
+        var token = localStorage.getItem('mfc_mock_token');
+        if (!email || !token) { kickToLogin(); return; }
+        if (!window.MFC_MOCK || !MFC_MOCK.USERS || !MFC_MOCK.ACCOUNTS) { kickToLogin(); return; }
 
-      if (!window.MFC_MOCK || !MFC_MOCK.USERS || !MFC_MOCK.ACCOUNTS) { kickToLogin(); return; }
+        var user = MFC_MOCK.USERS[email];
+        var acct = MFC_MOCK.ACCOUNTS[email];
+        if (!user || !acct) { kickToLogin(); return; }
 
-      const user = MFC_MOCK.USERS[email];
-      const acct = MFC_MOCK.ACCOUNTS[email];
+        $('#holderName').textContent = acct.holder || user.companyName || '—';
+        $('#authPerson').textContent = user.name || (email.split('@')[0]);
+        $('#acctNo').textContent     = acct.accountNo || '—';
+        $('#acctStatus').textContent = acct.status || 'active';
+        $('#acctCcy').textContent    = acct.currency || 'USD';
+        $('#acctBal').textContent    = fmtMoney(Number(acct.balance||0), acct.currency || 'USD');
 
-      if (!user || !acct) { kickToLogin(); return; }
+        var lines = Array.isArray(acct.lines) ? acct.lines.slice() : [];
+        lines.sort(function(a,b){ return new Date(b.ts) - new Date(a.ts); });
+        if (!lines.length){ $('#txBox').innerHTML = '<div class="k">No transactions yet.</div>'; return; }
 
-      // Fill overview (holder = company; authorised person = user.name)
-      $('#holderName').textContent = acct.holder || user.companyName || '—';
-      $('#authPerson').textContent = user.name || (email.split('@')[0]);
-      $('#acctNo').textContent     = acct.accountNo || '—';
-      $('#acctStatus').textContent = acct.status || 'active';
-      $('#acctCcy').textContent    = acct.currency || 'USD';
-      $('#acctBal').textContent    = fmtMoney(Number(acct.balance||0), acct.currency || 'USD');
+        var rows = lines.slice(0,20).map(function(l){
+          var sign = l.type === 'debit' ? -1 : 1;
+          var cls  = sign < 0 ? 'neg' : 'pos';
+          var amt  = fmtMoney(sign * Number(l.amount||0), l.currency || acct.currency || 'USD');
+          var when = l.ts ? new Date(l.ts).toLocaleString() : '—';
+          return '<tr><td>'+when+'</td><td>'+(l.description||l.type||'-')+'</td><td class="amt '+cls+'">'+amt+'</td></tr>';
+        }).join('');
 
-      // Transactions
-      $('#txBox').innerHTML = renderTx(acct.lines || [], acct.currency);
+        $('#txBox').innerHTML =
+          '<table><thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead><tbody>'+rows+'</tbody></table>';
+      });
     })();
   </script>
 </body>
