@@ -7,96 +7,210 @@
   <link rel="icon" href="/assets/logo-crest.png">
   <link rel="stylesheet" href="/styles.css" />
   <style>
-    :root{--bg:#0b0f16;--card:#101722;--text:#e9eef8;--muted:#9eb0c7;--gold:#d4af37;--ok:#1db954}
-    html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
-    .wrap{max-width:1160px;margin:0 auto;padding:20px}
-    .nav{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
-    .brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none}
-    .brand img{width:30px;height:30px;border-radius:8px;object-fit:contain;background:#0d131b}
-    .logout{margin-left:auto}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
+    /* ---------- Theme ---------- */
+    :root{
+      --bg:#0b0f16;           /* page bg */
+      --card:#0f1622;         /* card bg (slightly lighter than page) */
+      --ink:#0b1020;          /* dark ink for white nav */
+      --text:#e9eef8;         /* body text on dark */
+      --muted:#99a8bf;        /* secondary text */
+      --line:#1b2636;         /* dark separators */
+      --brand:#d4af37;        /* gold */
+      --brand-2:#b08d2b;      /* deeper gold */
+      --ok:#67e2a0;
+      --danger:#ff9d9d;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    html,body{margin:0;background:var(--bg);color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
+
+    /* ---------- White, sticky nav ---------- */
+    .nav{
+      position:sticky; top:0; z-index:1000;
+      background:#ffffff; color:var(--ink);
+      border-bottom:1px solid #e6e8ec;
+      box-shadow:0 4px 16px rgba(12,16,24,.06);
+    }
+    .nav-inner{max-width:1160px;margin:0 auto;padding:12px 20px;
+      display:flex;align-items:center;gap:14px}
+    .brand{display:flex;align-items:center;gap:10px;
+      color:var(--ink);text-decoration:none;font-weight:700}
+    .brand img{width:28px;height:28px;border-radius:8px;object-fit:contain}
+    .nav-spacer{flex:1}
+    .logout{
+      appearance:none; border:1px solid #d6dae1; background:#fff; color:var(--ink);
+      padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600;
+    }
+    .logout:hover{background:#f6f7f9}
+
+    /* ---------- Layout ---------- */
+    .wrap{max-width:1160px;margin:0 auto;padding:22px}
+    .top{display:flex;align-items:center;gap:16px;margin:6px 0 18px}
+    .avatar{
+      width:44px;height:44px;border-radius:50%;
+      background:linear-gradient(180deg,#2a3850,#172233);
+      display:grid;place-items:center;font-weight:800;color:#fff;border:1px solid #2b3950;
+    }
+    .hello b{display:block;font-size:18px}
+    .hello small{color:var(--muted)}
+
+    /* ---------- Cards ---------- */
+    .grid{display:grid;gap:18px;grid-template-columns:1fr; }
     @media (min-width:980px){ .grid{grid-template-columns:1.1fr .9fr} }
-    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:18px}
-    .k{color:var(--muted);font-size:13px}
-    .v{font-weight:600}
+    .card{
+      background:radial-gradient(1200px 60px at 50% -20px,rgba(212,175,55,.12),transparent 60%),
+                 var(--card);
+      border:1px solid rgba(212,175,55,.18);
+      border-radius:16px;padding:18px;box-shadow:var(--shadow)
+    }
+    h2{margin:0 0 12px;font-size:18px}
+
+    /* KPIs */
+    .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .kpi{background:rgba(255,255,255,.02);border:1px solid var(--line);
+      border-radius:14px;padding:12px}
+    .k{color:var(--muted);font-size:12px}
+    .v{font-weight:700;font-size:18px;margin-top:2px}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;background:#0d131b}
+
+    /* Overview grid */
+    .ov{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;
+      border:1px solid #244d32;background:#102017;color:#9bf3b3;font-weight:700;font-size:12px}
+
+    /* Transactions */
     table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left}
-    th{color:var(--muted);font-weight:600}
+    th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left}
+    th{color:var(--muted);font-weight:600;position:sticky;top:0;background:var(--card)}
+    tbody tr:nth-child(odd){background:rgba(255,255,255,.02)}
     .amt{white-space:nowrap}
-    .pos{color:#9bf3b3} .neg{color:#ff9d9d}
+    .pos{color:#9bf3b3}.neg{color:#ff9d9d}
+
+    /* ---------- Optional bottom dock ---------- */
+    .dock{
+      position:sticky; bottom:0; z-index:900;
+      background:#0f1521;border-top:1px solid #1c2a3f;
+      box-shadow:0 -8px 24px rgba(0,0,0,.3);
+    }
+    .dock-inner{max-width:1160px;margin:0 auto;padding:10px 20px;display:flex;gap:10px}
+    .dock a,.dock button{
+      flex:1; text-align:center; color:#e6ecf7; text-decoration:none;
+      background:#111a2a;border:1px solid #25344b;border-radius:12px;padding:12px;font-weight:700
+    }
+    .dock a:hover,.dock button:hover{background:#0e1726}
+    /* Toggle the dock by adding body.with-dock */
+    body:not(.with-dock) .dock{display:none}
   </style>
 </head>
+
+<!-- Add class="with-dock" if you want the bottom dock visible -->
 <body>
+  <!-- White top nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/index.html">
+        <img src="/assets/logo-crest.png" alt="">
+        <span>Maltese First Capital</span>
+      </a>
+      <div class="nav-spacer"></div>
+      <button class="logout" id="logoutLink">Logout</button>
+    </div>
+  </nav>
+
   <div class="wrap">
-    <div class="nav">
-      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
-      <a class="logout" href="#" id="logoutLink">Logout</a>
+    <!-- Greeting / avatar -->
+    <div class="top">
+      <div class="avatar" id="avatar">MF</div>
+      <div class="hello">
+        <b id="helloName">Client</b>
+        <small id="helloSub">Welcome back — your account summary is below.</small>
+      </div>
     </div>
 
     <div class="grid">
-      <!-- Account overview -->
+      <!-- Left: Overview -->
       <section class="card">
-        <h2 style="margin:0 0 10px">Account Overview</h2>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-          <div><div class="k">Account Holder</div><div class="v" id="holderName">—</div></div>
-          <div><div class="k">Authorised Person</div><div class="v" id="authPerson">—</div></div>
-          <div><div class="k">Account Number</div><div class="v mono" id="acctNo">—</div></div>
-          <div><div class="k">Status</div><div class="pill" id="acctStatus">active</div></div>
-          <div><div class="k">Currency</div><div class="v" id="acctCcy">USD</div></div>
-          <div><div class="k">Current Balance</div><div class="v" id="acctBal">—</div></div>
+        <h2>Account Overview</h2>
+
+        <!-- Key numbers up top -->
+        <div class="kpis">
+          <div class="kpi"><div class="k">Current Balance</div><div class="v" id="kpiBal">—</div></div>
+          <div class="kpi"><div class="k">Status</div><div class="v"><span class="pill" id="kpiStatus">active</span></div></div>
+          <div class="kpi"><div class="k">Currency</div><div class="v" id="kpiCcy">USD</div></div>
+          <div class="kpi"><div class="k">Account No.</div><div class="v mono" id="kpiNo">—</div></div>
+        </div>
+
+        <!-- Details -->
+        <div class="ov">
+          <div>
+            <div class="k">Account Holder</div>
+            <div class="v" id="holderName">—</div>
+          </div>
+          <div>
+            <div class="k">Authorised Person</div>
+            <div class="v" id="authPerson">—</div>
+          </div>
         </div>
       </section>
 
-      <!-- Transactions -->
+      <!-- Right: Transactions -->
       <section class="card">
-        <h2 style="margin:0 0 10px">Recent Transactions</h2>
-        <div id="txBox"><div class="k">Loading…</div></div>
+        <h2>Recent Transactions</h2>
+        <div id="txBox"><div class="k">No transactions yet.</div></div>
       </section>
     </div>
   </div>
 
-  <!-- INLINE MOCK AUTH (same block as login; keep in both pages) -->
+  <!-- Optional bottom dock -->
+  <div class="dock">
+    <div class="dock-inner">
+      <a href="/client-dashboard.html">Accounts</a>
+      <a href="#" onclick="alert('Statements coming soon');return false;">Statements</a>
+      <a href="mailto:hello@maltesefirst.com?subject=Client%20Support">Support</a>
+      <button id="dockLogout">Logout</button>
+    </div>
+  </div>
+
+  <!-- ---------- Inline mock auth (same data as before) ---------- -->
   <script>
   (function(){
     window.MFC_MOCK = window.MFC_MOCK || {
-      ALLOW_ANY_PASSWORD: false,
-      SESSION_HOURS: 24,
-      USERS: {
-        "bejadbn1122@gmail.com": {
-          password: "MFC#Bejad2025!",
-          name: "Bejad Bandoor A. Alharbi",
-          authorisedPerson: "Bejadbn1122",
-          holder: "Nab’ al-Khayrat For Trading",
-          account: { accountNo: "91550872", status: "active", currency: "USD", balance: 0, lines: [] }
+      ALLOW_ANY_PASSWORD:false,
+      SESSION_HOURS:24,
+      USERS:{
+        "bejadbn1122@gmail.com":{
+          password:"MFC#Bejad2025!",
+          name:"Bejad Bandoor A. Alharbi",
+          authorisedPerson:"Bejadbn1122",
+          holder:"Nab’ al-Khayrat For Trading",
+          account:{ accountNo:"91550872", status:"active", currency:"USD", balance:0, lines:[] }
         }
       }
     };
-
     const CFG=window.MFC_MOCK, now=()=>Date.now(), b64=s=>btoa(s), ub64=s=>atob(s);
-    function save(email){const exp=now()+CFG.SESSION_HOURS*60*60*1000;const t=b64(JSON.stringify({email,exp}));localStorage.setItem("mfc_token",t);return t;}
-    function read(){const t=localStorage.getItem("mfc_token");if(!t)return null;try{const j=JSON.parse(ub64(t));if(!j.email||now()>j.exp){localStorage.removeItem("mfc_token");return null;}return{token:t,email:j.email}}catch{return null}}
+    function save(email){const exp=now()+(CFG.SESSION_HOURS||24)*3600*1000;const t=b64(JSON.stringify({email,exp}));localStorage.setItem("mfc_token",t);return t;}
+    function read(){const t=localStorage.getItem("mfc_token"); if(!t) return null; try{const j=JSON.parse(ub64(t)); if(!j.email||now()>j.exp){localStorage.removeItem("mfc_token");return null;} return {token:t,email:j.email};}catch{return null}}
     const get=(e)=> (CFG.USERS||{})[String(e||"").toLowerCase()];
     window.MFC_AUTH={
-      async login(e,p){e=String(e||"").toLowerCase().trim();const u=get(e);if(!u||p!==u.password)return{ok:false,error:"Invalid credentials"};return{ok:true,token:save(e),user:{email:e,name:u.name}}},
-      async me(t){const s=read();if(!s||(t&&t!==s.token))return{ok:false,error:"Unauthenticated"};const u=get(s.email);return{ok:true,user:{email:s.email,name:u?.name}}},
-      async overview(t){const s=read();if(!s||(t&&t!==s.token))return{ok:false,error:"Unauthenticated"};const u=get(s.email),a=u?.account;return{ok:true,data:{holder:u?.holder||u?.name,authorisedPerson:u?.authorisedPerson,accounts:a?[a]:[]}}},logout(){localStorage.removeItem("mfc_token");}
+      async me(t){const s=read(); if(!s||(t&&t!==s.token)) return {ok:false,error:"Unauthenticated"}; const u=get(s.email); return {ok:true,user:{email:s.email,name:u?.name}}},
+      async overview(t){const s=read(); if(!s||(t&&t!==s.token)) return {ok:false,error:"Unauthenticated"}; const u=get(s.email),a=u?.account; return {ok:true,data:{holder:u?.holder||u?.name,authorisedPerson:u?.authorisedPerson,accounts:a?[a]:[]}};},
+      logout(){localStorage.removeItem("mfc_token");}
     };
   })();
   </script>
 
-  <!-- DASHBOARD WIRE -->
+  <!-- ---------- Wire-up ---------- -->
   <script>
   (function(){
     const $ = (s)=>document.querySelector(s);
     const money = (n,c='USD') => Number(n||0).toLocaleString(undefined,{style:'currency',currency:c});
+    const initials = (name="") => name.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]?.toUpperCase()||"").join("") || "MF";
 
     async function boot(){
       const token = localStorage.getItem("mfc_token");
       if(!token){ location.href="/client-login.html?next=%2Fclient-dashboard.html"; return; }
 
-      const A = window.MFC_AUTH;
+      const A=window.MFC_AUTH;
       const me = await A.me(token);
       if(!me.ok){ A.logout(); location.href="/client-login.html?next=%2Fclient-dashboard.html"; return; }
 
@@ -106,29 +220,45 @@
       const d = ov.data || {};
       const acct = d.accounts?.[0] || null;
 
-      $("#holderName").textContent = d.holder || me.user.name || "—";
+      $("#helloName").textContent = d.holder || me.user.name || "Client";
+      $("#avatar").textContent   = initials(d.holder || me.user.name);
+      $("#holderName").textContent = d.holder || "—";
       $("#authPerson").textContent = d.authorisedPerson || (me.user.email.split("@")[0]);
-      if (acct){
-        $("#acctNo").textContent = acct.accountNo || "—";
-        $("#acctStatus").textContent = acct.status || "active";
-        $("#acctCcy").textContent = acct.currency || "USD";
-        $("#acctBal").textContent = money(acct.balance, acct.currency || "USD");
 
-        const rows = (acct.lines||[]).slice().sort((a,b)=>new Date(b.ts)-new Date(a.ts)).slice(0,20)
-          .map(l=>{
+      if (acct){
+        $("#kpiNo").textContent   = acct.accountNo || "—";
+        $("#kpiStatus").textContent = acct.status || "active";
+        $("#kpiCcy").textContent  = acct.currency || "USD";
+        $("#kpiBal").textContent  = money(acct.balance, acct.currency||"USD");
+
+        const lines = (acct.lines||[]).slice().sort((a,b)=>new Date(b.ts)-new Date(a.ts)).slice(0,20);
+        if(!lines.length){
+          document.getElementById("txBox").innerHTML = '<div class="k">No transactions yet.</div>';
+        }else{
+          const rows = lines.map(l=>{
             const sign = l.type==='debit' ? -1 : 1;
-            const cls  = sign<0 ? 'neg' : 'pos';
+            const cls = sign<0 ? 'neg' : 'pos';
             const when = l.ts ? new Date(l.ts).toLocaleString() : '—';
-            return `<tr><td>${when}</td><td>${l.description||l.type||'-'}</td><td class="amt ${cls}">${money(sign*Number(l.amount||0), l.currency||acct.currency||'USD')}</td></tr>`;
+            const amt = money(sign*Number(l.amount||0), l.currency||acct.currency||'USD');
+            return `<tr><td>${when}</td><td>${l.description||l.type||'-'}</td><td class="amt ${cls}">${amt}</td></tr>`;
           }).join('');
-        $("#txBox").innerHTML = rows ? `<table><thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table>` : `<div class="k">No transactions yet.</div>`;
+          document.getElementById("txBox").innerHTML =
+            `<div style="max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:12px">
+               <table>
+                 <thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead>
+                 <tbody>${rows}</tbody>
+               </table>
+             </div>`;
+        }
       } else {
-        $("#txBox").innerHTML = '<div class="k">No account found.</div>';
+        document.getElementById("txBox").innerHTML = '<div class="k">No account found.</div>';
       }
     }
 
     document.addEventListener("DOMContentLoaded", boot);
-    document.getElementById("logoutLink")?.addEventListener("click",(e)=>{e.preventDefault(); window.MFC_AUTH.logout(); location.href="/client-login.html";});
+    const goLogout = (e)=>{e.preventDefault(); window.MFC_AUTH.logout(); location.href="/client-login.html";};
+    document.getElementById("logoutLink")?.addEventListener("click", goLogout);
+    document.getElementById("dockLogout")?.addEventListener("click", goLogout);
   })();
   </script>
 </body>
