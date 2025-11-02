@@ -7,131 +7,156 @@
   <link rel="icon" href="/assets/logo-crest.png">
   <link rel="stylesheet" href="/styles.css" />
   <style>
-    :root{--bg:#0b0f16;--card:#101722;--text:#e9eef8;--muted:#9eb0c7;--gold:#d4af37;--gold2:#b18b27;--ok:#9bf3b3;--err:#ff9d9d}
-    html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
-    .wrap{max-width:980px;margin:0 auto;padding:24px}
-    .nav{display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.08);padding:14px 0}
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
-    .brand img{width:30px;height:30px;border-radius:8px;object-fit:contain;background:#0d131b}
-    .crumb{margin-left:auto;color:var(--muted);font-size:14px}
-    .card{max-width:520px;margin:28px auto;background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:18px;padding:22px 22px 18px}
-    h1{margin:0 0 6px;font-size:24px}
-    p.sub{margin:0 0 18px;color:var(--muted)}
-    label{display:block;margin:14px 0 6px;color:var(--muted);font-size:14px}
-    input{width:100%;padding:14px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0c121a;color:var(--text);outline:none}
-    input:focus{border-color:rgba(212,175,55,.45)}
-    button{width:100%;margin-top:16px;padding:14px;border-radius:12px;border:1px solid rgba(212,175,55,.55);background:linear-gradient(180deg,var(--gold),var(--gold2));color:#1b1200;font-weight:700;cursor:pointer}
-    button:disabled{opacity:.6;cursor:not-allowed}
-    #loginMsg{margin-top:12px;font-size:14px}
+    :root{
+      --bg:#0b0f16; --ink:#0b1020; --text:#e9eef8; --muted:#99a8bf;
+      --card:#0f1622; --line:#1b2636; --brand:#d4af37; --brand-2:#b08d2b;
+    }
+    html,body{margin:0;background:var(--bg);color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
+
+    /* White sticky nav (matches dashboard) */
+    .nav{
+      position:sticky; top:0; z-index:1000;
+      background:#fff; color:var(--ink);
+      border-bottom:1px solid #e6e8ec; box-shadow:0 4px 16px rgba(12,16,24,.06);
+    }
+    .nav-inner{max-width:1160px;margin:0 auto;padding:10px 20px;
+      display:flex;align-items:center;gap:14px}
+    .brand{display:flex;align-items:center;gap:12px;
+      color:var(--ink);text-decoration:none;font-weight:800}
+    .brand img{width:44px;height:44px;border-radius:10px;object-fit:contain}
+    .brand span{font-size:18px;letter-spacing:.2px}
+    @media (max-width:520px){ .brand img{width:36px;height:36px} .brand span{font-size:16px} }
+    .nav-spacer{flex:1}
+
+    /* Page */
+    .wrap{max-width:1160px;margin:0 auto;padding:22px}
+    .center{max-width:640px;margin:32px auto}
+    .card{
+      background:radial-gradient(1000px 50px at 50% -20px,rgba(212,175,55,.12),transparent 60%), var(--card);
+      border:1px solid rgba(212,175,55,.18); border-radius:16px; padding:22px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25)
+    }
+    h1{margin:0 0 8px;font-size:22px}
+    .k{color:var(--muted)}
+
+    label{display:block;margin:12px 0 6px;color:#cfd9ea;font-size:14px}
+    input{
+      width:100%; padding:14px 12px; border-radius:12px;
+      border:1px solid #263246; background:#0e1521; color:var(--text);
+      outline:none
+    }
+    input:focus{border-color:#35507a; box-shadow:0 0 0 3px rgba(53,80,122,.25)}
+    .btn{
+      width:100%; margin-top:14px; padding:12px 14px; border-radius:12px;
+      border:1px solid #7f6720; color:#141820; cursor:pointer; font-weight:800;
+      background:linear-gradient(180deg,#f0d470,#cdaa2f); transition:opacity .15s ease
+    }
+    .btn[disabled]{opacity:.6;cursor:not-allowed}
+    .msg{margin-top:12px; font-size:14px}
+    .msg.error{color:#ff9d9d}
+    .msg.ok{color:#9bf3b3}
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="nav">
-      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
-      <div class="crumb">Client Area</div>
+  <!-- White top nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/index.html">
+        <img src="/assets/logo-crest.png" alt="">
+        <span>Maltese First Capital</span>
+      </a>
+      <div class="nav-spacer"></div>
     </div>
+  </nav>
 
-    <form class="card" id="clientLoginForm" autocomplete="off">
-      <h1>Client Login</h1>
-      <p class="sub">Sign in to view your accounts and recent transactions.</p>
+  <div class="wrap">
+    <div class="center">
+      <div class="card">
+        <h1>Client Login</h1>
+        <div class="k">Sign in to view your accounts and recent transactions.</div>
 
-      <label for="email">Email</label>
-      <input id="email" type="email" inputmode="email" autocomplete="username" placeholder="you@company.com" />
+        <form id="loginForm" novalidate>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="username" required
+                 placeholder="you@company.com" />
 
-      <label for="password">Password</label>
-      <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" />
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required
+                 placeholder="••••••••" />
 
-      <button id="loginBtn" type="submit">Sign in</button>
-      <div id="loginMsg" aria-live="polite"></div>
-    </form>
+          <button id="submitBtn" class="btn" type="submit">Sign in</button>
+          <div id="formMsg" class="msg" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
   </div>
 
-  <!-- INLINE MOCK AUTH (config + engine) -->
+  <!-- Mock auth: same user map as dashboard; add more users in USERS to scale -->
   <script>
   (function(){
-    // Add new clients here (email keys must be lowercase)
     window.MFC_MOCK = window.MFC_MOCK || {
-      ALLOW_ANY_PASSWORD: false,
-      SESSION_HOURS: 24,
-      USERS: {
-        "bejadbn1122@gmail.com": {
-          password: "MFC#Bejad2025!",
-          name: "Bejad Bandoor A. Alharbi",
-          authorisedPerson: "Bejadbn1122",
-          holder: "Nab’ al-Khayrat For Trading",
-          account: { accountNo: "91550872", status: "active", currency: "USD", balance: 0, lines: [] }
+      ALLOW_ANY_PASSWORD:false,
+      SESSION_HOURS:24,
+      USERS:{
+        "bejadbn1122@gmail.com":{
+          password:"MFC#Bejad2025!",
+          name:"Bejad Bandoor A. Alharbi",
+          authorisedPerson:"Bejadbn1122",
+          holder:"Nab’ al-Khayrat For Trading",
+          account:{ accountNo:"91550872", status:"active", currency:"USD", balance:0, lines:[] }
         }
       }
     };
+    const CFG=window.MFC_MOCK, now=()=>Date.now(), b64=s=>btoa(s);
+    function save(email){const exp=now()+(CFG.SESSION_HOURS||24)*3600*1000;const t=b64(JSON.stringify({email,exp}));localStorage.setItem("mfc_token",t);return t;}
+    function get(email){return (CFG.USERS||{})[String(email||"").toLowerCase()];}
 
-    const CFG = window.MFC_MOCK;
-    const now = () => Date.now();
-    const b64 = s => (typeof btoa!=="undefined"?btoa(s):s);
-    const ub64 = s => (typeof atob!=="undefined"?atob(s):s);
-
-    function saveSession(email){
-      const exp = now() + (CFG.SESSION_HOURS||24)*60*60*1000;
-      const token = b64(JSON.stringify({ email, exp }));
-      localStorage.setItem("mfc_token", token);
-      return token;
-    }
-    function readSession(){
-      const t = localStorage.getItem("mfc_token");
-      if(!t) return null;
-      try{
-        const { email, exp } = JSON.parse(ub64(t));
-        if(!email || now()>exp){ localStorage.removeItem("mfc_token"); return null; }
-        return { token:t, email };
-      }catch{ localStorage.removeItem("mfc_token"); return null; }
-    }
-    const getUser = (e)=> (CFG.USERS||{})[String(e||"").toLowerCase()];
-
-    window.MFC_AUTH = {
-      async login(email, password){
-        email = String(email||"").toLowerCase().trim();
-        const u = getUser(email);
-        if(!u || (!CFG.ALLOW_ANY_PASSWORD && password!==u.password))
-          return { ok:false, error:"Invalid credentials" };
-        return { ok:true, token:saveSession(email), user:{ email, name:u.name } };
-      },
-      async me(token){
-        const s = readSession();
-        if(!s || (token && token!==s.token)) return { ok:false, error:"Unauthenticated" };
-        const u = getUser(s.email);
-        return { ok:true, user:{ email:s.email, name:u?.name } };
-      },
-      async overview(token){
-        const s = readSession();
-        if(!s || (token && token!==s.token)) return { ok:false, error:"Unauthenticated" };
-        const u = getUser(s.email), acct = u?.account || null;
-        return { ok:true, data:{ holder:u?.holder||u?.name, authorisedPerson:u?.authorisedPerson, accounts: acct?[acct]:[] } };
-      },
-      logout(){ localStorage.removeItem("mfc_token"); }
+    window.MFC_AUTH = window.MFC_AUTH || {};
+    window.MFC_AUTH.login = async function(email, password){
+      const u = get(email);
+      if(!u) return {ok:false,error:"Invalid credentials"};
+      if(CFG.ALLOW_ANY_PASSWORD || String(password)===String(u.password)){
+        const token = save(email);
+        return {ok:true, token};
+      }
+      return {ok:false,error:"Invalid credentials"};
     };
+    window.MFC_AUTH.logout = function(){ localStorage.removeItem("mfc_token"); };
   })();
   </script>
 
-  <!-- LOGIN WIRE -->
+  <!-- Wire up the form -->
   <script>
   (function(){
-    const form = document.getElementById("clientLoginForm");
-    const email = document.getElementById("email");
-    const pass  = document.getElementById("password");
-    const btn   = document.getElementById("loginBtn");
-    const msg   = document.getElementById("loginMsg");
+    const $ = (s)=>document.querySelector(s);
+    const qs = new URLSearchParams(location.search);
+    const next = qs.get("next") || "/client-dashboard.html";
+    const emailEl = $("#email");
+    const passEl  = $("#password");
+    const btn     = $("#submitBtn");
+    const msg     = $("#formMsg");
 
-    function tip(t, ok=false){ msg.textContent=t; msg.style.color = ok? "var(--ok)" : "var(--err)"; }
+    // Prefill if coming back from logout or test
+    if(!emailEl.value) emailEl.value = "bejadbn1122@gmail.com";
 
-    form.addEventListener("submit", async (e)=>{
+    function say(text, ok=false){
+      msg.textContent = text || "";
+      msg.className = "msg " + (ok ? "ok":"error");
+    }
+
+    $("#loginForm").addEventListener("submit", async (e)=>{
       e.preventDefault();
-      btn.disabled = true; tip("Signing in…", true);
+      say(""); btn.disabled = true; btn.textContent = "Signing in…";
       try{
-        const r = await window.MFC_AUTH.login(email.value, pass.value);
-        if(!r.ok){ tip(r.error || "Login failed"); btn.disabled=false; return; }
-        const next = new URLSearchParams(location.search).get("next") || "/client-dashboard.html";
+        const r = await window.MFC_AUTH.login(emailEl.value.trim(), passEl.value);
+        if(!r.ok){ say("Login failed — " + (r.error||"please check your details")); btn.disabled=false; btn.textContent="Sign in"; return; }
         location.href = next;
-      }catch(err){ console.error(err); tip("Login error"); btn.disabled=false; }
+      }catch(err){
+        console.error(err);
+        say("Something went wrong. Please try again."); btn.disabled=false; btn.textContent="Sign in";
+      }
     });
   })();
   </script>
