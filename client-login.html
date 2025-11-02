@@ -2,38 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Client Login — Maltese First Capital</title>
-  <!-- keep your existing CSS includes here (no visual changes) -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" href="/assets/logo-crest.png">
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    :root { --bg:#0b0f16; --card:#101722; --text:#e9eef8; --muted:#9eb0c7; --gold:#d4af37; }
+    html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
+    .wrap{max-width:980px;margin:0 auto;padding:20px}
+    .nav{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none}
+    .brand img{width:36px;height:36px;border-radius:8px;object-fit:contain;background:#0d131b}
+    .brand b{letter-spacing:.3px}
+    .center{max-width:420px;margin:36px auto}
+    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:18px}
+    label{display:block;margin:10px 0 6px}
+    input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0c121a;color:var(--text);outline:none}
+    button{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(212,175,55,.35);background:linear-gradient(180deg,#d4af37,#b4912b);color:#111;font-weight:700}
+    .muted{color:var(--muted)}
+    .err{color:#ff9d9d}
+  </style>
 </head>
 <body>
-  <!-- If you already have a site header/nav, keep it. -->
-  <main style="max-width:960px;margin:40px auto;padding:0 16px;">
-    <section class="card" style="max-width:420px;margin:0 auto;padding:18px;border-radius:14px;">
-      <h2 style="margin:0 0 12px;">Client Login</h2>
-      <p class="muted" style="margin:0 0 14px;">Sign in to view your accounts.</p>
+  <div class="wrap">
+    <div class="nav">
+      <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
+      <span class="muted" style="margin-left:auto">Client Area</span>
+    </div>
 
-      <form id="clientLoginForm" novalidate>
-        <label for="email" style="display:block;margin:8px 0 4px;">Email</label>
-        <input id="email" name="email" type="email" required autocomplete="email" style="width:100%;">
+    <div class="center">
+      <section class="card">
+        <h2 style="margin:0 0 8px;">Client Login</h2>
+        <p class="muted" style="margin:0 0 14px;">Sign in to view your accounts and recent transactions.</p>
 
-        <label for="password" style="display:block;margin:12px 0 4px;">Password</label>
-        <input id="password" name="password" type="password" required autocomplete="current-password" style="width:100%;">
+        <form id="clientLoginForm" novalidate>
+          <label>Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@company.com" />
+          <label>Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
+          <button id="loginBtn" type="submit" style="margin-top:14px;">Sign In</button>
+          <div id="loginStatus" class="muted" style="margin-top:10px;"></div>
+        </form>
+        <div style="margin-top:12px;font-size:.9em" class="muted">
+          Having trouble? <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
+        </div>
+      </section>
+    </div>
+  </div>
 
-        <button id="loginBtn" type="submit" style="margin-top:14px;width:100%;">Sign In</button>
-        <div id="loginStatus" class="muted" style="margin-top:10px;"></div>
-      </form>
+  <!-- Config FIRST -->
+  <script>
+    window.__MFC_CONFIG = { API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com' };
+  </script>
 
-      <div style="margin-top:12px;font-size:.9em;opacity:.8;">
-        Having trouble? Email <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-      </div>
-    </section>
-  </main>
+  <!-- Wire -->
+  <script>
+    (()=>{
+      const API = (window.__MFC_CONFIG?.API_BASE_URL||'').replace(/\/+$/,'');
+      const $  = (s,r=document)=>r.querySelector(s);
+      const form = $('#clientLoginForm'), status = $('#loginStatus'), btn = $('#loginBtn');
+      function setMsg(m, bad=false){ status.textContent=m||''; status.className = bad ? 'err' : 'muted'; }
+      if(!form || !API) return;
 
-  <!-- Config + wiring (order matters) -->
-  <script src="/scripts/config.js"></script>
-  <script src="/scripts/auth-wire.js" defer></script>
-  <script src="/scripts/client-login-wire.js" defer></script>
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault(); setMsg('Signing in…'); btn.disabled = true;
+        const body = JSON.stringify({
+          email: $('#email').value.trim(),
+          password: $('#password').value
+        });
+        try{
+          const r = await fetch(API + '/api/auth/login', { method:'POST', headers:{'content-type':'application/json'}, body });
+          const j = await r.json().catch(()=>null);
+          if(!r.ok || !j?.token){ setMsg(j?.error || 'Invalid credentials', true); btn.disabled = false; return; }
+          localStorage.mfc_token = j.token;
+          location.href = '/client-dashboard.html';
+        }catch{
+          setMsg('Network error. Try again.', true); btn.disabled = false;
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
