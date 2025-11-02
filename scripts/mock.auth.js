@@ -1,78 +1,73 @@
 // /scripts/mock-auth.js
 (() => {
-  const SKEY = "mfc_session_v1";
-  const AKEY = "mfc_last_account_index"; // remembers last selected account
+  const CFG = window.MFC_MOCK || { USERS:{}, SESSION_HOURS:24, ALLOW_ANY_PASSWORD:false };
 
-  const now = () => Date.now();
-  const addHours = h => now() + h * 3600 * 1000;
+  function now(){ return Date.now(); }
+  function hours(ms){ return ms * 60 * 60 * 1000; }
+  function b64(s){ return (typeof btoa!=="undefined") ? btoa(s) : s; }
+  function ub64(s){ return (typeof atob!=="undefined") ? atob(s) : s; }
 
-  function saveSession(session){ localStorage.setItem(SKEY, JSON.stringify(session)); }
-  function loadSession(){
-    try {
-      const raw = localStorage.getItem(SKEY);
-      if (!raw) return null;
-      const s = JSON.parse(raw);
-      if (!s.expiresAt || s.expiresAt < now()) { localStorage.removeItem(SKEY); return null; }
-      return s;
-    } catch { return null; }
+  function saveSession(email){
+    const exp = now() + hours(CFG.SESSION_HOURS || 24);
+    const token = b64(JSON.stringify({ email, exp }));
+    localStorage.setItem("mfc_token", token);
+    return token;
   }
-  function clearSession(){ localStorage.removeItem(SKEY); localStorage.removeItem(AKEY); }
+
+  function readSession(){
+    const tok = localStorage.getItem("mfc_token");
+    if(!tok) return null;
+    try{
+      const { email, exp } = JSON.parse(ub64(tok));
+      if(!email || !exp || now()>exp) { localStorage.removeItem("mfc_token"); return null; }
+      return { token: tok, email };
+    }catch{ localStorage.removeItem("mfc_token"); return null; }
+  }
+
+  function logout(){
+    localStorage.removeItem("mfc_token");
+  }
+
+  function assertUser(email){
+    const user = (CFG.USERS||{})[String(email||"").toLowerCase()];
+    if(!user) throw new Error("User not found");
+    return user;
+  }
 
   async function login(email, password){
-    const cfg = window.MFC_MOCK || {};
-    const user = cfg.USERS?.[String(email||"").toLowerCase()];
-    if (!user) return { ok:false, error:"Unknown user" };
-    if (!cfg.ALLOW_ANY_PASSWORD && String(password||"") !== String(user.password||"")){
-      return { ok:false, error:"Invalid credentials" };
+    email = String(email||"").toLowerCase().trim();
+    const user = assertUser(email);
+
+    if(!CFG.ALLOW_ANY_PASSWORD){
+      if(!password || password !== user.password){
+        return { ok:false, error:"Invalid credentials" };
+      }
     }
-    const session = {
-      email: String(email).toLowerCase(),
-      issuedAt: now(),
-      expiresAt: addHours(cfg.SESSION_HOURS || 24)
+    const token = saveSession(email);
+    return { ok:true, token, user: { email, name:user.name } };
+  }
+
+  async function me(token){
+    const sess = readSession();
+    if(!sess || (token && token!==sess.token)) return { ok:false, error:"Unauthenticated" };
+    const u = assertUser(sess.email);
+    return { ok:true, user:{ email:sess.email, name:u.name } };
+  }
+
+  async function overview(token){
+    const sess = readSession();
+    if(!sess || (token && token!==sess.token)) return { ok:false, error:"Unauthenticated" };
+    const u = assertUser(sess.email);
+    const acct = u.account || null;
+    return {
+      ok:true,
+      data:{
+        holder: u.holder || u.name,
+        authorisedPerson: u.authorisedPerson || (sess.email.split("@")[0]),
+        accounts: acct ? [acct] : []
+      }
     };
-    saveSession(session);
-    return { ok:true, session };
   }
 
-  function requireSession(){
-    const s = loadSession();
-    if (!s) window.location.href = "/client-login.html";
-    return s;
-  }
-
-  function getUser(email){
-    const cfg = window.MFC_MOCK || {};
-    return cfg.USERS?.[String(email||"").toLowerCase()] || null;
-  }
-
-  function getAccount(user, index){
-    const list = user?.accounts || user?.account && [user.account] || [];
-    if (!list.length) return null;
-    const i = Math.min(Math.max( parseInt(index ?? loadLastAccountIndex(), 10 ) || 0, 0), list.length-1);
-    return { account: list[i], index: i, total: list.length };
-  }
-
-  function saveLastAccountIndex(i){ localStorage.setItem(AKEY, String(i)); }
-  function loadLastAccountIndex(){ return localStorage.getItem(AKEY); }
-
-  function fmtMoney(n, ccy="USD"){
-    if (typeof n !== "number") return "—";
-    return n.toLocaleString(undefined, { style:"currency", currency:ccy });
-  }
-  function renderTx(lines, ccy){
-    if (!Array.isArray(lines) || !lines.length) return `<div class="k">No transactions yet.</div>`;
-    const rows = lines.slice().sort((a,b)=>new Date(b.ts)-new Date(a.ts)).slice(0,20).map(l=>{
-      const sign = l.type === "debit" ? -1 : 1;
-      const cls = sign < 0 ? "neg" : "pos";
-      const amt = fmtMoney(sign * Number(l.amount||0), l.currency || ccy || "USD");
-      const when = l.ts ? new Date(l.ts).toLocaleString() : "—";
-      return `<tr><td>${when}</td><td>${l.description||l.type||"-"}</td><td class="amt ${cls}">${amt}</td></tr>`;
-    }).join("");
-    return `<table><thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table>`;
-  }
-
-  window.MFC_AUTH = {
-    login, loadSession, clearSession, requireSession, getUser,
-    getAccount, saveLastAccountIndex, fmtMoney, renderTx
-  };
+  window.MFC_AUTH = { login, me, overview, logout, _readSession:readSession };
 })();
