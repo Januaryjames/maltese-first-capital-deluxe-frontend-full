@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -9,77 +9,125 @@
   <style>
     :root { --bg:#0b0f16; --card:#101722; --text:#e9eef8; --muted:#9eb0c7; --gold:#d4af37; }
     html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
-    .wrap{max-width:980px;margin:0 auto;padding:20px}
-    .nav{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .wrap{max-width:760px;margin:0 auto;padding:28px}
+    .nav{display:flex;align-items:center;gap:12px;margin-bottom:22px}
     .brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none}
-    .brand img{width:36px;height:36px;border-radius:8px;object-fit:contain;background:#0d131b}
-    .brand b{letter-spacing:.3px}
-    .center{max-width:420px;margin:36px auto}
-    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:18px}
-    label{display:block;margin:10px 0 6px}
-    input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0c121a;color:var(--text);outline:none}
-    button{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(212,175,55,.35);background:linear-gradient(180deg,#d4af37,#b4912b);color:#111;font-weight:700}
-    .muted{color:var(--muted)}
-    .err{color:#ff9d9d}
+    .brand img{width:36px;height:36px;border-radius:8px;background:#0d131b;object-fit:contain}
+    .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:22px}
+    label{display:block;font-size:13px;color:var(--muted);margin:8px 0 6px}
+    input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0d131b;color:var(--text)}
+    button{width:100%;padding:12px 16px;margin-top:16px;border-radius:12px;border:1px solid rgba(212,175,55,.35);background:linear-gradient(180deg,#d4af37,#8b6f1e);color:#0b0f16;font-weight:700;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+    .status{display:none;margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0d131b}
+    .status.error{display:block;color:#ffb3b3;border-color:#553}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="nav">
       <a class="brand" href="/index.html"><img src="/assets/logo-crest.png" alt=""><b>Maltese First Capital</b></a>
-      <span class="muted" style="margin-left:auto">Client Area</span>
     </div>
 
-    <div class="center">
-      <section class="card">
-        <h2 style="margin:0 0 8px;">Client Login</h2>
-        <p class="muted" style="margin:0 0 14px;">Sign in to view your accounts and recent transactions.</p>
+    <div class="card">
+      <h2 style="margin:0 0 6px">Client Login</h2>
+      <p class="muted" style="margin:0 0 14px">Sign in to view your accounts and recent transactions.</p>
 
-        <form id="clientLoginForm" novalidate>
-          <label>Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@company.com" />
-          <label>Password</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
-          <button id="loginBtn" type="submit" style="margin-top:14px;">Sign In</button>
-          <div id="loginStatus" class="muted" style="margin-top:10px;"></div>
-        </form>
-        <div style="margin-top:12px;font-size:.9em" class="muted">
-          Having trouble? <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-        </div>
-      </section>
+      <form id="loginForm" novalidate>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="username" required placeholder="you@company.com" />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
+
+        <button id="loginBtn" type="submit">Sign in</button>
+
+        <div id="statusBox" class="status"></div>
+      </form>
     </div>
   </div>
 
   <!-- Config FIRST -->
   <script>
-    window.__MFC_CONFIG = { API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com' };
+    window.__MFC_CONFIG = window.__MFC_CONFIG || {
+      API_BASE_URL: 'https://maltese-first-capital-deluxe-backend.onrender.com'
+    };
   </script>
 
-  <!-- Wire -->
+  <!-- Logic -->
   <script>
-    (()=>{
-      const API = (window.__MFC_CONFIG?.API_BASE_URL||'').replace(/\/+$/,'');
-      const $  = (s,r=document)=>r.querySelector(s);
-      const form = $('#clientLoginForm'), status = $('#loginStatus'), btn = $('#loginBtn');
-      function setMsg(m, bad=false){ status.textContent=m||''; status.className = bad ? 'err' : 'muted'; }
-      if(!form || !API) return;
+    (() => {
+      const API       = (window.__MFC_CONFIG?.API_BASE_URL || '').replace(/\/+$/,'');
+      const TOKEN_KEY = 'mfc_client_jwt';      // single source of truth
+      const LEGACY    = 'mfc_token';           // kept for older pages
 
-      form.addEventListener('submit', async (e)=>{
-        e.preventDefault(); setMsg('Signing in…'); btn.disabled = true;
-        const body = JSON.stringify({
-          email: $('#email').value.trim(),
-          password: $('#password').value
-        });
-        try{
-          const r = await fetch(API + '/api/auth/login', { method:'POST', headers:{'content-type':'application/json'}, body });
-          const j = await r.json().catch(()=>null);
-          if(!r.ok || !j?.token){ setMsg(j?.error || 'Invalid credentials', true); btn.disabled = false; return; }
-          localStorage.mfc_token = j.token;
-          location.href = '/client-dashboard.html';
-        }catch{
-          setMsg('Network error. Try again.', true); btn.disabled = false;
+      const $ = s => document.querySelector(s);
+      const statusBox = $('#statusBox');
+      const btn = $('#loginBtn');
+
+      function setStatus(msg, kind='error') {
+        statusBox.textContent = msg || '';
+        statusBox.className = 'status ' + (kind==='error' ? 'error' : '');
+        statusBox.style.display = msg ? 'block' : 'none';
+      }
+
+      function pickToken(data) {
+        // Be liberal in what we accept
+        return data?.token || data?.jwt || data?.accessToken || data?.data?.token || null;
+      }
+
+      async function handleLogin(e){
+        e.preventDefault();
+        setStatus('');
+        btn.disabled = true;
+
+        // Always start clean to avoid “login then logout”
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(LEGACY);
+
+        const email = $('#email').value.trim();
+        const password = $('#password').value;
+
+        try {
+          const res = await fetch(API + '/api/auth/client-login', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+
+          const text = await res.text();
+          let data; try { data = text ? JSON.parse(text) : {}; } catch { data = {}; }
+
+          if (!res.ok) {
+            const msg = data?.message || data?.error || ('Login failed (HTTP ' + res.status + ').');
+            setStatus(msg, 'error');
+            btn.disabled = false;
+            return;
+          }
+
+          const token = pickToken(data);
+          if (!token || typeof token !== 'string') {
+            setStatus('Login succeeded but no token returned by server.', 'error');
+            btn.disabled = false;
+            return;
+          }
+
+          // Store both keys for safety; dashboard reads TOKEN_KEY.
+          localStorage.setItem(TOKEN_KEY, token);
+          localStorage.setItem(LEGACY, token);
+
+          // Small cookie marker (not for auth) to help same-site redirects
+          document.cookie = 'mfc_session=1; Path=/; SameSite=Lax';
+
+          const next = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
+          location.replace(next);
+        } catch (err) {
+          console.error(err);
+          setStatus('Network error. Please try again.', 'error');
+          btn.disabled = false;
         }
-      });
+      }
+
+      document.getElementById('loginForm').addEventListener('submit', handleLogin);
     })();
   </script>
 </body>
