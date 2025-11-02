@@ -5,30 +5,27 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Client Dashboard — Maltese First Capital</title>
   <link rel="icon" href="/assets/logo-crest.png">
+  <link rel="stylesheet" href="/styles.css" />
   <style>
     :root{--bg:#0b0f16;--card:#101722;--text:#e9eef8;--muted:#9eb0c7;--gold:#d4af37;--ok:#1db954}
     html,body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
     .wrap{max-width:1160px;margin:0 auto;padding:20px}
-    .nav{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .nav{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
     .brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none}
-    .brand img{width:36px;height:36px;border-radius:8px;object-fit:contain;background:#0d131b}
-    .brand b{letter-spacing:.3px}
+    .brand img{width:30px;height:30px;border-radius:8px;object-fit:contain;background:#0d131b}
     .logout{margin-left:auto}
     .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
     @media (min-width:980px){ .grid{grid-template-columns:1.1fr .9fr} }
     .card{background:var(--card);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:18px}
-    h2{margin:0 0 10px 0}
     .k{color:var(--muted);font-size:13px}
     .v{font-weight:600}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
     .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;background:#0d131b}
-    .pill.ok{border-color:#224b36}
     table{width:100%;border-collapse:collapse}
     th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left}
     th{color:var(--muted);font-weight:600}
     .amt{white-space:nowrap}
-    .pos{color:#9bf3b3}.neg{color:#ff9d9d}
-    .ghost{color:var(--muted);font-size:14px}
+    .pos{color:#9bf3b3} .neg{color:#ff9d9d}
   </style>
 </head>
 <body>
@@ -39,52 +36,100 @@
     </div>
 
     <div class="grid">
+      <!-- Account overview -->
       <section class="card">
-        <h2>Account Overview</h2>
+        <h2 style="margin:0 0 10px">Account Overview</h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
           <div><div class="k">Account Holder</div><div class="v" id="holderName">—</div></div>
           <div><div class="k">Authorised Person</div><div class="v" id="authPerson">—</div></div>
           <div><div class="k">Account Number</div><div class="v mono" id="acctNo">—</div></div>
-          <div><div class="k">Status</div><div class="pill ok" id="acctStatus">active</div></div>
+          <div><div class="k">Status</div><div class="pill" id="acctStatus">active</div></div>
           <div><div class="k">Currency</div><div class="v" id="acctCcy">USD</div></div>
           <div><div class="k">Current Balance</div><div class="v" id="acctBal">—</div></div>
         </div>
       </section>
 
+      <!-- Transactions -->
       <section class="card">
-        <h2>Recent Transactions</h2>
-        <div id="txBox" class="ghost">Loading…</div>
+        <h2 style="margin:0 0 10px">Recent Transactions</h2>
+        <div id="txBox"><div class="k">Loading…</div></div>
       </section>
     </div>
   </div>
 
-  <script src="/scripts/config.mock.js"></script>
-  <script src="/scripts/mock-auth.js"></script>
+  <!-- INLINE MOCK AUTH (same block as login; keep in both pages) -->
   <script>
-    (()=>{
-      const $ = s => document.querySelector(s);
-      const { requireSession, getUser, clearSession, fmtMoney, renderTx } = window.MFC_AUTH;
+  (function(){
+    window.MFC_MOCK = window.MFC_MOCK || {
+      ALLOW_ANY_PASSWORD: false,
+      SESSION_HOURS: 24,
+      USERS: {
+        "bejadbn1122@gmail.com": {
+          password: "MFC#Bejad2025!",
+          name: "Bejad Bandoor A. Alharbi",
+          authorisedPerson: "Bejadbn1122",
+          holder: "Nab’ al-Khayrat For Trading",
+          account: { accountNo: "91550872", status: "active", currency: "USD", balance: 0, lines: [] }
+        }
+      }
+    };
 
-      function titleCase(s){ return String(s||'').replace(/[._-]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); }
+    const CFG=window.MFC_MOCK, now=()=>Date.now(), b64=s=>btoa(s), ub64=s=>atob(s);
+    function save(email){const exp=now()+CFG.SESSION_HOURS*60*60*1000;const t=b64(JSON.stringify({email,exp}));localStorage.setItem("mfc_token",t);return t;}
+    function read(){const t=localStorage.getItem("mfc_token");if(!t)return null;try{const j=JSON.parse(ub64(t));if(!j.email||now()>j.exp){localStorage.removeItem("mfc_token");return null;}return{token:t,email:j.email}}catch{return null}}
+    const get=(e)=> (CFG.USERS||{})[String(e||"").toLowerCase()];
+    window.MFC_AUTH={
+      async login(e,p){e=String(e||"").toLowerCase().trim();const u=get(e);if(!u||p!==u.password)return{ok:false,error:"Invalid credentials"};return{ok:true,token:save(e),user:{email:e,name:u.name}}},
+      async me(t){const s=read();if(!s||(t&&t!==s.token))return{ok:false,error:"Unauthenticated"};const u=get(s.email);return{ok:true,user:{email:s.email,name:u?.name}}},
+      async overview(t){const s=read();if(!s||(t&&t!==s.token))return{ok:false,error:"Unauthenticated"};const u=get(s.email),a=u?.account;return{ok:true,data:{holder:u?.holder||u?.name,authorisedPerson:u?.authorisedPerson,accounts:a?[a]:[]}}},logout(){localStorage.removeItem("mfc_token");}
+    };
+  })();
+  </script>
 
-      function logout(e){ e?.preventDefault(); clearSession(); window.location.href='/client-login.html'; }
+  <!-- DASHBOARD WIRE -->
+  <script>
+  (function(){
+    const $ = (s)=>document.querySelector(s);
+    const money = (n,c='USD') => Number(n||0).toLocaleString(undefined,{style:'currency',currency:c});
 
-      document.getElementById('logoutLink').addEventListener('click', logout);
+    async function boot(){
+      const token = localStorage.getItem("mfc_token");
+      if(!token){ location.href="/client-login.html?next=%2Fclient-dashboard.html"; return; }
 
-      const session = requireSession();
-      const user    = getUser(session?.email);
+      const A = window.MFC_AUTH;
+      const me = await A.me(token);
+      if(!me.ok){ A.logout(); location.href="/client-login.html?next=%2Fclient-dashboard.html"; return; }
 
-      if (!user) { logout(); }
+      const ov = await A.overview(token);
+      if(!ov.ok){ A.logout(); location.href="/client-login.html?next=%2Fclient-dashboard.html"; return; }
 
-      const acct = user.account || {};
-      $('#holderName').textContent = user.holder || '—';
-      $('#authPerson').textContent = user.authorisedPerson || titleCase(user.name || session.email.split('@')[0]);
-      $('#acctNo').textContent     = acct.accountNo || '—';
-      $('#acctStatus').textContent = acct.status || 'active';
-      $('#acctCcy').textContent    = acct.currency || 'USD';
-      $('#acctBal').textContent    = fmtMoney(Number(acct.balance||0), acct.currency || 'USD');
-      document.getElementById('txBox').innerHTML = renderTx(acct.lines || [], acct.currency);
-    })();
+      const d = ov.data || {};
+      const acct = d.accounts?.[0] || null;
+
+      $("#holderName").textContent = d.holder || me.user.name || "—";
+      $("#authPerson").textContent = d.authorisedPerson || (me.user.email.split("@")[0]);
+      if (acct){
+        $("#acctNo").textContent = acct.accountNo || "—";
+        $("#acctStatus").textContent = acct.status || "active";
+        $("#acctCcy").textContent = acct.currency || "USD";
+        $("#acctBal").textContent = money(acct.balance, acct.currency || "USD");
+
+        const rows = (acct.lines||[]).slice().sort((a,b)=>new Date(b.ts)-new Date(a.ts)).slice(0,20)
+          .map(l=>{
+            const sign = l.type==='debit' ? -1 : 1;
+            const cls  = sign<0 ? 'neg' : 'pos';
+            const when = l.ts ? new Date(l.ts).toLocaleString() : '—';
+            return `<tr><td>${when}</td><td>${l.description||l.type||'-'}</td><td class="amt ${cls}">${money(sign*Number(l.amount||0), l.currency||acct.currency||'USD')}</td></tr>`;
+          }).join('');
+        $("#txBox").innerHTML = rows ? `<table><thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table>` : `<div class="k">No transactions yet.</div>`;
+      } else {
+        $("#txBox").innerHTML = '<div class="k">No account found.</div>';
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", boot);
+    document.getElementById("logoutLink")?.addEventListener("click",(e)=>{e.preventDefault(); window.MFC_AUTH.logout(); location.href="/client-login.html";});
+  })();
   </script>
 </body>
 </html>
