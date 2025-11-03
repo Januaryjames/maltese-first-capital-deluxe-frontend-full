@@ -2,232 +2,182 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin Portal — Maltese First Capital</title>
-
-  <!-- Keep your global CSS; scoped overrides below win where needed -->
-  <link rel="stylesheet" href="styles.css" />
-
-  <!-- Favicons (paths already in your repo) -->
-  <link rel="icon" type="image/png" href="assets/logo-crest.png" />
-  <link rel="apple-touch-icon" href="assets/logo-crest.png" />
-  <meta name="theme-color" content="#0b0f16" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Client Login — Maltese First Capital</title>
+  <link rel="icon" href="/assets/logo-crest.png" />
+  <link rel="stylesheet" href="/styles.css" />
 
   <style>
-    :root{
-      --bg:#0b0f16; --panel:#0f151e; --ink:#e9eef7; --muted:#b8c2d3;
-      --gold1:#d4af37; --gold2:#b28f2c;
-      --navH:64px; --radius:16px;
-    }
-    html,body{background:var(--bg);color:var(--ink)}
-    .container{max-width:1180px;margin:0 auto;padding:0 16px}
+    :root { --bg:#0b0f16; --panel:#0f1621; --text:#0f172a; --muted:#4d5a6b; --gold:#d4af37; }
+    html,body{ background:#0b0f16; color:#e9eef8; margin:0; font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif; }
+    .cl-wrap{ max-width:1060px; margin:0 auto; padding:16px 20px 48px; }
 
-    /* ===== NAV (match index; force over any legacy rules) ===== */
-    #siteHeader{position:sticky;top:0;z-index:2000;
-      background:rgba(11,15,22,.86) !important;
-      -webkit-backdrop-filter:saturate(160%) blur(12px);
-      backdrop-filter:saturate(160%) blur(12px);
-      border-bottom:1px solid rgba(255,255,255,.06)}
-    .nav{height:var(--navH);display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
-    .brand .crest{width:34px;height:34px;border-radius:10px;background:#fff;overflow:hidden;
-      box-shadow:0 6px 16px rgba(0,0,0,.28);display:grid;place-items:center}
-    .brand .crest img{width:100%;height:100%;object-fit:cover}
-    .brand b{font-weight:700}
-    .nav-links{display:flex;gap:22px;align-items:center}
-    .nav-links a{color:#dfe6f2;text-decoration:none;padding:8px 12px;border-radius:10px}
-    .nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.08);color:#fff}
-    .nav-actions{display:flex;gap:10px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;
-      border-radius:12px;border:1px solid rgba(255,255,255,.12);text-decoration:none;color:#fff;background:rgba(255,255,255,.06)}
-    .btn-gold{border:1px solid rgba(212,175,55,.42);background:linear-gradient(180deg,var(--gold1),var(--gold2));
-      color:#141414;font-weight:700;box-shadow:0 10px 24px rgba(212,175,55,.25)}
-    .btn-lg{padding:14px 22px;border-radius:14px;font-size:17px}
-    .btn-disabled{opacity:.6;pointer-events:none}
-    .burger{display:none;border:0;background:transparent}
-    .burger span{display:block;width:24px;height:2px;background:#fff;margin:5px;border-radius:2px}
-    @media(max-width:980px){
-      .nav-links{position:fixed;left:0;right:0;top:var(--navH);background:rgba(11,15,22,.96);
-        transform:translateY(-8px);opacity:0;pointer-events:none;transition:.18s ease;padding:14px;flex-direction:column}
-      .nav-links.open{transform:none;opacity:1;pointer-events:auto}
-      .nav-actions{display:none}
-      .burger{display:block}
-    }
-    /* Kill the extra bare links some hosts inject under the header */
-    body > a[href], body > nav:not(#mainNav){display:none !important}
+    .client-header{ background:#fff; color:#111; border-bottom:1px solid #e8edf3; padding:14px 20px; }
+    .client-header .brand{ display:inline-flex; align-items:center; gap:10px; text-decoration:none; }
+    .client-header .brand b{ color:#111; font-weight:600; letter-spacing:.2px; }
+    .client-header .brand-logo{ width:48px; height:48px; object-fit:contain; display:inline-block; background:transparent; }
+    .client-header .tag{ float:right; color:#475569; font-size:14px; margin-top:10px; }
 
-    /* ===== HERO ===== */
-    .hero{background:url('assets/hero-bg.jpg') center/cover no-repeat;
-      min-height:420px;display:flex;align-items:center;justify-content:center;text-align:center;
-      border-bottom-left-radius:18px;border-bottom-right-radius:18px}
-    .hero .crest-badge{width:220px;height:220px;border-radius:28px;background:#fff;margin:0 auto 18px;
-      box-shadow:0 8px 24px rgba(0,0,0,.28);overflow:hidden;display:grid;place-items:center}
-    .hero .crest-badge img{width:100%;height:100%;object-fit:cover}
-    .hero h1{font-size:48px;line-height:1.06;margin:0 0 10px}
-    .hero p{max-width:860px;margin:0 auto 18px;color:#f1f5ff}
+    .cl-card{ max-width:560px; margin:56px auto 0; background:#fff; color:#111; border:1px solid #e8edf3; border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.25); padding:20px 22px 24px; }
+    .cl-title{ font-size:26px; font-weight:800; margin:4px 0 4px; color:#0f172a; }
+    .cl-sub{ color:#4d5a6b; margin:0 0 14px; line-height:1.45; }
 
-    /* ===== CONTENT ===== */
-    .section{padding:40px 0}
-    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
-    @media(max-width:980px){.grid{grid-template-columns:1fr}}
-    .card{background:rgba(255,255,255,.02);border-radius:var(--radius);
-      border:1px solid rgba(212,175,55,.35);box-shadow:0 1px 0 rgba(212,175,55,.22) inset}
-    .card:hover{box-shadow:0 0 0 1px rgba(212,175,55,.46),0 12px 28px rgba(212,175,55,.16)}
-    .pad{padding:20px}
-    h2,h3{margin:0 0 10px}
+    .cl-msg{ display:none; margin:0 0 12px; padding:10px 12px; border-radius:10px; font-size:14px; }
+    .cl-msg.err{ display:block; background:#ffe9ea; color:#8a1820; border:1px solid #ffd0d4; }
+    .cl-msg.ok{ display:block; background:#e7f7ee; color:#0c5132; border:1px solid #bfe4d0; }
 
-    label{display:block;margin:8px 0 6px;font-weight:600}
-    input{width:100%;background:var(--panel);color:var(--ink);
-      border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 12px;outline:none}
-    input:focus{border-color:rgba(212,175,55,.55);box-shadow:0 0 0 3px rgba(212,175,55,.18)}
-    .row{display:grid;grid-template-columns:1fr;gap:12px}
-    .muted{color:var(--muted)}
-    .error{color:#ffb4b4}
+    .cl-field{ margin:12px 0; }
+    .cl-label{ display:block; font-size:13px; color:#334155; margin:0 0 6px; }
+    .cl-input{ width:100%; height:44px; border-radius:12px; border:1px solid #e5e7eb; padding:0 12px; font-size:15px; background:#fff; color:#111; outline:none; }
+    .cl-input:focus{ border-color:#c5a741; box-shadow:0 0 0 3px rgba(212,175,55,.25); }
 
-    /* White footer with gold top border */
-    .footer{background:#fff;color:#121212;border-top:4px solid var(--gold1);
-      border-radius:16px 16px 0 0}
-    .footer .container{padding:22px 16px}
+    .cl-inline{ display:flex; align-items:center; gap:10px; margin:4px 0 12px; color:#475569; }
+    .cl-btn{ width:100%; height:44px; border-radius:12px; border:0; cursor:pointer; background:linear-gradient(180deg, #e4c96b, #b98f28); color:#111; font-weight:700; }
+    .cl-btn[disabled]{ opacity:.6; cursor:not-allowed; }
+    .cl-foot{ margin-top:10px; font-size:14px; color:#4d5a6b; }
+    .cl-foot a{ color:#1d4ed8; text-decoration:none; }
   </style>
+
+  <script>
+    (function(){
+      window.__MFC_STORE_READY = new Promise(function(resolve){
+        var done = false;
+        function complete(){ if(!done){ done=true; resolve(); } }
+        var s = document.createElement('script');
+        s.src = '/scripts/mock-store.js?v=1';
+        s.async = false;
+        s.onload = complete;
+        s.onerror = function(){
+          console.warn('[MFC] mock-store.js failed to load; using inline fallback.');
+          window.MFC_MOCK = {
+            USERS: {
+              "bejadbn1122@gmail.com": {
+                password: "MFC#Bejad2025!",
+                name: "Bejad Bandoor A. Alharbi",
+                companyName: "Nab’ al-Khayrat For Trading"
+              }
+            },
+            ACCOUNTS: {
+              "bejadbn1122@gmail.com": {
+                holder: "Nab’ al-Khayrat For Trading",
+                accountNo: "91550872",
+                currency: "USD",
+                status: "active",
+                balance: 0,
+                lines: []
+              }
+            }
+          };
+          complete();
+        };
+        document.head.appendChild(s);
+      });
+    })();
+  </script>
 </head>
+
 <body>
-  <!-- HEADER -->
-  <header id="siteHeader">
-    <div class="container nav">
-      <a class="brand" href="index.html" aria-label="Home">
-        <span class="crest"><img src="assets/logo-crest.png" alt="Maltese First crest"></span>
+  <header class="client-header">
+    <div class="cl-wrap" style="padding-bottom:0">
+      <a class="brand" href="/index.html">
+        <img class="brand-logo" src="/assets/logo-crest.png" alt="Maltese First Capital" />
         <b>Maltese First Capital</b>
       </a>
-
-      <nav id="mainNav" class="nav-links" aria-label="Primary">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="private-banking.html">Private Banking</a>
-        <a href="wealth-management.html">Wealth Management</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-
-      <div class="nav-actions">
-        <!-- On this page, keep the Admin button but disabled to show current context -->
-        <a class="btn btn-gold btn-lg btn-disabled" href="#" aria-current="page">Admin Portal</a>
-      </div>
-
-      <button class="burger" aria-label="Menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+      <span class="tag">Client Area</span>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero" role="banner" aria-label="Valletta skyline">
-    <div class="container">
-      <div class="crest-badge"><img src="assets/logo-crest.png" alt="Maltese First crest"></div>
-      <h1>Admin Portal</h1>
-      <p>Secure management access for operations, ledger, and compliance.</p>
-    </div>
-  </section>
+  <main class="cl-wrap">
+    <section class="cl-card">
+      <h1 class="cl-title">Client Login</h1>
+      <p class="cl-sub">Enter your email and password to access your account.</p>
 
-  <!-- MAIN -->
-  <main class="section">
-    <div class="container grid">
-      <section class="card pad">
-        <h2>Sign in</h2>
+      <div id="msg" class="cl-msg"></div>
 
-        <!-- If JS is blocked, this will still post server-side -->
-        <form id="adminForm" class="row" method="post" action="/api/admin/login" novalidate>
-          <div>
-            <label for="adminEmail">Admin Email</label>
-            <input id="adminEmail" name="email" type="email" inputmode="email" autocomplete="username" required />
-          </div>
-          <div>
-            <label for="adminPass">Password</label>
-            <input id="adminPass" name="password" type="password" autocomplete="current-password" required />
-          </div>
-          <div>
-            <label for="adminOTP">Two-Factor Code (if prompted)</label>
-            <input id="adminOTP" name="otp" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="123456" />
-          </div>
+      <form id="loginForm" novalidate autocomplete="off">
+        <div class="cl-field">
+          <label class="cl-label" for="email">Email</label>
+          <input id="email" class="cl-input" type="email"
+                 autocomplete="off" autocapitalize="off" spellcheck="false" value="" required />
+        </div>
 
-          <!-- Optional Cloudflare Turnstile placeholder (enable when you add a sitekey)
-          <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY"></div>
-          <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-          -->
+        <div class="cl-field">
+          <label class="cl-label" for="password">Password</label>
+          <input id="password" class="cl-input" type="password"
+                 autocomplete="new-password" spellcheck="false" value="" required />
+        </div>
 
-          <div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap">
-            <button type="submit" class="btn btn-gold btn-lg" id="adminBtn">Enter</button>
-            <a class="btn btn-lg" href="index.html">Back to Site</a>
-            <span id="msg" class="muted" role="status" aria-live="polite"></span>
-          </div>
-        </form>
-      </section>
+        <div class="cl-inline">
+          <input id="togglePass" type="checkbox" />
+          <label for="togglePass">Show password</label>
+        </div>
 
-      <aside class="card pad">
-        <h3>Admin Security</h3>
-        <ul style="margin:0 0 10px 18px">
-          <li>Device fingerprinting & anomaly detection.</li>
-          <li>5 failed attempts → temporary lockout.</li>
-          <li>All actions are audit-logged.</li>
-        </ul>
-        <p class="muted" style="margin:0">Ops Support: <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a></p>
-      </aside>
-    </div>
+        <button id="submitBtn" class="cl-btn" type="submit">Sign in</button>
+
+        <div class="cl-foot">
+          Forgot or want to change it? <a href="/client-login.html#change-password">Change password</a>
+        </div>
+      </form>
+    </section>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container">
-      © 2025 Maltese First Capital. The Exchange Building, Republic Street, Valletta VLT 1117, Malta ·
-      <a href="mailto:hello@maltesefirst.com">hello@maltesefirst.com</a>
-    </div>
-  </footer>
+  <!-- Inline replacement for missing mock-auth.js -->
+  <script>
+  window.MFC_AUTH = {
+    async login(email, password) {
+      if (!window.MFC_MOCK || !MFC_MOCK.USERS[email]) 
+        return { ok: false, error: "No account found" };
+      const u = MFC_MOCK.USERS[email];
+      if (u.password !== password)
+        return { ok: false, error: "Invalid credentials" };
+      return { ok: true, user: u };
+    }
+  };
+  </script>
 
   <script>
-    // Mobile nav
-    const burger = document.querySelector('.burger');
-    const links  = document.querySelector('.nav-links');
-    burger?.addEventListener('click', () => {
-      const open = burger.getAttribute('aria-expanded') === 'true';
-      burger.setAttribute('aria-expanded', String(!open));
-      links.classList.toggle('open');
-    });
+    (function(){
+      var $ = s => document.querySelector(s);
+      var msg = $('#msg');
+      var form = $('#loginForm');
+      var toggle = $('#togglePass');
+      var emailEl = $('#email');
+      var passEl  = $('#password');
+      var submit  = $('#submitBtn');
 
-    // Admin login via JSON; adjust if your backend expects form-encoded
-    const API_ADMIN = '/api/admin/login';
-    const form = document.getElementById('adminForm');
-    const msg  = document.getElementById('msg');
-    const btn  = document.getElementById('adminBtn');
+      // Force-clear any browser-stored credentials
+      document.addEventListener('DOMContentLoaded', function(){
+        try { localStorage.removeItem('mfc_mock_email'); } catch(e){}
+        emailEl.value = ''; passEl.value = '';
+      });
 
-    form?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      msg.textContent='';
+      toggle.addEventListener('change', () => passEl.type = toggle.checked ? 'text' : 'password');
 
-      const email = document.getElementById('adminEmail').value.trim();
-      const password = document.getElementById('adminPass').value;
-      const otp = document.getElementById('adminOTP').value.trim();
+      window.__MFC_STORE_READY.then(function(){
+        form.addEventListener('submit', async function(e){
+          e.preventDefault();
+          msg.className='cl-msg'; msg.textContent='';
+          submit.disabled = true;
 
-      if(!email || !password){
-        msg.textContent='Enter your email and password.'; msg.className='error'; return;
-      }
+          var email = (emailEl.value||'').trim().toLowerCase();
+          var pass  = passEl.value;
 
-      btn.disabled=true; const old=btn.textContent; btn.textContent='Verifying…';
-      try{
-        const res = await fetch(API_ADMIN,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          credentials:'include',
-          body:JSON.stringify({email,password,otp: otp || undefined})
+          if (!email || !pass) {
+            msg.className='cl-msg err'; msg.textContent='Please enter both email and password.'; submit.disabled=false; return;
+          }
+
+          const result = await window.MFC_AUTH.login(email, pass);
+          if (!result.ok) {
+            msg.className='cl-msg err'; msg.textContent = (result.error === 'Invalid credentials') ? 'Incorrect password.' : 'No account found for that email.';
+            submit.disabled = false; return;
+          }
+
+          localStorage.setItem('mfc_mock_token', Math.random().toString(36).slice(2));
+          var next = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
+          location.href = next;
         });
-        if(!res.ok){
-          const j = await res.json().catch(()=>({error:'Invalid credentials.'}));
-          throw new Error(j.error || 'Invalid credentials.');
-        }
-        location.assign('admin-dashboard.html');
-      }catch(err){
-        msg.textContent = err.message || 'Sign-in failed.'; msg.className='error';
-      }finally{
-        btn.disabled=false; btn.textContent=old;
-      }
-    });
+      });
+    })();
   </script>
 </body>
 </html>
