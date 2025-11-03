@@ -7,7 +7,6 @@
   <link rel="icon" href="/assets/logo-crest.png" />
   <link rel="stylesheet" href="/styles.css" />
 
-  <!-- White header + page styles (scoped to client pages only) -->
   <style>
     :root { --bg:#0b0f16; --panel:#0f1621; --text:#0f172a; --muted:#4d5a6b; --gold:#d4af37; }
     html,body{ background:#0b0f16; color:#e9eef8; margin:0; font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif; }
@@ -16,15 +15,10 @@
     .client-header{ background:#fff; color:#111; border-bottom:1px solid #e8edf3; padding:14px 20px; }
     .client-header .brand{ display:inline-flex; align-items:center; gap:10px; text-decoration:none; }
     .client-header .brand b{ color:#111; font-weight:600; letter-spacing:.2px; }
-    .client-header .brand-logo{
-      width:48px; height:48px; object-fit:contain; display:inline-block;
-      background:transparent; filter:none !important; -webkit-filter:none !important; mix-blend-mode:normal !important;
-    }
+    .client-header .brand-logo{ width:48px; height:48px; object-fit:contain; display:inline-block; background:transparent; }
     .client-header .tag{ float:right; color:#475569; font-size:14px; margin-top:10px; }
 
-    .cl-card{ max-width:560px; margin:56px auto 0; background:#fff; color:#111;
-      border:1px solid #e8edf3; border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.25);
-      padding:20px 22px 24px; }
+    .cl-card{ max-width:560px; margin:56px auto 0; background:#fff; color:#111; border:1px solid #e8edf3; border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.25); padding:20px 22px 24px; }
     .cl-title{ font-size:26px; font-weight:800; margin:4px 0 4px; color:#0f172a; }
     .cl-sub{ color:#4d5a6b; margin:0 0 14px; line-height:1.45; }
 
@@ -34,25 +28,21 @@
 
     .cl-field{ margin:12px 0; }
     .cl-label{ display:block; font-size:13px; color:#334155; margin:0 0 6px; }
-    .cl-input{ width:100%; height:44px; border-radius:12px; border:1px solid #e5e7eb; padding:0 12px;
-      font-size:15px; background:#fff; color:#111; outline:none; }
+    .cl-input{ width:100%; height:44px; border-radius:12px; border:1px solid #e5e7eb; padding:0 12px; font-size:15px; background:#fff; color:#111; outline:none; }
     .cl-input:focus{ border-color:#c5a741; box-shadow:0 0 0 3px rgba(212,175,55,.25); }
 
     .cl-inline{ display:flex; align-items:center; gap:10px; margin:4px 0 12px; color:#475569; }
-    .cl-btn{ width:100%; height:44px; border-radius:12px; border:0; cursor:pointer;
-      background:linear-gradient(180deg, #e4c96b, #b98f28); color:#111; font-weight:700; }
+    .cl-btn{ width:100%; height:44px; border-radius:12px; border:0; cursor:pointer; background:linear-gradient(180deg, #e4c96b, #b98f28); color:#111; font-weight:700; }
     .cl-btn[disabled]{ opacity:.6; cursor:not-allowed; }
     .cl-foot{ margin-top:10px; font-size:14px; color:#4d5a6b; }
     .cl-foot a{ color:#1d4ed8; text-decoration:none; }
   </style>
 
-  <!-- Robust mock-store loader with fallback (no fetch/await) -->
   <script>
     (function(){
       window.__MFC_STORE_READY = new Promise(function(resolve){
         var done = false;
         function complete(){ if(!done){ done=true; resolve(); } }
-
         var s = document.createElement('script');
         s.src = '/scripts/mock-store.js?v=1';
         s.async = false;
@@ -85,6 +75,7 @@
     })();
   </script>
 </head>
+
 <body>
   <header class="client-header">
     <div class="cl-wrap" style="padding-bottom:0">
@@ -97,7 +88,6 @@
   </header>
 
   <main class="cl-wrap">
-    <!-- IMPORTANT: autocomplete off at form level -->
     <section class="cl-card">
       <h1 class="cl-title">Client Login</h1>
       <p class="cl-sub">Enter your email and password to access your account.</p>
@@ -107,14 +97,12 @@
       <form id="loginForm" novalidate autocomplete="off">
         <div class="cl-field">
           <label class="cl-label" for="email">Email</label>
-          <!-- Explicitly blank + disable autofill -->
           <input id="email" class="cl-input" type="email"
                  autocomplete="off" autocapitalize="off" spellcheck="false" value="" required />
         </div>
 
         <div class="cl-field">
           <label class="cl-label" for="password">Password</label>
-          <!-- Use new-password to defeat password managers -->
           <input id="password" class="cl-input" type="password"
                  autocomplete="new-password" spellcheck="false" value="" required />
         </div>
@@ -133,9 +121,23 @@
     </section>
   </main>
 
+  <!-- Inline replacement for missing mock-auth.js -->
+  <script>
+  window.MFC_AUTH = {
+    async login(email, password) {
+      if (!window.MFC_MOCK || !MFC_MOCK.USERS[email]) 
+        return { ok: false, error: "No account found" };
+      const u = MFC_MOCK.USERS[email];
+      if (u.password !== password)
+        return { ok: false, error: "Invalid credentials" };
+      return { ok: true, user: u };
+    }
+  };
+  </script>
+
   <script>
     (function(){
-      var $ = function(s,r){return (r||document).querySelector(s)};
+      var $ = s => document.querySelector(s);
       var msg = $('#msg');
       var form = $('#loginForm');
       var toggle = $('#togglePass');
@@ -143,39 +145,35 @@
       var passEl  = $('#password');
       var submit  = $('#submitBtn');
 
-      // *** CRITICAL CHANGE ***
-      // Remove any default/prefill and wipe on load (even if browser injected).
+      // Force-clear any browser-stored credentials
       document.addEventListener('DOMContentLoaded', function(){
         try { localStorage.removeItem('mfc_mock_email'); } catch(e){}
-        emailEl.setAttribute('autocomplete','off');
-        passEl.setAttribute('autocomplete','new-password');
-        emailEl.value = '';
-        passEl.value  = '';
+        emailEl.value = ''; passEl.value = '';
       });
 
-      // Show/Hide password
-      toggle.addEventListener('change', function(){ passEl.type = toggle.checked ? 'text' : 'password'; });
+      toggle.addEventListener('change', () => passEl.type = toggle.checked ? 'text' : 'password');
 
-      // Wait for store readiness (external or fallback)
       window.__MFC_STORE_READY.then(function(){
-        form.addEventListener('submit', function(e){
+        form.addEventListener('submit', async function(e){
           e.preventDefault();
-          if (!window.MFC_MOCK || !MFC_MOCK.USERS) {
-            msg.className='cl-msg err'; msg.textContent='Configuration error. mock-store not loaded.'; return;
-          }
-          submit.disabled = true; msg.className='cl-msg'; msg.textContent='';
+          msg.className='cl-msg'; msg.textContent='';
+          submit.disabled = true;
 
           var email = (emailEl.value||'').trim().toLowerCase();
           var pass  = passEl.value;
 
-          var user = MFC_MOCK.USERS[email];
-          if (!user) { msg.className='cl-msg err'; msg.textContent='No account found for that email.'; submit.disabled=false; return; }
-          if (user.password !== pass) { msg.className='cl-msg err'; msg.textContent='Incorrect password.'; submit.disabled=false; return; }
+          if (!email || !pass) {
+            msg.className='cl-msg err'; msg.textContent='Please enter both email and password.'; submit.disabled=false; return;
+          }
+
+          const result = await window.MFC_AUTH.login(email, pass);
+          if (!result.ok) {
+            msg.className='cl-msg err'; msg.textContent = (result.error === 'Invalid credentials') ? 'Incorrect password.' : 'No account found for that email.';
+            submit.disabled = false; return;
+          }
 
           localStorage.setItem('mfc_mock_token', Math.random().toString(36).slice(2));
-
-          var params = new URLSearchParams(location.search);
-          var next = params.get('next') || '/client-dashboard.html';
+          var next = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
           location.href = next;
         });
       });
