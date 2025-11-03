@@ -1,23 +1,10 @@
-// /scripts/account-open-wire.js — v3.2 (MFC)
-// Safe config + solid submit wiring + legacy/new field support
-
+/* /scripts/account-open-wire.js — v4 (404-proof, no visual changes) */
 (() => {
-  // ---------- CONFIG (robust) ----------
-  const CFG = (window.__MFC_CONFIG || {});
-  let API = (typeof CFG.API_BASE_URL === 'function' ? CFG.API_BASE_URL() : CFG.API_BASE_URL) || '';
-  API = (API || '').replace(/\/+$/, '');
+  const CFG = window.__MFC_CONFIG || {};
+  const API = (CFG.API_BASE_URL || '').replace(/\/+$/, '');
+  const $ = (s, r = document) => r.querySelector(s);
 
-  // Hard fallback so a missing config never posts to the site origin
-  if (!API) {
-    API = 'https://maltese-first-capital-deluxe-backend.onrender.com';
-    console.warn('[MFC] API_BASE_URL missing; using hard fallback:', API);
-  }
-
-  // ---------- HELPERS ----------
-  const $  = (sel, root = document) => root.querySelector(sel);
-  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
-
-  function setStatus(msg, kind = 'error') {
+  function setStatus(msg) {
     const box = $('#formStatus');
     if (!box) return;
     box.style.display = 'block';
@@ -25,60 +12,38 @@
     box.textContent = msg || '';
   }
 
-  function getTurnstileToken() {
-    try {
-      return (window.turnstile && window.turnstile.getResponse)
-        ? (window.turnstile.getResponse() || '')
-        : '';
-    } catch { return ''; }
+  function getTS() {
+    try { return (window.turnstile && window.turnstile.getResponse) ? (window.turnstile.getResponse() || '') : ''; }
+    catch { return ''; }
   }
 
-  // ---------- MAIN ----------
-  on(document, 'DOMContentLoaded', () => {
-    const form      = $('#accountOpenForm');
-    const bar       = $('#uploadBar');
-    const submitBtn = $('#submitBtn');
-    const draftBtn  = $('#saveDraftBtn');
+  async function postFD(url, fd) {
+    const r = await fetch(url, { method: 'POST', body: fd });
+    const t = await r.text();
+    let j = {};
+    try { j = t ? JSON.parse(t) : {}; } catch {}
+    return { ok: r.ok, status: r.status, data: j, raw: t };
+  }
 
-    if (!form) {
-      console.warn('[MFC] #accountOpenForm not found');
-      return;
-    }
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = $('#accountOpenForm');
+    const bar  = $('#uploadBar');
+    const btn  = $('#submitBtn');
+    if (!form) return;
 
-    // Ensure no native navigation
+    // Don’t navigate away
     form.setAttribute('action', '');
     form.setAttribute('method', 'post');
     form.setAttribute('enctype', 'multipart/form-data');
 
-    // Save draft locally (no files)
-    on(draftBtn, 'click', () => {
-      try {
-        const data = new FormData(form);
-        const obj = {};
-        for (const [k, v] of data.entries()) {
-          if (v instanceof File) continue;
-          obj[k] = v;
-        }
-        localStorage.setItem('mfc_account_open_draft', JSON.stringify(obj));
-        alert('Draft saved locally.');
-      } catch (e) {
-        console.warn('Draft save failed:', e);
-      }
-    });
-
-    // Submit
-    on(form, 'submit', async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (!API) { setStatus('Could not submit: API base missing'); return; }
 
-      const consent = $('#consentBox');
-      if (consent && !consent.checked) {
-        setStatus('Please confirm the consent checkbox.', 'error');
-        return;
-      }
-
+      // Build FormData as-is from your fields (keeps visuals, names intact)
       const fd = new FormData(form);
 
-      // Map visible UX fields → backend canonical (backend also accepts both)
+      // Soft mapping to canonical backend names (belt & braces)
       if (!fd.get('fullName')) {
         const n = fd.get('authorized_person') || fd.get('authorised_person') || '';
         if (n) fd.set('fullName', n);
@@ -88,60 +53,44 @@
         if (c) fd.set('companyName', c);
       }
 
-      // Optional Turnstile
-      const ts = getTurnstileToken();
+      // Optional Turnstile field (ignored if not present)
+      const ts = getTS();
       if (ts) fd.set('cf_turnstile_response', ts);
 
-      // UI lock + progress
-      submitBtn && (submitBtn.disabled = true);
-      setStatus('Submitting…', 'info');
-      if (bar) bar.style.width = '35%';
+      // Lock UI
+      if (btn) btn.disabled = true;
+      if (bar) bar.style.width = '30%';
+      setStatus('Submitting…');
 
-      try {
-        // Prefer the alias route (both are mounted)
-        const endpoint = API + '/api/onboarding/account-open';
+      // Try email-only route first
+      const primaryURL = API + '/api/email/account-open';
+      const r1 = await postFD(primaryURL, fd);
 
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          body: fd
-          // no headers; browser sets multipart boundary
-        });
-
-        if (bar) bar.style.width = '70%';
-
-        const raw = await res.text();
-        let data = {};
-        try { data = raw ? JSON.parse(raw) : {}; } catch { /* ignore */ }
-
-        if (!res.ok) {
-          const msg = (data && (data.error || data.message)) || `HTTP ${res.status}`;
-          setStatus('Could not submit: ' + msg, 'error');
-          submitBtn && (submitBtn.disabled = false);
-          if (bar) bar.style.width = '0%';
-          return;
+      // If 404, auto-fallback to legacy KYC aliases
+      let final = r1;
+      if (r1.status === 404) {
+        const r2 = await postFD(API + '/api/onboarding/account-open', fd);
+        final = r2;
+        if (!r2.ok && r2.status === 404) {
+          const r3 = await postFD(API + '/api/onboarding/submit', fd);
+          final = r3;
         }
-
-        if (bar) bar.style.width = '100%';
-        const appId = (data && data.applicationId) ? data.applicationId : '';
-        setStatus('Application received' + (appId ? ` · Reference: ${appId}` : ''), 'success');
-
-        // Redirect to client login with reference (keeps your current UX)
-        const q = appId ? ('?submitted=' + encodeURIComponent(appId)) : '';
-        window.location.href = '/client-login.html' + q;
-      } catch (err) {
-        console.error('[MFC] submit error', err);
-        setStatus('Network error submitting. Check API_BASE_URL in scripts/config.js.', 'error');
-        submitBtn && (submitBtn.disabled = false);
-        if (bar) bar.style.width = '0%';
       }
+
+      if (bar) bar.style.width = final.ok ? '100%' : '0%';
+
+      if (!final.ok) {
+        const msg = final.data?.error || `HTTP ${final.status}`;
+        setStatus('Could not submit: ' + msg);
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      // Success UX (no visual change to layout)
+      const appId = final.data?.applicationId || '';
+      setStatus('Application received' + (appId ? ` · Reference: ${appId}` : ''));
+      // Optional redirect (you already had this)
+      window.location.href = '/client-login.html?submitted=' + encodeURIComponent(appId || '');
     });
   });
-
-  // ---------- Console sanity helpers (optional) ----------
-  try {
-    // Quick dev check: prints the API used
-    // (Open DevTools console to read)
-    // eslint-disable-next-line no-console
-    console.log('[MFC] Account Open API:', API);
-  } catch {}
 })();
