@@ -38,17 +38,16 @@
     .cl-foot a{ color:#1d4ed8; text-decoration:none; }
   </style>
 
+  <!-- Load mock store (external, with inline fallback) -->
   <script>
     (function(){
       window.__MFC_STORE_READY = new Promise(function(resolve){
-        var done = false;
-        function complete(){ if(!done){ done=true; resolve(); } }
-        var s = document.createElement('script');
-        s.src = '/scripts/mock-store.js?v=1';
-        s.async = false;
+        let done = false; const complete=()=>{ if(!done){ done=true; resolve(); } };
+        const s = document.createElement('script');
+        s.src = '/scripts/mock-store.js?v=1'; s.async = false;
         s.onload = complete;
         s.onerror = function(){
-          console.warn('[MFC] mock-store.js failed to load; using inline fallback.');
+          console.warn('[MFC] mock-store.js failed; using inline fallback.');
           window.MFC_MOCK = {
             USERS: {
               "bejadbn1122@gmail.com": {
@@ -75,7 +74,6 @@
     })();
   </script>
 </head>
-
 <body>
   <header class="client-header">
     <div class="cl-wrap" style="padding-bottom:0">
@@ -121,37 +119,31 @@
     </section>
   </main>
 
-  <!-- Inline replacement for missing mock-auth.js -->
+  <!-- Inline auth used by login -->
   <script>
-  window.MFC_AUTH = {
-    async login(email, password) {
-      if (!window.MFC_MOCK || !MFC_MOCK.USERS[email]) 
-        return { ok: false, error: "No account found" };
-      const u = MFC_MOCK.USERS[email];
-      if (u.password !== password)
-        return { ok: false, error: "Invalid credentials" };
-      return { ok: true, user: u };
-    }
-  };
+    window.MFC_AUTH = {
+      async login(email, password) {
+        if (!window.MFC_MOCK || !MFC_MOCK.USERS[email]) 
+          return { ok: false, error: "No account found" };
+        const u = MFC_MOCK.USERS[email];
+        if (u.password !== password)
+          return { ok: false, error: "Invalid credentials" };
+        return { ok: true, user: u };
+      }
+    };
   </script>
 
   <script>
     (function(){
-      var $ = s => document.querySelector(s);
-      var msg = $('#msg');
-      var form = $('#loginForm');
-      var toggle = $('#togglePass');
-      var emailEl = $('#email');
-      var passEl  = $('#password');
-      var submit  = $('#submitBtn');
+      const $ = s => document.querySelector(s);
+      const msg = $('#msg'), form = $('#loginForm');
+      const toggle = $('#togglePass'), emailEl = $('#email'), passEl = $('#password');
+      const submit = $('#submitBtn');
 
-      // Force-clear any browser-stored credentials
-      document.addEventListener('DOMContentLoaded', function(){
-        try { localStorage.removeItem('mfc_mock_email'); } catch(e){}
-        emailEl.value = ''; passEl.value = '';
-      });
+      // Keep inputs empty (no autofill)
+      document.addEventListener('DOMContentLoaded', ()=>{ emailEl.value=''; passEl.value=''; });
 
-      toggle.addEventListener('change', () => passEl.type = toggle.checked ? 'text' : 'password');
+      toggle.addEventListener('change', ()=>{ passEl.type = toggle.checked ? 'text' : 'password'; });
 
       window.__MFC_STORE_READY.then(function(){
         form.addEventListener('submit', async function(e){
@@ -159,21 +151,31 @@
           msg.className='cl-msg'; msg.textContent='';
           submit.disabled = true;
 
-          var email = (emailEl.value||'').trim().toLowerCase();
-          var pass  = passEl.value;
+          const email = (emailEl.value||'').trim().toLowerCase();
+          const pass  = passEl.value;
 
-          if (!email || !pass) {
+          if (!email || !pass){
             msg.className='cl-msg err'; msg.textContent='Please enter both email and password.'; submit.disabled=false; return;
           }
 
           const result = await window.MFC_AUTH.login(email, pass);
-          if (!result.ok) {
-            msg.className='cl-msg err'; msg.textContent = (result.error === 'Invalid credentials') ? 'Incorrect password.' : 'No account found for that email.';
-            submit.disabled = false; return;
+          if (!result.ok){
+            msg.className='cl-msg err';
+            msg.textContent = result.error === 'Invalid credentials' ? 'Incorrect password.' : 'No account found for that email.';
+            submit.disabled=false; return;
           }
 
-          localStorage.setItem('mfc_mock_token', Math.random().toString(36).slice(2));
-          var next = new URLSearchParams(location.search).get('next') || '/client-dashboard.html';
+          // ✅ Write ALL keys the dashboard might check
+          const token = 'mock-' + Math.random().toString(36).slice(2);
+          try{
+            localStorage.setItem('mfc_token', token);
+            localStorage.setItem('mfc_mock_token', token);
+            localStorage.setItem('mfc_email', email);
+            localStorage.setItem('mfc_mock_email', email);
+          }catch(e){}
+
+          const params = new URLSearchParams(location.search);
+          const next = params.get('next') || '/client-dashboard.html';
           location.href = next;
         });
       });
