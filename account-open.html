@@ -115,141 +115,146 @@
           method="post"
           enctype="multipart/form-data"
           novalidate
+          autocomplete="off"
           target="submitBridge">
+
+      <!-- Dummy fields to nuke browser autofill (keeps visuals unchanged) -->
+      <input type="text" style="display:none" autocomplete="username">
+      <input type="password" style="display:none" autocomplete="new-password">
 
       <h2>Client Information</h2>
 
       <div class="row">
         <div>
           <label>Company / Account Name <span class="req">*</span></label>
-          <input name="company_name" type="text" placeholder="e.g., Al Ali Ltd" required />
+          <input name="company_name" type="text" placeholder="e.g., Al Ali Ltd" required autocomplete="off" />
         </div>
         <div>
           <label>Authorised Person <span class="req">*</span></label>
-          <input name="authorized_person" type="text" placeholder="e.g., Mr. Bob Smith" required />
+          <input name="authorized_person" type="text" placeholder="e.g., Mr. Bob Smith" required autocomplete="off" />
         </div>
 
         <div>
           <label>Email <span class="req">*</span></label>
-          <input name="email" type="email" placeholder="name@company.com" required />
+          <input name="email" type="email" placeholder="name@company.com" required autocomplete="off" />
         </div>
         <div>
           <label>Phone</label>
-          <input name="phone" type="tel" placeholder="+44 ..." />
+          <input name="phone" type="tel" placeholder="+44 ..." autocomplete="off" />
         </div>
 
         <div>
           <label>Company Address</label>
-          <input name="address" type="text" placeholder="Long Drive London" />
+          <input name="address" type="text" placeholder="Long Drive London" autocomplete="off" />
         </div>
         <div>
           <label>Country</label>
-          <select name="country">
+          <select name="country" autocomplete="off">
             <option value="">Select country…</option>
-             <option value="Afghanistan">Afghanistan</option>
-    <option value="Albania">Albania</option>
-    <option value="Algeria">Algeria</option>
-    <option value="Andorra">Andorra</option>
-    <option value="Angola">Angola</option>
-    <option value="Argentina">Argentina</option>
-    <option value="Armenia">Armenia</option>
-    <option value="Australia">Australia</option>
-    <option value="Austria">Austria</option>
-    <option value="Azerbaijan">Azerbaijan</option>
-    <option value="Bahrain">Bahrain</option>
-    <option value="Bangladesh">Bangladesh</option>
-    <option value="Belarus">Belarus</option>
-    <option value="Belgium">Belgium</option>
-    <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-    <option value="Brazil">Brazil</option>
-    <option value="Bulgaria">Bulgaria</option>
-    <option value="Cambodia">Cambodia</option>
-    <option value="Cameroon">Cameroon</option>
-    <option value="Canada">Canada</option>
-    <option value="Chile">Chile</option>
-    <option value="China">China</option>
-    <option value="Colombia">Colombia</option>
-    <option value="Croatia">Croatia</option>
-    <option value="Cyprus">Cyprus</option>
-    <option value="Czech Republic">Czech Republic</option>
-    <option value="Denmark">Denmark</option>
-    <option value="Dominican Republic">Dominican Republic</option>
-    <option value="Ecuador">Ecuador</option>
-    <option value="Egypt">Egypt</option>
-    <option value="Estonia">Estonia</option>
-    <option value="Finland">Finland</option>
-    <option value="France">France</option>
-    <option value="Germany">Germany</option>
-    <option value="Greece">Greece</option>
-    <option value="Hungary">Hungary</option>
-    <option value="Iceland">Iceland</option>
-    <option value="India">India</option>
-    <option value="Indonesia">Indonesia</option>
-    <option value="Iran">Iran</option>
-    <option value="Iraq">Iraq</option>
-    <option value="Ireland">Ireland</option>
-    <option value="Israel">Israel</option>
-    <option value="Italy">Italy</option>
-    <option value="Japan">Japan</option>
-    <option value="Jordan">Jordan</option>
-    <option value="Kenya">Kenya</option>
-    <option value="Kuwait">Kuwait</option>
-    <option value="Latvia">Latvia</option>
-    <option value="Lebanon">Lebanon</option>
-    <option value="Libya">Libya</option>
-    <option value="Lithuania">Lithuania</option>
-    <option value="Luxembourg">Luxembourg</option>
-    <option value="Malaysia">Malaysia</option>
-    <option value="Malta">Malta</option>
-    <option value="Mexico">Mexico</option>
-    <option value="Monaco">Monaco</option>
-    <option value="Morocco">Morocco</option>
-    <option value="Netherlands">Netherlands</option>
-    <option value="New Zealand">New Zealand</option>
-    <option value="Nigeria">Nigeria</option>
-    <option value="Norway">Norway</option>
-    <option value="Oman">Oman</option>
-    <option value="Pakistan">Pakistan</option>
-    <option value="Palestine">Palestine</option>
-    <option value="Philippines">Philippines</option>
-    <option value="Poland">Poland</option>
-    <option value="Portugal">Portugal</option>
-    <option value="Qatar">Qatar</option>
-    <option value="Romania">Romania</option>
-    <option value="Russia">Russia</option>
-    <option value="Saudi Arabia">Saudi Arabia</option>
-    <option value="Serbia">Serbia</option>
-    <option value="Singapore">Singapore</option>
-    <option value="Slovakia">Slovakia</option>
-    <option value="Slovenia">Slovenia</option>
-    <option value="South Africa">South Africa</option>
-    <option value="South Korea">South Korea</option>
-    <option value="Spain">Spain</option>
-    <option value="Sri Lanka">Sri Lanka</option>
-    <option value="Sweden">Sweden</option>
-    <option value="Switzerland">Switzerland</option>
-    <option value="Syria">Syria</option>
-    <option value="Taiwan">Taiwan</option>
-    <option value="Thailand">Thailand</option>
-    <option value="Tunisia">Tunisia</option>
-    <option value="Turkey">Turkey</option>
-    <option value="Ukraine">Ukraine</option>
-    <option value="United Arab Emirates">United Arab Emirates</option>
-    <option value="United Kingdom">United Kingdom</option>
-    <option value="United States">United States</option>
-    <option value="Venezuela">Venezuela</option>
-    <option value="Vietnam">Vietnam</option>
-    <option value="Yemen">Yemen</option>
+            <option value="Afghanistan">Afghanistan</option>
+            <option value="Albania">Albania</option>
+            <option value="Algeria">Algeria</option>
+            <option value="Andorra">Andorra</option>
+            <option value="Angola">Angola</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Armenia">Armenia</option>
+            <option value="Australia">Australia</option>
+            <option value="Austria">Austria</option>
+            <option value="Azerbaijan">Azerbaijan</option>
+            <option value="Bahrain">Bahrain</option>
+            <option value="Bangladesh">Bangladesh</option>
+            <option value="Belarus">Belarus</option>
+            <option value="Belgium">Belgium</option>
+            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Bulgaria">Bulgaria</option>
+            <option value="Cambodia">Cambodia</option>
+            <option value="Cameroon">Cameroon</option>
+            <option value="Canada">Canada</option>
+            <option value="Chile">Chile</option>
+            <option value="China">China</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Croatia">Croatia</option>
+            <option value="Cyprus">Cyprus</option>
+            <option value="Czech Republic">Czech Republic</option>
+            <option value="Denmark">Denmark</option>
+            <option value="Dominican Republic">Dominican Republic</option>
+            <option value="Ecuador">Ecuador</option>
+            <option value="Egypt">Egypt</option>
+            <option value="Estonia">Estonia</option>
+            <option value="Finland">Finland</option>
+            <option value="France">France</option>
+            <option value="Germany">Germany</option>
+            <option value="Greece">Greece</option>
+            <option value="Hungary">Hungary</option>
+            <option value="Iceland">Iceland</option>
+            <option value="India">India</option>
+            <option value="Indonesia">Indonesia</option>
+            <option value="Iran">Iran</option>
+            <option value="Iraq">Iraq</option>
+            <option value="Ireland">Ireland</option>
+            <option value="Israel">Israel</option>
+            <option value="Italy">Italy</option>
+            <option value="Japan">Japan</option>
+            <option value="Jordan">Jordan</option>
+            <option value="Kenya">Kenya</option>
+            <option value="Kuwait">Kuwait</option>
+            <option value="Latvia">Latvia</option>
+            <option value="Lebanon">Lebanon</option>
+            <option value="Libya">Libya</option>
+            <option value="Lithuania">Lithuania</option>
+            <option value="Luxembourg">Luxembourg</option>
+            <option value="Malaysia">Malaysia</option>
+            <option value="Malta">Malta</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Monaco">Monaco</option>
+            <option value="Morocco">Morocco</option>
+            <option value="Netherlands">Netherlands</option>
+            <option value="New Zealand">New Zealand</option>
+            <option value="Nigeria">Nigeria</option>
+            <option value="Norway">Norway</option>
+            <option value="Oman">Oman</option>
+            <option value="Pakistan">Pakistan</option>
+            <option value="Palestine">Palestine</option>
+            <option value="Philippines">Philippines</option>
+            <option value="Poland">Poland</option>
+            <option value="Portugal">Portugal</option>
+            <option value="Qatar">Qatar</option>
+            <option value="Romania">Romania</option>
+            <option value="Russia">Russia</option>
+            <option value="Saudi Arabia">Saudi Arabia</option>
+            <option value="Serbia">Serbia</option>
+            <option value="Singapore">Singapore</option>
+            <option value="Slovakia">Slovakia</option>
+            <option value="Slovenia">Slovenia</option>
+            <option value="South Africa">South Africa</option>
+            <option value="South Korea">South Korea</option>
+            <option value="Spain">Spain</option>
+            <option value="Sri Lanka">Sri Lanka</option>
+            <option value="Sweden">Sweden</option>
+            <option value="Switzerland">Switzerland</option>
+            <option value="Syria">Syria</option>
+            <option value="Taiwan">Taiwan</option>
+            <option value="Thailand">Thailand</option>
+            <option value="Tunisia">Tunisia</option>
+            <option value="Turkey">Turkey</option>
+            <option value="Ukraine">Ukraine</option>
+            <option value="United Arab Emirates">United Arab Emirates</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="United States">United States</option>
+            <option value="Venezuela">Venezuela</option>
+            <option value="Vietnam">Vietnam</option>
+            <option value="Yemen">Yemen</option>
           </select>
         </div>
 
         <div>
           <label>Commercial Registration</label>
-          <input name="commercial_registration" type="text" placeholder="CR / Company No." />
+          <input name="commercial_registration" type="text" placeholder="CR / Company No." autocomplete="off" />
         </div>
         <div>
           <label>Account Type</label>
-          <select name="account_type">
+          <select name="account_type" autocomplete="off">
             <option>Corporate – Private Client (Onboarding)</option>
             <option>Corporate – Operating</option>
             <option>Individual – Private Banking</option>
@@ -258,18 +263,18 @@
 
         <div>
           <label>Primary Currency</label>
-          <select name="currency">
+          <select name="currency" autocomplete="off">
             <option>USD</option><option>EUR</option><option>GBP</option><option>AED</option><option>SAR</option>
           </select>
         </div>
         <div>
           <label>Source of funds / purpose</label>
-          <input name="source_of_funds" type="text" placeholder="Brief context…" />
+          <input name="source_of_funds" type="text" placeholder="Brief context…" autocomplete="off" />
         </div>
       </div>
 
       <label>Notes</label>
-      <textarea name="notes" placeholder="Extra context for Compliance / Relationship team…"></textarea>
+      <textarea name="notes" placeholder="Extra context for Compliance / Relationship team…" autocomplete="off"></textarea>
 
       <hr style="border-color: rgba(255,255,255,.08); margin:16px 0;" />
 
@@ -336,8 +341,7 @@
   <!-- Keep your existing lightweight scripts (no submit hijack on this page) -->
   <script src="scripts/forms.js" defer></script>
   <script src="/scripts/config.js?v=2"></script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-  <!-- IMPORTANT: do NOT include account-open-wire.js on this page -->
+  <!-- Turnstile script removed on purpose -->
   <script src="/scripts/legal-footer.js?v=1" defer></script>
   <script src="/scripts/account-open-placeholders.js" defer></script>
 
@@ -353,6 +357,17 @@
     const draft  = document.getElementById('saveDraftBtn');
 
     if (!form || !frame) return;
+
+    // Hard reset + kill autofill on load (no visual change)
+    window.addEventListener('DOMContentLoaded', function () {
+      try { localStorage.removeItem('mfc_account_open_draft'); } catch(e){}
+      form.reset();
+      form.querySelectorAll('input, textarea, select').forEach(function (el) {
+        el.value = '';
+        el.removeAttribute('value');
+        el.setAttribute('autocomplete','off');
+      });
+    });
 
     // Optional: local draft save (text fields only)
     if (draft) {
