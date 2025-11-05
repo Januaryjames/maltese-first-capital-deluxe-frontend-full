@@ -118,7 +118,7 @@
           autocomplete="off"
           target="submitBridge">
 
-      <!-- Dummy fields to nuke browser autofill (keeps visuals unchanged) -->
+      <!-- Dummy fields to defeat browser autofill -->
       <input type="text" style="display:none" autocomplete="username">
       <input type="password" style="display:none" autocomplete="new-password">
 
@@ -145,7 +145,7 @@
 
         <div>
           <label>Company Address</label>
-          <input name="address" type="text" placeholder="Long Drive London" autocomplete="off" />
+          <input name="address" type="text" placeholder="The Exchange Building, Republic Street, Valletta VLT 1117" autocomplete="off" />
         </div>
         <div>
           <label>Country</label>
@@ -324,15 +324,16 @@
       <div class="progress" aria-hidden="true"><span id="uploadBar"></span></div>
 
       <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
-        <button id="submitBtn"
-  class="btn-nav btn-gold"
-  type="submit"
-  formaction="https://maltese-first-capital-deluxe-backend.onrender.com/api/onboarding/submit"
-  formmethod="post"
-  formenctype="multipart/form-data"
-  formtarget="submitBridge">
-  Submit Application
-</button>
+        <button
+          id="submitBtn"
+          class="btn-nav btn-gold"
+          type="submit"
+          formaction="https://maltese-first-capital-deluxe-backend.onrender.com/api/onboarding/submit"
+          formmethod="post"
+          formenctype="multipart/form-data"
+          formtarget="submitBridge">
+          Submit Application
+        </button>
         <button id="saveDraftBtn" class="btn-nav btn-dark" type="button">Save Draft (local)</button>
       </div>
     </form>
@@ -346,16 +347,16 @@
     <iframe name="submitBridge" style="display:none;width:0;height:0;border:0;"></iframe>
   </main>
 
-  <!-- Keep your existing lightweight scripts (no submit hijack on this page) -->
-  <script src="scripts/forms.js" defer></script>
+  <!-- Keep lightweight scripts; DO NOT include any script that hijacks this form -->
+  <!-- <script src="scripts/forms.js" defer></script>  --> <!-- disable if it rewires submit -->
   <script src="/scripts/config.js?v=2"></script>
-  <!-- Turnstile script removed on purpose -->
   <script src="/scripts/legal-footer.js?v=1" defer></script>
   <script src="/scripts/account-open-placeholders.js" defer></script>
 
-  <!-- Tiny enhancer: shows success card after iframe load (no layout change) -->
+  <!-- Enhancer: success card + endpoint pin + anti-hijack -->
   <script>
   (function () {
+    const ENDPOINT = 'https://maltese-first-capital-deluxe-backend.onrender.com/api/onboarding/submit';
     const form   = document.getElementById('accountOpenForm');
     const frame  = document.querySelector('iframe[name="submitBridge"]');
     const status = document.getElementById('formStatus');
@@ -366,27 +367,50 @@
 
     if (!form || !frame) return;
 
+    // Pin correct attributes (in case a cached script mutates them)
+    function pin() {
+      form.action  = ENDPOINT;
+      form.method  = 'post';
+      form.enctype = 'multipart/form-data';
+      form.target  = 'submitBridge';
+    }
+    pin();
+
     // Hard reset + kill autofill on load (no visual change)
     window.addEventListener('DOMContentLoaded', function () {
       try { localStorage.removeItem('mfc_account_open_draft'); } catch(e){}
       form.reset();
       form.querySelectorAll('input, textarea, select').forEach(function (el) {
-        el.value = '';
-        el.removeAttribute('value');
+        if (el.type !== 'checkbox' && el.type !== 'radio' && el.type !== 'file') {
+          el.value = '';
+          el.removeAttribute('value');
+        }
         el.setAttribute('autocomplete','off');
       });
     });
 
-    // Optional: local draft save (text fields only)
+    // Anti-hijack: if any global listener rewires, we restore and submit.
+    window.addEventListener('submit', function (e) {
+      if (e.target !== form) return;
+      const a = (form.getAttribute('action') || '').trim();
+      if (!a.endsWith('/api/onboarding/submit')) {
+        e.preventDefault();
+        pin();
+        setTimeout(() => form.submit(), 0);
+      }
+    }, { capture: true });
+
+    // Optional: neutralize known old globals
+    ['accountOpenWire','accountOpenSubmit','wireAccountOpen'].forEach(fn => {
+      if (window[fn] && typeof window[fn] === 'function') { try { window[fn] = function(){}; } catch {} }
+    });
+
+    // Draft (text fields only)
     if (draft) {
       draft.addEventListener('click', function () {
         try {
-          const data = new FormData(form);
-          const obj = {};
-          for (const [k,v] of data.entries()) {
-            if (v instanceof File) continue;
-            obj[k] = v;
-          }
+          const data = new FormData(form), obj = {};
+          for (const [k,v] of data.entries()) { if (v instanceof File) continue; obj[k] = v; }
           localStorage.setItem('mfc_account_open_draft', JSON.stringify(obj));
           alert('Draft saved locally.');
         } catch (e) { console.warn('Draft save failed:', e); }
@@ -399,7 +423,6 @@
       if (bar) bar.style.width = '45%';
     });
 
-    // Cross-origin safe: react to iframe load only
     frame.addEventListener('load', function () {
       if (bar) bar.style.width = '100%';
       if (btn) btn.disabled = false;
