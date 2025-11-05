@@ -324,7 +324,15 @@
       <div class="progress" aria-hidden="true"><span id="uploadBar"></span></div>
 
       <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
-        <button id="submitBtn" class="btn-nav btn-gold" type="submit">Submit Application</button>
+        <button id="submitBtn"
+  class="btn-nav btn-gold"
+  type="submit"
+  formaction="https://maltese-first-capital-deluxe-backend.onrender.com/api/onboarding/submit"
+  formmethod="post"
+  formenctype="multipart/form-data"
+  formtarget="submitBridge">
+  Submit Application
+</button>
         <button id="saveDraftBtn" class="btn-nav btn-dark" type="button">Save Draft (local)</button>
       </div>
     </form>
