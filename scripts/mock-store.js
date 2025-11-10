@@ -5,11 +5,11 @@ window.MFC_MOCK = {
   USERS: {
     // Email keys must be lower-case:
 
-    // — Client 1: Bejad —
-    "bejadbn1122@gmail.com": {
+    // — Client 1: Ibrahim —
+    "k.s.a1981@hotmail.com": {
       password: "MFC#Bejad2025!",
-      name: "Bejad Bandoor A. Alharbi",
-      companyName: "Nab’ al-Khayrat For Trading"
+      name: "Ibrahim Bin Ali Mohammad Ghunaymi",
+      companyName: "Binyan Wijdan Lilmuqawalat Establishment"
     },
 
     // — Client 2: Al-Matsader Al-Fadhi Co / Abdulaziz —
@@ -21,10 +21,10 @@ window.MFC_MOCK = {
   },
 
   ACCOUNTS: {
-    // — Bejad —
-    "bejadbn1122@gmail.com": {
-      holder: "Nab’ al-Khayrat For Trading",
-      accountNo: "91550872",
+    // — Ibrahim Bin Ali Mohammad Ghunaymi —
+    "k.s.a1981@hotmail.com": {
+      holder: "Binyan Wijdan Lilmuqawalat Establishment",
+      accountNo: "91550874",
       currency: "USD",
       status: "active",
       balance: 0,
