@@ -29,19 +29,28 @@ window.MFC_MOCK = {
       status: "active",
       balance: 0,
       lines: [
-        // Example:
-        // { ts: "2025-10-30T12:00:00Z", type: "credit", amount: 5000000, currency: "USD", description: "Loan Credit (Pending Activation)" }
+        // no transactions yet
       ]
     },
 
-    // — Al-Matsader Al-Fadhi Co —
+    // — Al-Matsader Al-Fadhi Co / Abdulaziz —
     "almatsaderalfadhi@gmail.com": {
       holder: "Al-Matsader Al-Fadhi Co",
-      accountNo: "91550873",   // sequential; adjust if you have a different scheme
+      accountNo: "91550873",   // sequential; adjust if needed
       currency: "USD",
       status: "active",
+      // keep balance at 0 because this is still pending
       balance: 0,
-      lines: []
+      lines: [
+        {
+          ts: new Date().toISOString(),      // today’s date/time at load
+          type: "credit",
+          amount: 5000000,                   // 5,000,000.00 USD
+          currency: "USD",
+          description: "Loan Credit (Pending)",
+          pending: true                      // flag so UI can style it as pending
+        }
+      ]
     }
   }
 };
