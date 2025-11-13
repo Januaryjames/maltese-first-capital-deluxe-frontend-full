@@ -41,14 +41,7 @@ window.MFC_MOCK = {
       currency: "USD",
       status: "active",
       balance: 0,
-      lines: [
-        {
-          ts: "2025-11-13T13:21:00Z",
-          type: "credit",
-          amount: 5000000,          // 5,000,000.00 USD
-          currency: "USD",
-          description: "Incoming loan credit – Al-Matsader Al-Fadhi Co (PENDING)",
-          pending: true             // extra flag if your UI wants it
+      lines: []
     }
   }
 };
