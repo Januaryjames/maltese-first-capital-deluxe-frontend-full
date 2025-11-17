@@ -14,7 +14,7 @@ window.MFC_MOCK = {
 
     // — Client 2: Al-Matsader Al-Fadhi Co / Abdulaziz —
     "almatsaderalfadhi@gmail.com": {
-      password: "MFC#Bejad2025!",
+      password: "Whi123456$",
       name: "Abdulaziz Abdullah S Alzughaibi",
       companyName: "Al-Matsader Al-Fadhi Co"
     }
