@@ -17,38 +17,61 @@ window.MFC_MOCK = {
       password: "Whi123456$",
       name: "Abdulaziz Abdullah S Alzughaibi",
       companyName: "Al-Matsader Al-Fadhi Co"
+    },
+
+    // — Client 3: Keem Group Ltd / Nderitú Wachira —
+    "keemkenya@gmail.com": {
+      password: "MFC#Keem2025!",
+      name: "Nderitú Wachira",
+      companyName: "Keem Group Ltd"
     }
   },
 
   ACCOUNTS: {
-    // — Ibrahim Bin Ali Mohammad Ghunaymi —
+    // — Account: Ibrahim —
     "k.s.a1981@hotmail.com": {
       holder: "Binyan Wijdan Lilmuqawalat Establishment",
       accountNo: "91550874",
       currency: "USD",
       status: "active",
       balance: 0,
+      lines: []
+    },
+
+    // — Account: Al-Matsader Al-Fadhi Co —
+    "almatsaderalfadhi@gmail.com": {
+      holder: "Al-Matsader Al-Fadhi Co",
+      accountNo: "91550873",
+      currency: "USD",
+      status: "active",
+      balance: 0, // still pending — not added to balance
       lines: [
-        // no transactions yet
+        {
+          ts: new Date().toISOString(),
+          type: "credit",
+          amount: 5000000,
+          currency: "USD",
+          description: "Loan Credit (Pending)",
+          pending: true
+        }
       ]
     },
 
-    // — Al-Matsader Al-Fadhi Co / Abdulaziz —
-    "almatsaderalfadhi@gmail.com": {
-      holder: "Al-Matsader Al-Fadhi Co",
-      accountNo: "91550873",   // sequential; adjust if needed
+    // — Account: Keem Group Ltd —
+    "keemkenya@gmail.com": {
+      holder: "Keem Group Ltd",
+      accountNo: "91550875",      // next sequential number
       currency: "USD",
       status: "active",
-      // keep balance at 0 because this is still pending
-      balance: 0,
+      balance: 0,                 // do NOT add to balance because it is pending
       lines: [
         {
-          ts: new Date().toISOString(),      // today’s date/time at load
+          ts: new Date().toISOString(),  // today's timestamp
           type: "credit",
-          amount: 5000000,                   // 5,000,000.00 USD
+          amount: 50000000,              // 50,000,000.00 USD
           currency: "USD",
-          description: "Loan Credit (Pending)",
-          pending: true                      // flag so UI can style it as pending
+          description: "Incoming Credit (Pending)",
+          pending: true
         }
       ]
     }
